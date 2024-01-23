@@ -1,8 +1,8 @@
-Frontend/admin/*
-Frontend/admin/
+# Frontend/admin/*
+# Frontend/admin/
 
-Frontend/user/
-Frontend/user/*
+# Frontend/user/
+# Frontend/user/*
 
-Backend
-Backend/*
+# Backend
+# Backend/*
