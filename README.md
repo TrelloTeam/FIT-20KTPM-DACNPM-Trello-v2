@@ -9,3 +9,13 @@ $ npm install
 ```
 $ npm run dev
 ```
+
+# Back-end
+## 1. Build docker
+```
+$ docker build -t server .
+```
+## 2. Running server
+```
+$ docker compose up
+```
