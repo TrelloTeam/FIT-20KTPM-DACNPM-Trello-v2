@@ -1,0 +1,13 @@
+{
+  "window.zoomLevel": -1,
+  "tabnine.experimentalAutoImports": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "workbench.iconTheme": "material-icon-theme",
+  "editor.formatOnSave": true,
+  "editor.suggestOnTriggerCharacters": true,
+  "importSorter.generalConfiguration.sortOnBeforeSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.fixAll.format": "explicit"
+  }
+}
