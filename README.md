@@ -11,11 +11,15 @@ $ npm run dev
 ```
 
 # Back-end
-## 1. Build docker
+## 1. Installation
+```
+$ npm install
+```
+## 2. Build docker
 ```
 $ docker build -t server .
 ```
-## 2. Running server
+## 3. Running server
 ```
 $ docker compose up
 ```
