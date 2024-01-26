@@ -1,5 +1,5 @@
 {
-  "name": "user",
+  "name": "@trello-v2/user",
   "private": true,
   "version": "0.0.0",
   "type": "module",

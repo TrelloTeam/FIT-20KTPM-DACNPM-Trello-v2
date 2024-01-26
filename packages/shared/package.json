@@ -1,0 +1,26 @@
+{
+  "name": "@trello-v2/shared",
+  "private": "true",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "devDependencies": {
+    "@types/shelljs": "^0.8.15",
+    "typescript": "^5.3.3"
+  },
+  "scripts": {
+    "build": "rm -f -r ./dist/* && npx tsc",
+    "dev": "tsc -w",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "trello-v2": "dist/bin/dev.ps1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "shelljs": "^0.8.5",
+    "zod": "^3.22.4"
+  }
+}
