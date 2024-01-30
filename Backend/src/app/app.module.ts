@@ -6,6 +6,8 @@ import { ConfigModule } from '@nestjs/config'
 
 import { AppController } from './app.controller'
 import { TestController } from './test/test.controller'
+import { MongooseModule } from '@nestjs/mongoose'
+import { CardlistModule } from './cardlist/cardlist.module'
 
 const EnvSchema = {
   PORT: Joi.number(),
@@ -26,6 +28,10 @@ const EnvSchema = {
       validationSchema: Joi.object().keys(EnvSchema),
       load: [configuration],
     }),
+    MongooseModule.forRoot(
+      'mongodb://MONGO_USER:MONGO_123@localhost:7000/trello?authSource=admin',
+    ),
+    CardlistModule,
   ],
   controllers: [AppController, TestController],
   providers: [],
