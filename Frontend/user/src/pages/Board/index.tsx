@@ -19,6 +19,7 @@ interface List {
 
 export function Board() {
   const [listsData, setListsData] = useState<List[]>(lists)
+  const [cardsData, setCardsData] = useState<Card[]>(cards)
   const [isDragCardToCard, setIsDragCardToCard] = useState<Boolean>(false)
   const [isMoveList, setIsMoveList] = useState<Boolean>(false)
   const [action, setAction] = useState<Boolean>(false)
@@ -50,6 +51,7 @@ export function Board() {
     // Call API để thay đổi list
     // Nếu vị trí drop nằm ở nửa trái của list (isDropLeft = true), thẻ tại vị trí đó sẽ di chuyển sang phải nhường chỗ cho thẻ mới
     // Nếu vị trí drop nằm ở nửa phỉa của list (isDropLeft = false), thẻ tại vị trí đó sẽ di chuyển sang trái nhường chỗ cho thẻ mới
+
     if (isDropLeft) {
       console.log('drop left')
     } else {
@@ -116,8 +118,6 @@ export function Board() {
 
   function handleDragOver(e: DragEvent) {
     e.preventDefault()
-    // Add logic to detect if you are dragging over a gap between two cards
-    // You can use this information to trigger the desired behavior
     setIsDragCardToCard(true)
     setIsMoveList(false)
   }
@@ -131,6 +131,7 @@ export function Board() {
     >
       <div className='mx-auto p-4 text-center text-3xl font-bold uppercase text-black'>Trello Board</div>
       <div className='mx-auto my-10 flex flex-row justify-center text-center'>
+        
         {listsData.map((list) => (
           <div
             key={list.id}
@@ -142,7 +143,7 @@ export function Board() {
           >
             <h2 className='mb-5 font-bold hover:cursor-grab'>{list.name}</h2>
 
-            {cards.map((card, index) => (
+            {cardsData.map((card, index) => (
               <>
                 {card.list_id === list.id && (
                   <>
