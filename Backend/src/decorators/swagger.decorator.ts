@@ -3,6 +3,8 @@ import {
   ApiBearerAuth,
   ApiBody,
   ApiConsumes,
+  ApiParam,
+  ApiQuery,
   ApiResponse,
   ApiResponseOptions,
   ApiTags,
