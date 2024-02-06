@@ -3,28 +3,26 @@ import {
   ApiBearerAuth,
   ApiBody,
   ApiConsumes,
+  ApiParam,
+  ApiQuery,
   ApiResponse,
   ApiResponseOptions,
-  ApiTags,
+  ApiTags
 } from '@nestjs/swagger'
 
-import type { ApiBodyOptions } from '@nestjs/swagger'
-
+import type { ApiBodyOptions, ApiParamOptions, ApiQueryOptions } from '@nestjs/swagger'
 export interface ISwaggerParams {
-  secure: boolean
+  secure?: boolean
   body?: ApiBodyOptions
+  query?: ApiQueryOptions
+  params?: ApiParamOptions
   responses?: ApiResponseOptions[]
 }
 
 export function SwaggerController(name: string) {
   return applyDecorators(ApiTags(name))
 }
-
-export function SwaggerApi({
-  secure = false,
-  body = {},
-  responses = [],
-}: ISwaggerParams) {
+export function SwaggerApi({ secure = false, responses = [], body, query, params }: ISwaggerParams) {
   const consumeTypes = ['application/json', 'application/x-www-form-urlencoded']
 
   const decorators = []
@@ -37,21 +35,33 @@ export function SwaggerApi({
       ApiResponse({ status: 401, description: 'You are unauthorized.' }),
       ApiResponse({
         status: 403,
-        description: 'You are unauthorized to use this resource.',
+        description: 'You are unauthorized to use this resource.'
       }),
       ApiResponse({
         status: 404,
-        description: 'The resource can not be found.',
-      }),
+        description: 'The resource can not be found.'
+      })
     ])
   }
 
-  if (Object?.values(body || {})?.length > 0) {
+  if (body) {
     decorators.push(ApiBody(body))
   }
 
+  if (query) {
+    decorators.push(ApiQuery(query))
+  }
+
+  if (params) {
+    decorators.push(ApiParam(params))
+  }
+
+  // if (Object?.values(body || {})?.length > 0) {
+  //   decorators.push(ApiBody(body))
+  // }
+
   if (responses.length > 0) {
-    responses.forEach((responseInfo: ApiResponseOptions): void => {
+    responses.forEach((responseInfo): void => {
       decorators.push(ApiResponse(responseInfo))
     })
   }

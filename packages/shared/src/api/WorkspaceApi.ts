@@ -1,4 +1,5 @@
 import { z } from "zod";
+
 import { WorkspaceSchema } from "../schemas/Workspace";
 
 export const GetallWorkspaceByEmailResponseSchema = z.object({
@@ -6,6 +7,13 @@ export const GetallWorkspaceByEmailResponseSchema = z.object({
 });
 export type GetallWorkspaceByEmailResponse = z.infer<
   typeof GetallWorkspaceByEmailResponseSchema
+>;
+
+export const GetallWorkspaceResponseSchema = z.object({
+  data: WorkspaceSchema.array(),
+});
+export type GetallWorkspaceResponse = z.infer<
+  typeof GetallWorkspaceResponseSchema
 >;
 
 export const UpdateWorkspaceInfoRequestSchema = WorkspaceSchema.omit({
