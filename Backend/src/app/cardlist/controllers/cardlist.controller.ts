@@ -51,6 +51,28 @@ export class CardlistController {
       data: data
     }
   }
+
+  @InjectRoute(CardlistRoutes.copyCardlistApi)
+  @SwaggerApi({
+    body: { schema: { $ref: getSchemaPath('CopyCardlistRequestSchema') } },
+    responses: [
+      {
+        status: 200,
+        schema: { $ref: getSchemaPath('CopyCardlistResponseSchema') }
+      }
+    ]
+  })
+  async copy(
+    @Body(
+      new ZodValidationPipe(TrelloApi.CardlistApi.CopyCardlistRequestSchema)
+    )
+    body: TrelloApi.CardlistApi.CopyCardlistRequest
+  ): Promise<TrelloApi.CardlistApi.CopyCardlistResponse> {
+    const data = await this.cardlistService.copyCardlist(body)
+    return {
+      data: data
+    }
+  }
   @InjectRoute(CardlistRoutes.getCardlistsByBoardId)
   @SwaggerApi({
     responses: [
