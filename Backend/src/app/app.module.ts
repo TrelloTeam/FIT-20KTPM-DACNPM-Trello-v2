@@ -1,16 +1,16 @@
-import * as Joi from 'joi'
+import * as Joi from 'joi';
 
-import { configuration } from '@/config'
-import { Module } from '@nestjs/common'
-import { ConfigModule } from '@nestjs/config'
-import { UserModule } from './user/user.module'
-import { AppController } from './app.controller'
-import { TestController } from './test/test.controller'
-import { MongooseModule } from '@nestjs/mongoose'
-import { CardlistModule } from './cardlist/cardlist.module'
-import { BoardModule } from './board/board.module'
-import { WorkspaceModule } from './workspace/workspace.module'
-
+import { configuration } from '@/config';
+import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+import { UserModule } from './user/user.module';
+import { AppController } from './app.controller';
+import { TestController } from './test/test.controller';
+import { MongooseModule } from '@nestjs/mongoose';
+import { CardlistModule } from './cardlist/cardlist.module';
+import { BoardModule } from './board/board.module';
+import { WorkspaceModule } from './workspace/workspace.module';
+import { CardModule } from './card/card.module';
 const EnvSchema = {
   PORT: Joi.number(),
   NODE_ENV: Joi.string(),
@@ -22,7 +22,7 @@ const EnvSchema = {
   DB_PASSWORD: Joi.string().required(),
   JWT_SECRET: Joi.string().required(),
   JWT_REFRESH_SECRET: Joi.string().required(),
-}
+};
 
 @Module({
   imports: [
@@ -35,6 +35,7 @@ const EnvSchema = {
     WorkspaceModule,
     UserModule,
     BoardModule,
+    CardModule,
   ],
   controllers: [AppController, TestController],
   providers: [],
