@@ -3,7 +3,7 @@ import { ActivitySchema } from "./Activity";
 import { Feature, FeatureSchema } from "./Feature";
 
 export const CardSchema = z.object({
-  _id: z.string(),
+  _id: z.string().optional(),
   name: z.string(),
   index: z.number().nullish(),
   watcher_email: z.string().array().default([]),
@@ -13,7 +13,7 @@ export const CardSchema = z.object({
 });
 
 export const CardlistSchema = z.object({
-  _id: z.string(),
+  _id: z.string().optional(),
   board_id: z.string(),
   index: z.number().nullish(),
   name: z.string(),

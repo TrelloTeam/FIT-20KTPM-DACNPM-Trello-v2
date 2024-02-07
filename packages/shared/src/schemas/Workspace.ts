@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const WorkspaceSchema = z.object({
-  _id: z.string(),
+  _id: z.string().optional(),
   name: z.string(),
   short_name: z.string(),
   description: z.string().nullish(),
