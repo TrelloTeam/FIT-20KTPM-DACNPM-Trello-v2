@@ -12,6 +12,11 @@ export const CardlistRoutes = {
     method: RequestMethod.POST,
     jwtSecure: false
   } as IRouteParams,
+  updateCardlists: {
+    path: '/api/cardlist/update',
+    method: RequestMethod.PUT,
+    jwtSecure: false
+  } as IRouteParams,
   copyCardlistApi: {
     path: '/api/cardlist/copy',
     method: RequestMethod.POST,
@@ -21,5 +26,5 @@ export const CardlistRoutes = {
     path: '/api/cardlist_by_board/:boardId',
     method: RequestMethod.GET,
     jwtSecure: false
-  }
+  } as IRouteParams
 } as const

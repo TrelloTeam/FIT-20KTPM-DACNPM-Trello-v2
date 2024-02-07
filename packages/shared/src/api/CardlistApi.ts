@@ -10,6 +10,7 @@ export const CreateCardlistRequestSchema = CardlistSchema.omit({
     index: z.number().default(0),
   })
 );
+export type CreateCardlistRequest = z.infer<typeof CreateCardlistRequestSchema>;
 
 export type CopyCardlistRequest = z.infer<typeof CopyCardlistRequestSchema>;
 
@@ -22,32 +23,50 @@ export const CopyCardlistRequestSchema = CardlistSchema.omit({
   archive_at: true,
 });
 
-export type CreateCardlistRequest = z.infer<typeof CreateCardlistRequestSchema>;
+//name, archive date, index
+export const UpdateCardlistRequestSchema = CardlistSchema.omit({
+  board_id: true,
+  cards: true,
+  watcher_email: true,
+  created_at: true,
+}).merge(
+  z.object({
+    index: z.number().optional(),
+    archive_at: z.coerce.date().optional(),
+    name: z.string().optional(),
+  })
+);
+export type UpdateCardlistRequest = z.infer<typeof UpdateCardlistRequestSchema>;
 
 export const CreateCardlistResponseSchema = z.object({
   data: CardlistSchema,
 });
-export const CopyCardlistResponseSchema = z.object({
-  data: CardlistSchema,
-});
-export const GetallCardlistResponseSchema = z.object({
-  data: CardlistSchema.array(),
-});
-
-export const GetallCardlistByBoardIdResponseSchema = z.object({
-  data: CardlistSchema.array(),
-});
-
 export type CreateCardlistResponse = z.infer<
   typeof CreateCardlistResponseSchema
 >;
 
+export const CopyCardlistResponseSchema = z.object({
+  data: CardlistSchema,
+});
 export type CopyCardlistResponse = z.infer<typeof CreateCardlistResponseSchema>;
 
+export const UpdateCardlistResponseSchema = z.object({
+  data: CardlistSchema,
+});
+export type UpdateCardlistResponse = z.infer<
+  typeof CreateCardlistResponseSchema
+>;
+
+export const GetallCardlistResponseSchema = z.object({
+  data: CardlistSchema.array(),
+});
 export type GetallCardlistResponse = z.infer<
   typeof GetallCardlistResponseSchema
 >;
 
+export const GetallCardlistByBoardIdResponseSchema = z.object({
+  data: CardlistSchema.array(),
+});
 export type GetallCardlistByBoardIdResponse = z.infer<
   typeof GetallCardlistByBoardIdResponseSchema
 >;

@@ -73,6 +73,7 @@ export class CardlistController {
       data: data
     }
   }
+
   @InjectRoute(CardlistRoutes.getCardlistsByBoardId)
   @SwaggerApi({
     responses: [
@@ -86,6 +87,28 @@ export class CardlistController {
     @Param('boardId') boardId: string
   ): Promise<TrelloApi.CardlistApi.GetallCardlistByBoardIdResponse> {
     const data = await this.cardlistService.getAllCardlistByBoardId(boardId)
+    return {
+      data: data
+    }
+  }
+
+  @InjectRoute(CardlistRoutes.updateCardlists)
+  @SwaggerApi({
+    body: { schema: { $ref: getSchemaPath('UpdateCardlistRequestSchema') } },
+    responses: [
+      {
+        status: 200,
+        schema: { $ref: getSchemaPath('UpdateCardlistResponseSchema') }
+      }
+    ]
+  })
+  async update(
+    @Body(
+      new ZodValidationPipe(TrelloApi.CardlistApi.UpdateCardlistRequestSchema)
+    )
+    body: TrelloApi.CardlistApi.UpdateCardlistRequest
+  ): Promise<TrelloApi.CardlistApi.UpdateCardlistResponse> {
+    const data = await this.cardlistService.updateCardlist(body)
     return {
       data: data
     }

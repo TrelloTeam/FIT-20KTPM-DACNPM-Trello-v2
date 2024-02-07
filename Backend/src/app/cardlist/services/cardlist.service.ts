@@ -60,6 +60,25 @@ export class CardlistService implements ICardlistService {
     })
     return newCardList.save()
   }
+
+  async updateCardlist(
+    data: TrelloApi.CardlistApi.UpdateCardlistRequest
+  ): Promise<DbSchemas.CardlistSchema.CardList> {
+    const cardlist = await this.CardlistMModel.findById(data._id)
+    if (!cardlist) {
+      return { status: 'Not Found', msg: "Can't find any cardlist" } as any
+    }
+    if (data.name) {
+      cardlist.name = data.name
+    }
+    if (data.archive_at) {
+      cardlist.archive_at = data.archive_at
+    }
+    if (data.index) {
+      cardlist.index = data.index
+    }
+    return cardlist.save()
+  }
   async getAllCardlist() {
     return this.CardlistMModel.find().exec()
   }
