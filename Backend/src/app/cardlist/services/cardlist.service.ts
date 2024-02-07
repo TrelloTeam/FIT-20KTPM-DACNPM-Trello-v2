@@ -18,10 +18,20 @@ export abstract class ICardlistService {
 export class CardlistService implements ICardlistService {
   constructor(
     @InjectModel(DbSchemas.COLLECTION_NAMES[0])
-    private CardlistMModel: Model<DbSchemas.CardlistSchema.CardList>
+    private CardlistMModel: Model<DbSchemas.CardlistSchema.CardList>,
+    @InjectModel(DbSchemas.COLLECTION_NAMES[1])
+    private BoardMModel: Model<DbSchemas.BoardSchema.Board>
   ) {}
 
-  async createCardlist(data: TrelloApi.CardlistApi.CreateCardlistRequest) {
+  async createCardlist(
+    data: TrelloApi.CardlistApi.CreateCardlistRequest
+  ): Promise<DbSchemas.CardlistSchema.CardList> {
+    const board = await this.BoardMModel.findById(data.board_id)
+    if (!board) {
+      // throw new NotFoundError('Board not found')
+      return { status: 'Not Found', msg: "Can't find cardlist" } as any
+    }
+    data.archive_at = null
     const model = new this.CardlistMModel(data)
     return model.save()
   }

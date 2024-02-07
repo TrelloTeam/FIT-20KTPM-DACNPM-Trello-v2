@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common'
-import { CardlistController } from './controllers/cardlist.controler'
+import { CardlistController } from './controllers/cardlist.controller'
 import { CardlistService } from './services/cardlist.service'
-import { CardlistMModule } from '@/database/modules'
+import { BoardMModule, CardlistMModule } from '@/database/modules'
 
 @Module({
-  imports: [CardlistMModule],
+  imports: [CardlistMModule, BoardMModule],
   controllers: [CardlistController],
   providers: [CardlistService]
 })

@@ -1,5 +1,5 @@
 import { Test } from '@nestjs/testing'
-import { CardlistController } from './cardlist.controler'
+import { CardlistController } from './cardlist.controller'
 import {
   CardlistService,
   CardlistServiceMock
