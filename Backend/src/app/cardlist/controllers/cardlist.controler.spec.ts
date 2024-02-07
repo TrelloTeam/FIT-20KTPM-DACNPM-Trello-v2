@@ -30,4 +30,15 @@ describe('CardlistController', () => {
       ).toBeTruthy()
     })
   })
+
+  describe('Cardlist:Get all cardlists by board id', () => {
+    it('Return all cardlists by board id', async () => {
+      const data = await controller.getAllByBoardId('any_board_id')
+      expect(
+        TrelloApi.CardlistApi.GetallCardlistByBoardIdResponseSchema.safeParse(
+          data
+        ).success
+      ).toBeTruthy()
+    })
+  })
 })

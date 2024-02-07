@@ -9,6 +9,10 @@ export abstract class ICardlistService {
   ): Promise<DbSchemas.CardlistSchema.CardList>
 
   abstract getAllCardlist(): Promise<DbSchemas.CardlistSchema.CardList[]>
+
+  abstract getAllCardlistByBoardId(
+    board_id: TrelloApi.CardlistApi.GetallCardlistByBoardIdRequest
+  ): Promise<DbSchemas.CardlistSchema.CardList[]>
 }
 
 export class CardlistService implements ICardlistService {
@@ -24,6 +28,11 @@ export class CardlistService implements ICardlistService {
   async getAllCardlist() {
     return this.CardlistMModel.find().exec()
   }
+  async getAllCardlistByBoardId(
+    board_id: TrelloApi.CardlistApi.GetallCardlistByBoardIdRequest
+  ) {
+    return this.CardlistMModel.find({ board_id }).exec()
+  }
 }
 
 export class CardlistServiceMock implements ICardlistService {
@@ -33,6 +42,12 @@ export class CardlistServiceMock implements ICardlistService {
     })
   }
   getAllCardlist() {
+    return new Promise<DbSchemas.CardlistSchema.CardList[]>((res) => {
+      return res([])
+    })
+  }
+
+  getAllCardlistByBoardId() {
     return new Promise<DbSchemas.CardlistSchema.CardList[]>((res) => {
       return res([])
     })

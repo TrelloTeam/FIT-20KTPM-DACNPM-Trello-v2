@@ -1,7 +1,7 @@
 import { InjectController, InjectRoute } from '@/decorators'
 import { CardlistService } from '../services/cardlist.service'
 import { CardlistRoutes } from '../cardlist.routes'
-import { Body } from '@nestjs/common'
+import { Body, Param } from '@nestjs/common'
 import { ZodValidationPipe } from '@/pipes'
 import { TrelloApi } from '@trello-v2/shared'
 import { SwaggerApi } from '@/decorators/swagger.decorator'
@@ -47,6 +47,23 @@ export class CardlistController {
     body: TrelloApi.CardlistApi.CreateCardlistRequest
   ): Promise<TrelloApi.CardlistApi.CreateCardlistResponse> {
     const data = await this.cardlistService.createCardlist(body)
+    return {
+      data: data
+    }
+  }
+  @InjectRoute(CardlistRoutes.getCardlistsByBoardId)
+  @SwaggerApi({
+    responses: [
+      {
+        status: 200,
+        schema: { $ref: getSchemaPath('GetallCardlistByBoardIdResponseSchema') }
+      }
+    ]
+  })
+  async getAllByBoardId(
+    @Param('boardId') boardId: string
+  ): Promise<TrelloApi.CardlistApi.GetallCardlistByBoardIdResponse> {
+    const data = await this.cardlistService.getAllCardlistByBoardId(boardId)
     return {
       data: data
     }
