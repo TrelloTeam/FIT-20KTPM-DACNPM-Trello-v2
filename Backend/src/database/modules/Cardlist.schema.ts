@@ -25,5 +25,6 @@ export const CardlistMSchema = new Schema<DbSchemas.CardlistSchema.CardList>({
   name: String,
   cards: [CardMSchema],
   watcher_email: [String],
-  archive_at: Date
+  archive_at: Date,
+  created_at: Date
 })

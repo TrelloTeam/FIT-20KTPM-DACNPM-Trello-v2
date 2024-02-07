@@ -8,7 +8,12 @@ export const CardlistRoutes = {
     jwtSecure: false
   } as IRouteParams,
   createCardlistApi: {
-    path: '/api/cardlist',
+    path: '/api/cardlist/create',
+    method: RequestMethod.POST,
+    jwtSecure: false
+  } as IRouteParams,
+  copyCardlistApi: {
+    path: '/api/cardlist/copy',
     method: RequestMethod.POST,
     jwtSecure: false
   } as IRouteParams,

@@ -8,10 +8,14 @@ export abstract class ICardlistService {
     data: TrelloApi.CardlistApi.CreateCardlistRequest
   ): Promise<DbSchemas.CardlistSchema.CardList>
 
+  abstract copyCardlist(
+    data: TrelloApi.CardlistApi.CopyCardlistRequest
+  ): Promise<DbSchemas.CardlistSchema.CardList>
+
   abstract getAllCardlist(): Promise<DbSchemas.CardlistSchema.CardList[]>
 
   abstract getAllCardlistByBoardId(
-    board_id: TrelloApi.CardlistApi.GetallCardlistByBoardIdRequest
+    board_id: string
   ): Promise<DbSchemas.CardlistSchema.CardList[]>
 }
 
@@ -32,15 +36,33 @@ export class CardlistService implements ICardlistService {
       return { status: 'Not Found', msg: "Can't find cardlist" } as any
     }
     data.archive_at = null
+    data.created_at = new Date()
     const model = new this.CardlistMModel(data)
+
     return model.save()
+  }
+
+  async copyCardlist(
+    data: TrelloApi.CardlistApi.CopyCardlistRequest
+  ): Promise<DbSchemas.CardlistSchema.CardList> {
+    const existingCardList = await this.CardlistMModel.findById(data._id)
+    if (!existingCardList) {
+      return { status: 'Not Found', msg: "Can't find any cardlist" } as any
+    }
+    const newCardList = new this.CardlistMModel({
+      name: existingCardList.name,
+      board_id: existingCardList.board_id,
+      cards: existingCardList.cards,
+      watcher_email: existingCardList.watcher_email,
+      index: existingCardList.index,
+      archive_at: null
+    })
+    return newCardList.save()
   }
   async getAllCardlist() {
     return this.CardlistMModel.find().exec()
   }
-  async getAllCardlistByBoardId(
-    board_id: TrelloApi.CardlistApi.GetallCardlistByBoardIdRequest
-  ) {
+  async getAllCardlistByBoardId(board_id: string) {
     return this.CardlistMModel.find({ board_id }).exec()
   }
 }
@@ -49,6 +71,19 @@ export class CardlistServiceMock implements ICardlistService {
   createCardlist(data: TrelloApi.CardlistApi.CreateCardlistRequest) {
     return new Promise<DbSchemas.CardlistSchema.CardList>((res) => {
       return res({ ...data, _id: 'Mock-id', watcher_email: [], cards: [] })
+    })
+  }
+
+  copyCardlist(data: TrelloApi.CardlistApi.CopyCardlistRequest) {
+    return new Promise<DbSchemas.CardlistSchema.CardList>((res) => {
+      return res({
+        ...data,
+        board_id: 'Mock-id',
+        name: '',
+        watcher_email: [],
+        cards: [],
+        archive_at: null
+      })
     })
   }
   getAllCardlist() {
