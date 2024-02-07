@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common'
-import { MongooseModule } from '@nestjs/mongoose'
 import { CardlistMModule } from '@/database/modules'
+import { CardController } from './controllers/card.controller'
+import { CardService } from './services/card.service'
 
 @Module({
   imports: [CardlistMModule],
-  controllers: [],
-  providers: []
+  controllers: [CardController],
+  providers: [CardService]
 })
-export class CardlistModule {}
+export class CardModule {}

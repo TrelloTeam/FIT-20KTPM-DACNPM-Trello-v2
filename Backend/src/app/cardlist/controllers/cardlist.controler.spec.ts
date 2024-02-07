@@ -2,7 +2,7 @@ import { Test } from '@nestjs/testing'
 import { CardlistController } from './cardlist.controler'
 import {
   CardlistService,
-  CardlistServiceMock,
+  CardlistServiceMock
 } from '../services/cardlist.service'
 import { TrelloApi } from '@trello-v2/shared'
 
@@ -12,7 +12,7 @@ describe('CardlistController', () => {
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
       controllers: [CardlistController],
-      providers: [CardlistService],
+      providers: [CardlistService]
     })
       .overrideProvider(CardlistService)
       .useValue(new CardlistServiceMock())
@@ -26,7 +26,7 @@ describe('CardlistController', () => {
       const data = await controller.getAll()
       expect(
         TrelloApi.CardlistApi.GetallCardlistResponseSchema.safeParse(data)
-          .success,
+          .success
       ).toBeTruthy()
     })
   })

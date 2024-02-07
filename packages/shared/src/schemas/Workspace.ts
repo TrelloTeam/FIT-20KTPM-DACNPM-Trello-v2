@@ -1,7 +1,8 @@
 import { z } from "zod";
+import { Refine_MongoId } from "../utils/RefineMongoId";
 
 export const WorkspaceSchema = z.object({
-  _id: z.string().optional(),
+  _id: z.string().optional().refine(Refine_MongoId, { message: "Invalid id" }),
   name: z.string(),
   short_name: z.string(),
   description: z.string().nullish(),

@@ -8,7 +8,17 @@ export class CardService {
     private CardlistMModel: Model<DbSchemas.CardlistSchema.CardList>
   ) {}
 
-  async createCard(data: TrelloApi.CardApi.CreateCard) {
+  async getAllCardsOfCardlist(
+    data: TrelloApi.CardApi.GetCardsOfCardlistRequest
+  ) {
+    const cardlist = await this.CardlistMModel.findById(data.cardlist_id, {
+      activities: 0,
+      features: 0
+    })
+    return cardlist ? cardlist.toJSON() : null
+  }
+
+  async createCard(data: TrelloApi.CardApi.CreateCardRequest) {
     const cardlist = await this.CardlistMModel.findById(data.cardlist_id)
     if (!cardlist) return null
     cardlist.cards.push({
@@ -20,6 +30,7 @@ export class CardService {
     })
     await cardlist.save()
 
-    return cardlist.cards[cardlist.cards.length - 1]
+    const { cards } = cardlist.toJSON()
+    return cards[cards.length - 1]
   }
 }
