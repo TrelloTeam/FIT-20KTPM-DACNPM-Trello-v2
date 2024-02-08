@@ -70,3 +70,24 @@ export const GetallCardlistByBoardIdResponseSchema = z.object({
 export type GetallCardlistByBoardIdResponse = z.infer<
   typeof GetallCardlistByBoardIdResponseSchema
 >;
+
+export const SortCardlistByOldestDateResponseSchema = z.object({
+  data: CardlistSchema.array(),
+});
+export type SortCardlistByOldestDateResponse = z.infer<
+  typeof SortCardlistByOldestDateResponseSchema
+>;
+
+export const SortCardlistByNewestDateResponseSchema = z.object({
+  data: CardlistSchema.array(),
+});
+export type SortCardlistByNewestDateResponse = z.infer<
+  typeof SortCardlistByNewestDateResponseSchema
+>;
+
+export const SortCardlistByNameResponseSchema = z.object({
+  data: CardlistSchema.array(),
+});
+export type SortCardlistByNameResponse = z.infer<
+  typeof SortCardlistByNameResponseSchema
+>;

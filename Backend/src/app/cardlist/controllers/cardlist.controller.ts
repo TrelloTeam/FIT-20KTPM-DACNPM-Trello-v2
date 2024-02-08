@@ -76,6 +76,12 @@ export class CardlistController {
 
   @InjectRoute(CardlistRoutes.getCardlistsByBoardId)
   @SwaggerApi({
+    params: {
+      name: 'boardId',
+      schema: {
+        type: 'string'
+      }
+    },
     responses: [
       {
         status: 200,
@@ -87,6 +93,84 @@ export class CardlistController {
     @Param('boardId') boardId: string
   ): Promise<TrelloApi.CardlistApi.GetallCardlistByBoardIdResponse> {
     const data = await this.cardlistService.getAllCardlistByBoardId(boardId)
+    return {
+      data: data
+    }
+  }
+
+  @InjectRoute(CardlistRoutes.sortCardlistsByOldestDate)
+  @SwaggerApi({
+    params: {
+      name: 'boardId',
+      schema: {
+        type: 'string'
+      }
+    },
+    responses: [
+      {
+        status: 200,
+        schema: {
+          $ref: getSchemaPath('SortCardlistByOldestDateResponseSchema')
+        }
+      }
+    ]
+  })
+  async sortByOldestDate(
+    @Param('boardId') boardId: string
+  ): Promise<TrelloApi.CardlistApi.SortCardlistByOldestDateResponse> {
+    const data = await this.cardlistService.sortCardlistByOldestDate(boardId)
+    return {
+      data: data
+    }
+  }
+
+  @InjectRoute(CardlistRoutes.sortCardlistsByNewestDate)
+  @SwaggerApi({
+    params: {
+      name: 'boardId',
+      schema: {
+        type: 'string'
+      }
+    },
+    responses: [
+      {
+        status: 200,
+        schema: {
+          $ref: getSchemaPath('SortCardlistByNewestDateResponseSchema')
+        }
+      }
+    ]
+  })
+  async sortByNewestDate(
+    @Param('boardId') boardId: string
+  ): Promise<TrelloApi.CardlistApi.SortCardlistByNewestDateResponse> {
+    const data = await this.cardlistService.sortCardlistByNewestDate(boardId)
+    return {
+      data: data
+    }
+  }
+
+  @InjectRoute(CardlistRoutes.sortCardlistsByName)
+  @SwaggerApi({
+    params: {
+      name: 'boardId',
+      schema: {
+        type: 'string'
+      }
+    },
+    responses: [
+      {
+        status: 200,
+        schema: {
+          $ref: getSchemaPath('SortCardlistByNameResponseSchema')
+        }
+      }
+    ]
+  })
+  async sortByName(
+    @Param('boardId') boardId: string
+  ): Promise<TrelloApi.CardlistApi.SortCardlistByNameResponse> {
+    const data = await this.cardlistService.sortCardlistByName(boardId)
     return {
       data: data
     }

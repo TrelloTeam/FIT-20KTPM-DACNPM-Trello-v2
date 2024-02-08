@@ -26,5 +26,20 @@ export const CardlistRoutes = {
     path: '/api/cardlist_by_board/:boardId',
     method: RequestMethod.GET,
     jwtSecure: false
+  } as IRouteParams,
+  sortCardlistsByOldestDate: {
+    path: '/api/sort_oldest_cardlist/:boardId',
+    method: RequestMethod.GET,
+    jwtSecure: false
+  } as IRouteParams,
+  sortCardlistsByNewestDate: {
+    path: '/api/sort_newest_cardlist/:boardId',
+    method: RequestMethod.GET,
+    jwtSecure: false
+  } as IRouteParams,
+  sortCardlistsByName: {
+    path: '/api/sort_name_cardlist/:boardId',
+    method: RequestMethod.GET,
+    jwtSecure: false
   } as IRouteParams
 } as const
