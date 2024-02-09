@@ -4,13 +4,13 @@ import { Feature, FeatureSchema } from "./Feature";
 import { Refine_MongoId } from "../utils/RefineMongoId";
 
 export const CardSchema = z.object({
-  _id: z.string().optional().refine(Refine_MongoId, { message: "Invalid id" }),
+  _id: z.string().refine(Refine_MongoId, { message: "Invalid id" }).optional(),
   name: z.string(),
   index: z.number().nullish(),
   watcher_email: z.string().array().default([]),
   archive_at: z.coerce.date().nullish(),
   activities: ActivitySchema.array().default([]),
-  features: FeatureSchema.passthrough().array().default([]),
+  features: FeatureSchema.array().default([]),
 });
 export const CardlistSchema = z.object({
   _id: z.string().optional().refine(Refine_MongoId, { message: "Invalid id" }),
