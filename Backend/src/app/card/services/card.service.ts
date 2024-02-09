@@ -1,19 +1,22 @@
 import { InjectModel } from '@nestjs/mongoose'
 import { DbSchemas, TrelloApi } from '@trello-v2/shared'
 import { Model } from 'mongoose'
+import { InjectConnection } from '@nestjs/mongoose'
+import { Connection } from 'mongoose'
 
 export class CardService {
   constructor(
     @InjectModel(DbSchemas.COLLECTION_NAMES[0])
-    private CardlistMModel: Model<DbSchemas.CardlistSchema.CardList>
+    private CardlistMModel: Model<DbSchemas.CardlistSchema.CardList>,
+    @InjectConnection() private connection: Connection
   ) {}
 
   async getAllCardsOfCardlist(
     data: TrelloApi.CardApi.GetCardsOfCardlistRequest
   ) {
     const cardlist = await this.CardlistMModel.findById(data.cardlist_id, {
-      activities: 0,
-      features: 0
+      'cards.activities': 0,
+      'cards.features': 0
     })
     return cardlist ? cardlist.toJSON() : null
   }
@@ -32,5 +35,80 @@ export class CardService {
 
     const { cards } = cardlist.toJSON()
     return cards[cards.length - 1]
+  }
+
+  async getCardDetail(data: TrelloApi.CardApi.GetCardDetailRequest) {
+    const cardlist = await this.CardlistMModel.findById(data.cardlist_id, {
+      cards: { $elemMatch: { _id: data.card_id } }
+    })
+    const cardlistJson = cardlist?.toJSON()
+    return cardlistJson && cardlistJson.cards.length >= 0
+      ? cardlistJson.cards[0]
+      : null
+  }
+
+  async updateCardDetail(data: TrelloApi.CardApi.UpdateCardDetailRequest) {
+    const res = await this.CardlistMModel.findOneAndUpdate(
+      {
+        _id: data.cardlist_id,
+        cards: { $elemMatch: { _id: data.card_id } }
+      },
+      {
+        $set: {
+          ...(data.name ? { 'cards.$.name': data.name } : {}),
+          ...(data.watcher_email
+            ? { 'cards.$.watcher_email': data.watcher_email }
+            : {})
+        }
+      },
+      { new: true }
+    ).exec()
+    if (!res) return null
+    const newCard = res
+      .toJSON()
+      .cards.find((c) => c._id?.toString() === data.card_id)
+    return newCard ? newCard : null
+  }
+
+  async addFeatureToCard(data: TrelloApi.CardApi.AddCardFeatureRequest) {
+    const res = await this.CardlistMModel.findOneAndUpdate(
+      {
+        _id: data.cardlist_id,
+        cards: { $elemMatch: { _id: data.card_id } }
+      },
+      {
+        $push: {
+          'cards.$.features': data.feature
+        }
+      },
+      { new: true }
+    ).exec()
+    const newCard = res
+      ?.toJSON()
+      .cards.find((e) => e._id?.toString() === data.card_id)
+    return newCard ? newCard.features[newCard.features.length - 1] : null
+  }
+
+  async updateFeatureOfCard(data: TrelloApi.CardApi.UpdateCardFeatureRequest) {
+    const res = await this.CardlistMModel.findOneAndUpdate(
+      {
+        _id: data.cardlist_id,
+        cards: {
+          $elemMatch: {
+            features: { $elemMatch: { _id: data.feature._id } }
+          }
+        }
+      },
+      {
+        $set: {
+          'cards.$[i].features.$[j]': { ...data.feature }
+        }
+      },
+      {
+        new: true,
+        arrayFilters: [{ 'i._id': data.card_id }, { 'j._id': data.feature._id }]
+      }
+    )
+    return res?.toJSON()
   }
 }
