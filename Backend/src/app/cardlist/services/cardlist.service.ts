@@ -113,6 +113,10 @@ export class CardlistService implements ICardlistService {
 
       return dateA - dateB
     })
+    cardlists.forEach((item, index) => {
+      item.index = index
+      item.save()
+    })
     return cardlists
   }
 
@@ -132,6 +136,10 @@ export class CardlistService implements ICardlistService {
 
       return dateB - dateA
     })
+    cardlists.forEach((item, index) => {
+      item.index = index
+      item.save()
+    })
     return cardlists
   }
 
@@ -143,7 +151,13 @@ export class CardlistService implements ICardlistService {
 
       return nameA.localeCompare(nameB)
     })
-
+    cardlists.forEach((item, index) => {
+      item.index = index
+    })
+    cardlists.forEach((item, index) => {
+      item.index = index
+      item.save()
+    })
     return cardlists
   }
 }
