@@ -11,6 +11,8 @@ export const CardSchema = z.object({
   archive_at: z.coerce.date().nullish(),
   activities: ActivitySchema.array().default([]),
   features: FeatureSchema.array().default([]),
+  cover: z.string().nullish(),
+  description: z.string().nullish(),
 });
 export const CardlistSchema = z.object({
   _id: z.string().optional().refine(Refine_MongoId, { message: "Invalid id" }),

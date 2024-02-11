@@ -7,8 +7,7 @@ import { Connection } from 'mongoose'
 export class CardService {
   constructor(
     @InjectModel(DbSchemas.COLLECTION_NAMES[0])
-    private CardlistMModel: Model<DbSchemas.CardlistSchema.CardList>,
-    @InjectConnection() private connection: Connection
+    private CardlistMModel: Model<DbSchemas.CardlistSchema.CardList>
   ) {}
 
   async getAllCardsOfCardlist(
@@ -56,9 +55,7 @@ export class CardService {
       {
         $set: {
           ...(data.name ? { 'cards.$.name': data.name } : {}),
-          ...(data.watcher_email
-            ? { 'cards.$.watcher_email': data.watcher_email }
-            : {})
+          ...(data.cover ? { 'cards.$.cover': data.cover } : {})
         }
       },
       { new: true }
@@ -109,6 +106,78 @@ export class CardService {
         arrayFilters: [{ 'i._id': data.card_id }, { 'j._id': data.feature._id }]
       }
     )
-    return res?.toJSON()
+    const feature = res
+      ?.toJSON()
+      .cards.find((e) => e._id?.toString() === data.card_id)
+      ?.features.find((e) => e._id?.toString() === data.feature._id)
+    return feature
+  }
+
+  async addWatcherToCard(data: TrelloApi.CardApi.AddWatcherToCardRequest) {
+    const res = await this.CardlistMModel.findOneAndUpdate(
+      {
+        _id: data.cardlist_id,
+        cards: { $elemMatch: { _id: data.card_id } }
+      },
+      {
+        $push: { 'cards.$.watcher_email': data.watcher_email }
+      },
+      { new: true, fields: { 'cards.features': 0, 'cards.activities': 0 } }
+    )
+    const card = res
+      ?.toJSON()
+      .cards.find((e) => e._id?.toString() === data.card_id)
+    return card ? card : null
+  }
+
+  async deleteWatcherFromCard(
+    data: TrelloApi.CardApi.DeleteWatcherToCardRequest
+  ) {
+    const res = await this.CardlistMModel.findOneAndUpdate(
+      {
+        _id: data.cardlist_id,
+        cards: { $elemMatch: { _id: data.card_id } }
+      },
+      {
+        $pullAll: {
+          'cards.$.watcher_email': [data.watcher_email]
+        }
+      },
+      { new: true, fields: { 'cards.features': 0, 'cards.activities': 0 } }
+    )
+    const card = res
+      ?.toJSON()
+      .cards.find((e) => e._id?.toString() === data.card_id)
+    return card ? card : null
+  }
+
+  async archiveCard(data: TrelloApi.CardApi.ArchiveCardRequest) {
+    const res = await this.CardlistMModel.findOneAndUpdate(
+      {
+        _id: data.cardlist_id,
+        cards: { $elemMatch: { _id: data.card_id } }
+      },
+      { $set: { 'cards.$.archive_at': new Date().toISOString() } },
+      { new: true, fields: { 'cards.features': 0, 'cards.activities': 0 } }
+    )
+    const card = res
+      ?.toJSON()
+      .cards.find((e) => e._id?.toString() === data.card_id)
+    return card ? card : null
+  }
+
+  async unArchiveCard(data: TrelloApi.CardApi.UnArchiveCardRequest) {
+    const res = await this.CardlistMModel.findOneAndUpdate(
+      {
+        _id: data.cardlist_id,
+        cards: { $elemMatch: { _id: data.card_id } }
+      },
+      { $unset: { 'cards.$.archive_at': 1 } },
+      { new: true, fields: { 'cards.features': 0, 'cards.activities': 0 } }
+    )
+    const card = res
+      ?.toJSON()
+      .cards.find((e) => e._id?.toString() === data.card_id)
+    return card ? card : null
   }
 }

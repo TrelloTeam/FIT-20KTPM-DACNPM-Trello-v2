@@ -180,14 +180,133 @@ export class CardController {
   @InjectRoute(CardRoutes.updateFeatureToCard)
   @SwaggerApi({
     secure: false,
-    body: { schema: { $ref: getSchemaPath('UpdateCardFeatureRequestSchema') } }
+    body: { schema: { $ref: getSchemaPath('UpdateCardFeatureRequestSchema') } },
+    responses: [{ status: 200, schema: { $ref: getSchemaPath('') } }]
   })
   async updateFeatureToCard(
     @Body(
       new ZodValidationPipe(TrelloApi.CardApi.UpdateCardFeatureRequestSchema)
     )
     body: TrelloApi.CardApi.UpdateCardFeatureRequest
-  ) {
-    return (await this.cardService.updateFeatureOfCard(body)) || {}
+  ): Promise<TrelloApi.CardApi.UpdateCardFeatureResponse> {
+    const feature = await this.cardService.updateFeatureOfCard(body)
+    if (!feature || !feature._id)
+      throw new InternalServerErrorException("Can't update card feature")
+    return {
+      data: {
+        ...feature,
+        _id: feature._id
+      }
+    }
+  }
+
+  @InjectRoute(CardRoutes.addWatcherToCard)
+  @SwaggerApi({
+    secure: false,
+    body: { schema: { $ref: getSchemaPath('AddWatcherToCardRequestSchema') } },
+    responses: [
+      {
+        status: 200,
+        schema: { $ref: getSchemaPath('AddWatcherToCardResponseSchema') }
+      }
+    ]
+  })
+  async addWatcherToCard(
+    @Body(
+      new ZodValidationPipe(TrelloApi.CardApi.AddWatcherToCardRequestSchema)
+    )
+    body: TrelloApi.CardApi.AddWatcherToCardRequest
+  ): Promise<TrelloApi.CardApi.AddWatcherToCardResponse> {
+    const card = await this.cardService.addWatcherToCard(body)
+    if (!card || !card._id)
+      throw new InternalServerErrorException("Can't add watcher to card")
+
+    return {
+      data: {
+        ...card,
+        _id: card._id
+      }
+    }
+  }
+
+  @InjectRoute(CardRoutes.deleteWatcherToCard)
+  @SwaggerApi({
+    secure: false,
+    body: {
+      schema: { $ref: getSchemaPath('DeleteWatcherToCardRequestSchema') }
+    },
+    responses: [
+      {
+        status: 200,
+        schema: { $ref: getSchemaPath('DeleteWatcherToCardResponseSchema') }
+      }
+    ]
+  })
+  async deleteWatcherToCard(
+    @Body(
+      new ZodValidationPipe(TrelloApi.CardApi.DeleteWatcherToCardRequestSchema)
+    )
+    body: TrelloApi.CardApi.DeleteWatcherToCardRequest
+  ): Promise<TrelloApi.CardApi.DeleteWatcherToCardResponse> {
+    const card = await this.cardService.deleteWatcherFromCard(body)
+    if (!card || !card._id)
+      throw new InternalServerErrorException("Can't add watcher to card")
+
+    return {
+      data: {
+        ...card,
+        _id: card._id
+      }
+    }
+  }
+
+  @InjectRoute(CardRoutes.archiveCard)
+  @SwaggerApi({
+    body: { schema: { $ref: getSchemaPath('ArchiveCardRequestSchema') } },
+    responses: [
+      {
+        status: 200,
+        schema: { $ref: getSchemaPath('ArchiveCardResponseSchema') }
+      }
+    ]
+  })
+  async archiveCard(
+    @Body(new ZodValidationPipe(TrelloApi.CardApi.ArchiveCardRequestSchema))
+    body: TrelloApi.CardApi.ArchiveCardRequest
+  ): Promise<TrelloApi.CardApi.ArchiveCardResponse> {
+    const card = await this.cardService.archiveCard(body)
+    if (!card || !card._id)
+      throw new InternalServerErrorException("Can't archive card")
+    return {
+      data: {
+        ...card,
+        _id: card._id
+      }
+    }
+  }
+
+  @InjectRoute(CardRoutes.unarchiveCard)
+  @SwaggerApi({
+    body: { schema: { $ref: getSchemaPath('UnArchiveCardRequestSchema') } },
+    responses: [
+      {
+        status: 200,
+        schema: { $ref: getSchemaPath('UnArchiveCardResponseSchema') }
+      }
+    ]
+  })
+  async unArchiveCard(
+    @Body(new ZodValidationPipe(TrelloApi.CardApi.UnArchiveCardRequestSchema))
+    body: TrelloApi.CardApi.ArchiveCardRequest
+  ): Promise<TrelloApi.CardApi.UnArchiveCardResponse> {
+    const card = await this.cardService.unArchiveCard(body)
+    if (!card || !card._id)
+      throw new InternalServerErrorException("Can't unarchive card")
+    return {
+      data: {
+        ...card,
+        _id: card._id
+      }
+    }
   }
 }
