@@ -74,7 +74,7 @@ export const UpdateCardDetailRequestSchema = z
   .merge(
     CardSchema.partial().pick({
       name: true,
-      watcher_email: true,
+      cover: true,
     })
   );
 export type UpdateCardDetailRequest = z.infer<
@@ -134,3 +134,57 @@ export const UpdateCardFeatureResponseSchema = AddCardFeatureResponseSchema;
 export type UpdateCardFeatureResponse = z.infer<
   typeof UpdateCardFeatureResponseSchema
 >;
+
+//Add watcher to card
+export const AddWatcherToCardRequestSchema = z.object({
+  cardlist_id: z.string().refine(Refine_MongoId, { message: "Invalid id" }),
+  card_id: z.string().refine(Refine_MongoId, { message: "Invalid id" }),
+  watcher_email: z.string(),
+});
+
+export type AddWatcherToCardRequest = z.infer<
+  typeof AddWatcherToCardRequestSchema
+>;
+
+export const AddWatcherToCardResponseSchema = z.object({
+  data: CardSchema.required({ _id: true }).omit({
+    features: true,
+    activities: true,
+  }),
+});
+
+export type AddWatcherToCardResponse = z.infer<
+  typeof AddWatcherToCardResponseSchema
+>;
+
+//Delete watcher to card
+export const DeleteWatcherToCardRequestSchema = AddWatcherToCardRequestSchema;
+export type DeleteWatcherToCardRequest = z.infer<
+  typeof DeleteWatcherToCardRequestSchema
+>;
+
+export const DeleteWatcherToCardResponseSchema = AddWatcherToCardResponseSchema;
+export type DeleteWatcherToCardResponse = z.infer<
+  typeof DeleteWatcherToCardResponseSchema
+>;
+
+//Archive card
+export const ArchiveCardRequestSchema = z.object({
+  cardlist_id: z.string().refine(Refine_MongoId, { message: "Invalid id" }),
+  card_id: z.string().refine(Refine_MongoId, { message: "Invalid id" }),
+});
+export type ArchiveCardRequest = z.infer<typeof ArchiveCardRequestSchema>;
+
+export const ArchiveCardResponseSchema = z.object({
+  data: CardSchema.required({ _id: true }).omit({
+    features: true,
+    activities: true,
+  }),
+});
+export type ArchiveCardResponse = z.infer<typeof ArchiveCardResponseSchema>;
+
+export const UnArchiveCardRequestSchema = ArchiveCardRequestSchema;
+export type UnArchiveCardRequest = z.infer<typeof UnArchiveCardRequestSchema>;
+
+export const UnArchiveCardResponseSchema = ArchiveCardResponseSchema;
+export type UnArchiveCardResponse = z.infer<typeof ArchiveCardResponseSchema>;

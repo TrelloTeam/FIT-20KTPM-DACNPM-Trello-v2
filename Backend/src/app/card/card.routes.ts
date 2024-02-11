@@ -31,5 +31,25 @@ export const CardRoutes = {
     path: '/api/card/feature',
     method: RequestMethod.PUT,
     jwtSecure: false
-  } as IRouteParams
+  } as IRouteParams,
+  addWatcherToCard: {
+    path: '/api/card/watcher',
+    method: RequestMethod.POST,
+    jwtSecure: false
+  } as IRouteParams,
+  deleteWatcherToCard: {
+    path: '/api/card/watcher',
+    method: RequestMethod.DELETE,
+    jwtSecure: false
+  } as IRouteParams,
+  archiveCard: {
+    path: '/api/card/archive',
+    method: RequestMethod.POST,
+    jwtSecure: false
+  },
+  unarchiveCard: {
+    path: '/api/card/archive',
+    method: RequestMethod.DELETE,
+    jwtSecure: false
+  }
 } as const
