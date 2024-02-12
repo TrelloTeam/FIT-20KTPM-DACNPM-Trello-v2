@@ -188,3 +188,23 @@ export type UnArchiveCardRequest = z.infer<typeof UnArchiveCardRequestSchema>;
 
 export const UnArchiveCardResponseSchema = ArchiveCardResponseSchema;
 export type UnArchiveCardResponse = z.infer<typeof ArchiveCardResponseSchema>;
+
+//Move card
+export const MoveCardSamelistRequestSchema = z.object({
+  cardlist_id: z.string().refine(Refine_MongoId, { message: "Invalid id" }),
+  cards_data: z.record(z.coerce.number()),
+});
+export type MoveCardSamelistRequest = z.infer<
+  typeof MoveCardSamelistRequestSchema
+>;
+
+export const MoveCardSamelistResponseSchema = z.object({
+  data: CardSchema.pick({
+    _id: true,
+    name: true,
+    index: true,
+  }).array(),
+});
+export type MoveCardSamelistResponse = z.infer<
+  typeof MoveCardSamelistResponseSchema
+>;

@@ -309,4 +309,27 @@ export class CardController {
       }
     }
   }
+
+  @InjectRoute(CardRoutes.moveCard)
+  @SwaggerApi({
+    body: { schema: { $ref: getSchemaPath('MoveCardSamelistRequestSchema') } },
+    responses: [
+      {
+        status: 200,
+        schema: { $ref: getSchemaPath('MoveCardSamelistResponseSchema') }
+      }
+    ]
+  })
+  async moveCardSamelist(
+    @Body(
+      new ZodValidationPipe(TrelloApi.CardApi.MoveCardSamelistRequestSchema)
+    )
+    body: TrelloApi.CardApi.MoveCardSamelistRequest
+  ): Promise<TrelloApi.CardApi.MoveCardSamelistResponse> {
+    const cards = await this.cardService.moveCardSamelist(body)
+    if (!cards) throw new InternalServerErrorException("Can't move card")
+    return {
+      data: cards
+    }
+  }
 }
