@@ -180,4 +180,24 @@ export class CardService {
       .cards.find((e) => e._id?.toString() === data.card_id)
     return card ? card : null
   }
+
+  async moveCardSamelist(data: TrelloApi.CardApi.MoveCardSamelistRequest) {
+    const cardlist = await this.CardlistMModel.findById(data.cardlist_id, {
+      'cards.activities': 0,
+      'cards.features': 0,
+      'cards.watcher_email': 0,
+      'cards.archive_at': 0,
+      'cards.cover': 0,
+      'cards.description': 0
+    })
+    if (!cardlist) return null
+
+    for (let i = 0; i < cardlist.cards.length; i++) {
+      const id = cardlist.cards[i]._id
+      if (id && typeof data.cards_data[id] === 'number')
+        cardlist.cards[i].index = data.cards_data[id]
+    }
+    await cardlist.save()
+    return cardlist.toJSON().cards
+  }
 }

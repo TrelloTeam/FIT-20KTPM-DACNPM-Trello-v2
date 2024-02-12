@@ -46,10 +46,15 @@ export const CardRoutes = {
     path: '/api/card/archive',
     method: RequestMethod.POST,
     jwtSecure: false
-  },
+  } as IRouteParams,
   unarchiveCard: {
     path: '/api/card/archive',
     method: RequestMethod.DELETE,
     jwtSecure: false
-  }
+  } as IRouteParams,
+  moveCard: {
+    path: '/api/card/move/same',
+    method: RequestMethod.POST,
+    jwtSecure: false
+  } as IRouteParams
 } as const
