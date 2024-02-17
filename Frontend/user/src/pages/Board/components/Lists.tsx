@@ -4,7 +4,7 @@ import { SortableContext, horizontalListSortingStrategy } from '@dnd-kit/sortabl
 
 export function ListsComponent({ lists }: ListsComponentProps) {
   return (
-    <SortableContext items={lists.map((list) => list.id)} strategy={horizontalListSortingStrategy}>
+    <SortableContext items={lists} strategy={horizontalListSortingStrategy}>
       <div className='mx-auto my-10 flex flex-row justify-center text-center'>
         {lists.map((list) => (
           <ListComponent list={list} />

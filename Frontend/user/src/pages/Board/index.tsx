@@ -1,10 +1,29 @@
 import React, { useState, useEffect, DragEvent } from 'react'
 import { lists, cards } from './testData/test_data'
 import { List, Card } from './type/index'
-import { ListsComponent } from './components'
-import { DndContext, DragEndEvent } from '@dnd-kit/core'
+import { CardComponent, ListComponent, ListsComponent } from './components'
+import {
+  DndContext,
+  DragEndEvent,
+  DragStartEvent,
+  DragOverlay,
+  defaultDropAnimationSideEffects,
+  DropAnimation,
+  DragOverEvent
+} from '@dnd-kit/core'
+import { arrayMove } from '@dnd-kit/sortable'
+
+const ACTIVE_DRAG_ITEM_TYPE = {
+  COLUMN: 'ACTIVE_DRAG_ITEM_TYPE_COLUMN',
+  CARD: 'ACTIVE_DRAG_ITEM_TYPE_CARD'
+}
+
 export function Board() {
   const [listsData, setListsData] = useState<List[]>(lists)
+  const [activeDragItemId, setActiveDragItemId] = useState<string>('')
+  const [activeDragItemType, setActiveDragItemType] = useState<string>('')
+  const [activeDragItemData, setActiveDragItemData] = useState<any>()
+
   const [cardsData, setCardsData] = useState<Card[]>(cards)
   const [isDragCardToCard, setIsDragCardToCard] = useState<Boolean>(false)
   const [isMoveList, setIsMoveList] = useState<Boolean>(false)
@@ -12,6 +31,7 @@ export function Board() {
 
   useEffect(() => {
     console.log('update list')
+    console.log(listsData)
     // You can call your API update function here
   }, [action])
 
@@ -44,20 +64,64 @@ export function Board() {
       console.log('drop right')
     }
   }
-  function handleDragEnd(e: DragEndEvent) {
-    console.log('handleDragEnd: ', e)
+  function handleDragStart(e: DragStartEvent) {
+    console.log('Drag Start: ', e)
+    setActiveDragItemId(e?.active?.id.toString())
+    setActiveDragItemType(e?.active?.data?.current?.list_id ? ACTIVE_DRAG_ITEM_TYPE.CARD : ACTIVE_DRAG_ITEM_TYPE.COLUMN)
+    setActiveDragItemData(e?.active?.data?.current)
   }
 
+  function handleDragOver(e:DragOverEvent) {
+    if(activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN){
+      return
+    }
+    
+  }
+
+  function handleDragEnd(e: DragEndEvent) {
+    console.log('handleDragEnd: ', e)
+
+    if (activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.CARD) {
+    }
+
+    const active = e.active
+    const over = e.over
+    if (over !== null && active.id !== over.id) {
+      console.log('keo tha')
+
+      const oldIndex = listsData.findIndex((data) => data.id === active.id)
+      const newIndex = listsData.findIndex((data) => data.id === over.id)
+      const newListsData = arrayMove(listsData, oldIndex, newIndex)
+      setListsData(newListsData)
+      setAction(!action)
+    }
+    setActiveDragItemId('')
+    setActiveDragItemType('')
+    setActiveDragItemData(null)
+  }
+  const customDropAnimation: DropAnimation = {
+    sideEffects: defaultDropAnimationSideEffects({
+      styles: {
+        active: {
+          opacity: '0.5'
+        }
+      }
+    })
+  }
   return (
-    <div
-      onDragEnd={() => {
-        setIsDragCardToCard(false)
-        setIsMoveList(false)
-      }}
-    >
+    <div>
       <div className='mx-auto p-4 text-center text-3xl font-bold uppercase text-black'>Trello Board</div>
-      <DndContext onDragEnd={(e) => handleDragEnd(e)}>
-        <ListsComponent lists={lists} />
+      <DndContext onDragStart={handleDragStart} onDragOver={handleDragOver} onDragEnd={handleDragEnd}>
+        <ListsComponent lists={listsData} />
+        <DragOverlay dropAnimation={customDropAnimation}>
+          {!activeDragItemId || !activeDragItemType}
+          {activeDragItemId && activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN && (
+            <ListComponent list={activeDragItemData} />
+          )}
+          {activeDragItemId && activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.CARD && (
+            <CardComponent card={activeDragItemData} />
+          )}
+        </DragOverlay>
       </DndContext>
     </div>
   )
