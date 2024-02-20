@@ -31,7 +31,7 @@ $ npm run dev
 
 # Back-end
 ## 1. Installation
-Move to the front-end directory (from root)
+Move to the backend-end directory (from root)
 ```
 $ cd Backend
 ```
