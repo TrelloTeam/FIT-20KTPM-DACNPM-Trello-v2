@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { WorkspaceSchema } from "../schemas/Workspace";
+import { Workspace, WorkspaceSchema } from "../schemas/Workspace";
 
 export const GetallWorkspaceByEmailResponseSchema = z.object({
   data: WorkspaceSchema.array(),
@@ -15,6 +15,12 @@ export const GetallWorkspaceResponseSchema = z.object({
 export type GetallWorkspaceResponse = z.infer<
   typeof GetallWorkspaceResponseSchema
 >;
+
+export type CreateWorkspaceRequest = Pick<
+  Workspace,
+  "name" | "description" | "members_email"
+>;
+export type CreateWorspaceResponse = Workspace;
 
 export const UpdateWorkspaceInfoRequestSchema = WorkspaceSchema.omit({
   _id: true,
