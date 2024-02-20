@@ -9,9 +9,11 @@ import {
   DragOverlay,
   defaultDropAnimationSideEffects,
   DropAnimation,
-  DragOverEvent
+  DragOverEvent,
+  closestCorners
 } from '@dnd-kit/core'
 import { arrayMove } from '@dnd-kit/sortable'
+import { cloneDeep } from 'lodash'
 
 const ACTIVE_DRAG_ITEM_TYPE = {
   COLUMN: 'ACTIVE_DRAG_ITEM_TYPE_COLUMN',
@@ -19,7 +21,8 @@ const ACTIVE_DRAG_ITEM_TYPE = {
 }
 
 export function Board() {
-  const [listsData, setListsData] = useState<List[]>(lists)
+  const [oldListWhenDragging, setOldListWhenDraggingCard] = useState<List>()
+  const [listsData, setListsData] = useState<Array<List>>(lists)
   const [activeDragItemId, setActiveDragItemId] = useState<string>('')
   const [activeDragItemType, setActiveDragItemType] = useState<string>('')
   const [activeDragItemData, setActiveDragItemData] = useState<any>()
@@ -35,69 +38,164 @@ export function Board() {
     // You can call your API update function here
   }, [action])
 
-  function moveCard(card: Card, toList: List, toCard?: Card, isDropAbove?: Boolean) {
-    // Call API để thay đổi thẻ
-
-    // Nếu toCard khác null,
-    // nghĩa là kéo 1 thẻ đè lên 1 thẻ
-    // sẽ tiến hành thay đổi vị trí của thẻ
-    // Nếu vị trí drop nằm ở nửa trên của thẻ (isDropAbove = true), thẻ tại vị trí đó sẽ di chuyển xuống dưới nhường chỗ cho thẻ mới
-    // Nếu vị trí drop nằm ở nửa dưới của thẻ (isDropAbove = false), thẻ tại vị trí đó sẽ di chuyển lên trên nhường chỗ cho thẻ mới
-
-    // Nếu toCard là null, nghĩa là kéo 1 thẻ sang khoảng trống ở dưới của list, sẽ thêm thẻ đó ở dưới của list đó
-
-    if (isDropAbove) {
-      console.log('drop above')
-    } else {
-      console.log('drop below')
-    }
+  function findListByCardId(cardId: any) {
+    return listsData.find((list) => list?.data?.map((card) => card.id)?.includes(cardId))
   }
-
-  function moveList(fromList: List, toList: List, isDropLeft?: Boolean) {
-    // Call API để thay đổi list
-    // Nếu vị trí drop nằm ở nửa trái của list (isDropLeft = true), thẻ tại vị trí đó sẽ di chuyển sang phải nhường chỗ cho thẻ mới
-    // Nếu vị trí drop nằm ở nửa phỉa của list (isDropLeft = false), thẻ tại vị trí đó sẽ di chuyển sang trái nhường chỗ cho thẻ mới
-
-    if (isDropLeft) {
-      console.log('drop left')
-    } else {
-      console.log('drop right')
-    }
+  function isCard(obj: any): obj is Card {
+    return 'id' in obj && 'list_id' in obj && 'order' in obj && 'name' in obj && 'list_name' in obj
+  }
+  function handleUpdateAfterDragging() {
+    // Gọi API update data ở phía backend
   }
   function handleDragStart(e: DragStartEvent) {
     console.log('Drag Start: ', e)
     setActiveDragItemId(e?.active?.id.toString())
-    setActiveDragItemType(e?.active?.data?.current?.list_id ? ACTIVE_DRAG_ITEM_TYPE.CARD : ACTIVE_DRAG_ITEM_TYPE.COLUMN)
+    setActiveDragItemType(e?.active?.data?.current?.list_id ? 
+      ACTIVE_DRAG_ITEM_TYPE.CARD : 
+      ACTIVE_DRAG_ITEM_TYPE.COLUMN)
     setActiveDragItemData(e?.active?.data?.current)
+
+    if (e?.active?.data?.current?.list_id) {
+      setOldListWhenDraggingCard(findListByCardId(e?.active?.id))
+    }
   }
 
-  function handleDragOver(e:DragOverEvent) {
-    if(activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN){
+  function handleDragOver(e: DragOverEvent) {
+    if (activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN) {
       return
     }
-    
+    // const active = e.active
+    // const over = e.over
+    const { active, over } = e
+    if (!active || !over) {
+      return
+    }
+    const {
+      id: activeDragingCardId,
+      data: { current: activeDraggingCardData }
+    } = active
+    const { id: overCardId } = over
+
+    const activeList = findListByCardId(activeDragingCardId)
+    const overList = findListByCardId(overCardId)
+    if (!activeList || !overList) {
+      console.log('!activeColumn')
+      return
+    }
+    if (activeList.id !== overList.id) {
+      console.log('Drag Over In')
+      setListsData((prevList) => {
+        const overCardIndex = overList?.data?.findIndex((card) => card.id === overCardId)
+        let newCardIndex
+        const isBelowOverItem = over && active.rect.current.translated && over.rect.top + over.rect.height
+
+        const modifier = isBelowOverItem ? 1 : 0
+
+        newCardIndex = overCardIndex >= 0 ? overCardIndex + modifier : overList.data.length + 1
+
+        const nextList = cloneDeep(prevList)
+        const nextActiveList = nextList.find((list) => list.id === activeList.id)
+        const nextOverList = nextList.find((list) => list.id === overList.id)
+
+        if (nextActiveList) {
+          nextActiveList.data = nextActiveList.data.filter((card) => card.id !== activeDragingCardId)
+        }
+        if (nextOverList) {
+          nextOverList.data = nextOverList.data.filter((card) => card.id !== activeDragingCardId)
+
+          // Ensure activeDraggingCardData is not undefined before using it
+          if (isCard(activeDraggingCardData)) {
+            nextOverList.data.splice(newCardIndex, 0, activeDraggingCardData)
+          }
+        }
+        console.log('nextList = ', nextList)
+        return nextList
+      })
+    }
   }
 
   function handleDragEnd(e: DragEndEvent) {
     console.log('handleDragEnd: ', e)
-
+    const { active, over } = e
+    if (!active || !over) return
     if (activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.CARD) {
+      const {
+        id: activeDragingCardId,
+        data: { current: activeDraggingCardData }
+      } = active
+      const { id: overCardId } = over
+
+      const activeList = findListByCardId(activeDragingCardId)
+      const overList = findListByCardId(overCardId)
+      if (!activeList || !overList || !oldListWhenDragging) {
+        console.log('!activeColumn')
+        return
+      }
+      if (oldListWhenDragging.id !== overList.id) {
+        setListsData((prevList) => {
+          const overCardIndex = overList?.data?.findIndex((card) => card.id === overCardId)
+          let newCardIndex
+          const isBelowOverItem = over && active.rect.current.translated && over.rect.top + over.rect.height
+  
+          const modifier = isBelowOverItem ? 1 : 0
+  
+          newCardIndex = overCardIndex >= 0 ? overCardIndex + modifier : overList.data.length + 1
+  
+          const nextList = cloneDeep(prevList)
+          const nextActiveList = nextList.find((list) => list.id === activeList.id)
+          const nextOverList = nextList.find((list) => list.id === overList.id)
+  
+          if (nextActiveList) {
+            nextActiveList.data = nextActiveList.data.filter((card) => card.id !== activeDragingCardId)
+          }
+          if (nextOverList) {
+            nextOverList.data = nextOverList.data.filter((card) => card.id !== activeDragingCardId)
+            const rebuild_activeDraggingCardData = {
+              ...activeDraggingCardData,
+              list_id:nextOverList.id
+            }
+            // Ensure activeDraggingCardData is not undefined before using it
+            if (isCard(activeDraggingCardData)) {
+              nextOverList.data.splice(newCardIndex, 0, activeDraggingCardData)
+            }
+            handleUpdateAfterDragging()
+          }
+          console.log('nextList = ', nextList)
+          return nextList
+        })
+      } else {
+        const oldIndex = oldListWhenDragging.data.findIndex((data) => data.id === activeDragItemId)
+        const newIndex = overList.data.findIndex((data) => data.id === overCardId)
+        const newList = arrayMove(oldListWhenDragging.data, oldIndex, newIndex)
+        setListsData((prevList) => {
+          const nextList = cloneDeep(prevList)
+
+          const targetList = nextList.find((list) => list.id === overList.id)
+          if (targetList) {
+            targetList.data = newList
+          }
+          return nextList
+        })
+        setAction(!action)
+      }
+    }
+    if (activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN) {
+      if (active.id !== over.id) {
+        console.log('keo tha')
+
+        const oldIndex = listsData.findIndex((data) => data.id === active.id)
+        const newIndex = listsData.findIndex((data) => data.id === over.id)
+        const newListsData = arrayMove(listsData, oldIndex, newIndex)
+        setListsData(newListsData)
+        handleUpdateAfterDragging()
+        setAction(!action)
+      }
     }
 
-    const active = e.active
-    const over = e.over
-    if (over !== null && active.id !== over.id) {
-      console.log('keo tha')
-
-      const oldIndex = listsData.findIndex((data) => data.id === active.id)
-      const newIndex = listsData.findIndex((data) => data.id === over.id)
-      const newListsData = arrayMove(listsData, oldIndex, newIndex)
-      setListsData(newListsData)
-      setAction(!action)
-    }
     setActiveDragItemId('')
     setActiveDragItemType('')
     setActiveDragItemData(null)
+    setOldListWhenDraggingCard(undefined)
   }
   const customDropAnimation: DropAnimation = {
     sideEffects: defaultDropAnimationSideEffects({
@@ -111,7 +209,12 @@ export function Board() {
   return (
     <div>
       <div className='mx-auto p-4 text-center text-3xl font-bold uppercase text-black'>Trello Board</div>
-      <DndContext onDragStart={handleDragStart} onDragOver={handleDragOver} onDragEnd={handleDragEnd}>
+      <DndContext
+        collisionDetection={closestCorners}
+        onDragStart={handleDragStart}
+        onDragOver={handleDragOver}
+        onDragEnd={handleDragEnd}
+      >
         <ListsComponent lists={listsData} />
         <DragOverlay dropAnimation={customDropAnimation}>
           {!activeDragItemId || !activeDragItemType}

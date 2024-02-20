@@ -22,7 +22,7 @@ export function ListComponent({ list }: ListComponentProps) {
       // onDrop={(e) => handleListOnDrop(e, list)}
       // onDragOver={handleDragOverList}
     >
-      <div className='relative mr-10 h-full rounded-lg border p-5'>
+      <div className='relative mr-10  rounded-lg border p-5'>
         <h2 className='mb-5 font-bold hover:cursor-grab'>{list.name}</h2>
         <SortableContext items={list.data} strategy={verticalListSortingStrategy}>
           {list.data.map((card, index) => (

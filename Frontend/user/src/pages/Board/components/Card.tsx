@@ -10,6 +10,7 @@ export function CardComponent({ card }: CardComponentProps) {
 
   const styleList = {
     transform: CSS.Transform.toString(transform),
+    transition,
     opacity: isDragging ? 0.5 : undefined,
     // border: isDragging ? 0.5 : undefined
   }
@@ -25,7 +26,7 @@ export function CardComponent({ card }: CardComponentProps) {
         // onDrop={(e) => handleOnDrop(e)}
         // onDragOver={handleDragOver}
       >
-        <p>{card.order + '-' + card.name}</p>
+        <p>{card.name}</p>
       </div>
     </>
   )
