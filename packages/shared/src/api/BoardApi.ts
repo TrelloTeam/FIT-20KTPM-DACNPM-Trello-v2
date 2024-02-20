@@ -11,6 +11,8 @@ export const GetallBoardResponseSchema = z.object({
 });
 export type GetallBoardResponse = z.infer<typeof GetallBoardResponseSchema>;
 
+///
+
 export const CreateBoardRequestSchema = BoardSchema.pick({
   workspace_id: true,
   name: true,
@@ -22,3 +24,15 @@ export const CreateBoardResponseSchema = z.object({
   data: BoardSchema,
 });
 export type CreateBoardResponse = z.infer<typeof CreateBoardResponseSchema>;
+
+///
+
+export const GetBoardInfoByBoardIdRequestSchema = z.object({
+  _id: z.string(),
+});
+export type GetBoardInfoByBoardIdRequest = z.infer<typeof GetBoardInfoByBoardIdRequestSchema>;
+
+export const GetBoardInfoByBoardIdResponseSchema = z.object({
+  data: BoardSchema,
+});
+export type GetBoardInfoByBoardIdResponse = z.infer<typeof GetBoardInfoByBoardIdResponseSchema>;

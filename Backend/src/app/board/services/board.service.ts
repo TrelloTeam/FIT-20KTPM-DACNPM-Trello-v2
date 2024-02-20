@@ -1,7 +1,8 @@
+import { HttpException, HttpStatus } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { DbSchemas } from '@trello-v2/shared'
 import { TrelloApi } from '@trello-v2/shared'
-import { Model } from 'mongoose'
+import { Model, Types } from 'mongoose'
 
 export abstract class IBoardService {
   abstract createBoard(
@@ -28,6 +29,14 @@ export class BoardService implements IBoardService {
 
   async getBoardsByWorkspaceId(workspace_id: string) {
     return this.BoardMModel.find({ workspace_id: workspace_id }).exec()
+  }
+
+  async getBoardInfoByBoardId(board_id: string) {
+    if (!Types.ObjectId.isValid(board_id))
+      throw new HttpException('Invalid board_id', HttpStatus.BAD_REQUEST)
+
+    const board = await this.BoardMModel.findById(board_id).exec()
+    return new this.BoardMModel(board)
   }
 }
 
