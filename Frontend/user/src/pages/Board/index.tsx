@@ -135,7 +135,7 @@ export function Board() {
         setListsData((prevList) => {
           const overCardIndex = overList?.data?.findIndex((card) => card.id === overCardId)
           let newCardIndex
-          const isBelowOverItem = over && active.rect.current.translated && over.rect.top + over.rect.height
+          const isBelowOverItem = active.rect.current.translated && active.rect.current.translated.top > over.rect.top + over.rect.height
   
           const modifier = isBelowOverItem ? 1 : 0
   
