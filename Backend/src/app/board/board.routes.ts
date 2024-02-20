@@ -18,5 +18,11 @@ export const BoardRoutes = {
     path: '/api/board/createBoard',
     method: RequestMethod.POST,
     jwtSecure: false
+  } as IRouteParams,
+
+  getBoardInfoByBoardId: {
+    path: '/api/board/getBoardInfoByBoardId/:board_id',
+    method: RequestMethod.GET,
+    jwtSecure: false
   } as IRouteParams
 } as const

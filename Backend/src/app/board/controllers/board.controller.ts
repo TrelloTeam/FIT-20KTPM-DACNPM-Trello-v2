@@ -73,4 +73,27 @@ export class BoardController {
       data: data
     }
   }
+
+  @InjectRoute(BoardRoutes.getBoardInfoByBoardId)
+  @SwaggerApi({
+    params: {
+      name: 'board_id',
+      type: 'string',
+      example: 'string'
+    },
+    responses: [
+      {
+        status: 200,
+        schema: { $ref: getSchemaPath('GetBoardInfoByBoardIdResponseSchema') }
+      }
+    ]
+  })
+  async getBoardInfoByBoardId(
+    @Param('board_id') board_id: string
+  ): Promise<TrelloApi.BoardApi.GetBoardInfoByBoardIdResponse> {
+    const data = await this.BoardService.getBoardInfoByBoardId(board_id)
+    return {
+      data: data
+    }
+  }
 }
