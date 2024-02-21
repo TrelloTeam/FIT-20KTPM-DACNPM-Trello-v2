@@ -27,11 +27,15 @@ export class BoardService implements IBoardService {
     return this.BoardMModel.find().exec()
   }
 
-  async getBoardsByWorkspaceId(workspace_id: string) {
+  async getBoardsByWorkspaceId(
+    workspace_id: TrelloApi.BoardApi.getBoardsByWorkspaceIdRequest
+  ) {
     return this.BoardMModel.find({ workspace_id: workspace_id }).exec()
   }
 
-  async getBoardInfoByBoardId(board_id: string) {
+  async getBoardInfoByBoardId(
+    board_id: TrelloApi.BoardApi.GetBoardInfoByBoardIdRequest
+  ) {
     if (!Types.ObjectId.isValid(board_id))
       throw new HttpException('Invalid board_id', HttpStatus.BAD_REQUEST)
 
@@ -54,15 +58,28 @@ export class BoardServiceMock implements IBoardService {
       })
     })
   }
+
   getAllBoard() {
     return new Promise<DbSchemas.BoardSchema.Board[]>((res) => {
       return res([])
     })
   }
 
-  getBoardsByWorkSpaceId() {
-    return new Promise<DbSchemas.BoardSchema.Board[]>((res) => {
-      return res([])
+  getBoardInfoByBoardId(
+    board_id: TrelloApi.BoardApi.GetBoardInfoByBoardIdRequest
+  ) {
+    return new Promise<DbSchemas.BoardSchema.Board>((res) => {
+      return res({
+        _id: board_id,
+        watcher_email: [],
+        activities: [],
+        members_email: [],
+        labels: [],
+        is_star: false,
+        workspace_id: 'Mock-id',
+        name: '',
+        visibility: 'public'
+      })
     })
   }
 }

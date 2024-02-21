@@ -46,7 +46,8 @@ export class BoardController {
     ]
   })
   async getBoardsByWorkSpaceId(
-    @Param('workspace_id') workspace_id: string
+    @Param('workspace_id')
+    workspace_id: TrelloApi.BoardApi.getBoardsByWorkspaceIdRequest
   ): Promise<TrelloApi.BoardApi.GetallBoardResponse> {
     const data = await this.BoardService.getBoardsByWorkspaceId(workspace_id)
     return {
@@ -89,7 +90,7 @@ export class BoardController {
     ]
   })
   async getBoardInfoByBoardId(
-    @Param('board_id') board_id: string
+    @Param('board_id') board_id: TrelloApi.BoardApi.GetBoardInfoByBoardIdRequest
   ): Promise<TrelloApi.BoardApi.GetBoardInfoByBoardIdResponse> {
     const data = await this.BoardService.getBoardInfoByBoardId(board_id)
     return {
