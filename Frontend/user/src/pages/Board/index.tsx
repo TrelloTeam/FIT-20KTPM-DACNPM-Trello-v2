@@ -14,6 +14,7 @@ import {
 } from '@dnd-kit/core'
 import { arrayMove } from '@dnd-kit/sortable'
 import { cloneDeep } from 'lodash'
+import { BoardLayout } from '~/layouts'
 
 const ACTIVE_DRAG_ITEM_TYPE = {
   COLUMN: 'ACTIVE_DRAG_ITEM_TYPE_COLUMN',
@@ -27,7 +28,7 @@ export function Board() {
   const [activeDragItemType, setActiveDragItemType] = useState<string>('')
   const [activeDragItemData, setActiveDragItemData] = useState<any>()
 
-  const [cardsData, setCardsData] = useState<Card[]>(cards)
+  // const [cardsData, setCardsData] = useState<Card[]>(cards)
   const [isDragCardToCard, setIsDragCardToCard] = useState<Boolean>(false)
   const [isMoveList, setIsMoveList] = useState<Boolean>(false)
   const [action, setAction] = useState<Boolean>(false)
@@ -87,7 +88,7 @@ export function Board() {
       setListsData((prevList) => {
         const overCardIndex = overList?.data?.findIndex((card) => card.id === overCardId)
         let newCardIndex
-        const isBelowOverItem = over && active.rect.current.translated && over.rect.top + over.rect.height
+        const isBelowOverItem = active.rect.current.translated && active.rect.current.translated.top > over.rect.top + over.rect.height
 
         const modifier = isBelowOverItem ? 1 : 0
 
@@ -207,8 +208,8 @@ export function Board() {
     })
   }
   return (
-    <div>
-      <div className='mx-auto p-4 text-center text-3xl font-bold uppercase text-black'>Trello Board</div>
+    <BoardLayout>
+      <div className='mx-auto p-4 text-center text-3xl font-bold uppercase text-black'>Header Area</div>
       <DndContext
         collisionDetection={closestCorners}
         onDragStart={handleDragStart}
@@ -226,6 +227,6 @@ export function Board() {
           )}
         </DragOverlay>
       </DndContext>
-    </div>
+    </BoardLayout>
   )
 }
