@@ -42,6 +42,21 @@ export class BoardService implements IBoardService {
     const board = await this.BoardMModel.findById(board_id).exec()
     return new this.BoardMModel(board)
   }
+
+  async changeBoardVisibility(
+    data: TrelloApi.BoardApi.ChangeBoardVisibilityRequest
+  ) {
+    if (!Types.ObjectId.isValid(data._id))
+      throw new HttpException('Invalid _id', HttpStatus.BAD_REQUEST)
+
+    const filter = { _id: data._id }
+    const update = { visibility: data.visibility }
+    const result = await this.BoardMModel.findOneAndUpdate(filter, update, {
+      new: true
+    })
+
+    return new this.BoardMModel(result)
+  }
 }
 
 export class BoardServiceMock implements IBoardService {
@@ -78,7 +93,22 @@ export class BoardServiceMock implements IBoardService {
         is_star: false,
         workspace_id: 'Mock-id',
         name: '',
-        visibility: 'public'
+        visibility: 'private'
+      })
+    })
+  }
+
+  changeBoardVisibility(data: TrelloApi.BoardApi.ChangeBoardVisibilityRequest) {
+    return new Promise<DbSchemas.BoardSchema.Board>((res) => {
+      return res({
+        ...data,
+        watcher_email: [],
+        activities: [],
+        members_email: [],
+        labels: [],
+        is_star: false,
+        workspace_id: 'Mock-id',
+        name: ''
       })
     })
   }

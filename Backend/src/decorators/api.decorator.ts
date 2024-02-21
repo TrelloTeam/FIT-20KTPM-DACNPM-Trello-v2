@@ -8,6 +8,7 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  Patch,
   Post,
   Put,
   RequestMethod,
@@ -53,7 +54,8 @@ export function InjectRoute({
     [RequestMethod.GET]: Get,
     [RequestMethod.PUT]: Put,
     [RequestMethod.POST]: Post,
-    [RequestMethod.DELETE]: Delete
+    [RequestMethod.DELETE]: Delete,
+    [RequestMethod.PATCH]: Patch
   }
 
   const decorators = [

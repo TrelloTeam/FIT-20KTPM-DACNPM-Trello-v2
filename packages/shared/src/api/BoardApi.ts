@@ -42,3 +42,16 @@ export const GetBoardInfoByBoardIdResponseSchema = z.object({
   data: BoardSchema,
 });
 export type GetBoardInfoByBoardIdResponse = z.infer<typeof GetBoardInfoByBoardIdResponseSchema>;
+
+///
+
+export const ChangeBoardVisibilityRequestSchema = BoardSchema.pick({
+  _id: true,
+  visibility: true,
+});
+export type ChangeBoardVisibilityRequest = z.infer<typeof ChangeBoardVisibilityRequestSchema>;
+
+export const ChangeBoardVisibilityResponseSchema = z.object({
+  data: BoardSchema,
+});
+export type ChangeBoardVisibilityResponse = z.infer<typeof ChangeBoardVisibilityResponseSchema>;
