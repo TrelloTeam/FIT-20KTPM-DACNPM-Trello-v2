@@ -15,21 +15,21 @@ import { getSchemaPath } from '@nestjs/swagger'
 export class BoardController {
   constructor(private BoardService: BoardService) {}
 
-  @InjectRoute(BoardRoutes.getAllBoard)
-  @SwaggerApi({
-    responses: [
-      {
-        status: 200,
-        schema: { $ref: getSchemaPath('GetallBoardResponseSchema') }
-      }
-    ]
-  })
-  async getAll(): Promise<TrelloApi.BoardApi.GetallBoardResponse> {
-    const data = await this.BoardService.getAllBoard()
-    return {
-      data: data
-    }
-  }
+  // @InjectRoute(BoardRoutes.getAllBoard)
+  // @SwaggerApi({
+  //   responses: [
+  //     {
+  //       status: 200,
+  //       schema: { $ref: getSchemaPath('GetallBoardResponseSchema') }
+  //     }
+  //   ]
+  // })
+  // async getAll(): Promise<TrelloApi.BoardApi.GetallBoardResponse> {
+  //   const data = await this.BoardService.getAllBoard()
+  //   return {
+  //     data: data
+  //   }
+  // }
 
   @InjectRoute(BoardRoutes.getBoardsByWorkspaceId)
   @SwaggerApi({
@@ -93,6 +93,32 @@ export class BoardController {
     @Param('board_id') board_id: TrelloApi.BoardApi.GetBoardInfoByBoardIdRequest
   ): Promise<TrelloApi.BoardApi.GetBoardInfoByBoardIdResponse> {
     const data = await this.BoardService.getBoardInfoByBoardId(board_id)
+    return {
+      data: data
+    }
+  }
+
+  @InjectRoute(BoardRoutes.changeBoardVisibility)
+  @SwaggerApi({
+    body: {
+      schema: { $ref: getSchemaPath('ChangeBoardVisibilityRequestSchema') }
+    },
+    responses: [
+      {
+        status: 200,
+        schema: { $ref: getSchemaPath('GetBoardInfoByBoardIdResponseSchema') }
+      }
+    ]
+  })
+  async changeBoardVisibility(
+    @Body(
+      new ZodValidationPipe(
+        TrelloApi.BoardApi.ChangeBoardVisibilityRequestSchema
+      )
+    )
+    body: TrelloApi.BoardApi.ChangeBoardVisibilityRequest
+  ): Promise<TrelloApi.BoardApi.ChangeBoardVisibilityResponse> {
+    const data = await this.BoardService.changeBoardVisibility(body)
     return {
       data: data
     }

@@ -2,11 +2,11 @@ import { IRouteParams } from '@/decorators'
 import { RequestMethod } from '@nestjs/common'
 
 export const BoardRoutes = {
-  getAllBoard: {
-    path: '/api/board',
-    method: RequestMethod.GET,
-    jwtSecure: false
-  } as IRouteParams,
+  // getAllBoard: {
+  //   path: '/api/board',
+  //   method: RequestMethod.GET,
+  //   jwtSecure: false
+  // } as IRouteParams,
 
   getBoardsByWorkspaceId: {
     path: '/api/board/getBoardsByWorkspaceId/:workspace_id',
@@ -23,6 +23,12 @@ export const BoardRoutes = {
   getBoardInfoByBoardId: {
     path: '/api/board/getBoardInfoByBoardId/:board_id',
     method: RequestMethod.GET,
+    jwtSecure: false
+  } as IRouteParams,
+
+  changeBoardVisibility: {
+    path: '/api/board/changeBoardVisibility',
+    method: RequestMethod.PATCH,
     jwtSecure: false
   } as IRouteParams
 } as const
