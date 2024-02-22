@@ -118,7 +118,7 @@ export class BoardController {
     )
     body: TrelloApi.BoardApi.ChangeBoardVisibilityRequest
   ): Promise<TrelloApi.BoardApi.ChangeBoardVisibilityResponse> {
-    const data = await this.BoardService.changeBoardVisibility(body)
+    const data = await this.BoardService.updateBoard(body)
     return {
       data: data
     }

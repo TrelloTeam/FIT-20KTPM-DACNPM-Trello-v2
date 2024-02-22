@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose'
 import { DbSchemas } from '@trello-v2/shared'
 import { TrelloApi } from '@trello-v2/shared'
 import { Model, Types } from 'mongoose'
+import * as _ from 'lodash'
 
 export abstract class IBoardService {
   abstract createBoard(
@@ -43,14 +44,18 @@ export class BoardService implements IBoardService {
     return new this.BoardMModel(board)
   }
 
-  async changeBoardVisibility(
-    data: TrelloApi.BoardApi.ChangeBoardVisibilityRequest
+  async updateBoard(
+    data: Partial<DbSchemas.BoardSchema.Board> & { _id: string }
   ) {
     if (!Types.ObjectId.isValid(data._id))
       throw new HttpException('Invalid _id', HttpStatus.BAD_REQUEST)
 
     const filter = { _id: data._id }
-    const update = { visibility: data.visibility }
+    const update: Partial<DbSchemas.BoardSchema.Board> = _.pickBy(
+      data,
+      _.identity
+    )
+
     const result = await this.BoardMModel.findOneAndUpdate(filter, update, {
       new: true
     })
@@ -58,6 +63,8 @@ export class BoardService implements IBoardService {
     return new this.BoardMModel(result)
   }
 }
+
+///
 
 export class BoardServiceMock implements IBoardService {
   createBoard(data: TrelloApi.BoardApi.CreateBoard) {
@@ -98,17 +105,10 @@ export class BoardServiceMock implements IBoardService {
     })
   }
 
-  changeBoardVisibility(data: TrelloApi.BoardApi.ChangeBoardVisibilityRequest) {
+  updateBoard(data: DbSchemas.BoardSchema.Board) {
     return new Promise<DbSchemas.BoardSchema.Board>((res) => {
       return res({
-        ...data,
-        watcher_email: [],
-        activities: [],
-        members_email: [],
-        labels: [],
-        is_star: false,
-        workspace_id: 'Mock-id',
-        name: ''
+        ...data
       })
     })
   }
