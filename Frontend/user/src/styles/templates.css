@@ -47,8 +47,6 @@ body, button, input, select, textarea {
     max-height: 90vh;
     padding: 0 16px;
     top: 40px;
-    
-    
 }
 
 .detail-sidebar-container ::-webkit-scrollbar {
@@ -278,4 +276,14 @@ body, button, input, select, textarea {
     border: 3px solid var(--ds-border-inverse, #ffffff);
     border-radius: 50%;
     z-index: 1;
+}
+
+.home {
+    border-bottom: 3px solid rgba(68, 84, 111, 0.5);
+}
+h1{
+    margin-bottom: 8px;
+    padding-top: 10px;
+    padding-left: 10px;
+    color: #44546f;
 }
