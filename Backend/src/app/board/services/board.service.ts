@@ -1,8 +1,7 @@
-import { HttpException, HttpStatus } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { DbSchemas } from '@trello-v2/shared'
 import { TrelloApi } from '@trello-v2/shared'
-import { Model, Types } from 'mongoose'
+import { Model } from 'mongoose'
 import * as _ from 'lodash'
 
 export abstract class IBoardService {
@@ -44,9 +43,6 @@ export class BoardService implements IBoardService {
   async updateBoard(
     data: Partial<DbSchemas.BoardSchema.Board> & { _id: string }
   ) {
-    if (!Types.ObjectId.isValid(data._id))
-      throw new HttpException('Invalid _id', HttpStatus.BAD_REQUEST)
-
     const filter = { _id: data._id }
     const update: Partial<DbSchemas.BoardSchema.Board> = _.pickBy(
       data,
