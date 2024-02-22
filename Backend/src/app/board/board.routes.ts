@@ -24,5 +24,11 @@ export const BoardRoutes = {
     path: '/api/board/changeBoardVisibility',
     method: RequestMethod.PATCH,
     jwtSecure: false
+  } as IRouteParams,
+
+  deleteBoard: {
+    path: '/api/board/deleteBoard/:board_id',
+    method: RequestMethod.DELETE,
+    jwtSecure: false
   } as IRouteParams
 } as const

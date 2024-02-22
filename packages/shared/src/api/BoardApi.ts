@@ -55,3 +55,12 @@ export const ChangeBoardVisibilityResponseSchema = z.object({
   data: BoardSchema,
 });
 export type ChangeBoardVisibilityResponse = z.infer<typeof ChangeBoardVisibilityResponseSchema>;
+
+///
+
+export type DeleteBoardRequest = z.infer<typeof BoardSchema>["_id"];
+
+export const DeleteBoardResponseSchema = z.object({
+  data: BoardSchema,
+});
+export type DeleteBoardResponse = z.infer<typeof DeleteBoardResponseSchema>;

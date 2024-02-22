@@ -59,6 +59,13 @@ export class BoardService implements IBoardService {
 
     return new this.BoardMModel(result)
   }
+
+  async deleteBoard(board_id: TrelloApi.BoardApi.DeleteBoardRequest) {
+    const board = await this.BoardMModel.findOneAndDelete({
+      _id: board_id
+    }).exec()
+    return new this.BoardMModel(board)
+  }
 }
 
 ///
@@ -106,6 +113,22 @@ export class BoardServiceMock implements IBoardService {
     return new Promise<DbSchemas.BoardSchema.Board>((res) => {
       return res({
         ...data
+      })
+    })
+  }
+
+  deleteBoard(board_id: TrelloApi.BoardApi.DeleteBoardRequest) {
+    return new Promise<DbSchemas.BoardSchema.Board>((res) => {
+      return res({
+        _id: board_id,
+        watcher_email: [],
+        activities: [],
+        members_email: [],
+        labels: [],
+        is_star: false,
+        workspace_id: 'Mock-id',
+        name: '',
+        visibility: 'private'
       })
     })
   }

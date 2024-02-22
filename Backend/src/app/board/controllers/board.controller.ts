@@ -113,4 +113,28 @@ export class BoardController {
       data: data
     }
   }
+
+  @InjectRoute(BoardRoutes.deleteBoard)
+  @SwaggerApi({
+    params: {
+      name: 'board_id',
+      type: 'string',
+      example: 'string'
+    },
+    responses: [
+      {
+        status: 200,
+        schema: { $ref: getSchemaPath('DeleteBoardResponseSchema') }
+      }
+    ]
+  })
+  async deleteBoard(
+    @Param('board_id', IdParamValidationPipe)
+    board_id: TrelloApi.BoardApi.DeleteBoardRequest
+  ): Promise<TrelloApi.BoardApi.DeleteBoardResponse> {
+    const data = await this.BoardService.deleteBoard(board_id)
+    return {
+      data: data
+    }
+  }
 }
