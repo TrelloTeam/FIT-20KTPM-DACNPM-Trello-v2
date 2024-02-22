@@ -38,7 +38,7 @@ export class BoardService implements IBoardService {
     board_id: TrelloApi.BoardApi.GetBoardInfoByBoardIdRequest
   ) {
     const board = await this.BoardMModel.findById(board_id).exec()
-    return new this.BoardMModel(board)
+    return board
   }
 
   async updateBoard(
@@ -57,14 +57,14 @@ export class BoardService implements IBoardService {
       new: true
     })
 
-    return new this.BoardMModel(result)
+    return result
   }
 
   async deleteBoard(board_id: TrelloApi.BoardApi.DeleteBoardRequest) {
     const board = await this.BoardMModel.findOneAndDelete({
       _id: board_id
     }).exec()
-    return new this.BoardMModel(board)
+    return board
   }
 }
 

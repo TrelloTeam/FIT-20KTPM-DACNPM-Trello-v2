@@ -80,7 +80,7 @@ export class BoardController {
   async getBoardInfoByBoardId(
     @Param('board_id', IdParamValidationPipe)
     board_id: TrelloApi.BoardApi.GetBoardInfoByBoardIdRequest
-  ): Promise<TrelloApi.BoardApi.GetBoardInfoByBoardIdResponse> {
+  ): Promise<TrelloApi.BoardApi.GetBoardInfoByBoardIdResponse | unknown> {
     const data = await this.BoardService.getBoardInfoByBoardId(board_id)
     return {
       data: data
@@ -107,7 +107,7 @@ export class BoardController {
       IdBodyValidationPipe
     )
     body: TrelloApi.BoardApi.ChangeBoardVisibilityRequest
-  ): Promise<TrelloApi.BoardApi.ChangeBoardVisibilityResponse> {
+  ): Promise<TrelloApi.BoardApi.ChangeBoardVisibilityResponse | unknown> {
     const data = await this.BoardService.updateBoard(body)
     return {
       data: data
@@ -131,7 +131,7 @@ export class BoardController {
   async deleteBoard(
     @Param('board_id', IdParamValidationPipe)
     board_id: TrelloApi.BoardApi.DeleteBoardRequest
-  ): Promise<TrelloApi.BoardApi.DeleteBoardResponse> {
+  ): Promise<TrelloApi.BoardApi.DeleteBoardResponse | unknown> {
     const data = await this.BoardService.deleteBoard(board_id)
     return {
       data: data
