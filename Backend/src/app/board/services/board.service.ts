@@ -37,9 +37,6 @@ export class BoardService implements IBoardService {
   async getBoardInfoByBoardId(
     board_id: TrelloApi.BoardApi.GetBoardInfoByBoardIdRequest
   ) {
-    if (!Types.ObjectId.isValid(board_id))
-      throw new HttpException('Invalid board_id', HttpStatus.BAD_REQUEST)
-
     const board = await this.BoardMModel.findById(board_id).exec()
     return new this.BoardMModel(board)
   }

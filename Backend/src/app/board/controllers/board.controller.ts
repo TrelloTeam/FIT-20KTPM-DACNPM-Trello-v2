@@ -3,7 +3,11 @@ import { InjectController, InjectRoute } from '@/decorators'
 import { BoardService } from '../services/board.service'
 import { BoardRoutes } from '../board.routes'
 import { Body, Param } from '@nestjs/common'
-import { ZodValidationPipe } from '@/pipes'
+import {
+  ZodValidationPipe,
+  IdParamValidationPipe,
+  IdBodyValidationPipe
+} from '@/pipes'
 import { TrelloApi } from '@trello-v2/shared'
 import { SwaggerApi } from '@/decorators/swagger.decorator'
 import { getSchemaPath } from '@nestjs/swagger'
@@ -14,22 +18,6 @@ import { getSchemaPath } from '@nestjs/swagger'
 })
 export class BoardController {
   constructor(private BoardService: BoardService) {}
-
-  // @InjectRoute(BoardRoutes.getAllBoard)
-  // @SwaggerApi({
-  //   responses: [
-  //     {
-  //       status: 200,
-  //       schema: { $ref: getSchemaPath('GetallBoardResponseSchema') }
-  //     }
-  //   ]
-  // })
-  // async getAll(): Promise<TrelloApi.BoardApi.GetallBoardResponse> {
-  //   const data = await this.BoardService.getAllBoard()
-  //   return {
-  //     data: data
-  //   }
-  // }
 
   @InjectRoute(BoardRoutes.getBoardsByWorkspaceId)
   @SwaggerApi({
@@ -46,7 +34,7 @@ export class BoardController {
     ]
   })
   async getBoardsByWorkSpaceId(
-    @Param('workspace_id')
+    @Param('workspace_id', IdParamValidationPipe)
     workspace_id: TrelloApi.BoardApi.getBoardsByWorkspaceIdRequest
   ): Promise<TrelloApi.BoardApi.GetallBoardResponse> {
     const data = await this.BoardService.getBoardsByWorkspaceId(workspace_id)
@@ -90,7 +78,8 @@ export class BoardController {
     ]
   })
   async getBoardInfoByBoardId(
-    @Param('board_id') board_id: TrelloApi.BoardApi.GetBoardInfoByBoardIdRequest
+    @Param('board_id', IdParamValidationPipe)
+    board_id: TrelloApi.BoardApi.GetBoardInfoByBoardIdRequest
   ): Promise<TrelloApi.BoardApi.GetBoardInfoByBoardIdResponse> {
     const data = await this.BoardService.getBoardInfoByBoardId(board_id)
     return {
@@ -114,7 +103,8 @@ export class BoardController {
     @Body(
       new ZodValidationPipe(
         TrelloApi.BoardApi.ChangeBoardVisibilityRequestSchema
-      )
+      ),
+      IdBodyValidationPipe
     )
     body: TrelloApi.BoardApi.ChangeBoardVisibilityRequest
   ): Promise<TrelloApi.BoardApi.ChangeBoardVisibilityResponse> {
