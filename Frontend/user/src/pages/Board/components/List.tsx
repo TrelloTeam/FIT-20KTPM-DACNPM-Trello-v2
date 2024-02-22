@@ -24,15 +24,16 @@ export function ListComponent({ list }: ListComponentProps) {
       // onDrop={(e) => handleListOnDrop(e, list)}
       // onDragOver={handleDragOverList}
     >
-      <div className='relative mr-10  w-[280px] rounded-lg border bg-gray-100 shadow-sm'>
+      <div className='relative mr-2  w-[280px] rounded-lg border bg-gray-100 shadow-sm'>
         <div className='mx-6 my-4 flex flex-row items-center justify-between'>
           <h2 className={`font-bold text-gray-600 `}>{list.name}</h2>
           <HiOutlineDotsHorizontal className={`rounded-full  hover:bg-gray-300`} />
         </div>
         <SortableContext items={list.data} strategy={verticalListSortingStrategy}>
-          {list.data.map((card, index) => (
-            <CardComponent key={card.id} card={card} />
-          ))}
+          {list.data &&
+            list.data.length > 0 &&
+            list.data.map((card, index) => <CardComponent key={index} card={card} isDraggingIn={false} />)}
+          {list.data && list.data.length === 0 && <div ></div>}
         </SortableContext>
         <div className={`m-2 flex flex-row space-x-2`}>
           <button className='w-10/12 rounded-lg p-2 hover:bg-gray-200'>

@@ -16,6 +16,7 @@ export const defaultCard = {
 }
 export interface CardComponentProps {
   card: Card
+  isDraggingIn: Boolean
 }
 export interface List {
   id: string

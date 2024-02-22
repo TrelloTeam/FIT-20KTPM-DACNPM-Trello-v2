@@ -10,7 +10,8 @@ import {
   defaultDropAnimationSideEffects,
   DropAnimation,
   DragOverEvent,
-  closestCorners
+  closestCorners,
+  UniqueIdentifier
 } from '@dnd-kit/core'
 import { arrayMove } from '@dnd-kit/sortable'
 import { cloneDeep } from 'lodash'
@@ -48,12 +49,51 @@ export function Board() {
   function handleUpdateAfterDragging() {
     // Gọi API update data ở phía backend
   }
+  function handleMoveCardBetweenDifferenceColumn(
+    overList: List,
+    overCardId: UniqueIdentifier,
+    active: any,
+    over: any,
+    activeList: List,
+    activeDragingCardId: UniqueIdentifier,
+    activeDraggingCardData: any
+  ) {
+    setListsData((prevList) => {
+      const overCardIndex = overList?.data?.findIndex((card) => card.id === overCardId)
+      let newCardIndex
+      const isBelowOverItem =
+        active.rect.current.translated && active.rect.current.translated.top > over.rect.top + over.rect.height
+
+      const modifier = isBelowOverItem ? 1 : 0
+
+      newCardIndex = overCardIndex >= 0 ? overCardIndex + modifier : overList.data.length + 1
+
+      const nextList = cloneDeep(prevList)
+      const nextActiveList = nextList.find((list) => list.id === activeList.id)
+      const nextOverList = nextList.find((list) => list.id === overList.id)
+
+      if (nextActiveList) {
+        nextActiveList.data = nextActiveList.data.filter((card) => card.id !== activeDragingCardId)
+      }
+      if (nextOverList) {
+        nextOverList.data = nextOverList.data.filter((card) => card.id !== activeDragingCardId)
+        const rebuild_activeDraggingCardData = {
+          ...activeDraggingCardData,
+          list_id: nextOverList.id
+        } as Card
+        // Ensure activeDraggingCardData is not undefined before using it
+        if (isCard(activeDraggingCardData)) {
+          nextOverList.data.splice(newCardIndex, 0, rebuild_activeDraggingCardData)
+        }
+      }
+      console.log('nextList = ', nextList)
+      return nextList
+    })
+  }
   function handleDragStart(e: DragStartEvent) {
     console.log('Drag Start: ', e)
     setActiveDragItemId(e?.active?.id.toString())
-    setActiveDragItemType(e?.active?.data?.current?.list_id ? 
-      ACTIVE_DRAG_ITEM_TYPE.CARD : 
-      ACTIVE_DRAG_ITEM_TYPE.COLUMN)
+    setActiveDragItemType(e?.active?.data?.current?.list_id ? ACTIVE_DRAG_ITEM_TYPE.CARD : ACTIVE_DRAG_ITEM_TYPE.COLUMN)
     setActiveDragItemData(e?.active?.data?.current)
 
     if (e?.active?.data?.current?.list_id) {
@@ -85,33 +125,15 @@ export function Board() {
     }
     if (activeList.id !== overList.id) {
       console.log('Drag Over In')
-      setListsData((prevList) => {
-        const overCardIndex = overList?.data?.findIndex((card) => card.id === overCardId)
-        let newCardIndex
-        const isBelowOverItem = active.rect.current.translated && active.rect.current.translated.top > over.rect.top + over.rect.height
-
-        const modifier = isBelowOverItem ? 1 : 0
-
-        newCardIndex = overCardIndex >= 0 ? overCardIndex + modifier : overList.data.length + 1
-
-        const nextList = cloneDeep(prevList)
-        const nextActiveList = nextList.find((list) => list.id === activeList.id)
-        const nextOverList = nextList.find((list) => list.id === overList.id)
-
-        if (nextActiveList) {
-          nextActiveList.data = nextActiveList.data.filter((card) => card.id !== activeDragingCardId)
-        }
-        if (nextOverList) {
-          nextOverList.data = nextOverList.data.filter((card) => card.id !== activeDragingCardId)
-
-          // Ensure activeDraggingCardData is not undefined before using it
-          if (isCard(activeDraggingCardData)) {
-            nextOverList.data.splice(newCardIndex, 0, activeDraggingCardData)
-          }
-        }
-        console.log('nextList = ', nextList)
-        return nextList
-      })
+      handleMoveCardBetweenDifferenceColumn(
+        overList,
+        overCardId,
+        active,
+        over,
+        activeList,
+        activeDragingCardId,
+        activeDraggingCardData
+      )
     }
   }
 
@@ -133,37 +155,15 @@ export function Board() {
         return
       }
       if (oldListWhenDragging.id !== overList.id) {
-        setListsData((prevList) => {
-          const overCardIndex = overList?.data?.findIndex((card) => card.id === overCardId)
-          let newCardIndex
-          const isBelowOverItem = active.rect.current.translated && active.rect.current.translated.top > over.rect.top + over.rect.height
-  
-          const modifier = isBelowOverItem ? 1 : 0
-  
-          newCardIndex = overCardIndex >= 0 ? overCardIndex + modifier : overList.data.length + 1
-  
-          const nextList = cloneDeep(prevList)
-          const nextActiveList = nextList.find((list) => list.id === activeList.id)
-          const nextOverList = nextList.find((list) => list.id === overList.id)
-  
-          if (nextActiveList) {
-            nextActiveList.data = nextActiveList.data.filter((card) => card.id !== activeDragingCardId)
-          }
-          if (nextOverList) {
-            nextOverList.data = nextOverList.data.filter((card) => card.id !== activeDragingCardId)
-            const rebuild_activeDraggingCardData = {
-              ...activeDraggingCardData,
-              list_id:nextOverList.id
-            }
-            // Ensure activeDraggingCardData is not undefined before using it
-            if (isCard(activeDraggingCardData)) {
-              nextOverList.data.splice(newCardIndex, 0, activeDraggingCardData)
-            }
-            handleUpdateAfterDragging()
-          }
-          console.log('nextList = ', nextList)
-          return nextList
-        })
+        handleMoveCardBetweenDifferenceColumn(
+          overList,
+          overCardId,
+          active,
+          over,
+          activeList,
+          activeDragingCardId,
+          activeDraggingCardData
+        )
       } else {
         const oldIndex = oldListWhenDragging.data.findIndex((data) => data.id === activeDragItemId)
         const newIndex = overList.data.findIndex((data) => data.id === overCardId)
@@ -223,7 +223,7 @@ export function Board() {
             <ListComponent list={activeDragItemData} />
           )}
           {activeDragItemId && activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.CARD && (
-            <CardComponent card={activeDragItemData} />
+            <CardComponent card={activeDragItemData} isDraggingIn={false} />
           )}
         </DragOverlay>
       </DndContext>
