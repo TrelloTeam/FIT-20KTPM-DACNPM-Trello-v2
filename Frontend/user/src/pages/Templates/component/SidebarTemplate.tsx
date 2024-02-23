@@ -11,7 +11,6 @@ import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlin
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import { workspaceData } from '../testData';
 import { Workspace } from '../type';
-import '../../../styles/templates.css';
 import { Button } from '@mui/base';
 
 function SidebarTemplate() {
@@ -22,18 +21,18 @@ function SidebarTemplate() {
     }, [])
 
     return (
-        <div className='detail-sidebar-container'>
+        <div className="detail-sidebar-container ml-20 max-h-screen fixed overflow-y-auto">
             <Sidebar>
                 <Menu>
-                    <MenuItem className='menu-item' style={{ marginBottom: '4px' }}>
-                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                            <SpaceDashboardOutlinedIcon fontSize='small' style={{ marginRight: '10px' }} />
+                    <MenuItem className='menu-item font-bold bg-white hover:text-blue-500 hover:bg-blue-500 hover:border-0 rounded-md' style={{ marginBottom: '4px' }}>
+                        <div className="flex items-center">
+                            <SpaceDashboardOutlinedIcon fontSize='small' className="mr-2" />
                             Boards
                         </div>
                     </MenuItem>
-                    <SubMenu  label={<span className='menu-item'>
-                            <div style={{ display: 'flex', alignItems: 'center' }}>
-                                <DashboardOutlinedIcon fontSize='small' style={{ marginRight: '10px' }} />
+                    <SubMenu  label={<span className='menu-item font-bold bg-white hover:text-blue-500 hover:bg-blue-500 hover:border-0 rounded-md'>
+                            <div className="flex items-center">
+                                <DashboardOutlinedIcon className="mr-2" fontSize='small'/>
                                 Templates
                             </div>
                         </span>} defaultOpen={true}>
@@ -52,49 +51,48 @@ function SidebarTemplate() {
                         <MenuItem>Support</MenuItem>
                         <MenuItem>Team management</MenuItem>
                     </SubMenu>
-                    <MenuItem className='menu-item home' style={{marginBottom: '4px' }}>
-                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                            <HomeOutlinedIcon fontSize='small' style={{ marginRight: '10px' }} />
+                    <MenuItem className='menu-item home border-b-3 border-blue-500 font-bold bg-white hover:text-blue-500 hover:bg-blue-500 hover:border-0 rounded-md ' style={{marginBottom: '4px' }}>
+                        <div className="flex items-center">
+                            <HomeOutlinedIcon fontSize='small' className="mr-2" />
                             Home
                         </div>
                     </MenuItem>
                 </Menu>
             </Sidebar>
-            <h1>Workspaces</h1>
-            <Sidebar className='workspaces'>
+            <h1 className='mb-2 pt-2 pl-5 text-gray-700'>Workspaces</h1>
+            <Sidebar className='workspaces mb-10'>
                 <div>
-                    
                     {workspace?.map((w, index) => (
                         <div key={index}>
                             <Menu>
-                                <SubMenu label={<span className='menu-item'>
-                                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                                            <WorkspacesIcon fontSize='small' style={{ marginRight: '10px' }} />
+                                <SubMenu label={<span className='font-bold bg-white hover:text-blue-500 hover:bg-blue-500 hover:border-0 rounded-md'>
+                                        <div className="flex items-center">
+                                            <WorkspacesIcon fontSize='small' className="mr-2" />
                                             {w.name}
                                         </div>
                                     </span>}>
                                     <MenuItem>
-                                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                                            <SpaceDashboardOutlinedIcon fontSize='small' style={{ marginRight: '10px' }} />
+                                        <div className="flex items-center">
+                                            <SpaceDashboardOutlinedIcon fontSize='small' className="mr-2" />
                                             Boards
                                         </div>
                                     </MenuItem>
                                     <MenuItem>
-                                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                                            <FavoriteBorderOutlinedIcon fontSize='small' style={{ marginRight: '10px' }} />
+                                        <div className="flex items-center">
+                                            <FavoriteBorderOutlinedIcon fontSize='small' className="mr-2" />
                                             Highlights
                                         </div>
                                     </MenuItem>
                                     <MenuItem>
-                                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                                            <GridViewOutlinedIcon fontSize='small' style={{ marginRight: '10px' }} />
+                                        <div className="flex items-center">
+                                            <GridViewOutlinedIcon fontSize='small' className="mr-2" />
                                             Views
                                         </div>
                                     </MenuItem>
                                     <MenuItem>
-                                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
-                                            <div style={{ display: 'flex', alignItems: 'center' }}>
-                                                <PeopleAltOutlinedIcon fontSize='small' style={{ marginRight: '10px' }} />
+                                        <div className="flex items-center justify-between w-full">
+                                            <div className="flex items-center">
+                                                <PeopleAltOutlinedIcon fontSize='small' className="mr-2" />
                                                 Members
                                             </div>
                                             <div>
@@ -104,8 +102,8 @@ function SidebarTemplate() {
                                         </div>
                                     </MenuItem>
                                     <MenuItem>
-                                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                                            <SettingsIcon fontSize='small' style={{ marginRight: '10px' }} />
+                                        <div className="flex items-center">
+                                            <SettingsIcon fontSize='small' className="mr-2" />
                                             Setting
                                         </div>
                                     </MenuItem>
