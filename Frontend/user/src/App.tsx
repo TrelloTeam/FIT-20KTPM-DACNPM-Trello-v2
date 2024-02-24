@@ -1,15 +1,15 @@
 import { Provider } from 'react-redux'
-
-import { HomePage } from './pages'
-import { ToastProvider } from './providers'
 import { store } from './store'
+import { Outlet } from 'react-router'
+import Header from './components/Header'
 
 function App() {
   return (
     <Provider store={store}>
-      <ToastProvider>
-        <HomePage />
-      </ToastProvider>
+      <Header />
+      <div style={{ paddingTop: '50px' }}>
+        <Outlet />
+      </div>
     </Provider>
   )
 }
