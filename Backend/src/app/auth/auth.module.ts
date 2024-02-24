@@ -3,6 +3,6 @@ import { AuthController } from './controllers/auth.controller'
 
 @Module({
   controllers: [AuthController],
-  providers: []
+  providers: [],
 })
 export class AuthModule {}

@@ -1,12 +1,7 @@
 import { InjectController, InjectRoute } from '@/decorators'
 import { CardService } from '../services/card.service'
 import { CardRoutes } from '../card.routes'
-import {
-  Body,
-  InternalServerErrorException,
-  NotFoundException,
-  Query
-} from '@nestjs/common'
+import { Body, InternalServerErrorException, NotFoundException, Query } from '@nestjs/common'
 import { ZodValidationPipe } from '@/pipes'
 import { TrelloApi } from '@trello-v2/shared'
 import { SwaggerApi } from '@/decorators/swagger.decorator'
@@ -14,7 +9,7 @@ import { getSchemaPath } from '@nestjs/swagger'
 
 @InjectController({
   name: 'card',
-  isCore: true
+  isCore: true,
 })
 export class CardController {
   constructor(private cardService: CardService) {}
@@ -23,27 +18,26 @@ export class CardController {
   @SwaggerApi({
     secure: false,
     body: {
-      schema: { $ref: getSchemaPath('CreateCardRequestSchema') }
+      schema: { $ref: getSchemaPath('CreateCardRequestSchema') },
     },
     responses: [
       {
         status: 200,
-        schema: { $ref: getSchemaPath('CreateCardRespondSchema') }
-      }
-    ]
+        schema: { $ref: getSchemaPath('CreateCardRespondSchema') },
+      },
+    ],
   })
   async createCard(
     @Body(new ZodValidationPipe(TrelloApi.CardApi.CreateCardRequestSchema))
-    body: TrelloApi.CardApi.CreateCardRequest
+    body: TrelloApi.CardApi.CreateCardRequest,
   ): Promise<TrelloApi.CardApi.CreateCardRespond> {
     const cardData = await this.cardService.createCard(body)
-    if (!cardData || !cardData._id)
-      throw new InternalServerErrorException("Can't create card")
+    if (!cardData || !cardData._id) throw new InternalServerErrorException("Can't create card")
     return {
       data: {
         ...cardData,
-        _id: cardData._id
-      }
+        _id: cardData._id,
+      },
     }
   }
 
@@ -54,22 +48,18 @@ export class CardController {
       name: 'query',
       schema: { $ref: getSchemaPath('GetAllCardsOfCardlistRequestSchema') },
       style: 'form',
-      explode: true
+      explode: true,
     },
     responses: [
       {
         status: 200,
-        schema: { $ref: getSchemaPath('GetAllCardsOfCardlistResponseSchema') }
-      }
-    ]
+        schema: { $ref: getSchemaPath('GetAllCardsOfCardlistResponseSchema') },
+      },
+    ],
   })
   async getAllCardsOfCardlist(
-    @Query(
-      new ZodValidationPipe(
-        TrelloApi.CardApi.GetAllCardsOfCardlistRequestSchema
-      )
-    )
-    query: TrelloApi.CardApi.GetCardsOfCardlistRequest
+    @Query(new ZodValidationPipe(TrelloApi.CardApi.GetAllCardsOfCardlistRequestSchema))
+    query: TrelloApi.CardApi.GetCardsOfCardlistRequest,
   ): Promise<TrelloApi.CardApi.GetAllCardsOfCardlistResponse> {
     const cardlist = await this.cardService.getAllCardsOfCardlist(query)
     if (!cardlist) throw new InternalServerErrorException("Can't find cards")
@@ -79,19 +69,19 @@ export class CardController {
         if (value._id) {
           acum.push({
             ...value,
-            _id: value._id
+            _id: value._id,
           })
         }
         return acum
       },
-      [] as TrelloApi.CardApi.GetAllCardsOfCardlistResponse['data']['cards']
+      [] as TrelloApi.CardApi.GetAllCardsOfCardlistResponse['data']['cards'],
     )
 
     return {
       data: {
         ...cardlist,
-        cards: cards
-      }
+        cards: cards,
+      },
     }
   }
 
@@ -101,23 +91,23 @@ export class CardController {
       name: 'query',
       schema: { $ref: getSchemaPath('GetCardDetailRequestSchema') },
       style: 'form',
-      explode: true
+      explode: true,
     },
     responses: [
       {
         status: 200,
-        schema: { $ref: getSchemaPath('GetCardDetailResponseSchema') }
-      }
-    ]
+        schema: { $ref: getSchemaPath('GetCardDetailResponseSchema') },
+      },
+    ],
   })
   async getCardDetail(
     @Query(new ZodValidationPipe(TrelloApi.CardApi.GetCardDetailRequestSchema))
-    query: TrelloApi.CardApi.GetCardDetailRequest
+    query: TrelloApi.CardApi.GetCardDetailRequest,
   ): Promise<TrelloApi.CardApi.GetCardDetailResponse> {
     const card = await this.cardService.getCardDetail(query)
     if (!card?._id) throw new NotFoundException("Can't find card id")
     return {
-      data: { ...card, _id: card._id }
+      data: { ...card, _id: card._id },
     }
   }
 
@@ -128,15 +118,13 @@ export class CardController {
     responses: [
       {
         status: 200,
-        schema: { $ref: getSchemaPath('UpdateCardDetailResponseSchema') }
-      }
-    ]
+        schema: { $ref: getSchemaPath('UpdateCardDetailResponseSchema') },
+      },
+    ],
   })
   async updateCardDetail(
-    @Body(
-      new ZodValidationPipe(TrelloApi.CardApi.UpdateCardDetailRequestSchema)
-    )
-    body: TrelloApi.CardApi.UpdateCardDetailRequest
+    @Body(new ZodValidationPipe(TrelloApi.CardApi.UpdateCardDetailRequestSchema))
+    body: TrelloApi.CardApi.UpdateCardDetailRequest,
   ): Promise<TrelloApi.CardApi.UpdateCardDetailResponse> {
     const card = await this.cardService.updateCardDetail(body)
     if (!card) throw new NotFoundException("Can't find card")
@@ -144,8 +132,8 @@ export class CardController {
     return {
       data: {
         ...card,
-        _id: body.card_id
-      }
+        _id: body.card_id,
+      },
     }
   }
 
@@ -156,23 +144,22 @@ export class CardController {
     responses: [
       {
         status: 200,
-        schema: { $ref: getSchemaPath('AddCardFeatureResponseSchema') }
-      }
-    ]
+        schema: { $ref: getSchemaPath('AddCardFeatureResponseSchema') },
+      },
+    ],
   })
   async addFeatureToCard(
     @Body(new ZodValidationPipe(TrelloApi.CardApi.AddCardFeatureRequestSchema))
-    body: TrelloApi.CardApi.AddCardFeatureRequest
+    body: TrelloApi.CardApi.AddCardFeatureRequest,
   ): Promise<TrelloApi.CardApi.AddCardFeatureResponse> {
     const feature = await this.cardService.addFeatureToCard(body)
-    if (!feature || !feature._id)
-      throw new InternalServerErrorException("Can't add feature")
+    if (!feature || !feature._id) throw new InternalServerErrorException("Can't add feature")
 
     return {
       data: {
         ...feature,
-        _id: feature._id
-      }
+        _id: feature._id,
+      },
     }
   }
 
@@ -180,22 +167,19 @@ export class CardController {
   @SwaggerApi({
     secure: false,
     body: { schema: { $ref: getSchemaPath('UpdateCardFeatureRequestSchema') } },
-    responses: [{ status: 200, schema: { $ref: getSchemaPath('') } }]
+    responses: [{ status: 200, schema: { $ref: getSchemaPath('') } }],
   })
   async updateFeatureToCard(
-    @Body(
-      new ZodValidationPipe(TrelloApi.CardApi.UpdateCardFeatureRequestSchema)
-    )
-    body: TrelloApi.CardApi.UpdateCardFeatureRequest
+    @Body(new ZodValidationPipe(TrelloApi.CardApi.UpdateCardFeatureRequestSchema))
+    body: TrelloApi.CardApi.UpdateCardFeatureRequest,
   ): Promise<TrelloApi.CardApi.UpdateCardFeatureResponse> {
     const feature = await this.cardService.updateFeatureOfCard(body)
-    if (!feature || !feature._id)
-      throw new InternalServerErrorException("Can't update card feature")
+    if (!feature || !feature._id) throw new InternalServerErrorException("Can't update card feature")
     return {
       data: {
         ...feature,
-        _id: feature._id
-      }
+        _id: feature._id,
+      },
     }
   }
 
@@ -206,25 +190,22 @@ export class CardController {
     responses: [
       {
         status: 200,
-        schema: { $ref: getSchemaPath('AddWatcherToCardResponseSchema') }
-      }
-    ]
+        schema: { $ref: getSchemaPath('AddWatcherToCardResponseSchema') },
+      },
+    ],
   })
   async addWatcherToCard(
-    @Body(
-      new ZodValidationPipe(TrelloApi.CardApi.AddWatcherToCardRequestSchema)
-    )
-    body: TrelloApi.CardApi.AddWatcherToCardRequest
+    @Body(new ZodValidationPipe(TrelloApi.CardApi.AddWatcherToCardRequestSchema))
+    body: TrelloApi.CardApi.AddWatcherToCardRequest,
   ): Promise<TrelloApi.CardApi.AddWatcherToCardResponse> {
     const card = await this.cardService.addWatcherToCard(body)
-    if (!card || !card._id)
-      throw new InternalServerErrorException("Can't add watcher to card")
+    if (!card || !card._id) throw new InternalServerErrorException("Can't add watcher to card")
 
     return {
       data: {
         ...card,
-        _id: card._id
-      }
+        _id: card._id,
+      },
     }
   }
 
@@ -232,30 +213,27 @@ export class CardController {
   @SwaggerApi({
     secure: false,
     body: {
-      schema: { $ref: getSchemaPath('DeleteWatcherToCardRequestSchema') }
+      schema: { $ref: getSchemaPath('DeleteWatcherToCardRequestSchema') },
     },
     responses: [
       {
         status: 200,
-        schema: { $ref: getSchemaPath('DeleteWatcherToCardResponseSchema') }
-      }
-    ]
+        schema: { $ref: getSchemaPath('DeleteWatcherToCardResponseSchema') },
+      },
+    ],
   })
   async deleteWatcherToCard(
-    @Body(
-      new ZodValidationPipe(TrelloApi.CardApi.DeleteWatcherToCardRequestSchema)
-    )
-    body: TrelloApi.CardApi.DeleteWatcherToCardRequest
+    @Body(new ZodValidationPipe(TrelloApi.CardApi.DeleteWatcherToCardRequestSchema))
+    body: TrelloApi.CardApi.DeleteWatcherToCardRequest,
   ): Promise<TrelloApi.CardApi.DeleteWatcherToCardResponse> {
     const card = await this.cardService.deleteWatcherFromCard(body)
-    if (!card || !card._id)
-      throw new InternalServerErrorException("Can't add watcher to card")
+    if (!card || !card._id) throw new InternalServerErrorException("Can't add watcher to card")
 
     return {
       data: {
         ...card,
-        _id: card._id
-      }
+        _id: card._id,
+      },
     }
   }
 
@@ -265,22 +243,21 @@ export class CardController {
     responses: [
       {
         status: 200,
-        schema: { $ref: getSchemaPath('ArchiveCardResponseSchema') }
-      }
-    ]
+        schema: { $ref: getSchemaPath('ArchiveCardResponseSchema') },
+      },
+    ],
   })
   async archiveCard(
     @Body(new ZodValidationPipe(TrelloApi.CardApi.ArchiveCardRequestSchema))
-    body: TrelloApi.CardApi.ArchiveCardRequest
+    body: TrelloApi.CardApi.ArchiveCardRequest,
   ): Promise<TrelloApi.CardApi.ArchiveCardResponse> {
     const card = await this.cardService.archiveCard(body)
-    if (!card || !card._id)
-      throw new InternalServerErrorException("Can't archive card")
+    if (!card || !card._id) throw new InternalServerErrorException("Can't archive card")
     return {
       data: {
         ...card,
-        _id: card._id
-      }
+        _id: card._id,
+      },
     }
   }
 
@@ -290,22 +267,21 @@ export class CardController {
     responses: [
       {
         status: 200,
-        schema: { $ref: getSchemaPath('UnArchiveCardResponseSchema') }
-      }
-    ]
+        schema: { $ref: getSchemaPath('UnArchiveCardResponseSchema') },
+      },
+    ],
   })
   async unArchiveCard(
     @Body(new ZodValidationPipe(TrelloApi.CardApi.UnArchiveCardRequestSchema))
-    body: TrelloApi.CardApi.ArchiveCardRequest
+    body: TrelloApi.CardApi.ArchiveCardRequest,
   ): Promise<TrelloApi.CardApi.UnArchiveCardResponse> {
     const card = await this.cardService.unArchiveCard(body)
-    if (!card || !card._id)
-      throw new InternalServerErrorException("Can't unarchive card")
+    if (!card || !card._id) throw new InternalServerErrorException("Can't unarchive card")
     return {
       data: {
         ...card,
-        _id: card._id
-      }
+        _id: card._id,
+      },
     }
   }
 
@@ -315,20 +291,18 @@ export class CardController {
     responses: [
       {
         status: 200,
-        schema: { $ref: getSchemaPath('MoveCardSamelistResponseSchema') }
-      }
-    ]
+        schema: { $ref: getSchemaPath('MoveCardSamelistResponseSchema') },
+      },
+    ],
   })
   async moveCardSamelist(
-    @Body(
-      new ZodValidationPipe(TrelloApi.CardApi.MoveCardSamelistRequestSchema)
-    )
-    body: TrelloApi.CardApi.MoveCardSamelistRequest
+    @Body(new ZodValidationPipe(TrelloApi.CardApi.MoveCardSamelistRequestSchema))
+    body: TrelloApi.CardApi.MoveCardSamelistRequest,
   ): Promise<TrelloApi.CardApi.MoveCardSamelistResponse> {
     const cards = await this.cardService.moveCardSamelist(body)
     if (!cards) throw new InternalServerErrorException("Can't move card")
     return {
-      data: cards
+      data: cards,
     }
   }
 }

@@ -4,6 +4,6 @@ import { RequestMethod } from '@nestjs/common'
 export const AuthRoutes = {
   redirect: <IRouteParams>{
     path: '/api/auth/redirect',
-    method: RequestMethod.GET
-  }
+    method: RequestMethod.GET,
+  },
 }
