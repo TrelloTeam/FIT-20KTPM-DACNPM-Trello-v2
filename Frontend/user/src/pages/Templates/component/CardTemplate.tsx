@@ -6,9 +6,9 @@ import React from 'react';
 
 function CardTemplate() {
   return (
-    <div className="detail-card-container w-full">
+    <div className="detail-card-container mt-10 mx-4 md:mx-auto max-w-screen-lg min-w-min w-full">
         <div className="features">
-            <div className="title-container flex justify-between items-center">
+            <div className="title-container flex justify-between items-center mr-6">
                 <div className="title flex items-center">
                     <label className="text-lg font-bold">Featured categories</label>
                 </div>
@@ -21,7 +21,7 @@ function CardTemplate() {
             </div>
             <div className="nameFeatures flex justify-start w-full overflow-x-auto scrollbar-thin scrollbar-thumb-black scrollbar-track-black">
                 <div className="item-feature flex items-center flex-col text-center w-32 mr-3 mb-16">
-                    <Card variant="elevation" elevation={0} className="detail-item block w-full h-full text-gray-600 text-sm leading-6 mt-8 capitalize">
+                    <Card variant="elevation" elevation={0} className="detail-item block w-full h-full text-gray-600 text-sm leading-6 mt-8 capitalize mx-auto">
                         <CardMedia
                             className="relative h-140 w-full"
                             component="img"
@@ -32,7 +32,7 @@ function CardTemplate() {
                     </Card>
                 </div>
                 <div className="item-feature flex items-center flex-col text-center w-32 mr-3 mb-16">
-                    <Card variant="elevation" elevation={0} className="detail-item block w-full h-full text-gray-600 text-sm leading-6 mt-8 capitalize">
+                    <Card variant="elevation" elevation={0} className="detail-item block w-full h-full text-gray-600 text-sm leading-6 mt-8 capitalize mx-auto">
                         <CardMedia
                             className="relative h-140 w-full"
                             component="img"
@@ -43,7 +43,7 @@ function CardTemplate() {
                     </Card>
                 </div>
                 <div className="item-feature flex items-center flex-col text-center w-32 mr-3 mb-16">
-                    <Card variant="elevation" elevation={0} className="detail-item block w-full h-full text-gray-600 text-sm leading-6 mt-8 capitalize">
+                    <Card variant="elevation" elevation={0} className="detail-item block w-full h-full text-gray-600 text-sm leading-6 mt-8 capitalize mx-auto">
                         <CardMedia
                             className="relative h-140 w-full"
                             component="img"
@@ -54,7 +54,7 @@ function CardTemplate() {
                     </Card>
                 </div>
                 <div className="item-feature flex items-center flex-col text-center w-32 mr-3 mb-16">
-                    <Card variant="elevation" elevation={0} className="detail-item block w-full h-full text-gray-600 text-sm leading-6 mt-8 capitalize">
+                    <Card variant="elevation" elevation={0} className="detail-item block w-full h-full text-gray-600 text-sm leading-6 mt-8 capitalize mx-auto">
                         <CardMedia
                             className="relative h-140 w-full"
                             component="img"
@@ -65,7 +65,7 @@ function CardTemplate() {
                     </Card>
                 </div>
                 <div className="item-feature flex items-center flex-col text-center w-32 mr-3 mb-16">
-                    <Card variant="elevation" elevation={0} className="detail-item block w-full h-full text-gray-600 text-sm leading-6 mt-8 capitalize">
+                    <Card variant="elevation" elevation={0} className="detail-item block w-full h-full text-gray-600 text-sm leading-6 mt-8 capitalize mx-auto">
                         <CardMedia
                             className="relative h-140 w-full"
                             component="img"
@@ -77,7 +77,7 @@ function CardTemplate() {
                     </Card>
                 </div>
                 <div className="item-feature flex items-center flex-col text-center w-32 mr-3 mb-16">
-                    <Card variant="elevation" elevation={0} className="detail-item block w-full h-full text-gray-600 text-sm leading-6 mt-8 capitalize">
+                    <Card variant="elevation" elevation={0} className="detail-item block w-full h-full text-gray-600 text-sm leading-6 mt-8 capitalize mx-auto">
                         <CardMedia
                             className="relative h-140 w-full"
                             component="img"
@@ -89,7 +89,7 @@ function CardTemplate() {
                     </Card>
                 </div>
                 <div className="item-feature flex items-center flex-col text-center w-32 mr-3 mb-16">
-                    <Card variant="elevation" elevation={0} className="detail-item block w-full h-full text-gray-600 text-sm leading-6 mt-8 capitalize">
+                    <Card variant="elevation" elevation={0} className="detail-item block w-full h-full text-gray-600 text-sm leading-6 mt-8 capitalize mx-auto">
                         <CardMedia
                             className="relative h-140 w-full"
                             component="img"
@@ -108,7 +108,7 @@ function CardTemplate() {
                 <label className="text-lg font-bold">New and notable templates</label>
             </div>
             <div className="detail-newTemplate flex flex-wrap mt-5 w-full justify-starts">
-                <Card variant="elevation" elevation={0} className="item-newTemplate min-h-100 w-full md:w-72 mr-3/100 mr-3">
+                <Card variant="elevation" elevation={0} className="item-newTemplate min-h-100 w-full md:w-72 mx-auto">
                     <div className="cardContainer relative w-72">
                         <CardMedia
                             className="h-40 w-full object-cover"
@@ -131,7 +131,7 @@ function CardTemplate() {
                         </button>
                     </CardActions>    
                 </Card>
-                <Card variant="elevation" elevation={0} className="item-newTemplate min-h-100 w-full md:w-72 mr-3/100 mr-3">
+                <Card variant="elevation" elevation={0} className="item-newTemplate min-h-100 w-full md:w-72 mx-auto">
                     <div className="cardContainer relative w-72">
                         <CardMedia
                             className="h-40 w-full object-cover"
@@ -154,7 +154,7 @@ function CardTemplate() {
                         </button>
                     </CardActions>
                 </Card>
-                <Card variant="elevation" elevation={0} className="item-newTemplate min-h-100 w-full md:w-72 mr-3/100 mr-3">
+                <Card variant="elevation" elevation={0} className="item-newTemplate min-h-100 w-full md:w-72 mx-auto">
                     <div className="cardContainer relative w-72">
                         <CardMedia
                             className="h-40 w-full object-cover"
@@ -181,15 +181,15 @@ function CardTemplate() {
         </div>
 
         <div className="business">
-            <div className="title flex items-center mb-6 mt-6 flex items-center mb-6 mt-6">
+            <div className="title flex items-center mb-6 mt-6">
                 <img className="inline-block h-6 w-6 min-w-6 mr-3 rounded-md" src="https://trello.com/assets/6b1a625e841b96791d68.svg" width="24px" height="24px"></img>
                 <label className="text-lg font-bold">Business</label>
-                <button className="ml-auto font-sans text-sm leading-5 font-medium text-gray-700 items-center justify-center rounded-md cursor-pointer px-6 py-3 whitespace-normal bg-opacity-0 bg-gray-700 border-none text-gray-700 font-semibold transition duration-85 ease">
+                <button className="ml-auto mr-6 font-sans text-base font-medium bg-gray-200 hover:bg-gray-300 inline-flex items-center justify-center rounded-md cursor-pointer px-3 py-1 text-gray-700 transition-colors duration-200 ease-in-out">
                     More templates for Business
                 </button>
             </div>
-            <div className="detail-newTemplate flex  flex-wrap mt-5 w-full justify-start">
-                <Card variant="elevation" elevation={0} className="item-newTemplate min-h-100 w-full md:w-72 max-w-sm mr-3/100 mr-3 border-0">
+            <div className="detail-newTemplate flex flex-wrap mt-5 w-full justify-start">
+                <Card variant="elevation" elevation={0} className="item-newTemplate min-h-100 w-full md:w-72 max-w-sm mx-auto border-0">
                     <div className="cardContainer relative w-72">
                         <CardMedia
                             className="h-40 w-full object-cover"
@@ -212,7 +212,7 @@ function CardTemplate() {
                         </button>
                     </CardActions>    
                 </Card>
-                <Card variant="elevation" elevation={0} className="item-newTemplate min-h-100 w-full md:w-72 max-w-sm mr-3/100 mr-3">
+                <Card variant="elevation" elevation={0} className="item-newTemplate min-h-100 w-full md:w-72 max-w-sm mx-auto">
                     <div className="cardContainer relative w-72">
                         <CardMedia
                             className="h-40 w-full object-cover"
@@ -236,7 +236,7 @@ function CardTemplate() {
                         </button>
                     </CardActions>
                 </Card>
-                <Card variant="elevation" elevation={0} className="item-newTemplate min-h-100 w-full md:w-72 max-w-sm mr-3/100 mr-3">
+                <Card variant="elevation" elevation={0} className="item-newTemplate min-h-100 w-full md:w-72 max-w-sm mx-auto">
                     <div className="cardContainer relative w-72">
                         <CardMedia
                             className="h-40 w-full object-cover"
@@ -261,19 +261,18 @@ function CardTemplate() {
                     </CardActions>
                 </Card>
             </div>
-
         </div>
 
         <div className="design">
             <div className="title flex items-center mb-6 mt-6">
                 <img className="inline-block h-6 w-6 min-w-6 mr-3 rounded-md" src="https://trello.com/assets/e617072931480fdd44da.svg" width="24px" height="24px"></img>
                 <label className="text-lg font-bold">Design</label>
-                <button className="ml-auto font-sans text-sm leading-5 font-medium text-gray-700 items-center justify-center rounded-md cursor-pointer px-6 py-3 whitespace-normal bg-opacity-0 bg-gray-700 border-none text-gray-700 font-semibold transition duration-85 ease">
+                <button className="ml-auto mr-6 font-sans text-base font-medium bg-gray-200 hover:bg-gray-300 inline-flex items-center justify-center rounded-md cursor-pointer px-3 py-1 text-gray-700 transition-colors duration-200 ease-in-out">
                     More templates for Design
                 </button>
             </div>
             <div className="detail-newTemplate flex  flex-wrap mt-5 w-full justify-start">
-                <Card variant="elevation" elevation={0} className="item-newTemplate min-h-100 w-full md:w-72 max-w-sm mr-3/100 mr-3">
+                <Card variant="elevation" elevation={0} className="item-newTemplate min-h-100 w-full md:w-72 max-w-sm mx-auto">
                     <div className="cardContainer relative w-72">
                         <CardMedia
                             className="h-40 w-full object-cover"
@@ -297,7 +296,7 @@ function CardTemplate() {
                         </button>
                     </CardActions>    
                 </Card>
-                <Card variant="elevation" elevation={0} className="item-newTemplate min-h-100 w-full md:w-72 max-w-sm mr-3/100 mr-3">
+                <Card variant="elevation" elevation={0} className="item-newTemplate min-h-100 w-full md:w-72 max-w-sm mx-auto">
                     <div className="cardContainer relative w-72">
                         <CardMedia
                             className="h-40 w-full object-cover"
@@ -321,7 +320,7 @@ function CardTemplate() {
                         </button>
                     </CardActions>
                 </Card>
-                <Card variant="elevation" elevation={0} className="item-newTemplate min-h-100 w-full md:w-72 max-w-sm mr-3/100 mr-3">
+                <Card variant="elevation" elevation={0} className="item-newTemplate min-h-100 w-full md:w-72 max-w-sm mx-auto">
                     <div className="cardContainer relative w-72">
                         <CardMedia
                             className="h-40 w-full object-cover"
@@ -353,12 +352,12 @@ function CardTemplate() {
             <div className="title flex items-center mb-6 mt-6">
                 <img className="inline-block h-6 w-6 min-w-6 mr-3 rounded-md" src="https://trello.com/assets/070ebae9f7177f08cff6.svg" width="24px" height="24px"></img>
                 <label className="text-lg font-bold">Education</label>
-                <button className="ml-auto font-sans text-sm leading-5 font-medium text-gray-700 items-center justify-center rounded-md cursor-pointer px-6 py-3 whitespace-normal bg-opacity-0 bg-gray-700 border-none text-gray-700 font-semibold transition duration-85 ease">
+                <button className="ml-auto mr-6 font-sans text-base font-medium bg-gray-200 hover:bg-gray-300 inline-flex items-center justify-center rounded-md cursor-pointer px-3 py-1 text-gray-700 transition-colors duration-200 ease-in-out">
                     More templates for Education
                 </button>
             </div>
             <div className="detail-newTemplate flex  flex-wrap mt-5 w-full justify-start">
-                <Card variant="elevation" elevation={0} className="item-newTemplate min-h-100 w-full md:w-72 max-w-sm mr-3/100 mr-3">
+                <Card variant="elevation" elevation={0} className="item-newTemplate min-h-100 w-full md:w-72 max-w-sm mx-auto">
                     <div className="cardContainer relative w-72">
                         <CardMedia
                             className="h-40 w-full object-cover"
@@ -382,7 +381,7 @@ function CardTemplate() {
                         </button>
                     </CardActions>    
                 </Card>
-                <Card variant="elevation" elevation={0} className="item-newTemplate min-h-100 w-full md:w-72 max-w-sm mr-3/100 mr-3">
+                <Card variant="elevation" elevation={0} className="item-newTemplate min-h-100 w-full md:w-72 max-w-sm mx-auto">
                     <div className="cardContainer relative w-72">
                         <CardMedia
                             className="h-40 w-full object-cover"
@@ -406,7 +405,7 @@ function CardTemplate() {
                         </button>
                     </CardActions>
                 </Card>
-                <Card variant="elevation" elevation={0} className="item-newTemplate min-h-100 w-full md:w-72 max-w-sm mr-3/100 mr-3">
+                <Card variant="elevation" elevation={0} className="item-newTemplate min-h-100 w-full md:w-72 max-w-sm mx-auto">
                     <div className="cardContainer relative w-72">
                         <CardMedia
                             className="h-40 w-full object-cover"
@@ -438,12 +437,12 @@ function CardTemplate() {
             <div className="title flex items-center mb-6 mt-6">
                 <img className="inline-block h-6 w-6 min-w-6 mr-3 rounded-md" src="https://trello.com/assets/457121414fa10aa6029a.svg" width="24px" height="24px"></img>
                 <label className="text-lg font-bold">Engineering</label>
-                <button className="ml-auto font-sans text-sm leading-5 font-medium text-gray-700 items-center justify-center rounded-md cursor-pointer px-6 py-3 whitespace-normal bg-opacity-0 bg-gray-700 border-none text-gray-700 font-semibold transition duration-85 ease">
+                <button className="ml-auto mr-6 font-sans text-base font-medium bg-gray-200 hover:bg-gray-300 inline-flex items-center justify-center rounded-md cursor-pointer px-3 py-1 text-gray-700 transition-colors duration-200 ease-in-out">
                     More templates for Engineering
                 </button>
             </div>
             <div className="detail-newTemplate flex  flex-wrap mt-5 w-full justify-start">
-                <Card variant="elevation" elevation={0} className="item-newTemplate min-h-100 w-full md:w-72 max-w-sm mr-3/100 mr-3">
+                <Card variant="elevation" elevation={0} className="item-newTemplate min-h-100 w-full md:w-72 max-w-sm mx-auto">
                     <div className="cardContainer relative w-72">
                         <CardMedia
                             className="h-40 w-full object-cover"
@@ -467,7 +466,7 @@ function CardTemplate() {
                         </button>
                     </CardActions>    
                 </Card>
-                <Card variant="elevation" elevation={0} className="item-newTemplate min-h-100 w-full md:w-72 max-w-sm mr-3/100 mr-3">
+                <Card variant="elevation" elevation={0} className="item-newTemplate min-h-100 w-full md:w-72 max-w-sm mx-auto">
                     <div className="cardContainer relative w-72">
                         <CardMedia
                             className="h-40 w-full object-cover"
@@ -491,7 +490,7 @@ function CardTemplate() {
                         </button>
                     </CardActions>
                 </Card>
-                <Card variant="elevation" elevation={0} className="item-newTemplate min-h-100 w-full md:w-72 max-w-sm mr-3/100 mr-3">
+                <Card variant="elevation" elevation={0} className="item-newTemplate min-h-100 w-full md:w-72 max-w-sm mx-auto">
                     <div className="cardContainer relative w-72">
                         <CardMedia
                             className="h-40 w-full object-cover"
@@ -526,7 +525,7 @@ function CardTemplate() {
                 <button>More templates for Marketing</button>
             </div>
             <div className="detail-newTemplate flex  flex-wrap mt-5 w-full justify-start">
-                <Card variant="elevation" elevation={0} className="item-newTemplate min-h-100 w-full md:w-72 max-w-sm mr-3/100 mr-3">
+                <Card variant="elevation" elevation={0} className="item-newTemplate min-h-100 w-full md:w-72 max-w-sm mx-auto">
                     <div className="cardContainer relative w-72">
                         <CardMedia
                             className="h-40 w-full object-cover"
@@ -550,7 +549,7 @@ function CardTemplate() {
                         </button>
                     </CardActions>    
                 </Card>
-                <Card variant="elevation" elevation={0} className="item-newTemplate min-h-100 w-full md:w-72 max-w-sm mr-3/100 mr-3">
+                <Card variant="elevation" elevation={0} className="item-newTemplate min-h-100 w-full md:w-72 max-w-sm mx-auto">
                     <div className="cardContainer relative w-72">
                         <CardMedia
                             className="h-40 w-full object-cover"
@@ -574,7 +573,7 @@ function CardTemplate() {
                         </button>
                     </CardActions>
                 </Card>
-                <Card variant="elevation" elevation={0} className="item-newTemplate min-h-100 w-full md:w-72 max-w-sm mr-3/100 mr-3">
+                <Card variant="elevation" elevation={0} className="item-newTemplate min-h-100 w-full md:w-72 max-w-sm mx-auto">
                     <div className="cardContainer relative w-72">
                         <CardMedia
                             className="h-40 w-full object-cover"
@@ -606,12 +605,12 @@ function CardTemplate() {
             <div className="title flex items-center mb-6 mt-6">
                 <img className="inline-block h-6 w-6 min-w-6 mr-3 rounded-md" src="https://trello.com/assets/627d9e9f69fc255752cf.svg" width="24px" height="24px"></img>
                 <label className="text-lg font-bold">Project management</label>
-                <button className="ml-auto font-sans text-sm leading-5 font-medium text-gray-700 items-center justify-center rounded-md cursor-pointer px-6 py-3 whitespace-normal bg-opacity-0 bg-gray-700 border-none text-gray-700 font-semibold transition duration-85 ease">
+                <button className="ml-auto mr-6 font-sans text-base font-medium bg-gray-200 hover:bg-gray-300 inline-flex items-center justify-center rounded-md cursor-pointer px-3 py-1 text-gray-700 transition-colors duration-200 ease-in-out">
                     More templates for Project management
                 </button>
             </div>
             <div className="detail-newTemplate flex  flex-wrap mt-5 w-full justify-start">
-                <Card variant="elevation" elevation={0} className="item-newTemplate min-h-100 w-full md:w-72 max-w-sm mr-3/100 mr-3">
+                <Card variant="elevation" elevation={0} className="item-newTemplate min-h-100 w-full md:w-72 max-w-sm mx-auto">
                     <div className="cardContainer relative w-72">
                         <CardMedia
                             className="h-40 w-full object-cover"
@@ -635,7 +634,7 @@ function CardTemplate() {
                         </button>
                     </CardActions>    
                 </Card>
-                <Card variant="elevation" elevation={0} className="item-newTemplate min-h-100 w-full md:w-72 max-w-sm mr-3/100 mr-3">
+                <Card variant="elevation" elevation={0} className="item-newTemplate min-h-100 w-full md:w-72 max-w-sm mx-auto">
                     <div className="cardContainer relative w-72">
                         <CardMedia
                             className="h-40 w-full object-cover"
@@ -659,7 +658,7 @@ function CardTemplate() {
                         </button>
                     </CardActions>
                 </Card>
-                <Card variant="elevation" elevation={0} className="item-newTemplate min-h-100 w-full md:w-72 max-w-sm mr-3/100 mr-3">
+                <Card variant="elevation" elevation={0} className="item-newTemplate min-h-100 w-full md:w-72 max-w-sm mx-auto">
                     <div className="cardContainer relative w-72">
                         <CardMedia
                             className="h-40 w-full object-cover"
@@ -691,12 +690,12 @@ function CardTemplate() {
             <div className="title flex items-center mb-6 mt-6">
                 <img className="inline-block h-6 w-6 min-w-6 mr-3 rounded-md" src="https://trello.com/assets/338e484944b19a8df667.svg" width="24px" height="24px"></img>
                 <label>Remote work</label>
-                <button className="ml-auto font-sans text-sm leading-5 font-medium text-gray-700 items-center justify-center rounded-md cursor-pointer px-6 py-3 whitespace-normal bg-opacity-0 bg-gray-700 border-none text-gray-700 font-semibold transition duration-85 ease">
+                <button className="ml-auto mr-6 font-sans text-base font-medium bg-gray-200 hover:bg-gray-300 inline-flex items-center justify-center rounded-md cursor-pointer px-3 py-1 text-gray-700 transition-colors duration-200 ease-in-out">
                     More templates for Remote work
                 </button>
             </div>
             <div className="detail-newTemplate flex  flex-wrap mt-5 w-full justify-start">
-                <Card variant="elevation" elevation={0} className="item-newTemplate min-h-100 w-full md:w-72 max-w-sm mr-3/100 mr-3">
+                <Card variant="elevation" elevation={0} className="item-newTemplate min-h-100 w-full md:w-72 max-w-sm mx-auto">
                     <div className="cardContainer relative w-72">
                         <CardMedia
                             className="h-40 w-full object-cover"
@@ -720,7 +719,7 @@ function CardTemplate() {
                         </button>
                     </CardActions>    
                 </Card>
-                <Card variant="elevation" elevation={0} className="item-newTemplate min-h-100 w-full md:w-72 max-w-sm mr-3/100 mr-3">
+                <Card variant="elevation" elevation={0} className="item-newTemplate min-h-100 w-full md:w-72 max-w-sm mx-auto">
                     <div className="cardContainer relative w-72">
                         <CardMedia
                             className="h-40 w-full object-cover"
@@ -744,7 +743,7 @@ function CardTemplate() {
                         </button>
                     </CardActions>
                 </Card>
-                <Card variant="elevation" elevation={0} className="item-newTemplate min-h-100 w-full md:w-72 max-w-sm mr-3/100 mr-3">
+                <Card variant="elevation" elevation={0} className="item-newTemplate min-h-100 w-full md:w-72 max-w-sm mx-auto">
                     <div className="cardContainer relative w-72">
                         <CardMedia
                             className="h-40 w-full object-cover"

@@ -21,7 +21,7 @@ function SidebarTemplate() {
     }, [])
 
     return (
-        <div className="detail-sidebar-container ml-20 max-h-screen fixed overflow-y-auto">
+        <div className="detail-sidebar-container ml-20 max-h-screen fixed overflow-y-auto mt-10 max-h-90vh w-64">
             <Sidebar>
                 <Menu>
                     <MenuItem className='menu-item font-bold bg-white hover:text-blue-500 hover:bg-blue-500 hover:border-0 rounded-md' style={{ marginBottom: '4px' }}>
