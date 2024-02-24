@@ -1,7 +1,7 @@
 import {
   PipeTransform,
   ArgumentMetadata,
-  BadRequestException,
+  BadRequestException
 } from '@nestjs/common'
 import { ZodSchema } from 'zod'
 
