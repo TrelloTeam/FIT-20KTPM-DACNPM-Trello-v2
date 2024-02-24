@@ -4,7 +4,7 @@ import appRoutes from './app.routes'
 
 @InjectController({
   name: 'core',
-  isCore: true,
+  isCore: true
 })
 export class AppController {
   @InjectRoute(appRoutes.health)

@@ -11,7 +11,7 @@ function generateSalt(characterNumber = 10): Promise<string> {
 
 async function generateWithBcrypt({
   salt,
-  source,
+  source
 }: IBcryptParams): Promise<string> {
   salt = salt || (await generateSalt())
 

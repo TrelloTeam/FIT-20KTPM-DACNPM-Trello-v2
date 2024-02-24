@@ -1,6 +1,6 @@
 const isValidFieldBeforeParse = ({
   data,
-  value,
+  value
 }: {
   data: Record<string, string | number>
   value: string | number
@@ -11,5 +11,5 @@ const isValidFieldBeforeParse = ({
 }
 
 export default {
-  isValidFieldBeforeParse,
+  isValidFieldBeforeParse
 }

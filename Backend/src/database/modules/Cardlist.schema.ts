@@ -1,13 +1,13 @@
-import mongoose, { Model } from 'mongoose'
+import mongoose from 'mongoose'
 import { DbSchemas } from '@trello-v2/shared'
 import { ActivityMSchema } from './Activity.schema'
 const { Schema } = mongoose
 
 export const FeatureMSchema = new Schema<DbSchemas.FeatureSchema.IFeature>(
   {
-    type: { type: String, required: true },
+    type: { type: String, required: true }
   },
-  { strict: false },
+  { strict: false }
 )
 
 export const CardMSchema = new Schema<DbSchemas.CardlistSchema.Card>({
@@ -16,7 +16,7 @@ export const CardMSchema = new Schema<DbSchemas.CardlistSchema.Card>({
   watcher_email: [String],
   archive_at: Date,
   activities: [ActivityMSchema],
-  features: [FeatureMSchema],
+  features: [FeatureMSchema]
 })
 
 export const CardlistMSchema = new Schema<DbSchemas.CardlistSchema.CardList>({
@@ -25,5 +25,5 @@ export const CardlistMSchema = new Schema<DbSchemas.CardlistSchema.CardList>({
   name: String,
   cards: [CardMSchema],
   watcher_email: [String],
-  archive_at: Date,
+  archive_at: Date
 })

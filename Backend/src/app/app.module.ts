@@ -9,6 +9,7 @@ import { TestController } from './test/test.controller'
 import { MongooseModule } from '@nestjs/mongoose'
 import { CardlistModule } from './cardlist/cardlist.module'
 import { CardModule } from './card/card.module'
+import { AuthModule } from './auth/auth.module'
 const EnvSchema = {
   PORT: Joi.number(),
   NODE_ENV: Joi.string(),
@@ -32,7 +33,8 @@ const EnvSchema = {
       'mongodb://MONGO_USER:MONGO_123@localhost:7000/trello?authSource=admin'
     ),
     CardlistModule,
-    CardModule
+    CardModule,
+    AuthModule
   ],
   controllers: [AppController, TestController],
   providers: []

@@ -7,8 +7,7 @@ import {
   ApiResponseOptions,
   ApiTags,
   ApiQuery,
-  ApiParam,
-  ApiExtraModels
+  ApiParam
 } from '@nestjs/swagger'
 
 import type {
@@ -16,7 +15,6 @@ import type {
   ApiParamOptions,
   ApiQueryOptions
 } from '@nestjs/swagger'
-import { ZodObject, ZodType } from 'zod'
 
 export interface ISwaggerParams {
   secure?: boolean
