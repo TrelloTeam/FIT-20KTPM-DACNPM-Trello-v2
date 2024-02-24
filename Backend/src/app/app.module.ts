@@ -1,14 +1,14 @@
-import * as Joi from 'joi'
+import * as Joi from 'joi';
 
-import { WorkspaceModule } from '@/api/workspace/workspace.module'
-import { configuration } from '@/config'
-import { Module } from '@nestjs/common'
-import { ConfigModule } from '@nestjs/config'
-import { MongooseModule } from '@nestjs/mongoose'
+import { configuration } from '@/config';
+import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+import { MongooseModule } from '@nestjs/mongoose';
 
-import { AppController } from './app.controller'
-import { CardlistModule } from './cardlist/cardlist.module'
-import { TestController } from './test/test.controller'
+import { AppController } from './app.controller';
+import { CardlistModule } from './cardlist/cardlist.module';
+import { TestController } from './test/test.controller';
+import { WorkspaceModule } from './workspace/workspace.module';
 
 const EnvSchema = {
   PORT: Joi.number(),
@@ -20,20 +20,20 @@ const EnvSchema = {
   DB_USERNAME: Joi.string().required(),
   DB_PASSWORD: Joi.string().required(),
   JWT_SECRET: Joi.string().required(),
-  JWT_REFRESH_SECRET: Joi.string().required()
-}
+  JWT_REFRESH_SECRET: Joi.string().required(),
+};
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       validationSchema: Joi.object().keys(EnvSchema),
-      load: [configuration]
+      load: [configuration],
     }),
     MongooseModule.forRoot('mongodb://MONGO_USER:MONGO_123@localhost:7000/trello?authSource=admin'),
     CardlistModule,
-    WorkspaceModule
+    WorkspaceModule,
   ],
   controllers: [AppController, TestController],
-  providers: []
+  providers: [],
 })
 export class AppModule {}

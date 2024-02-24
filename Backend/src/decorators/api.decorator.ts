@@ -1,5 +1,5 @@
 // import { LocalAuthGuard } from '@/api/auth/guards'
-import { IS_PUBLIC_KEY, ROLES_KEY } from '@/utils/constants'
+import { IS_PUBLIC_KEY, ROLES_KEY } from '@/utils/constants';
 import {
   applyDecorators,
   createParamDecorator,
@@ -12,32 +12,32 @@ import {
   Put,
   RequestMethod,
   SetMetadata,
-} from '@nestjs/common'
+} from '@nestjs/common';
 
-import { SwaggerApi } from './swagger.decorator'
+import { SwaggerApi } from './swagger.decorator';
 
-import type { CustomDecorator } from '@nestjs/common'
+import type { CustomDecorator } from '@nestjs/common';
 
-import type { UserRole } from '@/common/enums'
+import type { UserRole } from '@/common/enums';
 
-import type { ISwaggerParams } from './swagger.decorator'
+import type { ISwaggerParams } from './swagger.decorator';
 
 export interface IRouteParams {
-  path: string
-  code?: number
-  method: number
-  roles?: UserRole[]
-  jwtSecure?: boolean
-  localSecure?: boolean
-  swaggerInfo?: ISwaggerParams
+  path: string;
+  code?: number;
+  method: number;
+  roles?: UserRole[];
+  jwtSecure?: boolean;
+  localSecure?: boolean;
+  swaggerInfo?: ISwaggerParams;
 }
 
 function Public(): CustomDecorator<string> {
-  return SetMetadata(IS_PUBLIC_KEY, true)
+  return SetMetadata(IS_PUBLIC_KEY, true);
 }
 
 export function UserRoles(roles: UserRole[]): CustomDecorator<string> {
-  return SetMetadata(ROLES_KEY, roles)
+  return SetMetadata(ROLES_KEY, roles);
 }
 
 export function InjectRoute({
@@ -54,32 +54,26 @@ export function InjectRoute({
     [RequestMethod.PUT]: Put,
     [RequestMethod.POST]: Post,
     [RequestMethod.DELETE]: Delete,
-  }
+  };
 
-  const decorators = [
-    methodDecorator[method](path),
-    HttpCode(code),
-    SwaggerApi({ secure: jwtSecure, ...swaggerInfo }),
-  ]
+  const decorators = [methodDecorator[method](path), HttpCode(code), SwaggerApi({ secure: jwtSecure, ...swaggerInfo })];
 
   if (roles.length > 0) {
-    decorators.push(UserRoles(roles))
+    decorators.push(UserRoles(roles));
   }
 
   if (!jwtSecure) {
-    decorators.push(Public())
+    decorators.push(Public());
   }
 
   //   if (localSecure) {
   //     decorators.push(UseGuards(LocalAuthGuard))
   //   }
 
-  return applyDecorators(...decorators)
+  return applyDecorators(...decorators);
 }
 
-export const ReqUser = createParamDecorator(
-  (data: unknown, ctx: ExecutionContext) => {
-    const request = ctx.switchToHttp().getRequest()
-    return request.user
-  },
-)
+export const ReqUser = createParamDecorator((data: unknown, ctx: ExecutionContext) => {
+  const request = ctx.switchToHttp().getRequest();
+  return request.user;
+});
