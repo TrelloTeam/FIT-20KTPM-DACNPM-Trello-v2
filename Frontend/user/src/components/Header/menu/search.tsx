@@ -1,6 +1,4 @@
-import React, { useState } from 'react'
-import TextField from '@mui/material/TextField'
-import Autocomplete from '@mui/material/Autocomplete'
+import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import { Box, ClickAwayListener, Grow, MenuList, Paper, Popper, Typography } from '@mui/material'
