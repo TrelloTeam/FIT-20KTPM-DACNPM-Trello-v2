@@ -19,6 +19,22 @@ import { getSchemaPath } from '@nestjs/swagger'
 export class BoardController {
   constructor(private BoardService: BoardService) {}
 
+  @InjectRoute(BoardRoutes.getAllBoard)
+  @SwaggerApi({
+    responses: [
+      {
+        status: 200,
+        schema: { $ref: getSchemaPath('GetallBoardResponseSchema') }
+      }
+    ]
+  })
+  async getAll(): Promise<TrelloApi.BoardApi.GetallBoardResponse> {
+    const data = await this.BoardService.getAllBoard()
+    return {
+      data: data
+    }
+  }
+
   @InjectRoute(BoardRoutes.getBoardsByWorkspaceId)
   @SwaggerApi({
     params: {
