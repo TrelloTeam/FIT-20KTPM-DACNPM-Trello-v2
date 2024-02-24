@@ -5,9 +5,7 @@ import { Model } from 'mongoose'
 import * as _ from 'lodash'
 
 export abstract class IBoardService {
-  abstract createBoard(
-    data: TrelloApi.BoardApi.CreateBoard
-  ): Promise<DbSchemas.BoardSchema.Board>
+  abstract createBoard(data: TrelloApi.BoardApi.CreateBoard): Promise<DbSchemas.BoardSchema.Board>
 
   abstract getAllBoard(): Promise<DbSchemas.BoardSchema.Board[]>
 }
@@ -15,7 +13,7 @@ export abstract class IBoardService {
 export class BoardService implements IBoardService {
   constructor(
     @InjectModel(DbSchemas.COLLECTION_NAMES[1])
-    private BoardMModel: Model<DbSchemas.BoardSchema.Board>
+    private BoardMModel: Model<DbSchemas.BoardSchema.Board>,
   ) {}
 
   async createBoard(data: TrelloApi.BoardApi.CreateBoard) {
@@ -27,40 +25,27 @@ export class BoardService implements IBoardService {
     return this.BoardMModel.find().exec()
   }
 
-  async getBoardsByWorkspaceId(
-    workspace_id: TrelloApi.BoardApi.getBoardsByWorkspaceIdRequest
-  ) {
+  async getBoardsByWorkspaceId(workspace_id: TrelloApi.BoardApi.getBoardsByWorkspaceIdRequest) {
     return this.BoardMModel.find({ workspace_id: workspace_id }).exec()
   }
 
-  async getBoardInfoByBoardId(
-    board_id: TrelloApi.BoardApi.GetBoardInfoByBoardIdRequest
-  ) {
-    const board = await this.BoardMModel.findById(board_id).exec()
-    return board
+  async getBoardInfoByBoardId(board_id: TrelloApi.BoardApi.GetBoardInfoByBoardIdRequest) {
+    return await this.BoardMModel.findById(board_id).exec()
   }
 
-  async updateBoard(
-    data: Partial<DbSchemas.BoardSchema.Board> & { _id: string }
-  ) {
+  async updateBoard(data: Partial<DbSchemas.BoardSchema.Board> & { _id: string }) {
     const filter = { _id: data._id }
-    const update: Partial<DbSchemas.BoardSchema.Board> = _.pickBy(
-      data,
-      _.identity
-    )
+    const update: Partial<DbSchemas.BoardSchema.Board> = _.pickBy(data, _.identity)
 
-    const result = await this.BoardMModel.findOneAndUpdate(filter, update, {
-      new: true
+    return await this.BoardMModel.findOneAndUpdate(filter, update, {
+      new: true,
     })
-
-    return result
   }
 
   async deleteBoard(board_id: TrelloApi.BoardApi.DeleteBoardRequest) {
-    const board = await this.BoardMModel.findOneAndDelete({
-      _id: board_id
+    return await this.BoardMModel.findOneAndDelete({
+      _id: board_id,
     }).exec()
-    return board
   }
 }
 
@@ -69,29 +54,27 @@ export class BoardService implements IBoardService {
 export class BoardServiceMock implements IBoardService {
   createBoard(data: TrelloApi.BoardApi.CreateBoard) {
     return new Promise<DbSchemas.BoardSchema.Board>((res) => {
-      return res({
+      res({
         ...data,
         _id: 'Mock-id',
         watcher_email: [],
         activities: [],
         members_email: [],
         labels: [],
-        is_star: false
+        is_star: false,
       })
     })
   }
 
   getAllBoard() {
     return new Promise<DbSchemas.BoardSchema.Board[]>((res) => {
-      return res([])
+      res([])
     })
   }
 
-  getBoardInfoByBoardId(
-    board_id: TrelloApi.BoardApi.GetBoardInfoByBoardIdRequest
-  ) {
+  getBoardInfoByBoardId(board_id: TrelloApi.BoardApi.GetBoardInfoByBoardIdRequest) {
     return new Promise<DbSchemas.BoardSchema.Board>((res) => {
-      return res({
+      res({
         _id: board_id,
         watcher_email: [],
         activities: [],
@@ -100,22 +83,22 @@ export class BoardServiceMock implements IBoardService {
         is_star: false,
         workspace_id: 'Mock-id',
         name: '',
-        visibility: 'private'
+        visibility: 'private',
       })
     })
   }
 
   updateBoard(data: DbSchemas.BoardSchema.Board) {
     return new Promise<DbSchemas.BoardSchema.Board>((res) => {
-      return res({
-        ...data
+      res({
+        ...data,
       })
     })
   }
 
   deleteBoard(board_id: TrelloApi.BoardApi.DeleteBoardRequest) {
     return new Promise<DbSchemas.BoardSchema.Board>((res) => {
-      return res({
+      res({
         _id: board_id,
         watcher_email: [],
         activities: [],
@@ -124,7 +107,7 @@ export class BoardServiceMock implements IBoardService {
         is_star: false,
         workspace_id: 'Mock-id',
         name: '',
-        visibility: 'private'
+        visibility: 'private',
       })
     })
   }

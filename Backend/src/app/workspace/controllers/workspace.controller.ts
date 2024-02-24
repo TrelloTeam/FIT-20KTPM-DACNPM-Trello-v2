@@ -1,10 +1,10 @@
-import { InjectController, InjectRoute } from '@/decorators';
-import { ZodValidationPipe } from '@/pipes';
-import { Body, InternalServerErrorException, Param } from '@nestjs/common';
-import { TrelloApi } from '@trello-v2/shared';
+import { InjectController, InjectRoute } from '@/decorators'
+import { ZodValidationPipe } from '@/pipes'
+import { Body, InternalServerErrorException, Param } from '@nestjs/common'
+import { TrelloApi } from '@trello-v2/shared'
 
-import workspaceRoutes from '../workspace.routes';
-import { WorkspaceService } from '../workspace.service';
+import workspaceRoutes from '../workspace.routes'
+import { WorkspaceService } from '../workspace.service'
 
 @InjectController({
   name: workspaceRoutes.index,
@@ -15,8 +15,8 @@ export class WorkspaceController {
 
   @InjectRoute(workspaceRoutes.getAll)
   async getAll(): Promise<TrelloApi.WorkspaceApi.GetallWorkspaceResponse> {
-    const data = await this.workspaceService.getAllWorkspaces();
-    return { data };
+    const data = await this.workspaceService.getAllWorkspaces()
+    return { data }
   }
 
   @InjectRoute(workspaceRoutes.createWorkspace)
@@ -24,13 +24,13 @@ export class WorkspaceController {
     @Body(new ZodValidationPipe(TrelloApi.WorkspaceApi.CreateWorkspaceRequestSchema))
     body: TrelloApi.WorkspaceApi.CreateWorspaceRequest,
   ): Promise<TrelloApi.WorkspaceApi.CreateWorspaceResponse> {
-    const workspaceData = await this.workspaceService.createWorkspace(body);
+    const workspaceData = await this.workspaceService.createWorkspace(body)
 
-    if (!workspaceData || !workspaceData._id) throw new InternalServerErrorException("Can't create workspace");
+    if (!workspaceData._id) throw new InternalServerErrorException("Can't create workspace")
 
     return {
       data: workspaceData,
-    };
+    }
   }
 
   @InjectRoute(workspaceRoutes.updateWorkspaceInfo)
@@ -39,11 +39,11 @@ export class WorkspaceController {
     @Body(new ZodValidationPipe(TrelloApi.WorkspaceApi.UpdateWorkspaceInfoResponseSchema))
     body: TrelloApi.WorkspaceApi.UpdateWorkspaceInfoRequest,
   ): Promise<TrelloApi.WorkspaceApi.UpdateWorkspaceInfoResponse> {
-    const workspaceUpdated = await this.workspaceService.updateWorkspaceInfo(body, id);
+    const workspaceUpdated = await this.workspaceService.updateWorkspaceInfo(body, id)
 
-    if (!workspaceUpdated) throw new InternalServerErrorException("Can't update workspace infomation");
+    if (!workspaceUpdated) throw new InternalServerErrorException("Can't update workspace infomation")
 
-    return { data: workspaceUpdated };
+    return { data: workspaceUpdated }
   }
 
   @InjectRoute(workspaceRoutes.changeWorkspaceVisibility)
@@ -52,10 +52,10 @@ export class WorkspaceController {
     @Body(new ZodValidationPipe(TrelloApi.WorkspaceApi.ChangeWorkspaceVisibilityRequestSchema))
     body: TrelloApi.WorkspaceApi.ChangeWorkspaceVisibilityRequest,
   ): Promise<TrelloApi.WorkspaceApi.ChangeWorkspaceVisibilityResponse> {
-    const workspaceUpdated = await this.workspaceService.changeWorkspaceVisibility(body, id);
+    const workspaceUpdated = await this.workspaceService.changeWorkspaceVisibility(body, id)
 
-    if (!workspaceUpdated) throw new InternalServerErrorException("Can't update workspace infomation");
+    if (!workspaceUpdated) throw new InternalServerErrorException("Can't update workspace infomation")
 
-    return { data: workspaceUpdated };
+    return { data: workspaceUpdated }
   }
 }

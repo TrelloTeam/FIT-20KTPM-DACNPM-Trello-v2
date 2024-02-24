@@ -6,16 +6,16 @@ import { TestApi } from '@trello-v2/shared'
 
 @InjectController({
   name: 'core',
-  isCore: true
+  isCore: true,
 })
 export class TestController {
   @InjectRoute(appRoutes.testApi)
   getTestApi(
     @Query(new ZodValidationPipe(TestApi.TestApiQuerySchema))
-    query: TestApi.TestApiQuery
+    query: TestApi.TestApiQuery,
   ): TestApi.TestApiResponse {
     return {
-      Hello: query.name
+      Hello: query.name,
     }
   }
 }

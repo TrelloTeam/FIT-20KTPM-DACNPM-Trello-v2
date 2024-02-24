@@ -10,35 +10,29 @@ import { DbSchemas } from '@trello-v2/shared'
 export const CardlistMModule = MongooseModule.forFeature([
   {
     name: DbSchemas.COLLECTION_NAMES[0],
-    schema: CardlistMSchema.CardlistMSchema
-  }
+    schema: CardlistMSchema.CardlistMSchema,
+  },
 ])
 
 export const BoardMModule = MongooseModule.forFeature([
   {
     name: DbSchemas.COLLECTION_NAMES[1],
-    schema: BoardMSchema.BoardMSchema
-  }
+    schema: BoardMSchema.BoardMSchema,
+  },
 ])
 
 export const WorkspaceMModule = MongooseModule.forFeature([
   {
     name: DbSchemas.COLLECTION_NAMES[2],
-    schema: WorkspaceMschema.WorkspaceMSchema
-  }
+    schema: WorkspaceMschema.WorkspaceMSchema,
+  },
 ])
 
 export const UserMModule = MongooseModule.forFeature([
   {
     name: DbSchemas.COLLECTION_NAMES[3],
-    schema: UserMschema.UserMSchema
-  }
+    schema: UserMschema.UserMSchema,
+  },
 ])
 
-export {
-  ActivityMSchema,
-  CardlistMSchema,
-  BoardMSchema,
-  WorkspaceMschema,
-  UserMschema
-}
+export { ActivityMSchema, CardlistMSchema, BoardMSchema, WorkspaceMschema, UserMschema }

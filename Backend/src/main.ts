@@ -5,7 +5,7 @@ import { ZodType } from 'zod'
 import zodToJsonSchema from 'zod-to-json-schema'
 
 function GenerateSwaggerSchema() {
-  const schemas: { [key: string]: object } = {}
+  const schemas: Record<string, object> = {}
   Object.values(TrelloApi).forEach((api) => {
     Object.entries(api).forEach(([name, schema]) => {
       if (schema instanceof ZodType) {
@@ -22,12 +22,12 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config)
   document.components.schemas = {
     ...document.components.schemas,
-    ...GenerateSwaggerSchema()
+    ...GenerateSwaggerSchema(),
   }
   SwaggerModule.setup('swagger', app, document)
   const PORT = process.env.PORT || 3000
-  return app.listen(PORT, () =>
+  return app.listen(PORT, () => {
     console.log(`Server are running on http://localhost:${PORT}`)
-  )
+  })
 }
 bootstrap()

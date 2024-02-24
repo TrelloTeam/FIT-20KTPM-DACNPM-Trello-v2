@@ -6,6 +6,6 @@ import { BoardMModule, CardlistMModule } from '@/database/modules'
 @Module({
   imports: [CardlistMModule, BoardMModule],
   controllers: [CardlistController],
-  providers: [CardlistService]
+  providers: [CardlistService],
 })
 export class CardlistModule {}

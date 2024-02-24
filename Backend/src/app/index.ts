@@ -8,9 +8,7 @@ import type { INestApplication } from '@nestjs/common'
 export const initApplication = async (): Promise<INestApplication> => {
   const logLevels: LogLevel[] = ['error', 'log', 'warn', 'verbose', 'debug']
 
-  const app = await NestFactory.create(AppModule, {
-    logger: logLevels
+  return await NestFactory.create(AppModule, {
+    logger: logLevels,
   })
-
-  return app
 }

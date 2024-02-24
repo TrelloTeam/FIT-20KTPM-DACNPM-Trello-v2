@@ -14,11 +14,11 @@ export const config = {
 
     logging: true,
     synchronize: false,
-    autoLoadEntities: true
+    autoLoadEntities: true,
   },
   jwt: {
     secret: process.env.JWT_SECRET,
-    refreshSecret: process.env.JWT_REFRESH_SECRET
+    refreshSecret: process.env.JWT_REFRESH_SECRET,
   },
   swagger: {
     siteTitle: 'Basic NestJS Template | Documentation',
@@ -31,13 +31,13 @@ export const config = {
       scheme: 'Bearer',
       bearerFormat: 'Bearer',
       name: 'Authorization',
-      description: 'Please enter JWT token'
-    }
+      description: 'Please enter JWT token',
+    },
   },
   token: {
     authentication: {
       lifetime: 30 * Time.ONE_DAY,
-      renewedTimes: 4
-    }
-  }
+      renewedTimes: 4,
+    },
+  },
 }

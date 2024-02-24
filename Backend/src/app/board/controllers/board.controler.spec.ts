@@ -9,7 +9,7 @@ describe('BoardController', () => {
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
       controllers: [BoardController],
-      providers: [BoardService]
+      providers: [BoardService],
     })
       .overrideProvider(BoardService)
       .useValue(new BoardServiceMock())
@@ -21,9 +21,7 @@ describe('BoardController', () => {
   describe('Board:Get all boards', () => {
     it('Return all boards', async () => {
       const data = await controller.getAll()
-      expect(
-        TrelloApi.BoardApi.GetallBoardResponseSchema.safeParse(data).success
-      ).toBeTruthy()
+      expect(TrelloApi.BoardApi.GetallBoardResponseSchema.safeParse(data).success).toBeTruthy()
     })
   })
 })

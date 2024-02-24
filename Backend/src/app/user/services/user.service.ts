@@ -5,7 +5,7 @@ import { Model } from 'mongoose'
 export class UserService {
   constructor(
     @InjectModel(DbSchemas.COLLECTION_NAMES[3])
-    private UserMModel: Model<DbSchemas.UserSchema.User>
+    private UserMModel: Model<DbSchemas.UserSchema.User>,
   ) {}
 
   async createUser(data: TrelloApi.UserApi.CreateUserRequest) {
@@ -21,16 +21,13 @@ export class UserService {
     return this.UserMModel.findById(id)
   }
 
-  async updateUser(
-    id: number | string,
-    data: TrelloApi.UserApi.UpdateUserRequest
-  ) {
+  async updateUser(id: number | string, data: TrelloApi.UserApi.UpdateUserRequest) {
     const user = await this.UserMModel.findOneAndUpdate(
       {
-        _id: id
+        _id: id,
       },
       data,
-      { upsert: true, new: true }
+      { upsert: true, new: true },
     )
 
     if (!user) return null

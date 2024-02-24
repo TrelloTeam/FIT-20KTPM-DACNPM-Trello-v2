@@ -1,8 +1,8 @@
-import path from 'path';
+import path from 'path'
 
-import { IRouteParams } from '@/decorators';
-import { HttpStatus, RequestMethod } from '@nestjs/common';
-import { getSchemaPath } from '@nestjs/swagger';
+import { IRouteParams } from '@/decorators'
+import { HttpStatus, RequestMethod } from '@nestjs/common'
+import { getSchemaPath } from '@nestjs/swagger'
 
 export default {
   index: 'workspace',
@@ -34,4 +34,4 @@ export default {
       responses: [{ status: HttpStatus.OK, schema: { $ref: getSchemaPath('UpdateWorkspaceInfoResponseSchema') } }],
     },
   },
-};
+}
