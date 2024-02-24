@@ -8,6 +8,11 @@ export abstract class IWorkspaceService {
   abstract createWorkspace(body: TrelloApi.WorkspaceApi.CreateWorspaceRequest): Promise<DbSchemas.WorkspaceSchema.Workspace>;
   abstract updateWorkspaceInfo(
     body: TrelloApi.WorkspaceApi.UpdateWorkspaceInfoRequest,
+    workspace_id: String,
+  ): Promise<DbSchemas.WorkspaceSchema.Workspace | null>;
+  abstract changeWorkspaceVisibility(
+    body: TrelloApi.WorkspaceApi.ChangeWorkspaceVisibilityRequest,
+    workspace_id: String,
   ): Promise<DbSchemas.WorkspaceSchema.Workspace | null>;
 }
 
@@ -16,12 +21,36 @@ export class WorkspaceService implements IWorkspaceService {
     @InjectModel(DbSchemas.COLLECTION_NAMES[2])
     private readonly workspaceModel: Model<DbSchemas.WorkspaceSchema.Workspace>,
   ) {}
-
-  async updateWorkspaceInfo(body: TrelloApi.WorkspaceApi.UpdateWorkspaceInfoRequest): Promise<DbSchemas.WorkspaceSchema.Workspace | null> {
+  async changeWorkspaceVisibility(
+    body: TrelloApi.WorkspaceApi.ChangeWorkspaceVisibilityRequest,
+    workspace_id: String,
+  ): Promise<DbSchemas.WorkspaceSchema.Workspace | null> {
     const res = await this.workspaceModel
       .findOneAndUpdate(
         {
-          _id: body._id,
+          _id: workspace_id,
+        },
+
+        {
+          $set: { ...body },
+        },
+        { new: true },
+      )
+      .exec();
+
+    if (!res) return null;
+
+    return res.toJSON();
+  }
+
+  async updateWorkspaceInfo(
+    body: TrelloApi.WorkspaceApi.UpdateWorkspaceInfoRequest,
+    workspace_id: String,
+  ): Promise<DbSchemas.WorkspaceSchema.Workspace | null> {
+    const res = await this.workspaceModel
+      .findOneAndUpdate(
+        {
+          _id: workspace_id,
         },
 
         {
@@ -48,6 +77,9 @@ export class WorkspaceService implements IWorkspaceService {
 }
 
 export class WorkspaceServiceMock implements IWorkspaceService {
+  changeWorkspaceVisibility(body: TrelloApi.WorkspaceApi.ChangeWorkspaceVisibilityRequest): Promise<DbSchemas.WorkspaceSchema.Workspace> {
+    throw new Error('Method not implemented.');
+  }
   updateWorkspaceInfo(body: {
     name?: string | undefined;
     visibility?: 'private' | 'public' | undefined;

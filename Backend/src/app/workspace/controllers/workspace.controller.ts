@@ -1,6 +1,6 @@
 import { InjectController, InjectRoute } from '@/decorators';
 import { ZodValidationPipe } from '@/pipes';
-import { Body, InternalServerErrorException } from '@nestjs/common';
+import { Body, InternalServerErrorException, Param } from '@nestjs/common';
 import { TrelloApi } from '@trello-v2/shared';
 
 import workspaceRoutes from '../workspace.routes';
@@ -35,10 +35,24 @@ export class WorkspaceController {
 
   @InjectRoute(workspaceRoutes.updateWorkspaceInfo)
   async updateWorkspaceInfo(
+    @Param('id') id: string,
     @Body(new ZodValidationPipe(TrelloApi.WorkspaceApi.UpdateWorkspaceInfoResponseSchema))
     body: TrelloApi.WorkspaceApi.UpdateWorkspaceInfoRequest,
   ): Promise<TrelloApi.WorkspaceApi.UpdateWorkspaceInfoResponse> {
-    const workspaceUpdated = await this.workspaceService.updateWorkspaceInfo(body);
+    const workspaceUpdated = await this.workspaceService.updateWorkspaceInfo(body, id);
+
+    if (!workspaceUpdated) throw new InternalServerErrorException("Can't update workspace infomation");
+
+    return { data: workspaceUpdated };
+  }
+
+  @InjectRoute(workspaceRoutes.changeWorkspaceVisibility)
+  async changeWorkspaceVisibility(
+    @Param('id') id: string,
+    @Body(new ZodValidationPipe(TrelloApi.WorkspaceApi.ChangeWorkspaceVisibilityRequestSchema))
+    body: TrelloApi.WorkspaceApi.ChangeWorkspaceVisibilityRequest,
+  ): Promise<TrelloApi.WorkspaceApi.ChangeWorkspaceVisibilityResponse> {
+    const workspaceUpdated = await this.workspaceService.changeWorkspaceVisibility(body, id);
 
     if (!workspaceUpdated) throw new InternalServerErrorException("Can't update workspace infomation");
 
