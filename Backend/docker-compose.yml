@@ -1,33 +1,20 @@
 version: '3.8'
 services:
-  db:
-    image: postgres:latest
-    container_name: postgres
-    volumes:
-      - ./data/postgres:/var/lib/postgresql/data
-    env_file:
-      - .env
+  mongo:
+    image: mongo
+    restart: always
     ports:
-      - '${POSTGRES_PORT}:${POSTGRES_PORT}'
-    restart: unless-stopped
-    networks:
-      - postgres
+      - 7000:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: MONGO_USER
+      MONGO_INITDB_ROOT_PASSWORD: MONGO_123
 
-  app:
-    image: server:latest
-    container_name: app
-    volumes:
-      - ./:/app
-    env_file:
-      - .env
+  mongo-express:
+    image: mongo-express:1.0.2-20-alpine3.19
+    restart: always
     ports:
-      - '${PORT}:${PORT}'
-    depends_on:
-      - db
-    restart: unless-stopped
-    networks:
-      - postgres
-
-networks:
-  postgres:
-    driver: bridge
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: MONGO_USER
+      ME_CONFIG_MONGODB_ADMINPASSWORD: MONGO_123
+      ME_CONFIG_MONGODB_URL: mongodb://MONGO_USER:MONGO_123@mongo:27017/
