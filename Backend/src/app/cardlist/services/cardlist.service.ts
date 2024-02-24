@@ -1,3 +1,6 @@
+import { Model } from 'mongoose'
+import { objectOutputType, ZodString, ZodTypeAny } from 'zod'
+
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose';
 import { objectOutputType, ZodString, ZodTypeAny } from 'zod';
@@ -10,6 +13,11 @@ export abstract class ICardlistService {
   abstract copyCardlist(
     data: TrelloApi.CardlistApi.CopyCardlistRequest
   ): Promise<DbSchemas.CardlistSchema.CardList>
+
+  abstract copyCardlist(
+    data: TrelloApi.CardlistApi.CopyCardlistRequest
+  ): Promise<DbSchemas.CardlistSchema.CardList>
+
 
   abstract updateCardlist(
     data: TrelloApi.CardlistApi.UpdateCardlistRequest

@@ -12,8 +12,9 @@ import {
   Post,
   Put,
   RequestMethod,
-  SetMetadata
-} from '@nestjs/common'
+  SetMetadata,
+} from '@nestjs/common';
+
 
 import { SwaggerApi } from './swagger.decorator';
 
@@ -55,8 +56,8 @@ export function InjectRoute({
     [RequestMethod.PUT]: Put,
     [RequestMethod.POST]: Post,
     [RequestMethod.DELETE]: Delete,
-    [RequestMethod.PATCH]: Patch
-  }
+    [RequestMethod.PATCH]: Patch,
+  };
 
   const decorators = [
     methodDecorator[method](path),

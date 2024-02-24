@@ -1,4 +1,4 @@
-import mongoose, { Model } from 'mongoose'
+import mongoose from 'mongoose'
 import { DbSchemas } from '@trello-v2/shared'
 import { ActivityMSchema } from './Activity.schema'
 const { Schema } = mongoose
