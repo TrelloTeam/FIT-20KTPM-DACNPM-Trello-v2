@@ -4,9 +4,7 @@ import { TrelloApi } from '@trello-v2/shared'
 import { Model } from 'mongoose'
 
 export abstract class ICardlistService {
-  abstract createCardlist(
-    data: TrelloApi.CardlistApi.CreateCardlistRequest
-  ): Promise<DbSchemas.CardlistSchema.CardList>
+  abstract createCardlist(data: TrelloApi.CardlistApi.CreateCardlistRequest): Promise<DbSchemas.CardlistSchema.CardList>
 
   abstract getAllCardlist(): Promise<DbSchemas.CardlistSchema.CardList[]>
 }
@@ -14,7 +12,7 @@ export abstract class ICardlistService {
 export class CardlistService implements ICardlistService {
   constructor(
     @InjectModel(DbSchemas.COLLECTION_NAMES[0])
-    private CardlistMModel: Model<DbSchemas.CardlistSchema.CardList>
+    private CardlistMModel: Model<DbSchemas.CardlistSchema.CardList>,
   ) {}
 
   async createCardlist(data: TrelloApi.CardlistApi.CreateCardlistRequest) {

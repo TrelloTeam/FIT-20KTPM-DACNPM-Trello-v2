@@ -5,7 +5,7 @@ import { Request, Response } from 'express'
 
 @InjectController({
   name: 'auth',
-  isCore: true
+  isCore: true,
 })
 export class AuthController {
   @InjectRoute(AuthRoutes.redirect)
@@ -15,7 +15,7 @@ export class AuthController {
       headers: req.headers,
       query: req.query,
       params: req.params,
-      url: req.originalUrl
+      url: req.originalUrl,
     })
   }
 }

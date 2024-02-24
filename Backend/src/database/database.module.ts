@@ -7,8 +7,8 @@ import { TypeOrmModule } from '@nestjs/typeorm'
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (configService: ConfigService) => configService.get('db')
-    })
-  ]
+      useFactory: (configService: ConfigService) => configService.get('db'),
+    }),
+  ],
 })
 export class DatabaseModule {}

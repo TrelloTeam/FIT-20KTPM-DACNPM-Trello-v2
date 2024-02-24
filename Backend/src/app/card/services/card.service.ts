@@ -5,15 +5,13 @@ import { Model } from 'mongoose'
 export class CardService {
   constructor(
     @InjectModel(DbSchemas.COLLECTION_NAMES[0])
-    private CardlistMModel: Model<DbSchemas.CardlistSchema.CardList>
+    private CardlistMModel: Model<DbSchemas.CardlistSchema.CardList>,
   ) {}
 
-  async getAllCardsOfCardlist(
-    data: TrelloApi.CardApi.GetCardsOfCardlistRequest
-  ) {
+  async getAllCardsOfCardlist(data: TrelloApi.CardApi.GetCardsOfCardlistRequest) {
     const cardlist = await this.CardlistMModel.findById(data.cardlist_id, {
       'cards.activities': 0,
-      'cards.features': 0
+      'cards.features': 0,
     })
     return cardlist ? cardlist.toJSON() : null
   }
@@ -26,7 +24,7 @@ export class CardService {
       index: data.index,
       watcher_email: [],
       activities: [],
-      features: []
+      features: [],
     })
     await cardlist.save()
 
@@ -36,32 +34,28 @@ export class CardService {
 
   async getCardDetail(data: TrelloApi.CardApi.GetCardDetailRequest) {
     const cardlist = await this.CardlistMModel.findById(data.cardlist_id, {
-      cards: { $elemMatch: { _id: data.card_id } }
+      cards: { $elemMatch: { _id: data.card_id } },
     })
     const cardlistJson = cardlist?.toJSON()
-    return cardlistJson && cardlistJson.cards.length >= 0
-      ? cardlistJson.cards[0]
-      : null
+    return cardlistJson && cardlistJson.cards.length >= 0 ? cardlistJson.cards[0] : null
   }
 
   async updateCardDetail(data: TrelloApi.CardApi.UpdateCardDetailRequest) {
     const res = await this.CardlistMModel.findOneAndUpdate(
       {
         _id: data.cardlist_id,
-        cards: { $elemMatch: { _id: data.card_id } }
+        cards: { $elemMatch: { _id: data.card_id } },
       },
       {
         $set: {
           ...(data.name ? { 'cards.$.name': data.name } : {}),
-          ...(data.cover ? { 'cards.$.cover': data.cover } : {})
-        }
+          ...(data.cover ? { 'cards.$.cover': data.cover } : {}),
+        },
       },
-      { new: true }
+      { new: true },
     ).exec()
     if (!res) return null
-    const newCard = res
-      .toJSON()
-      .cards.find((c) => c._id?.toString() === data.card_id)
+    const newCard = res.toJSON().cards.find((c) => c._id?.toString() === data.card_id)
     return newCard ? newCard : null
   }
 
@@ -69,18 +63,16 @@ export class CardService {
     const res = await this.CardlistMModel.findOneAndUpdate(
       {
         _id: data.cardlist_id,
-        cards: { $elemMatch: { _id: data.card_id } }
+        cards: { $elemMatch: { _id: data.card_id } },
       },
       {
         $push: {
-          'cards.$.features': data.feature
-        }
+          'cards.$.features': data.feature,
+        },
       },
-      { new: true }
+      { new: true },
     ).exec()
-    const newCard = res
-      ?.toJSON()
-      .cards.find((e) => e._id?.toString() === data.card_id)
+    const newCard = res?.toJSON().cards.find((e) => e._id?.toString() === data.card_id)
     return newCard ? newCard.features[newCard.features.length - 1] : null
   }
 
@@ -90,19 +82,19 @@ export class CardService {
         _id: data.cardlist_id,
         cards: {
           $elemMatch: {
-            features: { $elemMatch: { _id: data.feature._id } }
-          }
-        }
+            features: { $elemMatch: { _id: data.feature._id } },
+          },
+        },
       },
       {
         $set: {
-          'cards.$[i].features.$[j]': { ...data.feature }
-        }
+          'cards.$[i].features.$[j]': { ...data.feature },
+        },
       },
       {
         new: true,
-        arrayFilters: [{ 'i._id': data.card_id }, { 'j._id': data.feature._id }]
-      }
+        arrayFilters: [{ 'i._id': data.card_id }, { 'j._id': data.feature._id }],
+      },
     )
     const feature = res
       ?.toJSON()
@@ -115,37 +107,31 @@ export class CardService {
     const res = await this.CardlistMModel.findOneAndUpdate(
       {
         _id: data.cardlist_id,
-        cards: { $elemMatch: { _id: data.card_id } }
+        cards: { $elemMatch: { _id: data.card_id } },
       },
       {
-        $push: { 'cards.$.watcher_email': data.watcher_email }
+        $push: { 'cards.$.watcher_email': data.watcher_email },
       },
-      { new: true, fields: { 'cards.features': 0, 'cards.activities': 0 } }
+      { new: true, fields: { 'cards.features': 0, 'cards.activities': 0 } },
     )
-    const card = res
-      ?.toJSON()
-      .cards.find((e) => e._id?.toString() === data.card_id)
+    const card = res?.toJSON().cards.find((e) => e._id?.toString() === data.card_id)
     return card ? card : null
   }
 
-  async deleteWatcherFromCard(
-    data: TrelloApi.CardApi.DeleteWatcherToCardRequest
-  ) {
+  async deleteWatcherFromCard(data: TrelloApi.CardApi.DeleteWatcherToCardRequest) {
     const res = await this.CardlistMModel.findOneAndUpdate(
       {
         _id: data.cardlist_id,
-        cards: { $elemMatch: { _id: data.card_id } }
+        cards: { $elemMatch: { _id: data.card_id } },
       },
       {
         $pullAll: {
-          'cards.$.watcher_email': [data.watcher_email]
-        }
+          'cards.$.watcher_email': [data.watcher_email],
+        },
       },
-      { new: true, fields: { 'cards.features': 0, 'cards.activities': 0 } }
+      { new: true, fields: { 'cards.features': 0, 'cards.activities': 0 } },
     )
-    const card = res
-      ?.toJSON()
-      .cards.find((e) => e._id?.toString() === data.card_id)
+    const card = res?.toJSON().cards.find((e) => e._id?.toString() === data.card_id)
     return card ? card : null
   }
 
@@ -153,14 +139,12 @@ export class CardService {
     const res = await this.CardlistMModel.findOneAndUpdate(
       {
         _id: data.cardlist_id,
-        cards: { $elemMatch: { _id: data.card_id } }
+        cards: { $elemMatch: { _id: data.card_id } },
       },
       { $set: { 'cards.$.archive_at': new Date().toISOString() } },
-      { new: true, fields: { 'cards.features': 0, 'cards.activities': 0 } }
+      { new: true, fields: { 'cards.features': 0, 'cards.activities': 0 } },
     )
-    const card = res
-      ?.toJSON()
-      .cards.find((e) => e._id?.toString() === data.card_id)
+    const card = res?.toJSON().cards.find((e) => e._id?.toString() === data.card_id)
     return card ? card : null
   }
 
@@ -168,14 +152,12 @@ export class CardService {
     const res = await this.CardlistMModel.findOneAndUpdate(
       {
         _id: data.cardlist_id,
-        cards: { $elemMatch: { _id: data.card_id } }
+        cards: { $elemMatch: { _id: data.card_id } },
       },
       { $unset: { 'cards.$.archive_at': 1 } },
-      { new: true, fields: { 'cards.features': 0, 'cards.activities': 0 } }
+      { new: true, fields: { 'cards.features': 0, 'cards.activities': 0 } },
     )
-    const card = res
-      ?.toJSON()
-      .cards.find((e) => e._id?.toString() === data.card_id)
+    const card = res?.toJSON().cards.find((e) => e._id?.toString() === data.card_id)
     return card ? card : null
   }
 
@@ -186,14 +168,13 @@ export class CardService {
       'cards.watcher_email': 0,
       'cards.archive_at': 0,
       'cards.cover': 0,
-      'cards.description': 0
+      'cards.description': 0,
     })
     if (!cardlist) return null
 
     for (let i = 0; i < cardlist.cards.length; i++) {
       const id = cardlist.cards[i]._id
-      if (id && typeof data.cards_data[id] === 'number')
-        cardlist.cards[i].index = data.cards_data[id]
+      if (id && typeof data.cards_data[id] === 'number') cardlist.cards[i].index = data.cards_data[id]
     }
     await cardlist.save()
     return cardlist.toJSON().cards

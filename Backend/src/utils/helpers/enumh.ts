@@ -1,10 +1,4 @@
-function getKeyByValue<E>({
-  data,
-  value
-}: {
-  data: E
-  value: string | number
-}): string {
+function getKeyByValue<E>({ data, value }: { data: E; value: string | number }): string {
   return Object.entries(data)
     .filter((elm) => isNaN(Number(elm[0])))
     .find((elm) => elm[1]?.toString() === value?.toString())?.[0]
@@ -28,5 +22,5 @@ export default {
   getFirstKey,
   getKeyByValue,
   convertToRegex,
-  getValuesAndToString
+  getValuesAndToString,
 }

@@ -22,12 +22,10 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config)
   document.components.schemas = {
     ...document.components.schemas,
-    ...GenerateSwaggerSchema()
+    ...GenerateSwaggerSchema(),
   }
   SwaggerModule.setup('swagger', app, document)
   const PORT = process.env.PORT || 3000
-  return app.listen(PORT, () =>
-    console.log(`Server are running on http://localhost:${PORT}`)
-  )
+  return app.listen(PORT, () => console.log(`Server are running on http://localhost:${PORT}`))
 }
 bootstrap()

@@ -9,7 +9,7 @@ import { getSchemaPath } from '@nestjs/swagger'
 
 @InjectController({
   name: 'cardlist',
-  isCore: true
+  isCore: true,
 })
 export class CardlistController {
   constructor(private cardlistService: CardlistService) {}
@@ -19,14 +19,14 @@ export class CardlistController {
     responses: [
       {
         status: 200,
-        schema: { $ref: getSchemaPath('GetallCardlistResponseSchema') }
-      }
-    ]
+        schema: { $ref: getSchemaPath('GetallCardlistResponseSchema') },
+      },
+    ],
   })
   async getAll(): Promise<TrelloApi.CardlistApi.GetallCardlistResponse> {
     const data = await this.cardlistService.getAllCardlist()
     return {
-      data: data
+      data: data,
     }
   }
 
@@ -36,19 +36,17 @@ export class CardlistController {
     responses: [
       {
         status: 200,
-        schema: { $ref: getSchemaPath('CreateCardlistResponseSchema') }
-      }
-    ]
+        schema: { $ref: getSchemaPath('CreateCardlistResponseSchema') },
+      },
+    ],
   })
   async create(
-    @Body(
-      new ZodValidationPipe(TrelloApi.CardlistApi.CreateCardlistRequestSchema)
-    )
-    body: TrelloApi.CardlistApi.CreateCardlistRequest
+    @Body(new ZodValidationPipe(TrelloApi.CardlistApi.CreateCardlistRequestSchema))
+    body: TrelloApi.CardlistApi.CreateCardlistRequest,
   ): Promise<TrelloApi.CardlistApi.CreateCardlistResponse> {
     const data = await this.cardlistService.createCardlist(body)
     return {
-      data: data
+      data: data,
     }
   }
 }
