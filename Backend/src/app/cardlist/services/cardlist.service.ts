@@ -2,7 +2,6 @@ import { InjectModel } from '@nestjs/mongoose'
 import { DbSchemas } from '@trello-v2/shared'
 import { TrelloApi } from '@trello-v2/shared'
 import { Model } from 'mongoose'
-import { objectOutputType, ZodString, ZodTypeAny } from 'zod'
 
 export abstract class ICardlistService {
   abstract createCardlist(
