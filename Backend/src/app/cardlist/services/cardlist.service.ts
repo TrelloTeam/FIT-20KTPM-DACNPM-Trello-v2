@@ -16,6 +16,9 @@ export abstract class ICardlistService {
   abstract updateCardlist(
     data: TrelloApi.CardlistApi.UpdateCardlistRequest
   ): Promise<DbSchemas.CardlistSchema.CardList>
+  abstract moveCardlist(
+    data: TrelloApi.CardlistApi.MoveCardlistRequest
+  ): Promise<DbSchemas.CardlistSchema.CardList>
   abstract getAllCardlist(): Promise<DbSchemas.CardlistSchema.CardList[]>
 
   abstract getAllCardlistByBoardId(
@@ -85,6 +88,22 @@ export class CardlistService implements ICardlistService {
     }
     if (data.archive_at) {
       cardlist.archive_at = data.archive_at
+    }
+    if (data.index) {
+      cardlist.index = data.index
+    }
+    return cardlist.save()
+  }
+
+  async moveCardlist(
+    data: TrelloApi.CardlistApi.MoveCardlistRequest
+  ): Promise<DbSchemas.CardlistSchema.CardList> {
+    const cardlist = await this.CardlistMModel.findById(data._id)
+    if (!cardlist) {
+      return { status: 'Not Found', msg: "Can't find any cardlist" } as any
+    }
+    if (data.board_id) {
+      cardlist.board_id = data.board_id
     }
     if (data.index) {
       cardlist.index = data.index
@@ -185,6 +204,19 @@ export class CardlistServiceMock implements ICardlistService {
 
   updateCardlist(
     data: TrelloApi.CardlistApi.UpdateCardlistRequest
+  ): Promise<DbSchemas.CardlistSchema.CardList> {
+    return new Promise<DbSchemas.CardlistSchema.CardList>((res) => {
+      return res({
+        ...data,
+        board_id: 'Mock-id',
+        watcher_email: [],
+        cards: [],
+        name: 'Mock-name'
+      })
+    })
+  }
+  moveCardlist(
+    data: TrelloApi.CardlistApi.MoveCardlistRequest
   ): Promise<DbSchemas.CardlistSchema.CardList> {
     return new Promise<DbSchemas.CardlistSchema.CardList>((res) => {
       return res({

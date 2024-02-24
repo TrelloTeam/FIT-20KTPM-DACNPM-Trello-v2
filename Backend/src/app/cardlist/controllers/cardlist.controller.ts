@@ -197,4 +197,26 @@ export class CardlistController {
       data: data
     }
   }
+
+  @InjectRoute(CardlistRoutes.moveCardlists)
+  @SwaggerApi({
+    body: { schema: { $ref: getSchemaPath('MoveCardlistRequestSchema') } },
+    responses: [
+      {
+        status: 200,
+        schema: { $ref: getSchemaPath('MoveCardlistResponseSchema') }
+      }
+    ]
+  })
+  async move(
+    @Body(
+      new ZodValidationPipe(TrelloApi.CardlistApi.MoveCardlistRequestSchema)
+    )
+    body: TrelloApi.CardlistApi.MoveCardlistRequest
+  ): Promise<TrelloApi.CardlistApi.MoveCardlistResponse> {
+    const data = await this.cardlistService.moveCardlist(body)
+    return {
+      data: data
+    }
+  }
 }

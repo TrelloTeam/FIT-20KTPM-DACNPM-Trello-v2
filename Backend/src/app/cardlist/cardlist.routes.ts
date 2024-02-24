@@ -17,6 +17,11 @@ export const CardlistRoutes = {
     method: RequestMethod.PUT,
     jwtSecure: false
   } as IRouteParams,
+  moveCardlists: {
+    path: '/api/cardlist/move',
+    method: RequestMethod.PUT,
+    jwtSecure: false
+  } as IRouteParams,
   copyCardlistApi: {
     path: '/api/cardlist/copy',
     method: RequestMethod.POST,
