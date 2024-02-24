@@ -47,18 +47,18 @@ export const ActivityComponent: React.FC = () => {
       </div>
       <div className={`mb-10`}>
         <div
-          className={'flex flex-row items-center space-x-4  border-b-2 border-b-2 border-gray-300 border-gray-300 pb-2'}
+          className={'flex flex-row items-center space-x-4  border-b-2 border-gray-300 pb-2'}
         >
           <RxActivityLog size={'20px'}/>
           <p className={`my-2  text-lg font-semibold text-gray-700`}>Activity</p>
         </div>
         {activity?.map((a, index) => (
-          <div key={index} className='my-2 space-x-4 border-b-2 border-gray-300 pb-2'>
+          <div key={index} className='my-2 space-x-4  pb-2'>
             <div className={`flex flex-row items-center space-x-2`}>
               <img
                 src={avtPath} // Replace with your avatar image source
                 alt='Avatar'
-                className='h-6 w-6 rounded-full border'
+                className='h-9 w-9 -ml-2 rounded-full border'
               />
               <div>
                 <p className={`text-gray-700`}>{a.content}</p>
