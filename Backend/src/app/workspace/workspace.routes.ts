@@ -21,7 +21,14 @@ export default {
     },
   },
   updateWorkspaceInfo: <IRouteParams>{
-    path: '/api/worspace',
+    path: '/api/worspace/:id',
+    method: RequestMethod.PUT,
+    swaggerInfo: {
+      responses: [{ status: HttpStatus.OK, schema: { $ref: getSchemaPath('UpdateWorkspaceInfoResponseSchema') } }],
+    },
+  },
+  changeWorkspaceVisibility: <IRouteParams>{
+    path: '/api/worspace/visibility/:id',
     method: RequestMethod.PUT,
     swaggerInfo: {
       responses: [{ status: HttpStatus.OK, schema: { $ref: getSchemaPath('UpdateWorkspaceInfoResponseSchema') } }],
