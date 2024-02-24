@@ -4,11 +4,11 @@ export default {
   health: {
     path: '/health',
     method: RequestMethod.GET,
-    jwtSecure: false,
+    jwtSecure: false
   },
   testApi: {
     path: '/api/test',
     method: RequestMethod.GET,
-    jwtSecure: false,
-  },
+    jwtSecure: false
+  }
 }

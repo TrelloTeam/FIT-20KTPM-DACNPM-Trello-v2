@@ -1,72 +1,53 @@
-import { applyDecorators } from '@nestjs/common'
-import {
-  ApiBearerAuth,
-  ApiBody,
-  ApiConsumes,
-  ApiResponse,
-  ApiResponseOptions,
-  ApiTags,
-  ApiQuery,
-  ApiParam,
-  ApiExtraModels
-} from '@nestjs/swagger'
+import { applyDecorators } from '@nestjs/common';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiParam, ApiQuery, ApiResponse, ApiResponseOptions, ApiTags } from '@nestjs/swagger';
 
-import type {
-  ApiBodyOptions,
-  ApiParamOptions,
-  ApiQueryOptions
-} from '@nestjs/swagger'
-import { ZodObject, ZodType } from 'zod'
-
+import type { ApiBodyOptions, ApiParamOptions, ApiQueryOptions } from '@nestjs/swagger';
 export interface ISwaggerParams {
-  secure?: boolean
-  body?: ApiBodyOptions
-  query?: ApiQueryOptions
-  params?: ApiParamOptions
-  responses?: ApiResponseOptions[]
+  secure?: boolean;
+  body?: ApiBodyOptions;
+  query?: ApiQueryOptions;
+  params?: ApiParamOptions;
+  responses?: ApiResponseOptions[];
 }
 
 export function SwaggerController(name: string) {
-  return applyDecorators(ApiTags(name))
+  return applyDecorators(ApiTags(name));
 }
-export function SwaggerApi({
-  secure = false,
-  responses = [],
-  body,
-  query,
-  params
-}: ISwaggerParams) {
-  const consumeTypes = ['application/json', 'application/x-www-form-urlencoded']
+export function SwaggerApi({ secure = false, responses = [], body, query, params }: ISwaggerParams) {
+  const consumeTypes = ['application/json', 'application/x-www-form-urlencoded'];
 
-  const decorators = []
+  const decorators = [];
 
-  decorators.push(consumeTypes.map((consumeType) => ApiConsumes(consumeType)))
+  decorators.push(consumeTypes.map((consumeType) => ApiConsumes(consumeType)));
 
   if (secure) {
     decorators.push([
       ApiBearerAuth(),
-      ApiResponse({ status: 401, description: 'You are unauthorized.' }),
+      ApiResponse({
+        status: 401,
+        description: 'You are unauthorized.',
+      }),
       ApiResponse({
         status: 403,
-        description: 'You are unauthorized to use this resource.'
+        description: 'You are unauthorized to use this resource.',
       }),
       ApiResponse({
         status: 404,
-        description: 'The resource can not be found.'
-      })
-    ])
+        description: 'The resource can not be found.',
+      }),
+    ]);
   }
 
   if (body) {
-    decorators.push(ApiBody(body))
+    decorators.push(ApiBody(body));
   }
 
   if (query) {
-    decorators.push(ApiQuery(query))
+    decorators.push(ApiQuery(query));
   }
 
   if (params) {
-    decorators.push(ApiParam(params))
+    decorators.push(ApiParam(params));
   }
 
   // if (Object?.values(body || {})?.length > 0) {
@@ -75,9 +56,9 @@ export function SwaggerApi({
 
   if (responses.length > 0) {
     responses.forEach((responseInfo): void => {
-      decorators.push(ApiResponse(responseInfo))
-    })
+      decorators.push(ApiResponse(responseInfo));
+    });
   }
 
-  return applyDecorators(...decorators.flat())
+  return applyDecorators(...decorators.flat());
 }

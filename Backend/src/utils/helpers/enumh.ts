@@ -1,6 +1,6 @@
 function getKeyByValue<E>({
   data,
-  value,
+  value
 }: {
   data: E
   value: string | number
@@ -28,5 +28,5 @@ export default {
   getFirstKey,
   getKeyByValue,
   convertToRegex,
-  getValuesAndToString,
+  getValuesAndToString
 }

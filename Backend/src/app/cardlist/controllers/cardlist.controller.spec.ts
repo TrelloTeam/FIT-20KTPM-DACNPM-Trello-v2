@@ -1,8 +1,8 @@
 import { Test } from '@nestjs/testing'
-import { CardlistController } from './cardlist.controler'
+import { CardlistController } from './cardlist.controller'
 import {
   CardlistService,
-  CardlistServiceMock,
+  CardlistServiceMock
 } from '../services/cardlist.service'
 import { TrelloApi } from '@trello-v2/shared'
 
@@ -12,7 +12,7 @@ describe('CardlistController', () => {
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
       controllers: [CardlistController],
-      providers: [CardlistService],
+      providers: [CardlistService]
     })
       .overrideProvider(CardlistService)
       .useValue(new CardlistServiceMock())
@@ -26,7 +26,18 @@ describe('CardlistController', () => {
       const data = await controller.getAll()
       expect(
         TrelloApi.CardlistApi.GetallCardlistResponseSchema.safeParse(data)
-          .success,
+          .success
+      ).toBeTruthy()
+    })
+  })
+
+  describe('Cardlist:Get all cardlists by board id', () => {
+    it('Return all cardlists by board id', async () => {
+      const data = await controller.getAllByBoardId('any_board_id')
+      expect(
+        TrelloApi.CardlistApi.GetallCardlistByBoardIdResponseSchema.safeParse(
+          data
+        ).success
       ).toBeTruthy()
     })
   })

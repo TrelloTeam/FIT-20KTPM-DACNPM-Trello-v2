@@ -13,6 +13,6 @@ export const WorkspaceMSchema = new Schema<DbSchemas.WorkspaceSchema.Workspace>(
     type_id: String,
     owner_email: String,
     visibility: String,
-    members_email: [String],
-  },
+    members_email: [String]
+  }
 )

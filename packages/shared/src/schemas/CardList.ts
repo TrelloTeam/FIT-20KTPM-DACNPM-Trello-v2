@@ -15,11 +15,12 @@ export const CardSchema = z.object({
 export const CardlistSchema = z.object({
   _id: z.string(),
   board_id: z.string(),
-  index: z.number(),
+  index: z.number().nullish(),
   name: z.string(),
   cards: CardSchema.array().default([]),
   watcher_email: z.string().array().default([]),
   archive_at: z.coerce.date().nullish(),
+  created_at: z.coerce.date().nullish(),
 });
 
 export type ICard = z.infer<typeof CardSchema>;
