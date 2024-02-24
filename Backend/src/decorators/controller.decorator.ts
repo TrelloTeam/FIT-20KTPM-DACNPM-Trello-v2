@@ -1,6 +1,6 @@
-import { applyDecorators, Controller } from '@nestjs/common'
+import { applyDecorators, Controller } from '@nestjs/common';
 
-import { SwaggerController } from './swagger.decorator'
+import { SwaggerController } from './swagger.decorator';
 
 export function InjectController({
   name = '',

@@ -1,7 +1,7 @@
-import { Matches } from 'class-validator'
+import { Matches } from 'class-validator';
 
-import { Regex } from '@/utils/constants'
-import { applyDecorators } from '@nestjs/common'
+import { Regex } from '@/utils/constants';
+import { applyDecorators } from '@nestjs/common';
 
 export function IsOnlyDate() {
   return applyDecorators(
