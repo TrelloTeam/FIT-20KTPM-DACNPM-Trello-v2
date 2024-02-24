@@ -14,6 +14,9 @@
     "Frontend/user",
     "packages/shared"
   ],
+  "devDependencies": {
+    "rimraf": "^5.0.5"
+  },
   "dependencies": {
     "react-pro-sidebar": "^1.1.0",
     "vite": "^5.1.1"
