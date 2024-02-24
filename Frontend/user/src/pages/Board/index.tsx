@@ -11,10 +11,13 @@ import {
   DropAnimation,
   DragOverEvent,
   closestCorners,
-  UniqueIdentifier
+  UniqueIdentifier,
+  PointerSensor,
+  useSensor,
+  useSensors
 } from '@dnd-kit/core'
 import { arrayMove } from '@dnd-kit/sortable'
-import { cloneDeep } from 'lodash'
+import { cloneDeep, isUndefined } from 'lodash'
 import { BoardLayout } from '~/layouts'
 
 const ACTIVE_DRAG_ITEM_TYPE = {
@@ -28,12 +31,17 @@ export function Board() {
   const [activeDragItemId, setActiveDragItemId] = useState<string>('')
   const [activeDragItemType, setActiveDragItemType] = useState<string>('')
   const [activeDragItemData, setActiveDragItemData] = useState<any>()
-
+  const [overListData, setOverListData] = useState<List>()
   // const [cardsData, setCardsData] = useState<Card[]>(cards)
   const [isDragCardToCard, setIsDragCardToCard] = useState<Boolean>(false)
   const [isMoveList, setIsMoveList] = useState<Boolean>(false)
   const [action, setAction] = useState<Boolean>(false)
-
+  const pointerSensor = useSensor(PointerSensor, {
+    activationConstraint: {
+      distance: 10
+    }
+  })
+  const sensors = useSensors(pointerSensor)
   useEffect(() => {
     console.log('update list')
     console.log(listsData)
@@ -87,6 +95,7 @@ export function Board() {
         }
       }
       console.log('nextList = ', nextList)
+      setOverListData(nextOverList)
       return nextList
     })
   }
@@ -105,6 +114,7 @@ export function Board() {
     if (activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN) {
       return
     }
+    console.log('DragOver')
     // const active = e.active
     // const over = e.over
     const { active, over } = e
@@ -197,6 +207,7 @@ export function Board() {
     setActiveDragItemType('')
     setActiveDragItemData(null)
     setOldListWhenDraggingCard(undefined)
+    setOverListData(undefined)
   }
   const customDropAnimation: DropAnimation = {
     sideEffects: defaultDropAnimationSideEffects({
@@ -211,19 +222,20 @@ export function Board() {
     <BoardLayout>
       <div className='mx-auto p-4 text-center text-3xl font-bold uppercase text-black'>Header Area</div>
       <DndContext
+        sensors={sensors}
         collisionDetection={closestCorners}
         onDragStart={handleDragStart}
         onDragOver={handleDragOver}
         onDragEnd={handleDragEnd}
       >
-        <ListsComponent lists={listsData} />
+        <ListsComponent lists={listsData} listDraggingIn={overListData} />
         <DragOverlay dropAnimation={customDropAnimation}>
           {!activeDragItemId || !activeDragItemType}
           {activeDragItemId && activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN && (
-            <ListComponent list={activeDragItemData} />
+            <ListComponent list={activeDragItemData} listDraggingIn={overListData} />
           )}
           {activeDragItemId && activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.CARD && (
-            <CardComponent card={activeDragItemData} isDraggingIn={false} />
+            <CardComponent card={activeDragItemData} listDraggingIn={overListData} />
           )}
         </DragOverlay>
       </DndContext>

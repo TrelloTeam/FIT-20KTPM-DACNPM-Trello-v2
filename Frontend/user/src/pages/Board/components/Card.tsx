@@ -3,7 +3,7 @@ import { CardComponentProps, Card } from '../type'
 import { CSS } from '@dnd-kit/utilities'
 import { useState } from 'react'
 import { BsPencil } from 'react-icons/bs'
-export function CardComponent({ card }: CardComponentProps) {
+export function CardComponent({ card, listDraggingIn }: CardComponentProps) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: card.id,
     data: { ...card }
@@ -20,7 +20,21 @@ export function CardComponent({ card }: CardComponentProps) {
   const avtPath = '/src/assets/Profile/avt.png'
   return (
     <>
-
+      {/* {!card && (
+        <div
+          ref={setNodeRef}
+          style={styleList}
+          {...attributes}
+          {...listeners}
+          className='m-2 space-y-2 rounded-lg border bg-white p-2 hover:bg-gray-200'
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
+          <div className={`flex flex-row items-center justify-between`}>
+            <div className='flex-grow h-2'></div>
+          </div>
+        </div>
+      )} */}
       {card && (
         <div
           ref={setNodeRef}

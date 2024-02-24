@@ -1,10 +1,11 @@
 import { CardComponent } from '.'
-import { ListComponentProps } from '../type'
+import { Card, ListComponentProps, defaultCard } from '../type'
 import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
+import { useEffect, useState } from 'react'
 import { HiOutlineDotsHorizontal } from 'react-icons/hi'
 import { IoImagesOutline } from 'react-icons/io5'
-export function ListComponent({ list }: ListComponentProps) {
+export function ListComponent({ list, listDraggingIn }: ListComponentProps) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: list.id,
     data: { ...list }
@@ -14,6 +15,14 @@ export function ListComponent({ list }: ListComponentProps) {
     transform: CSS.Transform.toString(transform),
     opacity: isDragging ? 0.5 : undefined
   }
+  const [tempCard, setTempCard] = useState<Card>()
+  useEffect(()=> {
+    setTempCard({
+      ...defaultCard,
+      id:'uniqueId123',
+      list_id:listDraggingIn?.id
+    } as Card)
+  },[listDraggingIn])
   return (
     <div
       ref={setNodeRef}
@@ -32,8 +41,8 @@ export function ListComponent({ list }: ListComponentProps) {
         <SortableContext items={list.data} strategy={verticalListSortingStrategy}>
           {list.data &&
             list.data.length > 0 &&
-            list.data.map((card, index) => <CardComponent key={index} card={card} isDraggingIn={false} />)}
-          {list.data && list.data.length === 0 && <div ></div>}
+            list.data.map((card, index) => <CardComponent key={index} card={card} listDraggingIn={listDraggingIn} />)}
+          {list.data && list.data.length === 0 && <CardComponent card={tempCard} listDraggingIn={listDraggingIn} />}
         </SortableContext>
         <div className={`m-2 flex flex-row space-x-2`}>
           <button className='w-10/12 rounded-lg p-2 hover:bg-gray-200'>
