@@ -15,6 +15,7 @@ import {
   SetMetadata,
 } from '@nestjs/common';
 
+
 import { SwaggerApi } from './swagger.decorator';
 
 import type { CustomDecorator } from '@nestjs/common';
@@ -48,7 +49,7 @@ export function InjectRoute({
   jwtSecure = true,
   //   localSecure = false,
   code = HttpStatus.OK,
-  method = RequestMethod.GET,
+  method = RequestMethod.GET
 }: IRouteParams) {
   const methodDecorator = {
     [RequestMethod.GET]: Get,
@@ -58,7 +59,12 @@ export function InjectRoute({
     [RequestMethod.PATCH]: Patch,
   };
 
-  const decorators = [methodDecorator[method](path), HttpCode(code), SwaggerApi({ secure: jwtSecure, ...swaggerInfo })];
+  const decorators = [
+    methodDecorator[method](path),
+    HttpCode(code),
+    SwaggerApi({ secure: jwtSecure, ...swaggerInfo })
+  ]
+
 
   if (roles.length > 0) {
     decorators.push(UserRoles(roles));
@@ -75,7 +81,9 @@ export function InjectRoute({
   return applyDecorators(...decorators);
 }
 
-export const ReqUser = createParamDecorator((data: unknown, ctx: ExecutionContext) => {
-  const request = ctx.switchToHttp().getRequest();
-  return request.user;
-});
+export const ReqUser = createParamDecorator(
+  (data: unknown, ctx: ExecutionContext) => {
+    const request = ctx.switchToHttp().getRequest()
+    return request.user
+  }
+)

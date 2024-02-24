@@ -2,18 +2,22 @@ import { Model } from 'mongoose'
 import { objectOutputType, ZodString, ZodTypeAny } from 'zod'
 
 import { InjectModel } from '@nestjs/mongoose'
-import { DbSchemas } from '@trello-v2/shared'
-import { TrelloApi } from '@trello-v2/shared'
-import { Model } from 'mongoose'
+import { Model } from 'mongoose';
+import { objectOutputType, ZodString, ZodTypeAny } from 'zod';
+import { InjectModel } from '@nestjs/mongoose';
+import { DbSchemas, TrelloApi } from '@trello-v2/shared';
 
 export abstract class ICardlistService {
-  abstract createCardlist(
-    data: TrelloApi.CardlistApi.CreateCardlistRequest
+  abstract createCardlist(data: TrelloApi.CardlistApi.CreateCardlistRequest): Promise<DbSchemas.CardlistSchema.CardList>
+
+  abstract copyCardlist(
+    data: TrelloApi.CardlistApi.CopyCardlistRequest
   ): Promise<DbSchemas.CardlistSchema.CardList>
 
   abstract copyCardlist(
     data: TrelloApi.CardlistApi.CopyCardlistRequest
   ): Promise<DbSchemas.CardlistSchema.CardList>
+
 
   abstract updateCardlist(
     data: TrelloApi.CardlistApi.UpdateCardlistRequest
@@ -118,7 +122,7 @@ export class CardlistService implements ICardlistService {
   async getAllCardlistByBoardId(board_id: string) {
     return this.CardlistMModel.find({ board_id }).exec()
   }
-  
+
   async sortCardlistByOldestDate(board_id: string) {
     const cardlists = await this.CardlistMModel.find({ board_id }).exec()
     cardlists.sort((a, b) => {
@@ -255,19 +259,6 @@ export class CardlistServiceMock implements ICardlistService {
   }
 
   sortCardlistByName(): Promise<DbSchemas.CardlistSchema.CardList[]> {
-    return new Promise<DbSchemas.CardlistSchema.CardList[]>((res) => {
-      return res([])
-    })
-  }
-}
-
-export class CardlistServiceMock implements ICardlistService {
-  createCardlist(data: TrelloApi.CardlistApi.CreateCardlistRequest) {
-    return new Promise<DbSchemas.CardlistSchema.CardList>((res) => {
-      return res({ ...data, _id: 'Mock-id', watcher_email: [], cards: [] })
-    })
-  }
-  getAllCardlist() {
     return new Promise<DbSchemas.CardlistSchema.CardList[]>((res) => {
       return res([])
     })

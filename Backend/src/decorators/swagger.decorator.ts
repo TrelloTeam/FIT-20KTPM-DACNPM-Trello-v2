@@ -14,6 +14,8 @@ import {
 
 import type { ApiBodyOptions, ApiParamOptions, ApiQueryOptions } from '@nestjs/swagger';
 
+
+import type { ApiBodyOptions, ApiParamOptions, ApiQueryOptions } from '@nestjs/swagger';
 export interface ISwaggerParams {
   secure?: boolean;
   body?: ApiBodyOptions;
