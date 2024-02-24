@@ -27,13 +27,13 @@ const EnvSchema = {
   imports: [
     ConfigModule.forRoot({
       validationSchema: Joi.object().keys(EnvSchema),
-      load: [configuration],
+      load: [configuration]
     }),
     MongooseModule.forRoot('mongodb://MONGO_USER:MONGO_123@localhost:7000/trello?authSource=admin'),
     CardlistModule,
     WorkspaceModule,
   ],
   controllers: [AppController, TestController],
-  providers: [],
+  providers: []
 })
 export class AppModule {}

@@ -7,5 +7,5 @@ export const UserMSchema = new mongoose.Schema<DbSchemas.UserSchema.User>({
   bio: String,
   avatar: String,
   activities: [ActivityMSchema],
-  workspace_ids: [String],
+  workspace_ids: [String]
 })
