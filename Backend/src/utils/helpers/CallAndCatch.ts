@@ -1,8 +1,8 @@
-type CallCatchReturn<R extends any> =
+type CallCatchReturn<R> =
   | { success: true; data: R }
   | { success: false; error: any }
 
-async function CallAndCatchAsync<R extends any, P extends any>(
+async function CallAndCatchAsync<R, P>(
   func: (args: P) => Promise<R>,
   param: P
 ): Promise<CallCatchReturn<R>> {

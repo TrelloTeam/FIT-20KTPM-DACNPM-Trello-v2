@@ -36,6 +36,7 @@ const EnvSchema = {
     UserModule,
     BoardModule,
     CardModule,
+    AuthModule,
   ],
   controllers: [AppController, TestController],
   providers: [],

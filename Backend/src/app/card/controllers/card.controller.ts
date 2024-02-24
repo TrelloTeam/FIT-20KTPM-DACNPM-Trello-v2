@@ -10,8 +10,7 @@ import {
 import { ZodValidationPipe } from '@/pipes'
 import { TrelloApi } from '@trello-v2/shared'
 import { SwaggerApi } from '@/decorators/swagger.decorator'
-import { ApiQuery, getSchemaPath } from '@nestjs/swagger'
-import { CallAndCatchAsync } from '@/utils/helpers'
+import { getSchemaPath } from '@nestjs/swagger'
 
 @InjectController({
   name: 'card',

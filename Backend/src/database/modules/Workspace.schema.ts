@@ -1,7 +1,7 @@
-import { DbSchemas } from '@trello-v2/shared'
-import mongoose from 'mongoose'
+import { DbSchemas } from '@trello-v2/shared';
+import mongoose from 'mongoose';
 
-const { Schema } = mongoose
+const { Schema } = mongoose;
 
 export const WorkspaceMSchema = new Schema<DbSchemas.WorkspaceSchema.Workspace>({
   name: String,
@@ -13,4 +13,4 @@ export const WorkspaceMSchema = new Schema<DbSchemas.WorkspaceSchema.Workspace>(
   owner_email: String,
   visibility: String,
   members_email: [String],
-})
+});

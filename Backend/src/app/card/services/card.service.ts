@@ -1,8 +1,6 @@
 import { InjectModel } from '@nestjs/mongoose'
 import { DbSchemas, TrelloApi } from '@trello-v2/shared'
 import { Model } from 'mongoose'
-import { InjectConnection } from '@nestjs/mongoose'
-import { Connection } from 'mongoose'
 
 export class CardService {
   constructor(

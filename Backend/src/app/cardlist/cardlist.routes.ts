@@ -1,5 +1,5 @@
-import { IRouteParams } from '@/decorators'
-import { RequestMethod } from '@nestjs/common'
+import { IRouteParams } from '@/decorators';
+import { RequestMethod } from '@nestjs/common';
 
 export const CardlistRoutes = {
   getAllCardlistApi: {
@@ -47,4 +47,4 @@ export const CardlistRoutes = {
     method: RequestMethod.GET,
     jwtSecure: false,
   } as IRouteParams,
-} as const
+} as const;
