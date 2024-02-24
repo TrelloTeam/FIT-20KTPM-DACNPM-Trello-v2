@@ -14,5 +14,8 @@
     "Frontend/user",
     "packages/shared"
   ],
-  "dependencies": {}
+  "dependencies": {
+    "react-pro-sidebar": "^1.1.0",
+    "vite": "^5.1.1"
+  }
 }
