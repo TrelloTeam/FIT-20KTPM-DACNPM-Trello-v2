@@ -32,4 +32,16 @@ export class WorkspaceController {
       data: workspaceData,
     };
   }
+
+  @InjectRoute(workspaceRoutes.updateWorkspaceInfo)
+  async updateWorkspaceInfo(
+    @Body(new ZodValidationPipe(TrelloApi.WorkspaceApi.UpdateWorkspaceInfoResponseSchema))
+    body: TrelloApi.WorkspaceApi.UpdateWorkspaceInfoRequest,
+  ): Promise<TrelloApi.WorkspaceApi.UpdateWorkspaceInfoResponse> {
+    const workspaceUpdated = await this.workspaceService.updateWorkspaceInfo(body);
+
+    if (!workspaceUpdated) throw new InternalServerErrorException("Can't update workspace infomation");
+
+    return { data: workspaceUpdated };
+  }
 }
