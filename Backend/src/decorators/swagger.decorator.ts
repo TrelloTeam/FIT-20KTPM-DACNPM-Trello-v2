@@ -1,18 +1,5 @@
 import { applyDecorators } from '@nestjs/common';
-import {
-  ApiBearerAuth,
-  ApiBody,
-  ApiConsumes,
-  ApiParam,
-  ApiQuery,
-  ApiResponse,
-  ApiResponseOptions,
-  ApiTags,
-  ApiQuery,
-  ApiParam,
-} from '@nestjs/swagger';
-
-import type { ApiBodyOptions, ApiParamOptions, ApiQueryOptions } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiResponse, ApiResponseOptions, ApiTags, ApiQuery, ApiParam } from '@nestjs/swagger';
 
 import type { ApiBodyOptions, ApiParamOptions, ApiQueryOptions } from '@nestjs/swagger';
 export interface ISwaggerParams {

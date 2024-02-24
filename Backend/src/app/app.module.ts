@@ -11,6 +11,7 @@ import { CardlistModule } from './cardlist/cardlist.module';
 import { BoardModule } from './board/board.module';
 import { WorkspaceModule } from './workspace/workspace.module';
 import { CardModule } from './card/card.module';
+import { AuthModule } from './auth/auth.module';
 const EnvSchema = {
   PORT: Joi.number(),
   NODE_ENV: Joi.string(),

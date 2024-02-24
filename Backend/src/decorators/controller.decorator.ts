@@ -1,7 +1,7 @@
-import { applyDecorators, Controller } from '@nestjs/common';
+import { applyDecorators, Controller } from '@nestjs/common'
 
-import { SwaggerController } from './swagger.decorator';
+import { SwaggerController } from './swagger.decorator'
 
 export function InjectController({ name = '', isCore = false }: { name: string; isCore?: boolean }) {
-  return applyDecorators(SwaggerController(name), Controller(!isCore ? name : ''));
+  return applyDecorators(SwaggerController(name), Controller(!isCore ? name : ''))
 }
