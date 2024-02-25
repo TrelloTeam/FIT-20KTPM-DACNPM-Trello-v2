@@ -10,13 +10,16 @@ export default {
     path: '/api/workspace',
     method: RequestMethod.GET,
     swaggerInfo: {
-      responses: [{ status: HttpStatus.OK, schema: { $ref: getSchemaPath('GetAllWorkspaceResponse') }, isArray: true }],
+      responses: [{ status: HttpStatus.OK, schema: { $ref: getSchemaPath('GetallWorkspaceResponseSchema') }, isArray: true }],
     },
   },
   createWorkspace: <IRouteParams>{
     path: '/api/worspace',
     method: RequestMethod.POST,
     swaggerInfo: {
+      body: {
+        schema: { $ref: getSchemaPath('CreateWorkspaceRequestSchema') },
+      },
       responses: [{ status: HttpStatus.OK, schema: { $ref: getSchemaPath('CreateWorspaceResponseSchema') } }],
     },
   },
@@ -24,6 +27,9 @@ export default {
     path: '/api/worspace/:id',
     method: RequestMethod.PUT,
     swaggerInfo: {
+      body: {
+        schema: { $ref: getSchemaPath('UpdateWorkspaceInfoRequestSchema') },
+      },
       responses: [{ status: HttpStatus.OK, schema: { $ref: getSchemaPath('UpdateWorkspaceInfoResponseSchema') } }],
     },
   },

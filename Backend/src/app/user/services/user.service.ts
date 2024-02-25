@@ -32,6 +32,6 @@ export class UserService {
 
     if (!user) return null
 
-    return user
+    return user.toJSON()
   }
 }

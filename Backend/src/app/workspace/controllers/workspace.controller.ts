@@ -36,7 +36,7 @@ export class WorkspaceController {
   @InjectRoute(workspaceRoutes.updateWorkspaceInfo)
   async updateWorkspaceInfo(
     @Param('id') id: string,
-    @Body(new ZodValidationPipe(TrelloApi.WorkspaceApi.UpdateWorkspaceInfoResponseSchema))
+    @Body(new ZodValidationPipe(TrelloApi.WorkspaceApi.UpdateWorkspaceInfoRequestSchema))
     body: TrelloApi.WorkspaceApi.UpdateWorkspaceInfoRequest,
   ): Promise<TrelloApi.WorkspaceApi.UpdateWorkspaceInfoResponse> {
     const workspaceUpdated = await this.workspaceService.updateWorkspaceInfo(body, id)

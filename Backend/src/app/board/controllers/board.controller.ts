@@ -1,12 +1,12 @@
-import { InjectController, InjectRoute } from '@/decorators';
+import { InjectController, InjectRoute } from '@/decorators'
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { BoardService } from '../services/board.service';
-import { BoardRoutes } from '../board.routes';
-import { Body, Param } from '@nestjs/common';
-import { ZodValidationPipe, IdParamValidationPipe, IdBodyValidationPipe } from '@/pipes';
-import { TrelloApi } from '@trello-v2/shared';
-import { SwaggerApi } from '@/decorators/swagger.decorator';
-import { getSchemaPath } from '@nestjs/swagger';
+import { BoardService } from '../services/board.service'
+import { BoardRoutes } from '../board.routes'
+import { Body, Param } from '@nestjs/common'
+import { ZodValidationPipe, IdParamValidationPipe, IdBodyValidationPipe } from '@/pipes'
+import { TrelloApi } from '@trello-v2/shared'
+import { SwaggerApi } from '@/decorators/swagger.decorator'
+import { getSchemaPath } from '@nestjs/swagger'
 
 @InjectController({
   name: 'board',
@@ -25,10 +25,10 @@ export class BoardController {
     ],
   })
   async getAll(): Promise<TrelloApi.BoardApi.GetallBoardResponse> {
-    const data = await this.BoardService.getAllBoard();
+    const data = await this.BoardService.getAllBoard()
     return {
       data: data,
-    };
+    }
   }
 
   @InjectRoute(BoardRoutes.getBoardsByWorkspaceId)
@@ -49,10 +49,10 @@ export class BoardController {
     @Param('workspace_id', IdParamValidationPipe)
     workspace_id: TrelloApi.BoardApi.getBoardsByWorkspaceIdRequest,
   ): Promise<TrelloApi.BoardApi.GetallBoardResponse> {
-    const data = await this.BoardService.getBoardsByWorkspaceId(workspace_id);
+    const data = await this.BoardService.getBoardsByWorkspaceId(workspace_id)
     return {
       data: data,
-    };
+    }
   }
 
   @InjectRoute(BoardRoutes.createBoard)
@@ -69,10 +69,10 @@ export class BoardController {
     @Body(new ZodValidationPipe(TrelloApi.BoardApi.CreateBoardRequestSchema))
     body: TrelloApi.BoardApi.CreateBoard,
   ): Promise<TrelloApi.BoardApi.CreateBoardResponse> {
-    const data = await this.BoardService.createBoard(body);
+    const data = await this.BoardService.createBoard(body)
     return {
       data: data,
-    };
+    }
   }
 
   @InjectRoute(BoardRoutes.getBoardInfoByBoardId)
@@ -93,10 +93,10 @@ export class BoardController {
     @Param('board_id', IdParamValidationPipe)
     board_id: TrelloApi.BoardApi.GetBoardInfoByBoardIdRequest,
   ): Promise<TrelloApi.BoardApi.GetBoardInfoByBoardIdResponse | unknown> {
-    const data = await this.BoardService.getBoardInfoByBoardId(board_id);
+    const data = await this.BoardService.getBoardInfoByBoardId(board_id)
     return {
       data: data,
-    };
+    }
   }
 
   @InjectRoute(BoardRoutes.changeBoardVisibility)
@@ -115,10 +115,10 @@ export class BoardController {
     @Body(new ZodValidationPipe(TrelloApi.BoardApi.ChangeBoardVisibilityRequestSchema))
     body: TrelloApi.BoardApi.ChangeBoardVisibilityRequest,
   ): Promise<TrelloApi.BoardApi.ChangeBoardVisibilityResponse | unknown> {
-    const data = await this.BoardService.updateBoard(body);
+    const data = await this.BoardService.updateBoard(body)
     return {
       data: data,
-    };
+    }
   }
 
   @InjectRoute(BoardRoutes.deleteBoard)
@@ -139,9 +139,9 @@ export class BoardController {
     @Param('board_id', IdParamValidationPipe)
     board_id: TrelloApi.BoardApi.DeleteBoardRequest,
   ): Promise<TrelloApi.BoardApi.DeleteBoardResponse | unknown> {
-    const data = await this.BoardService.deleteBoard(board_id);
+    const data = await this.BoardService.deleteBoard(board_id)
     return {
       data: data,
-    };
+    }
   }
 }

@@ -23,7 +23,7 @@ export class UserController {
     responses: [
       {
         status: 200,
-        schema: { $ref: getSchemaPath('CreateUserRespondSchema') },
+        schema: { $ref: getSchemaPath('CreateUserResponseSchema') },
       },
     ],
   })
@@ -63,7 +63,7 @@ export class UserController {
       },
     },
     body: {
-      schema: { $ref: getSchemaPath('UpdateUserInfoByEmailRequestSchema') },
+      schema: { $ref: getSchemaPath('UpdateUserRequestSchema') },
     },
     responses: [
       {
@@ -83,7 +83,7 @@ export class UserController {
     return {
       data: {
         ...user,
-        _id: user.id,
+        _id: user._id,
       },
     }
   }

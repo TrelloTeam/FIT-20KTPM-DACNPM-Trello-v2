@@ -1,13 +1,13 @@
-import { InjectModel } from '@nestjs/mongoose';
-import { DbSchemas } from '@trello-v2/shared';
-import { TrelloApi } from '@trello-v2/shared';
-import { Model } from 'mongoose';
-import * as _ from 'lodash';
+import { InjectModel } from '@nestjs/mongoose'
+import { DbSchemas } from '@trello-v2/shared'
+import { TrelloApi } from '@trello-v2/shared'
+import { Model } from 'mongoose'
+import * as _ from 'lodash'
 
 export abstract class IBoardService {
-  abstract createBoard(data: TrelloApi.BoardApi.CreateBoard): Promise<DbSchemas.BoardSchema.Board>;
+  abstract createBoard(data: TrelloApi.BoardApi.CreateBoard): Promise<DbSchemas.BoardSchema.Board>
 
-  abstract getAllBoard(): Promise<DbSchemas.BoardSchema.Board[]>;
+  abstract getAllBoard(): Promise<DbSchemas.BoardSchema.Board[]>
 }
 
 export class BoardService implements IBoardService {
@@ -17,35 +17,35 @@ export class BoardService implements IBoardService {
   ) {}
 
   async createBoard(data: TrelloApi.BoardApi.CreateBoard) {
-    const model = new this.BoardMModel(data);
-    return model.save();
+    const model = new this.BoardMModel(data)
+    return model.save()
   }
 
   async getAllBoard() {
-    return this.BoardMModel.find().exec();
+    return this.BoardMModel.find().exec()
   }
 
   async getBoardsByWorkspaceId(workspace_id: TrelloApi.BoardApi.getBoardsByWorkspaceIdRequest) {
-    return this.BoardMModel.find({ workspace_id: workspace_id }).exec();
+    return this.BoardMModel.find({ workspace_id: workspace_id }).exec()
   }
 
   async getBoardInfoByBoardId(board_id: TrelloApi.BoardApi.GetBoardInfoByBoardIdRequest) {
-    return await this.BoardMModel.findById(board_id).exec();
+    return await this.BoardMModel.findById(board_id).exec()
   }
 
   async updateBoard(data: TrelloApi.BoardApi.ChangeBoardVisibilityRequest) {
-    const filter = { _id: data._id };
-    const update: Partial<DbSchemas.BoardSchema.Board> = _.pickBy(data, _.identity);
+    const filter = { _id: data._id }
+    const update: Partial<DbSchemas.BoardSchema.Board> = _.pickBy(data, _.identity)
 
     return await this.BoardMModel.findOneAndUpdate(filter, update, {
       new: true,
-    });
+    })
   }
 
   async deleteBoard(board_id: TrelloApi.BoardApi.DeleteBoardRequest) {
     return await this.BoardMModel.findOneAndDelete({
       _id: board_id,
-    }).exec();
+    }).exec()
   }
 }
 
@@ -62,14 +62,14 @@ export class BoardServiceMock implements IBoardService {
         members_email: [],
         labels: [],
         is_star: false,
-      });
-    });
+      })
+    })
   }
 
   getAllBoard() {
     return new Promise<DbSchemas.BoardSchema.Board[]>((res) => {
-      res([]);
-    });
+      res([])
+    })
   }
 
   getBoardInfoByBoardId(board_id: TrelloApi.BoardApi.GetBoardInfoByBoardIdRequest) {
@@ -84,16 +84,16 @@ export class BoardServiceMock implements IBoardService {
         workspace_id: 'Mock-id',
         name: '',
         visibility: 'private',
-      });
-    });
+      })
+    })
   }
 
   updateBoard(data: DbSchemas.BoardSchema.Board) {
     return new Promise<DbSchemas.BoardSchema.Board>((res) => {
       res({
         ...data,
-      });
-    });
+      })
+    })
   }
 
   deleteBoard(board_id: TrelloApi.BoardApi.DeleteBoardRequest) {
@@ -108,7 +108,7 @@ export class BoardServiceMock implements IBoardService {
         workspace_id: 'Mock-id',
         name: '',
         visibility: 'private',
-      });
-    });
+      })
+    })
   }
 }
