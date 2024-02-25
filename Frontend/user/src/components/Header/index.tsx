@@ -25,7 +25,8 @@ const Header = () => {
         borderColor: '#9fadbc',
         borderStyle: 'solid',
         padding: '8px',
-        color: '#9fadbc'
+        color: '#9fadbc',
+        zIndex: '1000'
       }}
     >
       <Box
