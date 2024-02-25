@@ -1,12 +1,12 @@
 import { colors } from '../../styles/index'
-import BoardsPageRow from './components/BoardsPageRow'
+import BoardsPageRow from '~/components/BoardsPageRow'
 import { Box, Container, Grid } from '@mui/material'
 import StarIcon from '@mui/icons-material/Star'
 import AccessTimeIcon from '@mui/icons-material/AccessTime'
-import BoardsPageWorkspaceControl from './components/BoardsPageWorkspaceControl'
+import BoardsPageWorkspaceControl from '~/components/BoardsPageWorkspaceControl'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrello } from '@fortawesome/free-brands-svg-icons'
-import BoardsPageRowTemplate from './components/BoardsPageRowTemplate'
+import BoardsPageRowTemplate from '~/components/BoardsPageRowTemplate'
 
 export type BoardTemplate = {
   [x: string]: unknown

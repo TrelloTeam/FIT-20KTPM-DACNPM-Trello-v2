@@ -4,7 +4,7 @@ import { faTrello } from '@fortawesome/free-brands-svg-icons'
 import GridViewIcon from '@mui/icons-material/GridView'
 import Person2OutlinedIcon from '@mui/icons-material/Person2Outlined'
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined'
-import { colors } from '../../../styles/index'
+import { colors } from '../styles/index'
 
 export default function BoardsPageWorkspaceControl() {
   const buttonColor = 'rgba(9, 30, 66, 0.06)'
