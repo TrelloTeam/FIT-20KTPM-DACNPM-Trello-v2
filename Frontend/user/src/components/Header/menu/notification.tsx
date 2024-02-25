@@ -1,6 +1,7 @@
 import * as React from 'react'
-import { Box, ClickAwayListener, Grow, Paper, Popper, MenuList, Stack, Typography, Badge } from '@mui/material'
+import { Box, Button, ClickAwayListener, Grow, Paper, Popper, MenuList, Stack, Typography, Badge } from '@mui/material'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
 import { faBell } from '@fortawesome/free-regular-svg-icons'
 
 export default function Notification() {

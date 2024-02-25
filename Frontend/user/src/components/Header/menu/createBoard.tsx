@@ -1,7 +1,20 @@
 import * as React from 'react'
-import { Box, Button, Autocomplete, TextField } from '@mui/material'
+import {
+  Box,
+  Button,
+  ClickAwayListener,
+  Grow,
+  Paper,
+  Popper,
+  MenuItem,
+  MenuList,
+  Stack,
+  Typography,
+  Autocomplete,
+  TextField
+} from '@mui/material'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCheck, faChevronLeft, faClose } from '@fortawesome/free-solid-svg-icons'
+import { faCheck, faChevronDown, faChevronLeft, faClose } from '@fortawesome/free-solid-svg-icons'
 import bgHeader from '~/assets/bg_header_create_board.svg'
 
 interface AutocompleteContainerProps {
@@ -12,9 +25,41 @@ interface AutocompleteContainerProps {
 const options = ['Option 1', 'Option 2', 'Option 2']
 
 export default function CreateBoard(props: AutocompleteContainerProps) {
+  const [open, setOpen] = React.useState(false)
   const [value, setValue] = React.useState<string | undefined>(options[0])
   const [inputValue, setInputValue] = React.useState('')
   const anchorRef = React.useRef<HTMLButtonElement>(null)
+
+  // const handleToggle = () => {
+  //   setOpen((prevOpen) => !prevOpen)
+  // }
+
+  // const handleClose = (event: Event | React.SyntheticEvent) => {
+  //   if (anchorRef.current && anchorRef.current.contains(event.target as HTMLElement)) {
+  //     return
+  //   }
+
+  //   setOpen(false)
+  // }
+
+  // function handleListKeyDown(event: React.KeyboardEvent) {
+  //   if (event.key === 'Tab') {
+  //     event.preventDefault()
+  //     setOpen(false)
+  //   } else if (event.key === 'Escape') {
+  //     setOpen(false)
+  //   }
+  // }
+
+  // return focus to the button when we transitioned from !open -> open
+  const prevOpen = React.useRef(open)
+  React.useEffect(() => {
+    if (prevOpen.current === true && open === false) {
+      anchorRef.current!.focus()
+    }
+
+    prevOpen.current = open
+  }, [open])
 
   return (
     <Box sx={{ padding: '0 12px' }}>
@@ -329,6 +374,8 @@ export default function CreateBoard(props: AutocompleteContainerProps) {
           disabled
           ref={anchorRef}
           id='composition-button'
+          aria-controls={open ? 'composition-menu' : undefined}
+          aria-expanded={open ? 'true' : undefined}
           aria-haspopup='true'
           sx={{
             width: '100%',

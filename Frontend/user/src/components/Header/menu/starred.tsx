@@ -1,7 +1,19 @@
 import * as React from 'react'
-import { Box, Button, ClickAwayListener, Grow, Paper, Popper, MenuList, Stack, Typography } from '@mui/material'
+import {
+  Box,
+  Button,
+  ClickAwayListener,
+  Grow,
+  Paper,
+  Popper,
+  MenuItem,
+  MenuList,
+  Stack,
+  Typography
+} from '@mui/material'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronDown, faStar as starFull } from '@fortawesome/free-solid-svg-icons'
+import { faStar } from '@fortawesome/free-regular-svg-icons'
 import noneStar from '~/assets/noneStar.svg'
 
 const length = 1

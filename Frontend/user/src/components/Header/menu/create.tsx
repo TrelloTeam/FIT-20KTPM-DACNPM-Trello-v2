@@ -1,7 +1,18 @@
 import * as React from 'react'
-import { Box, Button, ClickAwayListener, Grow, Paper, Popper, MenuList, Stack, Typography } from '@mui/material'
+import {
+  Box,
+  Button,
+  ClickAwayListener,
+  Grow,
+  Paper,
+  Popper,
+  MenuItem,
+  MenuList,
+  Stack,
+  Typography
+} from '@mui/material'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSynagogue, faUsers } from '@fortawesome/free-solid-svg-icons'
+import { faChain, faChevronLeft, faClose, faSynagogue, faUsers } from '@fortawesome/free-solid-svg-icons'
 import { faTrello } from '@fortawesome/free-brands-svg-icons'
 import CreateBoard from './createBoard'
 
