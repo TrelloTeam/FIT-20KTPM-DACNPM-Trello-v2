@@ -2,10 +2,12 @@ import * as React from 'react'
 import { Box, Button, ClickAwayListener, Grow, Paper, Popper, MenuList, Stack, Typography } from '@mui/material'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
+import { useTheme } from './../../Theme/themeContext'
 
 export default function WorkSpaces() {
   const [open, setOpen] = React.useState(false)
   const anchorRef = React.useRef<HTMLButtonElement>(null)
+  const { colors } = useTheme()
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen)
@@ -52,7 +54,7 @@ export default function WorkSpaces() {
           sx={{
             fontSize: '13px',
             textTransform: 'none',
-            color: open ? '#579dff' : '#9fadbc',
+            color: open ? '#579dff' : colors.text,
             '&:hover': {
               backgroundColor: 'rgba(255,255,255,0.1)'
             },
@@ -89,7 +91,7 @@ export default function WorkSpaces() {
                       marginTop: '8px',
                       transition: 'all 0.1s ease-in',
                       padding: '12px',
-                      backgroundColor: '#282e33',
+                      backgroundColor: colors.background_menu_header,
                       minWidth: '304px',
                       borderRadius: '4px'
                     }}
@@ -97,7 +99,7 @@ export default function WorkSpaces() {
                     <Box sx={{ marginBottom: '20px' }}>
                       <Typography
                         variant='body1'
-                        sx={{ fontSize: '12px', fontWeight: 700, color: '#9fadbc', marginBottom: '8px' }}
+                        sx={{ fontSize: '12px', fontWeight: 700, color: colors.text, marginBottom: '8px' }}
                       >
                         Your Workspaces
                       </Typography>
@@ -107,6 +109,7 @@ export default function WorkSpaces() {
                           display: 'flex',
                           alignItems: 'center',
                           padding: '8px',
+                          cursor: 'pointer',
                           '&:hover': {
                             backgroundColor: 'rgba(255,255,255,0.1)',
                             borderRadius: '4px'
@@ -129,7 +132,7 @@ export default function WorkSpaces() {
 
                         <Typography
                           variant='body1'
-                          sx={{ fontSize: '14px', fontWeight: 700, color: '#9fadbc', marginLeft: '12px' }}
+                          sx={{ fontSize: '14px', fontWeight: 700, color: colors.text, marginLeft: '12px' }}
                         >
                           test
                         </Typography>
@@ -138,7 +141,7 @@ export default function WorkSpaces() {
                     <Box>
                       <Typography
                         variant='body1'
-                        sx={{ fontSize: '12px', fontWeight: 700, color: '#9fadbc', marginBottom: '8px' }}
+                        sx={{ fontSize: '12px', fontWeight: 700, color: colors.text, marginBottom: '8px' }}
                       >
                         Guest Workspaces
                       </Typography>
@@ -148,6 +151,7 @@ export default function WorkSpaces() {
                           display: 'flex',
                           alignItems: 'center',
                           padding: '8px',
+                          cursor: 'pointer',
                           '&:hover': {
                             backgroundColor: 'rgba(255,255,255,0.1)',
                             borderRadius: '4px'
@@ -170,7 +174,7 @@ export default function WorkSpaces() {
 
                         <Typography
                           variant='body1'
-                          sx={{ fontSize: '14px', fontWeight: 700, color: '#9fadbc', marginLeft: '12px' }}
+                          sx={{ fontSize: '14px', fontWeight: 700, color: colors.text, marginLeft: '12px' }}
                         >
                           test
                         </Typography>
