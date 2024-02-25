@@ -1,0 +1,24 @@
+{
+  "name": "fit-20ktpm-dacnpm-trello-v2",
+  "version": "1.0.0",
+  "description": "```\r $ npm install\r ```\r ## 2. Running the app\r ```\r $ npm run dev\r ```",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "workspaces": [
+    "Backend",
+    "Frontend/admin",
+    "Frontend/user",
+    "packages/shared"
+  ],
+  "devDependencies": {
+    "rimraf": "^5.0.5"
+  },
+  "dependencies": {
+    "react-pro-sidebar": "^1.1.0",
+    "vite": "^5.1.1"
+  }
+}

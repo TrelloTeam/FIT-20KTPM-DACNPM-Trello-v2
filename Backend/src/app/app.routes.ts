@@ -6,4 +6,9 @@ export default {
     method: RequestMethod.GET,
     jwtSecure: false,
   },
+  testApi: {
+    path: '/api/test',
+    method: RequestMethod.GET,
+    jwtSecure: false,
+  },
 }
