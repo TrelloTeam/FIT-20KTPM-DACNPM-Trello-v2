@@ -26,11 +26,11 @@ export const Profile: React.FC = () => {
           <label className='mb-2 block' htmlFor='bio'>
             <p className={`${text_profile_color} font-semibold`}>Username</p>
           </label>
-          <input className='w-full resize-none rounded border-4 p-2 mb-2' />
+          <input className='mb-2 w-full resize-none rounded border-4 p-2' />
           <label className='mb-2 block' htmlFor='bio'>
             <p className={`${text_profile_color} font-semibold`}>Bio</p>
           </label>
-          <textarea id='bio' className='w-full rounded border-4 p-2 mb-2 resize-y ' rows={4} />
+          <textarea id='bio' className='mb-2 w-full resize-y rounded border-4 p-2 ' rows={4} />
         </div>
       </div>
     </div>

@@ -39,9 +39,9 @@ export function Board() {
   const [activeDragItemData, setActiveDragItemData] = useState<any>()
   const [overListData, setOverListData] = useState<List>()
   // const [cardsData, setCardsData] = useState<Card[]>(cards)
-  const [isDragCardToCard, setIsDragCardToCard] = useState<Boolean>(false)
-  const [isMoveList, setIsMoveList] = useState<Boolean>(false)
-  const [action, setAction] = useState<Boolean>(false)
+  const [isDragCardToCard, setIsDragCardToCard] = useState<boolean>(false)
+  const [isMoveList, setIsMoveList] = useState<boolean>(false)
+  const [action, setAction] = useState<boolean>(false)
   // const pointerSensor = useSensor(PointerSensor, {
   //   activationConstraint: {
   //     distance: 10
@@ -83,11 +83,11 @@ export function Board() {
         return {
           ...list,
           data: [newItem]
-        };
+        }
       }
 
-      return list; // If data array is not empty, keep it unchanged
-    });
+      return list // If data array is not empty, keep it unchanged
+    })
     setListsData(updatedLists)
     console.log(listsData)
     // You can call your API update function here
