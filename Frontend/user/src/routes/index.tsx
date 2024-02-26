@@ -5,7 +5,6 @@ import { Templates } from './../pages/Templates/index'
 import { AccountManagement, Board, BoardsPage } from '~/pages'
 // import { ActivityComponent, Profile } from '~/pages/Profile/components'
 
-
 export const router = createBrowserRouter([
   {
     element: <App />,
@@ -16,7 +15,7 @@ export const router = createBrowserRouter([
       },
       {
         path: '/profile/:id',
-        element: <AccountManagement page={`profile`}/>
+        element: <AccountManagement page={`profile`} />
       },
       {
         path: '/template',
@@ -32,7 +31,7 @@ export const router = createBrowserRouter([
       },
       {
         path: '/activity/:id',
-        element: <AccountManagement page={`activity`}/>
+        element: <AccountManagement page={`activity`} />
       }
     ]
   }

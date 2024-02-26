@@ -1,4 +1,4 @@
-import HomeTile from './components/HomeTile'
+// import HomeTile from './components/HomeTile'
 import StarBorderIcon from '@mui/icons-material/StarBorder'
 import AccessTimeIcon from '@mui/icons-material/AccessTime'
 // import CardHighlight from './components/CardHighLight'
@@ -9,43 +9,30 @@ import './home.css'
 export default function HomePage() {
   return (
     <>
-      <div className="home-container">
-        <div className="home-sticky-container">
-          <nav className="home-left-sidebar-container">
-            {/* Add your left sidebar content here */}
-          </nav>
-
+      <div className='home-container'>
+        <div className='home-sticky-container'>
+          <nav className='home-left-sidebar-container'>{/* Add your left sidebar content here */}</nav>
 
           {/* highlight main content */}
-          <div className="home-main-content-container">
-            <div className="home-main-content-item">
-              <div className="div-item">
-
+          <div className='home-main-content-container'>
+            <div className='home-main-content-item'>
+              <div className='div-item'>
                 {/* content: Icon + HighLight */}
-                <div className="highlight-content">
-                  <div className="icon-highlight">
-                    <span className="nch-icon home-page-main-icon-heart neoUEAwI0GETBQ mb-1">
-                      <StarBorderIcon fontSize='medium'/>
+                <div className='highlight-content'>
+                  <div className='icon-highlight'>
+                    <span className='nch-icon home-page-main-icon-heart neoUEAwI0GETBQ mb-1'>
+                      <StarBorderIcon fontSize='medium' />
                     </span>
                   </div>
-                  <div className="content-highlight">Highlights</div>
+                  <div className='content-highlight'>Highlights</div>
                 </div>
                 {/* end */}
 
-
-
-
-
                 {/* annoucement */}
-                <div className="RN8jBKHlQoem5U">
-                  {/* Add your content for recently viewed boards here */}
-                </div>
+                <div className='RN8jBKHlQoem5U'>{/* Add your content for recently viewed boards here */}</div>
                 {/* end annoucement */}
 
-
-
-
-                <ul data-testid="home-highlights-list">
+                <ul data-testid='home-highlights-list'>
                   {/* Add card highlight items here */}
                   {/* <CardHighlight
                     title="New Tasks"
@@ -61,33 +48,27 @@ export default function HomePage() {
                     commentText="Do this task"
                   /> */}
 
-                  <CardHightLightContent/>
-                  <CardHightLightContent/>
-                  <CardHightLightContent/>
-                  <CardHightLightContent/>
-
-                  
+                  <CardHightLightContent />
+                  <CardHightLightContent />
+                  <CardHightLightContent />
+                  <CardHightLightContent />
 
                   {/* end add highlight */}
                 </ul>
-
-
               </div>
             </div>
           </div>
 
-
-
           {/* right side bar home */}
-          <div className="home-right-sidebar-container">
-            <div className="home-recently-veiwed" data-testid="home-recently-viewed-boards-container">
-              <div className="div-title-recently">
-                <div className="div-icon-clock-recently">
-                  <span className="nch-icon Inlinebl-lineh1 neoUEAwI0GETBQ">
-                    <AccessTimeIcon/>
+          <div className='home-right-sidebar-container'>
+            <div className='home-recently-veiwed' data-testid='home-recently-viewed-boards-container'>
+              <div className='div-title-recently'>
+                <div className='div-icon-clock-recently'>
+                  <span className='nch-icon Inlinebl-lineh1 neoUEAwI0GETBQ'>
+                    <AccessTimeIcon />
                   </span>
                 </div>
-                <div className="content-highlight">Recently viewed</div>
+                <div className='content-highlight'>Recently viewed</div>
               </div>
 
               {/* card home tile */}
@@ -98,29 +79,24 @@ export default function HomePage() {
                 workspaceName="Âu Hồng Minh's workspace"
               /> */}
 
-              <ProjectTile/>
-              <ProjectTile/>
-              <ProjectTile/>
-              <ProjectTile/>
-              <ProjectTile/>
-
-
-
-              
+              <ProjectTile />
+              <ProjectTile />
+              <ProjectTile />
+              <ProjectTile />
+              <ProjectTile />
 
               {/* end home tile */}
-
             </div>
 
-            <div className="iSLLvvYdGSEgKr">
-              <div className="div-title-recently">
-                <div className="content-highlight">Links</div>
+            <div className='iSLLvvYdGSEgKr'>
+              <div className='div-title-recently'>
+                <div className='content-highlight'>Links</div>
               </div>
-              <div className="div-card-project-viewed">
-                <button className="div-content-card">
-                  <span className="icon-add icon-sm dhuVRdSD87x8HI"></span>
-                  <span className="div-content-reveiwed">
-                    <span className="BLp8MvEmT8PnRm">Create a board</span>
+              <div className='div-card-project-viewed'>
+                <button className='div-content-card'>
+                  <span className='icon-add icon-sm dhuVRdSD87x8HI'></span>
+                  <span className='div-content-reveiwed'>
+                    <span className='BLp8MvEmT8PnRm'>Create a board</span>
                   </span>
                 </button>
               </div>

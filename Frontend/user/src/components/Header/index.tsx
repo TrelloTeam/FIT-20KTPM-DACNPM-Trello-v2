@@ -67,7 +67,7 @@ const Header = () => {
 
         <Box sx={{ padding: '0 5px' }}>
           <Link to={`/template`}>
-          <Templates />
+            <Templates />
           </Link>
         </Box>
 

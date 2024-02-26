@@ -1,5 +1,5 @@
-import React, { useState, useEffect, lazy, Suspense } from 'react'
-import { lists, cards } from './testData/test_data'
+import { useState, useEffect, lazy, Suspense } from 'react'
+import { lists } from './testData/test_data'
 import { List, Card } from './type/index'
 
 import {
@@ -9,20 +9,15 @@ import {
   DragOverlay,
   defaultDropAnimationSideEffects,
   DropAnimation,
-  DragOverEvent,
-  closestCorners,
   UniqueIdentifier,
   PointerSensor,
-  MouseSensor,
-  TouchSensor,
   useSensor,
   useSensors,
-  DragMoveEvent,
-  KeyboardSensor
+  DragMoveEvent
 } from '@dnd-kit/core'
-import { arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable'
+import { arrayMove } from '@dnd-kit/sortable'
 import { cloneDeep, isEmpty } from 'lodash'
-import { BoardLayout } from '~/layouts'
+// import { BoardLayout } from '~/layouts'
 import { generatePlaceHolderCard } from '~/utils/fomatter'
 import LoadingComponent from '~/components/Loading'
 import { CardComponent, ListComponent } from './components'
@@ -31,8 +26,8 @@ const ACTIVE_DRAG_ITEM_TYPE = {
   COLUMN: 'ACTIVE_DRAG_ITEM_TYPE_COLUMN',
   CARD: 'ACTIVE_DRAG_ITEM_TYPE_CARD'
 }
-const LazyCardComponent = lazy(() => import('./components/Card'))
-const LazyListComponent = lazy(() => import('./components/List'))
+// const LazyCardComponent = lazy(() => import('./components/Card'))
+// const LazyListComponent = lazy(() => import('./components/List'))
 const LazyListsComponent = lazy(() => import('./components/Lists'))
 export function Board() {
   const [oldListWhenDragging, setOldListWhenDraggingCard] = useState<List>()
@@ -40,10 +35,10 @@ export function Board() {
   const [activeDragItemId, setActiveDragItemId] = useState<string>('')
   const [activeDragItemType, setActiveDragItemType] = useState<string>('')
   const [activeDragItemData, setActiveDragItemData] = useState<any>()
-  const [overListData, setOverListData] = useState<List>()
+  // const [overListData, setOverListData] = useState<List>()
   // const [cardsData, setCardsData] = useState<Card[]>(cards)
-  const [isDragCardToCard, setIsDragCardToCard] = useState<boolean>(false)
-  const [isMoveList, setIsMoveList] = useState<boolean>(false)
+  // const [isDragCardToCard, setIsDragCardToCard] = useState<boolean>(false)
+  // const [isMoveList, setIsMoveList] = useState<boolean>(false)
   const [action, setAction] = useState<boolean>(false)
   // const pointerSensor = useSensor(PointerSensor, {
   //   activationConstraint: {
@@ -70,31 +65,30 @@ export function Board() {
   )
   useEffect(() => {
     console.log('update list')
-   
-      const updatedLists_placeHolder = lists.map((list) => ({
-        ...list,
-        data: list.data.map((task) => ({
-          ...task,
-          placeHolder: false // Set your default value for placeHolder
-        }))
+
+    const updatedLists_placeHolder = lists.map((list) => ({
+      ...list,
+      data: list.data.map((task) => ({
+        ...task,
+        placeHolder: false // Set your default value for placeHolder
       }))
-      const updatedLists = updatedLists_placeHolder.map((list) => {
-        // Check if data array is empty
-        if (list.data.length === 0) {
-          // Add a new item to data array
-          const newItem = generatePlaceHolderCard(list)
+    }))
+    const updatedLists = updatedLists_placeHolder.map((list) => {
+      // Check if data array is empty
+      if (list.data.length === 0) {
+        // Add a new item to data array
+        const newItem = generatePlaceHolderCard(list)
 
-          return {
-            ...list,
-            data: [newItem]
-          }
+        return {
+          ...list,
+          data: [newItem]
         }
+      }
 
-        return list // If data array is not empty, keep it unchanged
-      })
-      setListsData(updatedLists)
-      console.log(updatedLists)
-    
+      return list // If data array is not empty, keep it unchanged
+    })
+    setListsData(updatedLists)
+    console.log(updatedLists)
 
     // You can call your API update function here
   }, [])
@@ -150,7 +144,7 @@ export function Board() {
         }
       }
       console.log('nextList = ', nextOverList)
-      setOverListData(nextOverList)
+      // setOverListData(nextOverList)
       return nextList
     })
   }
@@ -262,7 +256,7 @@ export function Board() {
     setActiveDragItemType('')
     setActiveDragItemData(null)
     setOldListWhenDraggingCard(undefined)
-    setOverListData(undefined)
+    // setOverListData(undefined)
   }
   const customDropAnimation: DropAnimation = {
     sideEffects: defaultDropAnimationSideEffects({
@@ -286,14 +280,10 @@ export function Board() {
             <DragOverlay dropAnimation={customDropAnimation}>
               {!activeDragItemId || !activeDragItemType}
               {activeDragItemId && activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN && (
-                
-                  <ListComponent list={activeDragItemData} />
-                
+                <ListComponent list={activeDragItemData} />
               )}
               {activeDragItemId && activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.CARD && (
-           
-                  <CardComponent card={activeDragItemData} />
-              
+                <CardComponent card={activeDragItemData} />
               )}
             </DragOverlay>
           </div>

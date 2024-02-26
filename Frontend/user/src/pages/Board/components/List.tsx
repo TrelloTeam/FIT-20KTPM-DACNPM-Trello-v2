@@ -1,12 +1,12 @@
 import { CardComponent } from '.'
-import { Card, ListComponentProps, defaultCard } from '../type'
+import { ListComponentProps } from '../type'
 import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import { useEffect, useState } from 'react'
+// import { useEffect, useState } from 'react'
 import { HiOutlineDotsHorizontal } from 'react-icons/hi'
 import { IoImagesOutline } from 'react-icons/io5'
 export default function ListComponent({ list }: ListComponentProps) {
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+  const { attributes, listeners, setNodeRef, transform, isDragging } = useSortable({
     id: list.id,
     data: { ...list }
   })

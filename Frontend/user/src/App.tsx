@@ -6,7 +6,6 @@ import Header from './components/Header'
 function App() {
   return (
     <Provider store={store}>
-
       <Header />
       <div style={{ paddingTop: '50px' }}>
         <Outlet />

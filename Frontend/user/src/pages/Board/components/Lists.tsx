@@ -1,4 +1,4 @@
-import { List, ListsComponentProps } from '../type'
+import { ListsComponentProps } from '../type'
 import { ListComponent } from './index'
 import { SortableContext, horizontalListSortingStrategy } from '@dnd-kit/sortable'
 
