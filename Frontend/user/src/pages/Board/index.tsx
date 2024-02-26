@@ -70,31 +70,30 @@ export function Board() {
   )
   useEffect(() => {
     console.log('update list')
-   
-      const updatedLists_placeHolder = lists.map((list) => ({
-        ...list,
-        data: list.data.map((task) => ({
-          ...task,
-          placeHolder: false // Set your default value for placeHolder
-        }))
+
+    const updatedLists_placeHolder = lists.map((list) => ({
+      ...list,
+      data: list.data.map((task) => ({
+        ...task,
+        placeHolder: false // Set your default value for placeHolder
       }))
-      const updatedLists = updatedLists_placeHolder.map((list) => {
-        // Check if data array is empty
-        if (list.data.length === 0) {
-          // Add a new item to data array
-          const newItem = generatePlaceHolderCard(list)
+    }))
+    const updatedLists = updatedLists_placeHolder.map((list) => {
+      // Check if data array is empty
+      if (list.data.length === 0) {
+        // Add a new item to data array
+        const newItem = generatePlaceHolderCard(list)
 
-          return {
-            ...list,
-            data: [newItem]
-          }
+        return {
+          ...list,
+          data: [newItem]
         }
+      }
 
-        return list // If data array is not empty, keep it unchanged
-      })
-      setListsData(updatedLists)
-      console.log(updatedLists)
-    
+      return list // If data array is not empty, keep it unchanged
+    })
+    setListsData(updatedLists)
+    console.log(updatedLists)
 
     // You can call your API update function here
   }, [])
@@ -286,14 +285,10 @@ export function Board() {
             <DragOverlay dropAnimation={customDropAnimation}>
               {!activeDragItemId || !activeDragItemType}
               {activeDragItemId && activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN && (
-                
-                  <ListComponent list={activeDragItemData} />
-                
+                <ListComponent list={activeDragItemData} />
               )}
               {activeDragItemId && activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.CARD && (
-           
-                  <CardComponent card={activeDragItemData} />
-              
+                <CardComponent card={activeDragItemData} />
               )}
             </DragOverlay>
           </div>
