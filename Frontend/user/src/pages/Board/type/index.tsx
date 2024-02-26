@@ -5,6 +5,7 @@ export interface Card {
   name: string
   list_name: string
   watcher_email: Array<string>
+  placeHolder: boolean
 }
 export const defaultCard = {
   id: '',
@@ -16,7 +17,6 @@ export const defaultCard = {
 }
 export interface CardComponentProps {
   card: Card
-  listDraggingIn: List | undefined
 }
 export interface List {
   id: string
@@ -27,9 +27,7 @@ export interface List {
 }
 export interface ListComponentProps {
   list: List
-  listDraggingIn: List | undefined
 }
 export interface ListsComponentProps {
   lists: List[]
-  listDraggingIn: List | undefined
 }
