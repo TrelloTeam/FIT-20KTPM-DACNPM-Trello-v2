@@ -8,7 +8,7 @@ function App() {
   return (
     <Provider store={store}>
       <ToastProvider>
-        <AccountManagement />
+        <Board />
       </ToastProvider>
     </Provider>
   )
