@@ -10,6 +10,7 @@ import SearchMenu from './menu/search'
 import Help from './menu/help'
 import Notification from './menu/notification'
 import Account from './menu/account'
+import { Link } from 'react-router-dom'
 
 const Header = () => {
   return (
@@ -65,7 +66,9 @@ const Header = () => {
         </Box>
 
         <Box sx={{ padding: '0 5px' }}>
+          <Link to={`/template`}>
           <Templates />
+          </Link>
         </Box>
 
         <Create />

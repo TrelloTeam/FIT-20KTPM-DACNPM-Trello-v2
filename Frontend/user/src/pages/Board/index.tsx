@@ -1,7 +1,6 @@
-import React, { useState, useEffect, DragEvent } from 'react'
+import React, { useState, useEffect, lazy, Suspense } from 'react'
 import { lists, cards } from './testData/test_data'
 import { List, Card } from './type/index'
-import { CardComponent, ListComponent, ListsComponent } from './components'
 
 import {
   DndContext,
@@ -25,12 +24,16 @@ import { arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable'
 import { cloneDeep, isEmpty } from 'lodash'
 import { BoardLayout } from '~/layouts'
 import { generatePlaceHolderCard } from '~/utils/fomatter'
+import LoadingComponent from '~/components/Loading'
+import { CardComponent, ListComponent } from './components'
 
 const ACTIVE_DRAG_ITEM_TYPE = {
   COLUMN: 'ACTIVE_DRAG_ITEM_TYPE_COLUMN',
   CARD: 'ACTIVE_DRAG_ITEM_TYPE_CARD'
 }
-
+const LazyCardComponent = lazy(() => import('./components/Card'))
+const LazyListComponent = lazy(() => import('./components/List'))
+const LazyListsComponent = lazy(() => import('./components/Lists'))
 export function Board() {
   const [oldListWhenDragging, setOldListWhenDraggingCard] = useState<List>()
   const [listsData, setListsData] = useState<Array<List>>()
@@ -67,29 +70,32 @@ export function Board() {
   )
   useEffect(() => {
     console.log('update list')
-    const updatedLists_placeHolder = lists.map((list) => ({
-      ...list,
-      data: list.data.map((task) => ({
-        ...task,
-        placeHolder: false // Set your default value for placeHolder
+   
+      const updatedLists_placeHolder = lists.map((list) => ({
+        ...list,
+        data: list.data.map((task) => ({
+          ...task,
+          placeHolder: false // Set your default value for placeHolder
+        }))
       }))
-    }))
-    const updatedLists = updatedLists_placeHolder.map((list) => {
-      // Check if data array is empty
-      if (list.data.length === 0) {
-        // Add a new item to data array
-        const newItem = generatePlaceHolderCard(list)
+      const updatedLists = updatedLists_placeHolder.map((list) => {
+        // Check if data array is empty
+        if (list.data.length === 0) {
+          // Add a new item to data array
+          const newItem = generatePlaceHolderCard(list)
 
-        return {
-          ...list,
-          data: [newItem]
+          return {
+            ...list,
+            data: [newItem]
+          }
         }
-      }
 
-      return list // If data array is not empty, keep it unchanged
-    })
-    setListsData(updatedLists)
-    console.log(listsData)
+        return list // If data array is not empty, keep it unchanged
+      })
+      setListsData(updatedLists)
+      console.log(updatedLists)
+    
+
     // You can call your API update function here
   }, [])
 
@@ -268,24 +274,31 @@ export function Board() {
     })
   }
   return (
-    <BoardLayout>
+    <div>
       <div className='mx-auto p-4 text-center text-3xl font-bold uppercase text-black'>Header Area</div>
+
       <DndContext sensors={sensors} onDragStart={handleDragStart} onDragMove={handleDragOver} onDragEnd={handleDragEnd}>
         {listsData && (
           <div className={`w-[100%]`}>
-            <ListsComponent lists={listsData} />
+            <Suspense fallback={<LoadingComponent />}>
+              <LazyListsComponent lists={listsData} />
+            </Suspense>
             <DragOverlay dropAnimation={customDropAnimation}>
               {!activeDragItemId || !activeDragItemType}
               {activeDragItemId && activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN && (
-                <ListComponent list={activeDragItemData} />
+                
+                  <ListComponent list={activeDragItemData} />
+                
               )}
               {activeDragItemId && activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.CARD && (
-                <CardComponent card={activeDragItemData} />
+           
+                  <CardComponent card={activeDragItemData} />
+              
               )}
             </DragOverlay>
           </div>
         )}
       </DndContext>
-    </BoardLayout>
+    </div>
   )
 }

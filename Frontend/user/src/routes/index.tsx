@@ -1,10 +1,10 @@
 import { createBrowserRouter } from 'react-router-dom'
 import App from '../App'
 import HomePage from '~/pages/Home'
-import { Profile } from './../pages/Profile/components/Profile'
 import { Templates } from './../pages/Templates/index'
-import { BoardsPage } from '~/pages'
-import { ActivityComponent } from './../pages/Profile/components/Activity'
+import { AccountManagement, Board, BoardsPage } from '~/pages'
+// import { ActivityComponent, Profile } from '~/pages/Profile/components'
+
 
 export const router = createBrowserRouter([
   {
@@ -15,20 +15,24 @@ export const router = createBrowserRouter([
         element: <HomePage />
       },
       {
-        path: '/profile',
-        element: <Profile />
+        path: '/profile/:id',
+        element: <AccountManagement page={`profile`}/>
       },
       {
         path: '/template',
         element: <Templates />
       },
       {
-        path: '/board',
+        path: '/workspace/:workspaceId',
         element: <BoardsPage />
       },
       {
-        path: '/activity',
-        element: <ActivityComponent />
+        path: '/board/:id',
+        element: <Board />
+      },
+      {
+        path: '/activity/:id',
+        element: <AccountManagement page={`activity`}/>
       }
     ]
   }

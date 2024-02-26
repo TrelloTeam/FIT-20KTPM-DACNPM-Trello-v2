@@ -3,6 +3,7 @@ import { Grid } from '@mui/material'
 import { BoardSubset } from '~/pages'
 import BoardsPageCard from './BoardsPageCard'
 import BoardsPageCardAdd from './BoardsPageCardAdd'
+import { Link } from 'react-router-dom'
 
 interface BoardsPageRowProps {
   boards: BoardSubset[]
@@ -14,7 +15,9 @@ export default function BoardsPageRow({ boards, enableAddBoard }: BoardsPageRowP
     <Grid container spacing={2}>
       {boards.map((board: BoardSubset, index: number) => (
         <Grid item xs={3} key={index}>
+          <Link to={`/board/123`}>
           <BoardsPageCard board={board} />
+          </Link>
         </Grid>
       ))}
       {enableAddBoard ? (

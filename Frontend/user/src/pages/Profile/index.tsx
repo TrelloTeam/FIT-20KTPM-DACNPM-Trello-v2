@@ -1,11 +1,18 @@
 // pages/account-management.tsx
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Head from 'next/head'
 import { ActivityComponent, Header, Profile } from './components'
 
-export const AccountManagement: React.FC = () => {
-  const [selectedTab, setSelectedTab] = useState('profile')
+type AccountManagementProps = {
+  page: string
+}
 
+export const AccountManagement: React.FC<AccountManagementProps> = ({ page }) => {
+  const [selectedTab, setSelectedTab] = useState<string>('')
+  useEffect(() => {
+    setSelectedTab(page)
+    console.log(page)
+  }, [page])
   const handleTabSelect = (tab: string) => {
     setSelectedTab(tab)
   }
@@ -15,8 +22,18 @@ export const AccountManagement: React.FC = () => {
       <Head>
         <title>Your Profile</title>
       </Head>
-      <Header onSelectTab={handleTabSelect} />
-      {selectedTab === 'profile' ? <Profile /> : <ActivityComponent />}
+
+      {selectedTab === 'profile' ? (
+        <>
+          <Header onSelectTab={handleTabSelect} currentTab={selectedTab} />
+          <Profile />
+        </>
+      ) : (
+        <>
+          <Header onSelectTab={handleTabSelect} currentTab={selectedTab} />
+          <ActivityComponent />
+        </>
+      )}
     </>
   )
 }

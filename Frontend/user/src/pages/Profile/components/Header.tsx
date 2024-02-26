@@ -1,13 +1,17 @@
 // components/Header.tsx
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 interface HeaderProps {
+  currentTab: string
   onSelectTab: (selectedTab: string) => void
 }
 
-export const Header: React.FC<HeaderProps> = ({ onSelectTab }) => {
-  const [selectedTab, setSelectedTab] = useState('profile')
+export const Header: React.FC<HeaderProps> = ({ currentTab, onSelectTab }) => {
+  const [selectedTab, setSelectedTab] = useState<string>('')
   const avtPath = '/src/assets/Profile/avt.png'
+  useEffect(() => {
+    setSelectedTab(currentTab)
+  }, [currentTab])
   const handleTabClick = (tab: string) => {
     setSelectedTab(tab)
     onSelectTab(tab)

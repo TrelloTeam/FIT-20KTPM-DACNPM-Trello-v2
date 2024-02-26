@@ -2,6 +2,7 @@ import * as React from 'react'
 import { Box, Button, ClickAwayListener, Grow, Paper, Popper, MenuList, Stack, Typography } from '@mui/material'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
+import { Link } from 'react-router-dom'
 
 export default function WorkSpaces() {
   const [open, setOpen] = React.useState(false)
@@ -101,39 +102,40 @@ export default function WorkSpaces() {
                       >
                         Your Workspaces
                       </Typography>
-
-                      <Box
-                        sx={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          padding: '8px',
-                          '&:hover': {
-                            backgroundColor: 'rgba(255,255,255,0.1)',
-                            borderRadius: '4px'
-                          }
-                        }}
-                      >
-                        <Typography
-                          variant='h4'
+                      <Link to={`/workspace/123`}>
+                        <Box
                           sx={{
-                            display: 'inline-block',
-                            fontSize: '20px',
-                            fontWeight: 700,
-                            padding: '8px 14px',
-                            borderRadius: '6px',
-                            backgroundImage: 'linear-gradient(to bottom, #E774BB, #943D73)'
+                            display: 'flex',
+                            alignItems: 'center',
+                            padding: '8px',
+                            '&:hover': {
+                              backgroundColor: 'rgba(255,255,255,0.1)',
+                              borderRadius: '4px'
+                            }
                           }}
                         >
-                          T
-                        </Typography>
+                          <Typography
+                            variant='h4'
+                            sx={{
+                              display: 'inline-block',
+                              fontSize: '20px',
+                              fontWeight: 700,
+                              padding: '8px 14px',
+                              borderRadius: '6px',
+                              backgroundImage: 'linear-gradient(to bottom, #E774BB, #943D73)'
+                            }}
+                          >
+                            T
+                          </Typography>
 
-                        <Typography
-                          variant='body1'
-                          sx={{ fontSize: '14px', fontWeight: 700, color: '#9fadbc', marginLeft: '12px' }}
-                        >
-                          test
-                        </Typography>
-                      </Box>
+                          <Typography
+                            variant='body1'
+                            sx={{ fontSize: '14px', fontWeight: 700, color: '#9fadbc', marginLeft: '12px' }}
+                          >
+                            test
+                          </Typography>
+                        </Box>
+                      </Link>
                     </Box>
                     <Box>
                       <Typography
@@ -142,39 +144,40 @@ export default function WorkSpaces() {
                       >
                         Guest Workspaces
                       </Typography>
-
-                      <Box
-                        sx={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          padding: '8px',
-                          '&:hover': {
-                            backgroundColor: 'rgba(255,255,255,0.1)',
-                            borderRadius: '4px'
-                          }
-                        }}
-                      >
-                        <Typography
-                          variant='h4'
+                      <Link to={`/workspace/123`}>
+                        <Box
                           sx={{
-                            display: 'inline-block',
-                            fontSize: '20px',
-                            fontWeight: 700,
-                            padding: '8px 14px',
-                            borderRadius: '6px',
-                            backgroundImage: 'linear-gradient(to bottom, #E774BB, #943D73)'
+                            display: 'flex',
+                            alignItems: 'center',
+                            padding: '8px',
+                            '&:hover': {
+                              backgroundColor: 'rgba(255,255,255,0.1)',
+                              borderRadius: '4px'
+                            }
                           }}
                         >
-                          T
-                        </Typography>
+                          <Typography
+                            variant='h4'
+                            sx={{
+                              display: 'inline-block',
+                              fontSize: '20px',
+                              fontWeight: 700,
+                              padding: '8px 14px',
+                              borderRadius: '6px',
+                              backgroundImage: 'linear-gradient(to bottom, #E774BB, #943D73)'
+                            }}
+                          >
+                            T
+                          </Typography>
 
-                        <Typography
-                          variant='body1'
-                          sx={{ fontSize: '14px', fontWeight: 700, color: '#9fadbc', marginLeft: '12px' }}
-                        >
-                          test
-                        </Typography>
-                      </Box>
+                          <Typography
+                            variant='body1'
+                            sx={{ fontSize: '14px', fontWeight: 700, color: '#9fadbc', marginLeft: '12px' }}
+                          >
+                            test
+                          </Typography>
+                        </Box>
+                      </Link>
                     </Box>
                   </MenuList>
                 </ClickAwayListener>
