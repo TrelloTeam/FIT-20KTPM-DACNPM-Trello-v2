@@ -7,6 +7,8 @@ import BoardsPageWorkspaceControl from '~/components/BoardsPageWorkspaceControl'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrello } from '@fortawesome/free-brands-svg-icons'
 import BoardsPageRowTemplate from '~/components/BoardsPageRowTemplate'
+import { useTranslation } from 'react-i18next'
+import LanguageSwitcher from '~/components/LanguageSwitcher'
 
 export type BoardTemplate = {
   [x: string]: unknown
@@ -50,6 +52,8 @@ export function BoardsPageLabel({ title }: BoardsPageLabelProps) {
 }
 
 export function BoardsPage() {
+  const { t } = useTranslation()
+  const workspaceOwner = 'Âu Hồng Minh'
   const starredBoards = data2.filter((board) => board.is_star == true)
 
   return (
@@ -61,10 +65,11 @@ export function BoardsPage() {
         </Grid>
         {/* Boards Page */}
         <Grid item xs={8}>
+          <LanguageSwitcher />
           {/* START: Recently Viewed Boards section */}
           <Box style={{ color: colors.primary }} sx={{ display: 'flex', alignItems: 'center' }} className='my-4'>
             <FontAwesomeIcon icon={faTrello} style={{ fontSize: 28 }} />
-            <h1 className='ml-2 p-0 text-xl font-bold'>Most popular templates</h1>
+            <h1 className='ml-2 p-0 text-xl font-bold'>{t('Most popular templates')}</h1>
           </Box>
           <BoardsPageRowTemplate boards={data1} />
           {/* END: Recently Viewed Boards section */}
@@ -73,7 +78,7 @@ export function BoardsPage() {
           {/* START: Starred Boards section */}
           <Box style={{ color: colors.primary }} sx={{ display: 'flex', alignItems: 'center' }} className='my-4'>
             <StarIcon style={{ fontSize: 28 }} />
-            <h1 className='ml-2 p-0 text-lg font-bold'>Starred boards</h1>
+            <h1 className='ml-2 p-0 text-lg font-bold'>{t('Starred boards')}</h1>
           </Box>
           <BoardsPageRow boards={starredBoards} enableAddBoard={false} />
           {/* END: Starred Boards section */}
@@ -82,7 +87,7 @@ export function BoardsPage() {
           {/* START: Recently Viewed Boards section */}
           <Box style={{ color: colors.primary }} sx={{ display: 'flex', alignItems: 'center' }} className='my-4'>
             <AccessTimeIcon style={{ fontSize: 28 }} />
-            <h1 className='ml-2 p-0 text-lg font-bold'>Recently viewed</h1>
+            <h1 className='ml-2 p-0 text-lg font-bold'>{t('Recently viewed')}</h1>
           </Box>
           <BoardsPageRow boards={data2} enableAddBoard={false} />
           {/* END: Recently Viewed Boards section */}
@@ -90,7 +95,7 @@ export function BoardsPage() {
           <Container sx={{ height: 80 }}></Container>
           {/* START: My Workspaces section */}
           <h1 style={{ color: colors.primary }} className='p-0 text-lg font-bold'>
-            YOUR WORKSPACES
+            {t('YOUR WORKSPACES')}
           </h1>
           <Grid container className='flex justify-between'>
             <Grid item xs={4}>

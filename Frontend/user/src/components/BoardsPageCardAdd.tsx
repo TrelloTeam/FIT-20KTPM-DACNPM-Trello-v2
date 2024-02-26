@@ -1,6 +1,8 @@
 import { Box, Card, CardActions, CardActionArea } from '@mui/material'
+import { useTranslation } from 'react-i18next'
 
 export default function BoardsPageCardAdd() {
+  const { t } = useTranslation()
   return (
     <Card sx={{ width: 200, height: 100, backgroundColor: 'rgba(0, 0, 0, 0.05)' }}>
       <CardActionArea
@@ -24,7 +26,7 @@ export default function BoardsPageCardAdd() {
             justifyContent: 'center'
           }}
         >
-          <p className='text-sm font-semibold'>Create new board</p>
+          <p className='text-sm font-semibold'>{t('Create new board')}</p>
         </Box>
       </CardActionArea>
       <CardActions></CardActions>
