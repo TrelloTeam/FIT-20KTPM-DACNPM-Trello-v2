@@ -7,6 +7,8 @@ import BoardsPageWorkspaceControl from '~/components/BoardsPageWorkspaceControl'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrello } from '@fortawesome/free-brands-svg-icons'
 import BoardsPageRowTemplate from '~/components/BoardsPageRowTemplate'
+import { selectBoardList } from '~/store/reducers'
+import { useSelector } from 'react-redux'
 
 export type BoardTemplate = {
   [x: string]: unknown
@@ -50,11 +52,13 @@ export function BoardsPageLabel({ title }: BoardsPageLabelProps) {
 }
 
 export function BoardsPage() {
+  const stateBoardList = useSelector(selectBoardList)
+
   const starredBoards = data2.filter((board) => board.is_star == true)
 
   return (
-    <Box display='flex' justifyContent='center' alignItems='center' className='my-10'>
-      <Grid container sx={{ maxWidth: 1280 }}>
+    <Box display='flex' justifyContent='center' alignItems='center' className='mt-10 mb-20'>
+      <Grid container sx={{ maxWidth: 1244 }}>
         {/* (reserved) Left panel */}
         <Grid item xs={4}>
           <Container></Container>
@@ -110,7 +114,7 @@ export function BoardsPage() {
               <BoardsPageWorkspaceControl />
             </Grid>
           </Grid>
-          <BoardsPageRow boards={data2} enableAddBoard={true} />
+          <BoardsPageRow boards={stateBoardList.boards} enableAddBoard={true} />
           {/* END: My Workspaces section */}
         </Grid>
       </Grid>

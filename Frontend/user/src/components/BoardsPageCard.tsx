@@ -47,7 +47,7 @@ export default function BoardsPageCard({ board }: BoardsPageCardProps) {
           <Grid container spacing={1}>
             {/* Display workspace owner */}
             <Grid item xs={10}>
-              <p className='truncate text-sm'>Au Hong Minh's workspace</p>
+              <p className='truncate text-sm'>Âu Hồng Minh's workspace</p>
             </Grid>
             <Grid item xs={2} sx={{ paddingTop: 0, padddingRight: 1 }}>
               {/* Toggle star button */}
