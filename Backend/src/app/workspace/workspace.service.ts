@@ -1,7 +1,7 @@
-import {Model} from 'mongoose'
+import { Model } from 'mongoose'
 
-import {InjectModel} from '@nestjs/mongoose'
-import {DbSchemas, TrelloApi} from '@trello-v2/shared'
+import { InjectModel } from '@nestjs/mongoose'
+import { DbSchemas, TrelloApi } from '@trello-v2/shared'
 
 export abstract class IWorkspaceService {
   abstract getAllWorkspaces(): Promise<DbSchemas.WorkspaceSchema.Workspace[]>
@@ -31,11 +31,10 @@ export class WorkspaceService implements IWorkspaceService {
         {
           _id: workspace_id,
         },
-
         {
-          $set: {...body},
+          $set: { ...body },
         },
-        {new: true},
+        { new: true },
       )
       .exec()
 
@@ -55,9 +54,9 @@ export class WorkspaceService implements IWorkspaceService {
         },
 
         {
-          $set: {...body},
+          $set: { ...body },
         },
-        {new: true},
+        { new: true },
       )
       .exec()
 

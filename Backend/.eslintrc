@@ -78,5 +78,23 @@
     "sonarjs/no-duplicate-string": "off",
     "sonarjs/cognitive-complexity": ["error", 25],
     //#endregion
+
+    "prettier/prettier": [
+      "warn",
+      {
+        "printWidth": 140,
+        "tabWidth": 2,
+        "useTabs": false,
+        "semi": false,
+        "singleQuote": true,
+        "quoteProps": "as-needed",
+        "jsxSingleQuote": false,
+        "trailingComma": "all",
+        "bracketSpacing": true,
+        "jsxBracketSameLine": false,
+        "arrowParens": "always",
+        "endOfLine": "auto",
+      },
+    ],
   },
 }

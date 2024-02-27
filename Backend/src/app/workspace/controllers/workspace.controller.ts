@@ -32,7 +32,6 @@ export class WorkspaceController {
       data: workspaceData,
     }
   }
-
   @InjectRoute(workspaceRoutes.updateWorkspaceInfo)
   async updateWorkspaceInfo(
     @Param('id') id: string,
