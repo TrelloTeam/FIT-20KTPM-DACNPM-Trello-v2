@@ -7,10 +7,17 @@ const array = [1, 2, 3, 4, 5]
 const a = 1
 export default function ListsComponent({ lists }: ListsComponentProps) {
   return (
+
     <SortableContext items={lists?.map((l) => l.id)} strategy={horizontalListSortingStrategy}>
       <div className='my-10 ml-10 flex flex-row '>
         {lists.map((list) => (
           <ListComponent list={list} />
+
+//     <SortableContext items={lists} strategy={horizontalListSortingStrategy}>
+//       <div className='my-10 ml-4 flex flex-row '>
+//         {lists.map((list) => (
+//           <ListComponent list={list} listDraggingIn={listDraggingIn} />
+// >>>>>>> origin/dev/fe
         ))}
       </div>
     </SortableContext>

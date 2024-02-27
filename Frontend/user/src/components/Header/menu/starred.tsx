@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronDown, faStar as starFull } from '@fortawesome/free-solid-svg-icons'
 import noneStar from '~/assets/noneStar.svg'
 
-const length = 1
+const length = 3
 
 export default function Starred() {
   const [open, setOpen] = React.useState(false)
@@ -99,7 +99,7 @@ export default function Starred() {
                       borderRadius: '4px'
                     }}
                   >
-                    {length === 0 ? (
+                    {length !== 3 ? (
                       <Box>
                         <img src={noneStar} alt='' style={{ backgroundSize: 'cover', width: '100%' }} />
 

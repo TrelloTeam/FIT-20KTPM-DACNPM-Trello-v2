@@ -2,7 +2,6 @@ import { Card, CardContent, CardMedia, CardActions } from '@mui/material'
 import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopyOutlined'
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined'
 import SearchIcon from '@mui/icons-material/Search'
-import React from 'react'
 
 function CardTemplate() {
   return (

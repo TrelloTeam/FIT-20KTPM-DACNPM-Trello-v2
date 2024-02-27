@@ -269,10 +269,14 @@ export default function CreateBoard(props: AutocompleteContainerProps) {
             value={value}
             disableClearable
             onChange={(event: React.SyntheticEvent, newValue: string | undefined) => {
+              console.log(event)
+
               setValue(newValue)
             }}
             inputValue={inputValue}
             onInputChange={(event: React.SyntheticEvent, newInputValue: string) => {
+              console.log(event)
+
               setInputValue(newInputValue)
             }}
             id='controllable-states-demo'
@@ -301,10 +305,14 @@ export default function CreateBoard(props: AutocompleteContainerProps) {
             value={value}
             disableClearable
             onChange={(event: React.SyntheticEvent, newValue: string | undefined) => {
+              console.log(event)
+
               setValue(newValue)
             }}
             inputValue={inputValue}
             onInputChange={(event: React.SyntheticEvent, newInputValue: string) => {
+              console.log(event)
+
               setInputValue(newInputValue)
             }}
             id='controllable-states-demo'
@@ -337,7 +345,7 @@ export default function CreateBoard(props: AutocompleteContainerProps) {
             color: '#fff',
             backgroundColor: 'rgba(86,157,255,0.1)',
             '&:hover': {
-              backgroundColor: open ? 'rgba(86,157,255,0.3)' : '#85B8FF'
+              backgroundColor: '#85B8FF'
             },
             transition: 'all 0.1s ease-in',
             lineHeight: '20px'

@@ -6,6 +6,7 @@ import { CSS } from '@dnd-kit/utilities'
 import { HiOutlineDotsHorizontal } from 'react-icons/hi'
 import { IoImagesOutline } from 'react-icons/io5'
 export default function ListComponent({ list }: ListComponentProps) {
+
   const { attributes, listeners, setNodeRef, transform, isDragging } = useSortable({
     id: list.id,
     data: { ...list }
@@ -16,6 +17,7 @@ export default function ListComponent({ list }: ListComponentProps) {
     opacity: isDragging ? 0.5 : undefined
   }
 
+
   // useEffect(() => {
   //   setTempCard({
   //     ...tempCard,
@@ -24,6 +26,23 @@ export default function ListComponent({ list }: ListComponentProps) {
   //   } as Card)
   //   console.log('tempCard', tempCard)
   // }, [listDraggingIn])
+
+//   const [tempCard, setTempCard] = useState<Card>({
+//     id: '',
+//     list_id: '',
+//     order: -1,
+//     name: '',
+//     list_name: '',
+//     watcher_email: []
+//   })
+//   useEffect(() => {
+//     setTempCard({
+//       ...defaultCard,
+//       id: 'uniqueId123',
+//       list_id: listDraggingIn?.id
+//     } as Card)
+//   }, [listDraggingIn])
+// >>>>>>> origin/dev/fe
   return (
     <div
       ref={setNodeRef}

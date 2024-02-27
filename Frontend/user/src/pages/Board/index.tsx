@@ -1,3 +1,4 @@
+
 import { useState, useEffect, lazy, Suspense } from 'react'
 import { lists } from './testData/test_data'
 import { List, Card } from './type/index'
@@ -16,11 +17,13 @@ import {
   DragMoveEvent
 } from '@dnd-kit/core'
 import { arrayMove } from '@dnd-kit/sortable'
+
 import { cloneDeep, isEmpty } from 'lodash'
 // import { BoardLayout } from '~/layouts'
 import { generatePlaceHolderCard } from '~/utils/fomatter'
 import LoadingComponent from '~/components/Loading'
 import { CardComponent, ListComponent } from './components'
+
 
 const ACTIVE_DRAG_ITEM_TYPE = {
   COLUMN: 'ACTIVE_DRAG_ITEM_TYPE_COLUMN',
@@ -37,6 +40,7 @@ export function Board() {
   const [activeDragItemData, setActiveDragItemData] = useState<any>()
   // const [overListData, setOverListData] = useState<List>()
   // const [cardsData, setCardsData] = useState<Card[]>(cards)
+
   // const [isDragCardToCard, setIsDragCardToCard] = useState<boolean>(false)
   // const [isMoveList, setIsMoveList] = useState<boolean>(false)
   const [action, setAction] = useState<boolean>(false)
@@ -63,6 +67,7 @@ export function Board() {
       }
     })
   )
+
   useEffect(() => {
     console.log('update list')
 

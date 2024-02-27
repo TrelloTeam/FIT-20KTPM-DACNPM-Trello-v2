@@ -33,8 +33,10 @@ export const ActivityComponent: React.FC = () => {
           <p className={`my-2  text-lg font-semibold text-gray-700`}>Workspace</p>
         </div>
 
+
         {workspace?.map((w, index) => (
           <div key={index} className='my-2 flex flex-row items-center space-x-4 border-b-2 border-gray-300 pb-2'>
+
             <p className={`ml-2 font-light text-gray-700`}>{w.name}</p>
 
             {w.visibility === 'public' ? (

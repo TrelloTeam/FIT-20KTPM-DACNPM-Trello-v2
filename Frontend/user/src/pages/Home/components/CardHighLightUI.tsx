@@ -1,4 +1,3 @@
-import React from 'react'
 import AddReactionIcon from '@mui/icons-material/AddReaction'
 
 const CardHightLightContent = () => {
