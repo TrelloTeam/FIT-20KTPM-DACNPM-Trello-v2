@@ -15,7 +15,14 @@ export function ListComponent({ list, listDraggingIn }: ListComponentProps) {
     transform: CSS.Transform.toString(transform),
     opacity: isDragging ? 0.5 : undefined
   }
-  const [tempCard, setTempCard] = useState<Card>()
+  const [tempCard, setTempCard] = useState<Card>({
+    id: '',
+    list_id: '',
+    order: -1,
+    name: '',
+    list_name: '',
+    watcher_email: []
+  })
   useEffect(() => {
     setTempCard({
       ...defaultCard,
