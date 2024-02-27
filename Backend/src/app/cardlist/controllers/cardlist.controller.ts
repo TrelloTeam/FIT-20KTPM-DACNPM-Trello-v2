@@ -297,4 +297,24 @@ export class CardlistController {
       data: data,
     }
   }
+
+  @InjectRoute(CardlistRoutes.addWatcher)
+  @SwaggerApi({
+    body: { schema: { $ref: getSchemaPath('AddWatcherRequestSchema') } },
+    responses: [
+      {
+        status: 200,
+        schema: { $ref: getSchemaPath('AddWatcherResponseSchema') },
+      },
+    ],
+  })
+  async addWatcher(
+    @Body(new ZodValidationPipe(TrelloApi.CardlistApi.AddWatcherRequestSchema))
+    body: TrelloApi.CardlistApi.AddWatcherRequest,
+  ): Promise<TrelloApi.CardlistApi.AddWatcherResponse> {
+    const data = await this.cardlistService.addWatcher(body)
+    return {
+      data: data,
+    }
+  }
 }

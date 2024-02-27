@@ -27,6 +27,8 @@ export abstract class ICardlistService {
 
   abstract archiveCardsInlist(cardlist_id: string): Promise<DbSchemas.CardlistSchema.CardList>
   abstract archiveCardlist(cardlist_id: string): Promise<DbSchemas.CardlistSchema.CardList>
+
+  abstract addWatcher(data: TrelloApi.CardlistApi.AddWatcherRequest): Promise<DbSchemas.CardlistSchema.CardList>
 }
 
 export class CardlistService implements ICardlistService {
@@ -211,6 +213,18 @@ export class CardlistService implements ICardlistService {
     cardlist.archive_at = new Date()
     return cardlist.save()
   }
+
+  async addWatcher(data: TrelloApi.CardlistApi.AddWatcherRequest) {
+    const cardlist = await this.CardlistMModel.findById(data._id)
+    if (!cardlist) {
+      return { status: 'Not Found', msg: "Can't find any cardlist" } as any
+    }
+    if (!cardlist.watcher_email.includes(data.email)) {
+      cardlist.watcher_email.push(data.email)
+      return cardlist.save()
+    }
+    return cardlist.save()
+  }
 }
 
 export class CardlistServiceMock implements ICardlistService {
@@ -314,6 +328,18 @@ export class CardlistServiceMock implements ICardlistService {
     return new Promise<DbSchemas.CardlistSchema.CardList>((res) => {
       res({
         _id: cardlist_id,
+        board_id: 'Mock-id',
+        watcher_email: [],
+        cards: [],
+        name: 'Mock-name',
+      })
+    })
+  }
+
+  addWatcher(data: TrelloApi.CardlistApi.AddWatcherRequest): Promise<DbSchemas.CardlistSchema.CardList> {
+    return new Promise<DbSchemas.CardlistSchema.CardList>((res) => {
+      res({
+        ...data,
         board_id: 'Mock-id',
         watcher_email: [],
         cards: [],
