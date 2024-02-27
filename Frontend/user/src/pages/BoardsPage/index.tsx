@@ -7,8 +7,9 @@ import BoardsPageWorkspaceControl from '~/components/BoardsPageWorkspaceControl'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrello } from '@fortawesome/free-brands-svg-icons'
 import BoardsPageRowTemplate from '~/components/BoardsPageRowTemplate'
-import { selectBoardList } from '~/store/reducers'
+import { selectBoardList, selectStarredBoardList } from '~/store/reducers'
 import { useSelector } from 'react-redux'
+import React from 'react'
 
 export type BoardTemplate = {
   [x: string]: unknown
@@ -26,17 +27,17 @@ export type BoardSubset = {
 
 const data1: BoardTemplate[] = [
   { _id: '0', name: 'Project Management', is_star: false },
-  { _id: '1', name: 'Kanban Template', is_star: true }
+  { _id: '1', name: 'Kanban Template', is_star: false }
 ]
 
 const data2: BoardSubset[] = [
-  { _id: '0', name: 'Project Trello', is_star: true },
+  { _id: '0', name: 'Project Trello', is_star: false },
   { _id: '1', name: 'Board 2', is_star: false },
   { _id: '2', name: 'Board 3', is_star: false },
-  { _id: '3', name: 'Board 3', is_star: false },
-  { _id: '4', name: 'Board 3', is_star: true },
-  { _id: '5', name: 'Board 3', is_star: false },
-  { _id: '6 ', name: 'Board 3', is_star: false }
+  { _id: '3', name: 'Board 4', is_star: false },
+  { _id: '4', name: 'Board 5', is_star: false },
+  { _id: '5', name: 'Board 6', is_star: false },
+  { _id: '6', name: 'Board 7', is_star: false }
 ]
 
 interface BoardsPageLabelProps {
@@ -53,11 +54,10 @@ export function BoardsPageLabel({ title }: BoardsPageLabelProps) {
 
 export function BoardsPage() {
   const stateBoardList = useSelector(selectBoardList)
-
-  const starredBoards = data2.filter((board) => board.is_star == true)
+  const stateStarredBoardList = useSelector(selectStarredBoardList)
 
   return (
-    <Box display='flex' justifyContent='center' alignItems='center' className='mt-10 mb-20'>
+    <Box display='flex' justifyContent='center' alignItems='center' className='mb-20 mt-10'>
       <Grid container sx={{ maxWidth: 1244 }}>
         {/* (reserved) Left panel */}
         <Grid item xs={4}>
@@ -72,14 +72,18 @@ export function BoardsPage() {
           </Box>
           <BoardsPageRowTemplate boards={data1} />
           {/* END: Recently Viewed Boards section */}
-          {/* spacing */}
-          <Container sx={{ height: 40 }}></Container>
           {/* START: Starred Boards section */}
-          <Box style={{ color: colors.primary }} sx={{ display: 'flex', alignItems: 'center' }} className='my-4'>
-            <StarIcon style={{ fontSize: 28 }} />
-            <h1 className='ml-2 p-0 text-lg font-bold'>Starred boards</h1>
-          </Box>
-          <BoardsPageRow boards={starredBoards} enableAddBoard={false} />
+          {stateStarredBoardList.boards.length != 0 && (
+            <React.Fragment>
+              {/* spacing */}
+              <Container sx={{ height: 40 }}></Container>
+              <Box style={{ color: colors.primary }} sx={{ display: 'flex', alignItems: 'center' }} className='my-4'>
+                <StarIcon style={{ fontSize: 28 }} />
+                <h1 className='ml-2 p-0 text-lg font-bold'>Starred boards</h1>
+              </Box>
+              <BoardsPageRow boards={stateStarredBoardList.boards} enableAddBoard={false} />
+            </React.Fragment>
+          )}
           {/* END: Starred Boards section */}
           {/* spacing */}
           <Container sx={{ height: 40 }}></Container>

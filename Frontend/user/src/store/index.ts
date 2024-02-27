@@ -1,11 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit'
 
-import { exampleSlice, boardListSlice, createBoardDialogSlice } from './reducers'
+import { exampleSlice, boardListSlice, createBoardDialogSlice, starredBoardListSlice } from './reducers'
 
 export const store = configureStore({
   reducer: {
     exampleReducer: exampleSlice.reducer,
     boardListReducer: boardListSlice.reducer,
+    starredBoardListReducer: starredBoardListSlice.reducer,
     createBoardDialogReducer: createBoardDialogSlice.reducer
   }
 })

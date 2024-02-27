@@ -4,6 +4,8 @@ import StarIcon from '@mui/icons-material/Star'
 import StarBorderOutlinedIcon from '@mui/icons-material/StarBorderOutlined'
 
 import { Card, CardActionArea, CardActions, CardContent, Grid, IconButton } from '@mui/material'
+import { useDispatch } from 'react-redux'
+import { addStarredBoard, removeStarredBoard } from '~/store/reducers/starredBoardList'
 
 const cardBg01 =
   'https://images.pexels.com/photos/1252890/pexels-photo-1252890.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'
@@ -13,10 +15,13 @@ interface BoardsPageCardProps {
 }
 
 export default function BoardsPageCard({ board }: BoardsPageCardProps) {
+  const dispatch = useDispatch()
   const [isStar, setIsStar] = useState(false)
 
   const handleToggleStar = () => {
-    setIsStar((prev) => !prev)
+    setIsStar(!isStar)
+    const updatedBoard = { ...board, is_star: isStar }
+    !isStar ? dispatch(addStarredBoard(updatedBoard)) : dispatch(removeStarredBoard(board._id))
   }
 
   return (
