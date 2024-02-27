@@ -11,6 +11,7 @@ export const BoardLabelMSchema = new Schema<DbSchemas.BoardSchema.BoardLabel>({
 export const BoardMSchema = new Schema<DbSchemas.BoardSchema.Board>({
   name: String,
   workspace_id: String,
+  background: String,
   activities: [ActivityMSchema],
   members_email: [String],
   labels: [BoardLabelMSchema],

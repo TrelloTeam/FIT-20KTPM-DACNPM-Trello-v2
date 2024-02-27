@@ -62,6 +62,7 @@ export class BoardServiceMock implements IBoardService {
         members_email: [],
         labels: [],
         is_star: false,
+        background: '',
       })
     })
   }
@@ -84,6 +85,7 @@ export class BoardServiceMock implements IBoardService {
         workspace_id: 'Mock-id',
         name: '',
         visibility: 'private',
+        background: '',
       })
     })
   }
@@ -108,6 +110,7 @@ export class BoardServiceMock implements IBoardService {
         workspace_id: 'Mock-id',
         name: '',
         visibility: 'private',
+        background: '',
       })
     })
   }
