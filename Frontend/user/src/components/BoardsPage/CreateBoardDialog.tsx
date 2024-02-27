@@ -1,7 +1,7 @@
 import { faCheck, faChevronLeft, faClose } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Autocomplete, Box, Button, TextField } from '@mui/material'
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useEffect, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { addBoard, closeDialog } from '~/store/reducers'
 import bgHeader from '~/assets/bg_header_create_board.svg'
@@ -13,6 +13,12 @@ const workspaceOptions = ["Âu Hồng Minh's workspace", 'My Workspace']
 const visibilityOptions = ['Private', 'Workspace', 'Public']
 
 export default function CreateBoardDialog() {
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    inputRef.current?.focus()
+  }, [])
+
   const dispatch = useDispatch()
   const [textFieldValue, setTextFieldValue] = useState('')
   const [isRequired, setIsRequired] = useState(true)
@@ -263,6 +269,8 @@ export default function CreateBoardDialog() {
             Board title <span style={{ color: 'red' }}>*</span>
           </p>
           <input
+            ref={inputRef}
+            autoFocus={true}
             onChange={handleChangeTitle}
             type='text'
             style={{
@@ -271,7 +279,7 @@ export default function CreateBoardDialog() {
               fontSize: '14px',
               color: colors.secondary,
               backgroundColor: 'fff',
-              border: '1px solid #9fadbc',
+              border: `1px solid ${isRequired ? 'red' : '#9fadbc'}`,
               borderRadius: '4px',
               marginBottom: '4px'
             }}
