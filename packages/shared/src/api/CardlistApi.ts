@@ -90,6 +90,19 @@ export const GetallCardlistByBoardIdResponseSchema = z.object({
 export type GetallCardlistByBoardIdResponse = z.infer<
   typeof GetallCardlistByBoardIdResponseSchema
 >;
+export const GetallCardlistArchivedByBoardIdResponseSchema = z.object({
+  data: CardlistSchema.array(),
+});
+export type GetallCardlistArchivedByBoardIdResponse = z.infer<
+  typeof GetallCardlistArchivedByBoardIdResponseSchema
+>;
+
+export const GetallCardlistNonArchivedByBoardIdResponseSchema = z.object({
+  data: CardlistSchema.array(),
+});
+export type GetallCardlistNonArchivedByBoardIdResponse = z.infer<
+  typeof GetallCardlistNonArchivedByBoardIdResponseSchema
+>;
 
 export const SortCardlistByOldestDateResponseSchema = z.object({
   data: CardlistSchema.array(),

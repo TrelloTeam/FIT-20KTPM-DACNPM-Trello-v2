@@ -17,6 +17,10 @@ export abstract class ICardlistService {
 
   abstract getAllCardlistByBoardId(board_id: string): Promise<DbSchemas.CardlistSchema.CardList[]>
 
+  abstract getAllCardlistArchivedByBoardId(board_id: string): Promise<DbSchemas.CardlistSchema.CardList[]>
+
+  abstract getAllCardlistNonArchivedByBoardId(board_id: string): Promise<DbSchemas.CardlistSchema.CardList[]>
+
   abstract sortCardlistByOldestDate(board_id: string): Promise<DbSchemas.CardlistSchema.CardList[]>
   abstract sortCardlistByNewestDate(board_id: string): Promise<DbSchemas.CardlistSchema.CardList[]>
   abstract sortCardlistByName(board_id: string): Promise<DbSchemas.CardlistSchema.CardList[]>
@@ -96,6 +100,14 @@ export class CardlistService implements ICardlistService {
 
   async getAllCardlistByBoardId(board_id: string) {
     return this.CardlistMModel.find({ board_id }).exec()
+  }
+
+  async getAllCardlistArchivedByBoardId(board_id: string) {
+    return this.CardlistMModel.find({ board_id, archive_at: { $ne: null } }).exec()
+  }
+
+  async getAllCardlistNonArchivedByBoardId(board_id: string) {
+    return this.CardlistMModel.find({ board_id, archive_at: null }).exec()
   }
 
   async sortCardlistByOldestDate(board_id: string) {
@@ -214,6 +226,18 @@ export class CardlistServiceMock implements ICardlistService {
   }
 
   getAllCardlistByBoardId() {
+    return new Promise<DbSchemas.CardlistSchema.CardList[]>((res) => {
+      res([])
+    })
+  }
+
+  getAllCardlistArchivedByBoardId() {
+    return new Promise<DbSchemas.CardlistSchema.CardList[]>((res) => {
+      res([])
+    })
+  }
+
+  getAllCardlistNonArchivedByBoardId() {
     return new Promise<DbSchemas.CardlistSchema.CardList[]>((res) => {
       res([])
     })
