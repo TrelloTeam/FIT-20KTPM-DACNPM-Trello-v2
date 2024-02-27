@@ -15,6 +15,7 @@ const visibilityOptions = ['Private', 'Workspace', 'Public']
 export default function CreateBoardDialog() {
   const dispatch = useDispatch()
   const [textFieldValue, setTextFieldValue] = useState('')
+  const [isRequired, setIsRequired] = useState(true)
   const anchorRef = React.useRef<HTMLButtonElement>(null)
 
   function handleSubmit() {
@@ -36,6 +37,7 @@ export default function CreateBoardDialog() {
 
   function handleChangeTitle(event: ChangeEvent<HTMLInputElement>) {
     const { value } = event.target
+    value.trim() === '' ? setIsRequired(true) : setIsRequired(false)
     setTextFieldValue(value)
   }
 
@@ -275,11 +277,19 @@ export default function CreateBoardDialog() {
             }}
           />
           {/* Alert */}
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', visibility: isRequired ? 'visible' : 'hidden' }}>
             <span role='img' aria-label='wave'>
               👋
             </span>
-            <p style={{ fontSize: '14px', color: colors.secondary, marginLeft: '6px' }}>Board title is required</p>
+            <p
+              style={{
+                fontSize: '14px',
+                color: colors.secondary,
+                marginLeft: '6px'
+              }}
+            >
+              Board title is required
+            </p>
           </Box>
         </Box>
         {/* Select workspace */}
