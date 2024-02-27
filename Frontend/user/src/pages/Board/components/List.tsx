@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react'
 import { HiOutlineDotsHorizontal } from 'react-icons/hi'
 import { IoImagesOutline } from 'react-icons/io5'
 export function ListComponent({ list, listDraggingIn }: ListComponentProps) {
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+  const { attributes, listeners, setNodeRef, transform, isDragging } = useSortable({
     id: list.id,
     data: { ...list }
   })
@@ -16,13 +16,13 @@ export function ListComponent({ list, listDraggingIn }: ListComponentProps) {
     opacity: isDragging ? 0.5 : undefined
   }
   const [tempCard, setTempCard] = useState<Card>()
-  useEffect(()=> {
+  useEffect(() => {
     setTempCard({
       ...defaultCard,
-      id:'uniqueId123',
-      list_id:listDraggingIn?.id
+      id: 'uniqueId123',
+      list_id: listDraggingIn?.id
     } as Card)
-  },[listDraggingIn])
+  }, [listDraggingIn])
   return (
     <div
       ref={setNodeRef}

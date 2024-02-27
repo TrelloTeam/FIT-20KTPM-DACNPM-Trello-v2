@@ -1,9 +1,9 @@
 import { useSortable } from '@dnd-kit/sortable'
-import { CardComponentProps, Card } from '../type'
+import { CardComponentProps } from '../type'
 import { CSS } from '@dnd-kit/utilities'
 import { useState } from 'react'
 import { BsPencil } from 'react-icons/bs'
-export function CardComponent({ card, listDraggingIn }: CardComponentProps) {
+export function CardComponent({ card }: CardComponentProps) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: card.id,
     data: { ...card }

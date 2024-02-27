@@ -1,5 +1,5 @@
-import React, { useState, useEffect, DragEvent } from 'react'
-import { lists, cards } from './testData/test_data'
+import { useState, useEffect } from 'react'
+import { lists } from './testData/test_data'
 import { List, Card } from './type/index'
 import { CardComponent, ListComponent, ListsComponent } from './components'
 import {
@@ -17,7 +17,7 @@ import {
   useSensors
 } from '@dnd-kit/core'
 import { arrayMove } from '@dnd-kit/sortable'
-import { cloneDeep, isUndefined } from 'lodash'
+import { cloneDeep } from 'lodash'
 import { BoardLayout } from '~/layouts'
 
 const ACTIVE_DRAG_ITEM_TYPE = {
@@ -33,9 +33,7 @@ export function Board() {
   const [activeDragItemData, setActiveDragItemData] = useState<any>()
   const [overListData, setOverListData] = useState<List>()
   // const [cardsData, setCardsData] = useState<Card[]>(cards)
-  const [isDragCardToCard, setIsDragCardToCard] = useState<Boolean>(false)
-  const [isMoveList, setIsMoveList] = useState<Boolean>(false)
-  const [action, setAction] = useState<Boolean>(false)
+  const [action, setAction] = useState<boolean>(false)
   const pointerSensor = useSensor(PointerSensor, {
     activationConstraint: {
       distance: 10
