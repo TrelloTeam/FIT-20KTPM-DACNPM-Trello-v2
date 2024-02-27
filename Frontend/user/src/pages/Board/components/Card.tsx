@@ -37,7 +37,7 @@ export default function CardComponent({ card }: CardComponentProps) {
                 <img
                   src={avtPath} // Replace with your avatar image source
                   alt='Avatar'
-                  className='relative h-6 w-6 rounded-full border'
+                  className='relative h-6 w-6 rounded-full border hover:opacity-50'
                   onMouseEnter={() => setIsHoveredWatcher(watcher)}
                   onMouseLeave={() => setIsHoveredWatcher('')}
                 />
