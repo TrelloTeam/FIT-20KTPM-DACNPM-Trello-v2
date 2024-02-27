@@ -249,4 +249,52 @@ export class CardlistController {
       data: data,
     }
   }
+
+  @InjectRoute(CardlistRoutes.archiveCardsInList)
+  @SwaggerApi({
+    params: {
+      name: 'cardlistId',
+      schema: {
+        type: 'string',
+      },
+    },
+    responses: [
+      {
+        status: 200,
+        schema: {
+          $ref: getSchemaPath('ArchiveAllCardsInListResponseSchema'),
+        },
+      },
+    ],
+  })
+  async archiveCardsInList(@Param('cardlistId') cardlistId: string): Promise<TrelloApi.CardlistApi.ArchiveAllCardsInListResponse> {
+    const data = await this.cardlistService.archiveCardsInlist(cardlistId)
+    return {
+      data: data,
+    }
+  }
+
+  @InjectRoute(CardlistRoutes.archiveCardList)
+  @SwaggerApi({
+    params: {
+      name: 'cardlistId',
+      schema: {
+        type: 'string',
+      },
+    },
+    responses: [
+      {
+        status: 200,
+        schema: {
+          $ref: getSchemaPath('ArchiveCardlistResponseSchema'),
+        },
+      },
+    ],
+  })
+  async archiveCardList(@Param('cardlistId') cardlistId: string): Promise<TrelloApi.CardlistApi.ArchiveCardlistResponse> {
+    const data = await this.cardlistService.archiveCardlist(cardlistId)
+    return {
+      data: data,
+    }
+  }
 }

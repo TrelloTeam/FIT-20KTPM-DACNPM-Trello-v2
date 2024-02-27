@@ -24,6 +24,9 @@ export abstract class ICardlistService {
   abstract sortCardlistByOldestDate(board_id: string): Promise<DbSchemas.CardlistSchema.CardList[]>
   abstract sortCardlistByNewestDate(board_id: string): Promise<DbSchemas.CardlistSchema.CardList[]>
   abstract sortCardlistByName(board_id: string): Promise<DbSchemas.CardlistSchema.CardList[]>
+
+  abstract archiveCardsInlist(cardlist_id: string): Promise<DbSchemas.CardlistSchema.CardList>
+  abstract archiveCardlist(cardlist_id: string): Promise<DbSchemas.CardlistSchema.CardList>
 }
 
 export class CardlistService implements ICardlistService {
@@ -32,6 +35,8 @@ export class CardlistService implements ICardlistService {
     private CardlistMModel: Model<DbSchemas.CardlistSchema.CardList>,
     @InjectModel(DbSchemas.COLLECTION_NAMES[1])
     private BoardMModel: Model<DbSchemas.BoardSchema.Board>,
+    @InjectModel(DbSchemas.COLLECTION_NAMES[4])
+    private CardMModel: Model<DbSchemas.CardlistSchema.Card>,
   ) {}
 
   async createCardlist(data: TrelloApi.CardlistApi.CreateCardlistRequest): Promise<DbSchemas.CardlistSchema.CardList> {
@@ -173,6 +178,39 @@ export class CardlistService implements ICardlistService {
     })
     return cardlists
   }
+
+  async archiveCardsInlist(cardlist_id: string) {
+    const cardlist = await this.CardlistMModel.findById(cardlist_id)
+    if (!cardlist) {
+      return { status: 'Not Found', msg: "Can't find any cardlist" } as any
+    }
+    for (let i = 0; i < cardlist.cards.length; i++) {
+      const card = await this.CardMModel.findById(cardlist.cards[i])
+      if (!card) {
+        return { status: 'Not Found', msg: "Can't find any card" } as any
+      }
+      card.archive_at = new Date()
+      card.save()
+    }
+    return cardlist.save()
+  }
+
+  async archiveCardlist(cardlist_id: string) {
+    const cardlist = await this.CardlistMModel.findById(cardlist_id)
+    if (!cardlist) {
+      return { status: 'Not Found', msg: "Can't find any cardlist" } as any
+    }
+    for (let i = 0; i < cardlist.cards.length; i++) {
+      const card = await this.CardMModel.findById(cardlist.cards[i])
+      if (!card) {
+        return { status: 'Not Found', msg: "Can't find any card" } as any
+      }
+      card.archive_at = new Date()
+      card.save()
+    }
+    cardlist.archive_at = new Date()
+    return cardlist.save()
+  }
 }
 
 export class CardlistServiceMock implements ICardlistService {
@@ -258,6 +296,29 @@ export class CardlistServiceMock implements ICardlistService {
   sortCardlistByName(): Promise<DbSchemas.CardlistSchema.CardList[]> {
     return new Promise<DbSchemas.CardlistSchema.CardList[]>((res) => {
       res([])
+    })
+  }
+  archiveCardsInlist(cardlist_id: string): Promise<DbSchemas.CardlistSchema.CardList> {
+    return new Promise<DbSchemas.CardlistSchema.CardList>((res) => {
+      res({
+        _id: cardlist_id,
+        board_id: 'Mock-id',
+        watcher_email: [],
+        cards: [],
+        name: 'Mock-name',
+      })
+    })
+  }
+
+  archiveCardlist(cardlist_id: string): Promise<DbSchemas.CardlistSchema.CardList> {
+    return new Promise<DbSchemas.CardlistSchema.CardList>((res) => {
+      res({
+        _id: cardlist_id,
+        board_id: 'Mock-id',
+        watcher_email: [],
+        cards: [],
+        name: 'Mock-name',
+      })
     })
   }
 }
