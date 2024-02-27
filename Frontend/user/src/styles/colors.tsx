@@ -3,7 +3,9 @@ export const lightColors = {
   secondary: '#6c757d',
   text: '#44546F',
   background: '#ffffff',
-  background_menu_header: '#fff'
+  background_menu_header: '#fff',
+  black: '#000',
+  white: '#fff'
 }
 
 export const darkColors = {
@@ -11,5 +13,7 @@ export const darkColors = {
   secondary: '#bdbdbd',
   text: '#9fadbc',
   background: '#1d2125',
-  background_menu_header: '#282e33'
+  background_menu_header: '#282e33',
+  black: '#000',
+  white: '#fff'
 }
