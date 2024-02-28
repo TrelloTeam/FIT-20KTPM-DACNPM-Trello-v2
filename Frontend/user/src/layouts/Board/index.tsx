@@ -1,13 +1,19 @@
 import { ReactNode } from 'react'
-
+import backgroundImage from '../../assets/Board/bg_2.jpg';
 interface LayoutProps {
   children: ReactNode
 }
 export const BoardLayout: React.FC<LayoutProps> = ({ children }) => {
-  const bg_path = '../../assets/Board/bg_2.jpg'
+  const backgroundStyle = {
+    backgroundImage: `url(${backgroundImage})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    opacity: 0.7,
+  };
   return (
     <div className='relative min-h-screen'>
-      <div className='absolute inset-0 bg-cover bg-center opacity-70' style={{ backgroundImage: `url(${bg_path})` }} />
+      
+      <div className='absolute inset-0' style={backgroundStyle} />
       <main className='relative z-10'>{children}</main>
     </div>
   )

@@ -15,10 +15,10 @@ export const Profile: React.FC = () => {
 
       <div className='space-y-6'>
         <div>
-          <h2 className={`mb-2 mb-2 text-2xl font-bold ${text_bold_color}`}>Manage your personal information</h2>
+          <h2 className={`mb-2 text-2xl font-bold ${text_bold_color}`}>Manage your personal information</h2>
         </div>
         <div>
-          <h1 className={`mb-2 mb-2 border-b-2 border-gray-300 pb-2 text-xl font-semibold  ${text_bold_color}`}>
+          <h1 className={`mb-2 border-b-2 border-gray-300 pb-2 text-xl font-semibold  ${text_bold_color}`}>
             About
           </h1>
         </div>

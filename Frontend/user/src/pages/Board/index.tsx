@@ -19,7 +19,7 @@ import {
 import { arrayMove } from '@dnd-kit/sortable'
 
 import { cloneDeep, isEmpty } from 'lodash'
-// import { BoardLayout } from '~/layouts'
+import { BoardLayout } from '~/layouts'
 import { generatePlaceHolderCard } from '~/utils/fomatter'
 import LoadingComponent from '~/components/Loading'
 import { CardComponent, ListComponent } from './components'
@@ -273,7 +273,7 @@ export function Board() {
     })
   }
   return (
-    <div>
+    <BoardLayout>
       <div className='mx-auto p-4 text-center text-3xl font-bold uppercase text-black'>Header Area</div>
 
       <DndContext sensors={sensors} onDragStart={handleDragStart} onDragMove={handleDragOver} onDragEnd={handleDragEnd}>
@@ -294,6 +294,6 @@ export function Board() {
           </div>
         )}
       </DndContext>
-    </div>
+    </BoardLayout>
   )
 }

@@ -3,8 +3,6 @@ import { ListComponent } from './index'
 
 import { SortableContext, horizontalListSortingStrategy } from '@dnd-kit/sortable'
 
-const array = [1, 2, 3, 4, 5]
-const a = 1
 export default function ListsComponent({ lists }: ListsComponentProps) {
   return (
 
