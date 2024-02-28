@@ -41,7 +41,7 @@ const EnvSchema = {
     CardModule,
     AuthModule,
   ],
-  controllers: [AppController, TestController],
+  controllers: [AppController, TestController, HelloController],
   providers: [],
 })
 export class AppModule {}
