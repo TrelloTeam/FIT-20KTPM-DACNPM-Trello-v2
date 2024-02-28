@@ -47,7 +47,7 @@ export class BoardController {
   })
   async getBoardsByWorkSpaceId(
     @Param('workspace_id', IdParamValidationPipe)
-    workspace_id: TrelloApi.BoardApi.getBoardsByWorkspaceIdRequest,
+    workspace_id: string,
   ): Promise<TrelloApi.BoardApi.GetallBoardResponse> {
     const data = await this.BoardService.getBoardsByWorkspaceId(workspace_id)
 
@@ -92,32 +92,10 @@ export class BoardController {
   })
   async getBoardInfoByBoardId(
     @Param('board_id', IdParamValidationPipe)
-    board_id: TrelloApi.BoardApi.GetBoardInfoByBoardIdRequest,
+    board_id: string,
   ): Promise<TrelloApi.BoardApi.GetBoardInfoByBoardIdResponse> {
     const data = await this.BoardService.getBoardInfoByBoardId(board_id)
 
-    return {
-      data: data,
-    }
-  }
-
-  @InjectRoute(BoardRoutes.changeBoardVisibility)
-  @SwaggerApi({
-    body: {
-      schema: { $ref: getSchemaPath('ChangeBoardVisibilityRequestSchema') },
-    },
-    responses: [
-      {
-        status: 200,
-        schema: { $ref: getSchemaPath('GetBoardInfoByBoardIdResponseSchema') },
-      },
-    ],
-  })
-  async changeBoardVisibility(
-    @Body(new ZodValidationPipe(TrelloApi.BoardApi.ChangeBoardVisibilityRequestSchema))
-    body: TrelloApi.BoardApi.ChangeBoardVisibilityRequest,
-  ): Promise<TrelloApi.BoardApi.ChangeBoardVisibilityResponse> {
-    const data = await this.BoardService.updateBoard(body)
     return {
       data: data,
     }
@@ -139,9 +117,38 @@ export class BoardController {
   })
   async deleteBoard(
     @Param('board_id', IdParamValidationPipe)
-    board_id: TrelloApi.BoardApi.DeleteBoardRequest,
+    board_id: string,
   ): Promise<TrelloApi.BoardApi.DeleteBoardResponse> {
     const data = await this.BoardService.deleteBoard(board_id)
+    return {
+      data: data,
+    }
+  }
+
+  @InjectRoute(BoardRoutes.updateBoard)
+  @SwaggerApi({
+    params: {
+      name: 'board_id',
+      type: 'string',
+      example: 'string',
+    },
+    body: {
+      schema: { $ref: getSchemaPath('UpdateBoardRequestSchema') },
+    },
+    responses: [
+      {
+        status: 200,
+        schema: { $ref: getSchemaPath('UpdateBoardResponseSchema') },
+      },
+    ],
+  })
+  async updateBoard(
+    @Param('board_id', IdParamValidationPipe)
+    board_id: string,
+    @Body(new ZodValidationPipe(TrelloApi.BoardApi.UpdateBoardRequestSchema))
+    body: TrelloApi.BoardApi.UpdateBoardRequest,
+  ): Promise<TrelloApi.BoardApi.UpdateBoardResponse> {
+    const data = await this.BoardService.updateBoard(board_id, body)
     return {
       data: data,
     }
