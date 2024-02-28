@@ -9,31 +9,31 @@ export const BoardRoutes = {
   } as IRouteParams,
 
   getBoardsByWorkspaceId: {
-    path: '/api/board/getBoardsByWorkspaceId/:workspace_id',
+    path: '/api/board/:workspace_id',
     method: RequestMethod.GET,
     jwtSecure: false,
   } as IRouteParams,
 
   createBoard: {
-    path: '/api/board/createBoard',
+    path: '/api/board/create',
     method: RequestMethod.POST,
     jwtSecure: false,
   } as IRouteParams,
 
   getBoardInfoByBoardId: {
-    path: '/api/board/getBoardInfoByBoardId/:board_id',
+    path: '/api/board/detail/:board_id',
     method: RequestMethod.GET,
     jwtSecure: false,
   } as IRouteParams,
 
   changeBoardVisibility: {
-    path: '/api/board/changeBoardVisibility',
+    path: '/api/board/visibility',
     method: RequestMethod.PATCH,
     jwtSecure: false,
   } as IRouteParams,
 
   deleteBoard: {
-    path: '/api/board/deleteBoard/:board_id',
+    path: '/api/board/delete/:board_id',
     method: RequestMethod.DELETE,
     jwtSecure: false,
   } as IRouteParams,
