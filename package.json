@@ -14,5 +14,7 @@
     "Frontend/user",
     "packages/shared"
   ],
-  "dependencies": {}
+  "dependencies": {
+    "ts-proto": "^1.167.8"
+  }
 }

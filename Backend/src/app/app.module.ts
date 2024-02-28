@@ -12,6 +12,8 @@ import { BoardModule } from './board/board.module'
 import { WorkspaceModule } from './workspace/workspace.module'
 import { CardModule } from './card/card.module'
 import { AuthModule } from './auth/auth.module'
+import { MSModule } from './grpc/ms.module'
+import { HelloController } from './grpc/hello/hello.controller'
 const EnvSchema = {
   PORT: Joi.number(),
   NODE_ENV: Joi.string(),
@@ -39,7 +41,7 @@ const EnvSchema = {
     CardModule,
     AuthModule,
   ],
-  controllers: [AppController, TestController],
+  controllers: [AppController, TestController, HelloController],
   providers: [],
 })
 export class AppModule {}
