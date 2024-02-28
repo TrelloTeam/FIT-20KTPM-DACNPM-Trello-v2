@@ -146,4 +146,28 @@ export class BoardController {
       data: data,
     }
   }
+
+  @InjectRoute(BoardRoutes.addMember)
+  @SwaggerApi({
+    body: {
+      schema: { $ref: getSchemaPath('AddMemberRequestSchema') },
+    },
+    responses: [
+      {
+        status: 200,
+        schema: { $ref: getSchemaPath('AddMemberResponseSchema') },
+      },
+    ],
+  })
+  async addMember(
+    @Body(new ZodValidationPipe(TrelloApi.BoardApi.AddMemberRequestSchema))
+    body: TrelloApi.BoardApi.AddMemberRequest,
+  ): Promise<TrelloApi.BoardApi.AddMemberResponse> {
+    const board = await this.BoardService.getBoardInfoByBoardId(body._id)
+    const newMemberArray = { _id: body._id, members_email: board?.members_email.concat(body.member_email) }
+    const data = await this.BoardService.updateBoard(newMemberArray)
+    return {
+      data: data,
+    }
+  }
 }

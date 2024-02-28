@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { BoardSchema } from "../schemas/Board";
+import { emailRegex } from "../utils/regex";
 
 export const GetallBoardRequestSchema = z.object({
   workspace_id: z.string(),
@@ -63,3 +64,21 @@ export const UpdateBoardResponseSchema = z.object({
   data: BoardSchema.nullable(),
 });
 export type UpdateBoardResponse = z.infer<typeof UpdateBoardResponseSchema>;
+
+///
+
+export const AddMemberRequestSchema = BoardSchema.pick({
+  _id: true,
+})
+  .required({ _id: true })
+  .merge(
+    z.object({
+      member_email: z.string().regex(emailRegex, "Invalid email"),
+    })
+  );
+export type AddMemberRequest = z.infer<typeof AddMemberRequestSchema>;
+
+export const AddMemberResponseSchema = z.object({
+  data: BoardSchema.nullable(),
+});
+export type AddMemberResponse = z.infer<typeof AddMemberResponseSchema>;
