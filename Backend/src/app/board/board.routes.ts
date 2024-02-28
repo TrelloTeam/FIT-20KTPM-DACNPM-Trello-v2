@@ -39,7 +39,13 @@ export const BoardRoutes = {
   } as IRouteParams,
 
   addMember: {
-    path: '/api/board/member',
+    path: '/api/board/member/add',
+    method: RequestMethod.POST,
+    jwtSecure: false,
+  } as IRouteParams,
+
+  removeMember: {
+    path: '/api/board/member/remove',
     method: RequestMethod.POST,
     jwtSecure: false,
   } as IRouteParams,

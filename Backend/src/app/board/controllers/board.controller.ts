@@ -7,6 +7,8 @@ import { ZodValidationPipe, IdParamValidationPipe } from '@/pipes'
 import { TrelloApi } from '@trello-v2/shared'
 import { SwaggerApi } from '@/decorators/swagger.decorator'
 import { getSchemaPath } from '@nestjs/swagger'
+// eslint-disable-next-line @typescript-eslint/naming-convention
+import * as _ from 'lodash'
 
 @InjectController({
   name: 'board',
@@ -164,8 +166,32 @@ export class BoardController {
     body: TrelloApi.BoardApi.AddMemberRequest,
   ): Promise<TrelloApi.BoardApi.AddMemberResponse> {
     const board = await this.BoardService.getBoardInfoByBoardId(body._id)
-    const newMemberArray = { _id: body._id, members_email: board?.members_email.concat(body.member_email) }
-    const data = await this.BoardService.updateBoard(newMemberArray)
+    const update = { _id: body._id, members_email: _.union(board?.members_email, [body.member_email]) }
+    const data = await this.BoardService.updateBoard(update)
+    return {
+      data: data,
+    }
+  }
+
+  @InjectRoute(BoardRoutes.removeMember)
+  @SwaggerApi({
+    body: {
+      schema: { $ref: getSchemaPath('RemoveMemberRequestSchema') },
+    },
+    responses: [
+      {
+        status: 200,
+        schema: { $ref: getSchemaPath('RemoveMemberResponseSchema') },
+      },
+    ],
+  })
+  async removeMember(
+    @Body(new ZodValidationPipe(TrelloApi.BoardApi.RemoveMemberRequestSchema))
+    body: TrelloApi.BoardApi.RemoveMemberRequest,
+  ): Promise<TrelloApi.BoardApi.RemoveMemberResponse> {
+    const board = await this.BoardService.getBoardInfoByBoardId(body._id)
+    const update = { _id: body._id, members_email: board?.members_email.filter((item) => item !== body.member_email) }
+    const data = await this.BoardService.updateBoard(update)
     return {
       data: data,
     }

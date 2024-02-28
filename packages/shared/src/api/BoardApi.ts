@@ -73,7 +73,7 @@ export const AddMemberRequestSchema = BoardSchema.pick({
   .required({ _id: true })
   .merge(
     z.object({
-      member_email: z.string().regex(emailRegex, "Invalid email"),
+      member_email: z.string().regex(emailRegex, "Invalid email").default("example@gmail.com"),
     })
   );
 export type AddMemberRequest = z.infer<typeof AddMemberRequestSchema>;
@@ -82,3 +82,21 @@ export const AddMemberResponseSchema = z.object({
   data: BoardSchema.nullable(),
 });
 export type AddMemberResponse = z.infer<typeof AddMemberResponseSchema>;
+
+///
+
+export const RemoveMemberRequestSchema = BoardSchema.pick({
+  _id: true,
+})
+  .required({ _id: true })
+  .merge(
+    z.object({
+      member_email: z.string().regex(emailRegex, "Invalid email").default("example@gmail.com"),
+    })
+  );
+export type RemoveMemberRequest = z.infer<typeof RemoveMemberRequestSchema>;
+
+export const RemoveMemberResponseSchema = z.object({
+  data: BoardSchema.nullable(),
+});
+export type RemoveMemberResponse = z.infer<typeof RemoveMemberResponseSchema>;
