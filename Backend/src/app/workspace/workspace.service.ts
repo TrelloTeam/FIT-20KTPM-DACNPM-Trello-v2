@@ -31,7 +31,6 @@ export class WorkspaceService implements IWorkspaceService {
         {
           _id: workspace_id,
         },
-
         {
           $set: { ...body },
         },
