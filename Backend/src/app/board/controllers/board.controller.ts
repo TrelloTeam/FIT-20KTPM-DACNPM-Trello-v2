@@ -127,11 +127,6 @@ export class BoardController {
 
   @InjectRoute(BoardRoutes.updateBoard)
   @SwaggerApi({
-    params: {
-      name: 'board_id',
-      type: 'string',
-      example: 'string',
-    },
     body: {
       schema: { $ref: getSchemaPath('UpdateBoardRequestSchema') },
     },
@@ -143,12 +138,10 @@ export class BoardController {
     ],
   })
   async updateBoard(
-    @Param('board_id', IdParamValidationPipe)
-    board_id: string,
     @Body(new ZodValidationPipe(TrelloApi.BoardApi.UpdateBoardRequestSchema))
     body: TrelloApi.BoardApi.UpdateBoardRequest,
   ): Promise<TrelloApi.BoardApi.UpdateBoardResponse> {
-    const data = await this.BoardService.updateBoard(board_id, body)
+    const data = await this.BoardService.updateBoard(body)
     return {
       data: data,
     }

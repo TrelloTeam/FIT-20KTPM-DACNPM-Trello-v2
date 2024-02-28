@@ -34,9 +34,9 @@ export class BoardService implements IBoardService {
     return await this.BoardMModel.findById(board_id).exec()
   }
 
-  async updateBoard(board_id: string, data: TrelloApi.BoardApi.UpdateBoardRequest): Promise<DbSchemas.BoardSchema.Board | null> {
-    const filter = { _id: board_id }
-    const update: Partial<DbSchemas.BoardSchema.Board> = _.omitBy(data, _.isUndefined)
+  async updateBoard(data: TrelloApi.BoardApi.UpdateBoardRequest): Promise<DbSchemas.BoardSchema.Board | null> {
+    const filter = { _id: data._id }
+    const update: Partial<DbSchemas.BoardSchema.Board> = _.omitBy(data, (value, key) => _.isUndefined(value) || key === '_id')
 
     return await this.BoardMModel.findOneAndUpdate(filter, update, {
       new: true,

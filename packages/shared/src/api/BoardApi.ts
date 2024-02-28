@@ -49,11 +49,14 @@ export type DeleteBoardResponse = z.infer<typeof DeleteBoardResponseSchema>;
 ///
 
 export const UpdateBoardRequestSchema = BoardSchema.pick({
+  _id: true,
   name: true,
   background: true,
   is_star: true,
   visibility: true,
-}).partial();
+})
+  .partial()
+  .required({ _id: true });
 export type UpdateBoardRequest = z.infer<typeof UpdateBoardRequestSchema>;
 
 export const UpdateBoardResponseSchema = z.object({
