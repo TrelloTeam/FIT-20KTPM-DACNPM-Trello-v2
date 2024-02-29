@@ -39,25 +39,25 @@ export const BoardRoutes = {
   } as IRouteParams,
 
   addMember: {
-    path: '/api/board/member/add',
+    path: '/api/board/members/add',
     method: RequestMethod.POST,
     jwtSecure: false,
   } as IRouteParams,
 
   removeMember: {
-    path: '/api/board/member/remove',
+    path: '/api/board/members/remove',
     method: RequestMethod.POST,
     jwtSecure: false,
   } as IRouteParams,
 
   addWatcher: {
-    path: '/api/board/watcher/add',
+    path: '/api/board/watchers/add',
     method: RequestMethod.POST,
     jwtSecure: false,
   } as IRouteParams,
 
   removeWatcher: {
-    path: '/api/board/watcher/remove',
+    path: '/api/board/watchers/remove',
     method: RequestMethod.POST,
     jwtSecure: false,
   } as IRouteParams,
