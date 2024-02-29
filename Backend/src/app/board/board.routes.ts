@@ -49,4 +49,16 @@ export const BoardRoutes = {
     method: RequestMethod.POST,
     jwtSecure: false,
   } as IRouteParams,
+
+  addWatcher: {
+    path: '/api/board/watcher/add',
+    method: RequestMethod.POST,
+    jwtSecure: false,
+  } as IRouteParams,
+
+  removeWatcher: {
+    path: '/api/board/watcher/remove',
+    method: RequestMethod.POST,
+    jwtSecure: false,
+  } as IRouteParams,
 } as const

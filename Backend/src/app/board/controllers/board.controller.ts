@@ -166,7 +166,7 @@ export class BoardController {
     body: TrelloApi.BoardApi.AddMemberRequest,
   ): Promise<TrelloApi.BoardApi.AddMemberResponse> {
     const board = await this.BoardService.getBoardInfoByBoardId(body._id)
-    const update = { _id: body._id, members_email: _.union(board?.members_email, [body.member_email]) }
+    const update = { _id: body._id, members_email: _.union(board?.members_email, [body.email]) }
     const data = await this.BoardService.updateBoard(update)
     return {
       data: data,
@@ -190,7 +190,55 @@ export class BoardController {
     body: TrelloApi.BoardApi.RemoveMemberRequest,
   ): Promise<TrelloApi.BoardApi.RemoveMemberResponse> {
     const board = await this.BoardService.getBoardInfoByBoardId(body._id)
-    const update = { _id: body._id, members_email: board?.members_email.filter((item) => item !== body.member_email) }
+    const update = { _id: body._id, members_email: board?.members_email.filter((item) => item !== body.email) }
+    const data = await this.BoardService.updateBoard(update)
+    return {
+      data: data,
+    }
+  }
+
+  @InjectRoute(BoardRoutes.addWatcher)
+  @SwaggerApi({
+    body: {
+      schema: { $ref: getSchemaPath('AddWatcherRequestSchema') },
+    },
+    responses: [
+      {
+        status: 200,
+        schema: { $ref: getSchemaPath('AddWatcherResponseSchema') },
+      },
+    ],
+  })
+  async addWatcher(
+    @Body(new ZodValidationPipe(TrelloApi.BoardApi.AddWatcherRequestSchema))
+    body: TrelloApi.BoardApi.AddWatcherRequest,
+  ): Promise<TrelloApi.BoardApi.AddWatcherResponse> {
+    const board = await this.BoardService.getBoardInfoByBoardId(body._id)
+    const update = { _id: body._id, watcher_email: _.union(board?.watcher_email, [body.email]) }
+    const data = await this.BoardService.updateBoard(update)
+    return {
+      data: data,
+    }
+  }
+
+  @InjectRoute(BoardRoutes.removeWatcher)
+  @SwaggerApi({
+    body: {
+      schema: { $ref: getSchemaPath('RemoveWatcherRequestSchema') },
+    },
+    responses: [
+      {
+        status: 200,
+        schema: { $ref: getSchemaPath('RemoveWatcherResponseSchema') },
+      },
+    ],
+  })
+  async removeWatcher(
+    @Body(new ZodValidationPipe(TrelloApi.BoardApi.RemoveWatcherRequestSchema))
+    body: TrelloApi.BoardApi.RemoveWatcherRequest,
+  ): Promise<TrelloApi.BoardApi.RemoveWatcherResponse> {
+    const board = await this.BoardService.getBoardInfoByBoardId(body._id)
+    const update = { _id: body._id, watcher_email: board?.watcher_email.filter((item) => item !== body.email) }
     const data = await this.BoardService.updateBoard(update)
     return {
       data: data,

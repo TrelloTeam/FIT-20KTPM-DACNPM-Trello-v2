@@ -73,7 +73,7 @@ export const AddMemberRequestSchema = BoardSchema.pick({
   .required({ _id: true })
   .merge(
     z.object({
-      member_email: z.string().regex(emailRegex, "Invalid email").default("example@gmail.com"),
+      email: z.string().regex(emailRegex, "Invalid email").default("example@gmail.com"),
     })
   );
 export type AddMemberRequest = z.infer<typeof AddMemberRequestSchema>;
@@ -91,7 +91,7 @@ export const RemoveMemberRequestSchema = BoardSchema.pick({
   .required({ _id: true })
   .merge(
     z.object({
-      member_email: z.string().regex(emailRegex, "Invalid email").default("example@gmail.com"),
+      email: z.string().regex(emailRegex, "Invalid email").default("example@gmail.com"),
     })
   );
 export type RemoveMemberRequest = z.infer<typeof RemoveMemberRequestSchema>;
@@ -100,3 +100,39 @@ export const RemoveMemberResponseSchema = z.object({
   data: BoardSchema.nullable(),
 });
 export type RemoveMemberResponse = z.infer<typeof RemoveMemberResponseSchema>;
+
+///
+
+export const AddWatcherRequestSchema = BoardSchema.pick({
+  _id: true,
+})
+  .required({ _id: true })
+  .merge(
+    z.object({
+      email: z.string().regex(emailRegex, "Invalid email").default("example@gmail.com"),
+    })
+  );
+export type AddWatcherRequest = z.infer<typeof AddWatcherRequestSchema>;
+
+export const AddWatcherResponseSchema = z.object({
+  data: BoardSchema.nullable(),
+});
+export type AddWatcherResponse = z.infer<typeof AddWatcherResponseSchema>;
+
+///
+
+export const RemoveWatcherRequestSchema = BoardSchema.pick({
+  _id: true,
+})
+  .required({ _id: true })
+  .merge(
+    z.object({
+      email: z.string().regex(emailRegex, "Invalid email").default("example@gmail.com"),
+    })
+  );
+export type RemoveWatcherRequest = z.infer<typeof RemoveWatcherRequestSchema>;
+
+export const RemoveWatcherResponseSchema = z.object({
+  data: BoardSchema.nullable(),
+});
+export type RemoveWatcherResponse = z.infer<typeof RemoveWatcherResponseSchema>;
