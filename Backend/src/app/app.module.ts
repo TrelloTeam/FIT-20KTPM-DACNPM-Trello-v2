@@ -1,18 +1,18 @@
 import * as Joi from 'joi'
 
-import {configuration} from '@/config'
-import {Module} from '@nestjs/common'
-import {ConfigModule} from '@nestjs/config'
-import {MongooseModule} from '@nestjs/mongoose'
+import { configuration } from '@/config'
+import { Module } from '@nestjs/common'
+import { ConfigModule } from '@nestjs/config'
+import { MongooseModule } from '@nestjs/mongoose'
 
-import {AppController} from './app.controller'
-import {AuthModule} from './auth/auth.module'
-import {BoardModule} from './board/board.module'
-import {CardModule} from './card/card.module'
-import {CardlistModule} from './cardlist/cardlist.module'
-import {TestController} from './test/test.controller'
-import {UserModule} from './user/user.module'
-import {WorkspaceModule} from './workspace/workspace.module'
+import { AppController } from './app.controller'
+import { AuthModule } from './auth/auth.module'
+import { BoardModule } from './board/board.module'
+import { CardModule } from './card/card.module'
+import { CardlistModule } from './cardlist/cardlist.module'
+import { TestController } from './test/test.controller'
+import { UserModule } from './user/user.module'
+import { WorkspaceModule } from './workspace/workspace.module'
 
 const EnvSchema = {
   PORT: Joi.number(),

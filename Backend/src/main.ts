@@ -1,8 +1,9 @@
+import { ZodType } from 'zod'
+import zodToJsonSchema from 'zod-to-json-schema'
+
 import { initApplication } from '@/app'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { TrelloApi } from '@trello-v2/shared'
-import { ZodType } from 'zod'
-import zodToJsonSchema from 'zod-to-json-schema'
 
 function GenerateSwaggerSchema() {
   const schemas: Record<string, object> = {}
