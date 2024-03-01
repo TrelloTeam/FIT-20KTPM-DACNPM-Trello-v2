@@ -1,0 +1,10 @@
+syntax = "proto3";
+package trello.activity;
+
+message ActivitySchema {
+  string workspace_id=1;
+  optional string board_id=2;
+  optional string cardlist_id=3;
+  optional string card_id=4;
+  string content=5;
+}

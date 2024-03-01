@@ -43,6 +43,8 @@
     "eslint-plugin-prefer-arrow": "^1.2.3",
     "joi": "^17.12.0",
     "mongoose": "^8.1.1",
+    "protoc-gen-grpc-web": "^1.4.2",
+    "protoc-gen-js": "^3.21.2",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1",
     "zod": "^3.22.4",

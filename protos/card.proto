@@ -1,0 +1,30 @@
+syntax = "proto3";
+package trello.card;
+
+import "activity.proto";
+
+message CardSchema {
+  string _id=1;
+  string name=2;
+  int32 index=3;
+  repeated string watcher_email=4;
+  string archive_at=5;
+  repeated trello.activity.ActivitySchema activities=6;
+  string cover=7;
+  string description=8;
+}
+
+message GetAllCardsOfCardlistRequestSchema{
+  string cardlist_id=1;
+}
+message CreateCardRespondSchema{
+  message res {
+    repeated CardSchema cards=1;
+  }
+  res data=1;
+}
+
+
+service CardService {
+  rpc GetAllCardsOfCardlist(GetAllCardsOfCardlistRequestSchema) returns (CreateCardRespondSchema);
+}

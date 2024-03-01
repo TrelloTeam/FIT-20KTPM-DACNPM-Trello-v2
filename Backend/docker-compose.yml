@@ -26,3 +26,7 @@ services:
       - KEYCLOAK_ADMIN=admin
       - KEYCLOAK_ADMIN_PASSWORD=admin
     command: ['start-dev']
+  envoy:
+    image: envoyproxy/envoy:dev-eb51ea0ff70a40cd4bbafc6f03333e38c62a2ca3
+    ports:
+      - '10000:10000'
