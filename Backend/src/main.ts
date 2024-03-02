@@ -70,7 +70,7 @@ async function bootstrap() {
     transport: Transport.GRPC,
     options: {
       url: 'localhost:3334',
-      package: ['trello.card', 'trello.activity'],
+      package: ['trello.card_service', 'trello.cardlist'],
       protoPath: grpcPaths,
       loader: { keepCase: true, arrays: true },
     },

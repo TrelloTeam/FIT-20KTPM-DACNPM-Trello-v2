@@ -22,7 +22,7 @@ export const CardlistSchema = z.object({
   cards: CardSchema.array().default([]),
   watcher_email: z.string().array().default([]),
   archive_at: z.coerce.date().nullish(),
-  created_at: z.coerce.date().nullish(),
+  created_at: z.coerce.date().default(new Date()).nullish(),
 });
 export type ICard = z.infer<typeof CardSchema>;
 export type CardList = z.infer<typeof CardlistSchema>;

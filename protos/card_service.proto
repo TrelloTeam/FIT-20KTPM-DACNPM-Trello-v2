@@ -1,0 +1,81 @@
+syntax = "proto3";
+package trello.card_service;
+import "cardlist.proto";
+import "card.proto";
+
+message CreateCardRequestSchema{
+  string cardlist_id=1;
+  string name=2;
+  int32 index=3;
+  optional string description=4;
+  optional string cover=5;
+}
+
+message FullCardInfoResponse {
+  trello.card.CardSchema data=1;
+}
+
+message GetAllCardsOfCardlistRequestSchema{
+  string cardlist_id=1;
+}
+message GetAllCardsOfCardlistResponseSchema{
+  trello.cardlist.CardlistSchema data=1;
+}
+
+message GetCardDetailRequestSchema {
+  string cardlist_id=1;
+  string card_id=2;
+}
+
+message UpdateCardDetailRequestSchema{
+  string cardlist_id=1;
+  string card_id=2;
+  optional string name=3;
+  optional string cover=4;
+}
+
+message AddCardFeatureRequestSchema{
+  string cardlist_id=1;
+  string card_id=2;
+  map<string,string> feature=3;
+}
+message AddCardFeatureResponseSchema{
+  map<string,string> data=1;
+}
+
+
+message UpdateCardFeatureRequestSchema{
+  string cardlist_id=1;
+  string card_id=2;
+  map<string,string> feature=3;
+}
+
+message AddWatcherToCardRequestSchema{
+  string cardlist_id=1;
+  string card_id=2;
+  string watcher_email=3;
+}
+
+message MoveCardSamelistRequestSchema{
+  string cardlist_id=1;
+  map<string,int32> cards_data=2;
+}
+
+message MoveCardSamelistResponseSchema{
+  repeated trello.card.CardSchema data=1;
+}
+
+service CardService {
+  rpc GetAllCardsOfCardlist(GetAllCardsOfCardlistRequestSchema) returns ( GetAllCardsOfCardlistResponseSchema
+    );
+  rpc CreateCard(CreateCardRequestSchema) returns (FullCardInfoResponse);
+  rpc GetCardDetail(GetCardDetailRequestSchema) returns (FullCardInfoResponse);
+  rpc UpdateCardDetail(UpdateCardDetailRequestSchema) returns (FullCardInfoResponse);
+  rpc AddFeatureToCard(AddCardFeatureRequestSchema) returns (AddCardFeatureResponseSchema);
+  rpc UpdateFeatureToCard(UpdateCardFeatureRequestSchema) returns (AddCardFeatureResponseSchema);
+  rpc AddWatcherToCard(AddWatcherToCardRequestSchema) returns (FullCardInfoResponse);
+  rpc DeleteWatcherToCard(AddWatcherToCardRequestSchema) returns (FullCardInfoResponse);
+  rpc ArchiveCard(GetCardDetailRequestSchema) returns (FullCardInfoResponse);
+  rpc UnarchiveCard (GetCardDetailRequestSchema) returns (FullCardInfoResponse);
+  rpc MoveCardSamelist (MoveCardSamelistRequestSchema) returns (MoveCardSamelistResponseSchema);
+}
