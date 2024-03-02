@@ -14,13 +14,11 @@ export type CreateCardlistRequest = z.infer<typeof CreateCardlistRequestSchema>;
 
 export type CopyCardlistRequest = z.infer<typeof CopyCardlistRequestSchema>;
 
-export const CopyCardlistRequestSchema = CardlistSchema.omit({
-  board_id: true,
-  index: true,
-  name: true,
-  cards: true,
-  watcher_email: true,
-  archive_at: true,
+export const CopyCardlistRequestSchema = CardlistSchema.required({
+  _id: true,
+}).pick({
+  _id: true,
+  created_at: true,
 });
 
 //name, archive date, index
@@ -111,3 +109,8 @@ export const SortCardlistByNameResponseSchema = z.object({
 export type SortCardlistByNameResponse = z.infer<
   typeof SortCardlistByNameResponseSchema
 >;
+
+export const BoardIdRequestParamsSchema = z.object({
+  board_id: z.string(),
+});
+export type BoardIdRequestParams = z.infer<typeof BoardIdRequestParamsSchema>;

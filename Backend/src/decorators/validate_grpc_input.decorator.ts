@@ -8,5 +8,6 @@ export const ValidateGrpcInput = createParamDecorator<ZodSchema['safeParse']>((s
 
   const grpcData = safeParse(data)
   if (grpcData.success === true) return grpcData.data
+
   throw new RpcException(new BadRequestException(grpcData.error))
 })

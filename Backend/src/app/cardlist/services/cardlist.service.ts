@@ -56,7 +56,8 @@ export class CardlistService implements ICardlistService {
       index: existingCardList.index,
       archive_at: null,
     })
-    return newCardList.save()
+    await newCardList.save()
+    return await newCardList.toJSON()
   }
 
   async updateCardlist(data: TrelloApi.CardlistApi.UpdateCardlistRequest): Promise<DbSchemas.CardlistSchema.CardList> {

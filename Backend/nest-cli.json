@@ -4,7 +4,7 @@
   "sourceRoot": "src",
   "compilerOptions": {
     "deleteOutDir": true,
-    "assets": ["../grpc/*.proto"],
+    "assets": ["../protos/*.proto"],
     "watchAssets": true
   }
 }
