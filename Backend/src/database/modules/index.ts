@@ -1,11 +1,11 @@
-import * as ActivityMSchema from './Activity.schema'
-import * as CardlistMSchema from './Cardlist.schema'
-import * as BoardMSchema from './Board.schema'
-import * as WorkspaceMschema from './Workspace.schema'
-import * as UserMschema from './User.schema'
-
 import { MongooseModule } from '@nestjs/mongoose'
 import { DbSchemas } from '@trello-v2/shared'
+
+import * as ActivityMSchema from './Activity.schema'
+import * as BoardMSchema from './Board.schema'
+import * as CardlistMSchema from './Cardlist.schema'
+import * as UserMschema from './User.schema'
+import * as WorkspaceMschema from './Workspace.schema'
 
 export const CardlistMModule = MongooseModule.forFeature([
   {
@@ -25,6 +25,13 @@ export const WorkspaceMModule = MongooseModule.forFeature([
   {
     name: DbSchemas.COLLECTION_NAMES[2],
     schema: WorkspaceMschema.WorkspaceMSchema,
+  },
+])
+
+export const MemberMModule = MongooseModule.forFeature([
+  {
+    name: DbSchemas.COLLECTION_NAMES[4],
+    schema: WorkspaceMschema.MemberMSchema,
   },
 ])
 
