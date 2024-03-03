@@ -317,4 +317,24 @@ export class CardlistController {
       data: data,
     }
   }
+
+  @InjectRoute(CardlistRoutes.addCardTolist)
+  @SwaggerApi({
+    body: { schema: { $ref: getSchemaPath('AddCardToListRequestSchema') } },
+    responses: [
+      {
+        status: 200,
+        schema: { $ref: getSchemaPath('AddCardToListResponseSchema') },
+      },
+    ],
+  })
+  async addCardToList(
+    @Body(new ZodValidationPipe(TrelloApi.CardlistApi.AddCardToListRequestSchema))
+    body: TrelloApi.CardlistApi.AddCardToListRequest,
+  ): Promise<TrelloApi.CardlistApi.AddCardToListResponse> {
+    const data = await this.cardlistService.addCardToList(body)
+    return {
+      data: data,
+    }
+  }
 }
