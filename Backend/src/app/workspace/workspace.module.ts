@@ -1,12 +1,13 @@
-import { WorkspaceMModule } from '@/database/modules'
+import { MemberMModule, WorkspaceMModule } from '@/database/modules'
 import { Module } from '@nestjs/common'
 
 import { WorkspaceController } from './controllers/workspace.controller'
+import { WorkspaceMSController } from './controllers/workspace.ms.controller'
 import { WorkspaceService } from './workspace.service'
 
 @Module({
-  imports: [WorkspaceMModule],
-  controllers: [WorkspaceController],
+  imports: [WorkspaceMModule, MemberMModule],
+  controllers: [WorkspaceController, WorkspaceMSController],
   providers: [WorkspaceService],
   exports: [WorkspaceService],
 })

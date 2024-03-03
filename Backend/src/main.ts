@@ -1,14 +1,17 @@
-import { initApplication } from '@/app'
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
-import { TrelloApi } from '@trello-v2/shared'
+import { readdirSync } from 'fs'
+import { join } from 'path'
 import { ZodType } from 'zod'
 import zodToJsonSchema from 'zod-to-json-schema'
-import { MicroserviceOptions, Transport } from '@nestjs/microservices'
-import { join } from 'path'
+
+import { initApplication } from '@/app'
 import { NestFactory } from '@nestjs/core'
+import { MicroserviceOptions, Transport } from '@nestjs/microservices'
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
+import { TrelloApi } from '@trello-v2/shared'
+
 import { MS_MODULES } from './app/app.module'
+
 import type { INestApplication, LogLevel } from '@nestjs/common'
-import { readdirSync } from 'fs'
 function GenerateSwaggerSchema() {
   const schemas: Record<string, object> = {}
   Object.values(TrelloApi).forEach((api) => {
@@ -68,11 +71,12 @@ async function bootstrap() {
     transport: Transport.GRPC,
     options: {
       url: 'localhost:3334',
-      package: ['trello.card_service', 'trello.cardlist'],
+      package: ['trello.card_service', 'trello.cardlist', 'trello.user_service', 'trello.workspace_service'],
       protoPath: grpcPaths,
       loader: { keepCase: true, arrays: true },
     },
   })
+
   const config = new DocumentBuilder().build()
   const document = SwaggerModule.createDocument(app, config)
   document.components.schemas = {
