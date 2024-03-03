@@ -22,7 +22,7 @@ describe('WorkspaceController', () => {
   describe('Workspace: Get all workspaces', () => {
     it('should return all workspaces', async () => {
       const data = await controller.getAll()
-      expect(TrelloApi.WorkspaceApi.GetallWorkspaceResponseSchema.safeParse(data).success).toBeTruthy()
+      expect(TrelloApi.WorkspaceApi.WorkspaceListResponseSchema.safeParse(data).success).toBeTruthy()
     })
   })
 })
