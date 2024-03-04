@@ -1,0 +1,19 @@
+
+FROM node:iron-alpine3.19
+ 
+WORKDIR /app
+EXPOSE 3000
+
+COPY . .
+WORKDIR /app/packages/shared
+RUN npm install
+RUN npm run build
+WORKDIR /app/Backend
+RUN npm install
+
+ENV SERVICE_NAME=none
+
+CMD ["sh", "-c", "npm run start:dev ${SERVICE_NAME}"]
+# RUN cd /Backend && npm run start:dev cardlist
+# # Development
+# CMD ["npm", "run", "start:dev"]
