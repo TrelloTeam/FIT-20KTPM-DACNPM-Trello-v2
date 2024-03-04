@@ -30,7 +30,7 @@ export class WorkspaceMSController {
     const admin = (await this.workspaceService.getAdminWorkspacesByEmail(email)) ?? []
     const member = (await this.workspaceService.getMemberWorkspacesByEmail(email)) ?? []
     const guest = (await this.workspaceService.getGuestWorkspacesByEmail(email)) ?? []
-    // console.log({ owner, admin, member, guest })
+    console.log({ owner, admin, member, guest })
 
     return {
       data: {
