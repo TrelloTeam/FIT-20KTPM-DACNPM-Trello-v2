@@ -17,7 +17,8 @@ async function bootstrap() {
 
   const app = await NestFactory.create(CardlistServiceModule)
   initSwagger(app, 'api/cardlist/swagger', [TrelloApi.CardlistApi, TrelloApi.CardApi])
-  initProtos(app, `localhost:${PORT}`, grpcPaths, ['trello.card', 'trello.cardlist'])
+  initProtos(app, `localhost:${parseInt(`${PORT}`) + 1}`, grpcPaths, ['trello.card', 'trello.cardlist', 'trello.card_service'])
+  await app.startAllMicroservices()
   await app.listen(PORT, () => console.log(`Cardlist server http://localhost:${PORT}`))
 }
 bootstrap()
