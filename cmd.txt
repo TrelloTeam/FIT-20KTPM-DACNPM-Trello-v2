@@ -1,0 +1,2 @@
+docker build -f Dockerfile.backend -t trello-v2/backend:1.1 .
+docker compose -f docker-compose.backend.yml up
