@@ -37,26 +37,32 @@ services:
   backend-cardlist:
     image: trello-v2/backend:1.1
     environment:
+      - GRPC_HOST=0.0.0.0
       - PORT=3000
       - SERVICE_NAME=cardlist
       - DB_CONN_STR=mongodb://MONGO_USER:MONGO_123@mongo:27017/trello?authSource=admin
     ports:
-      - 3001:3000
+      - 3010:3000
+      - 3011:3001
 
   backend-board:
     image: trello-v2/backend:1.1
     environment:
+      - GRPC_HOST=0.0.0.0
       - PORT=3000
       - SERVICE_NAME=board
       - DB_CONN_STR=mongodb://MONGO_USER:MONGO_123@mongo:27017/trello?authSource=admin
     ports:
-      - 3002:3000
+      - 3020:3000
+      - 3021:3001
 
   backend-workspace:
     image: trello-v2/backend:1.1
     environment:
+      - GRPC_HOST=0.0.0.0
       - PORT=3000
       - SERVICE_NAME=workspace
       - DB_CONN_STR=mongodb://MONGO_USER:MONGO_123@mongo:27017/trello?authSource=admin
     ports:
-      - 3003:3000
+      - 3030:3000
+      - 3031:3001
