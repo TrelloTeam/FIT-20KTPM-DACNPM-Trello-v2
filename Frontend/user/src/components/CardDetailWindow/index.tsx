@@ -29,36 +29,38 @@ export type ModelChecklist = {
 }
 
 const dataChecklistArray1: ModelCheckitem[] = [
-  { _id: 0, title: 'Component 1', isChecked: false },
-  { _id: 1, title: 'Component 2', isChecked: false },
-  { _id: 2, title: 'Component 3', isChecked: false },
-  { _id: 3, title: 'Component 4', isChecked: false },
-  { _id: 4, title: 'Component 5', isChecked: false },
-  { _id: 5, title: 'Component 6', isChecked: false }
+  { _id: 0, title: 'Component design', isChecked: false },
+  { _id: 1, title: 'State management', isChecked: false },
+  { _id: 2, title: 'Data fetching', isChecked: false },
+  { _id: 3, title: 'Event handling', isChecked: false },
+  { _id: 4, title: 'Testing', isChecked: false },
+  { _id: 5, title: 'Code review', isChecked: false },
+  { _id: 6, title: 'Pull request approved', isChecked: false }
 ]
 
 const dataChecklist1: ModelChecklist = {
   _id: 0,
-  title: 'Code giao diện cửa sổ thông tin của Card',
+  title: 'Front-end Boards Page',
   array: dataChecklistArray1
 }
 
-// const dataChecklistArray2: ModelCheckitem[] = [
-//   { _id: 0, title: 'Component 1', isChecked: false },
-//   { _id: 1, title: 'Component 2', isChecked: false },
-//   { _id: 2, title: 'Component 3', isChecked: false },
-//   { _id: 3, title: 'Component 4', isChecked: false },
-//   { _id: 4, title: 'Component 5', isChecked: false },
-//   { _id: 5, title: 'Component 6', isChecked: false }
-// ]
+const dataChecklistArray2: ModelCheckitem[] = [
+  { _id: 0, title: 'Component design', isChecked: false },
+  { _id: 1, title: 'State management', isChecked: false },
+  { _id: 2, title: 'Data fetching', isChecked: false },
+  { _id: 3, title: 'Event handling', isChecked: false },
+  { _id: 4, title: 'Testing', isChecked: false },
+  { _id: 5, title: 'Code review', isChecked: false },
+  { _id: 6, title: 'Pull request approved', isChecked: false }
+]
 
-// const dataChecklist2: ModelChecklist = {
-//   _id: 0,
-//   title: 'Code giao diện cửa sổ thông tin của Card',
-//   array: dataChecklistArray2
-// }
+const dataChecklist2: ModelChecklist = {
+  _id: 1,
+  title: 'Front-end Card Detail Window',
+  array: dataChecklistArray2
+}
 
-// const dataChecklists: ModelChecklist[] = [dataChecklist1, dataChecklist2]
+const checklistTableData: ModelChecklist[] = [dataChecklist1, dataChecklist2]
 
 export default function CardDetailWindow() {
   const windowBg = '#fff'
@@ -70,13 +72,15 @@ export default function CardDetailWindow() {
     setIsWatching(newState)
   }
 
-  const [checklist, setChecklist] = useState<ModelChecklist>(dataChecklist1)
+  const [checklistTable, setChecklistTable] = useState(checklistTableData)
 
   return (
     <Box
       sx={{
         width: 768,
-        height: 1000,
+        height: 'fit-content',
+        marginBottom: '80px',
+        paddingBottom: '40px',
         boxShadow: '0 2px 4px rgba(0, 0, 0, 0.5)',
         backgroundColor: windowBg
       }}
@@ -135,10 +139,14 @@ export default function CardDetailWindow() {
           <CardDescription />
           {/* END: Description */}
           {/* START: Checklist */}
-          {/* {dataChecklists.map((checklist) => (
-            <CardChecklist key={checklist._id} checklist={checklist} setChecklist={setChecklist} />
-          ))} */}
-          <CardChecklist key={checklist._id} checklist={checklist} setChecklist={setChecklist} />
+          {checklistTable.map((checklist) => (
+            <CardChecklist
+              key={checklist._id}
+              checklist={checklist}
+              checklistTable={checklistTable}
+              setChecklistTable={setChecklistTable}
+            />
+          ))}
           {/* END: Checklist */}
         </Grid>
         <Grid item xs={3} sx={{ padding: '0 16px 8px 8px' }}>

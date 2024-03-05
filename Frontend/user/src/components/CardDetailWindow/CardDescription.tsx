@@ -43,7 +43,7 @@ export default function CardDescription() {
       <div className='flex flex-row items-center justify-between'>
         {/* Title */}
         <div className='relative flex flex-row items-center'>
-          <FontAwesomeIcon icon={faAlignJustify} style={{ width: 30, left: -40 }} className='absolute text-2xl' />
+          <FontAwesomeIcon icon={faAlignJustify} style={{ width: 30, left: -40 }} className='absolute text-xl' />
           <h2 className='font-semibold'>Description</h2>
         </div>
         {/* Edit button */}
