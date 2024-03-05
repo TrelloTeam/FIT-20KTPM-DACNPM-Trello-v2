@@ -16,8 +16,15 @@ static_resources:
                     - name: local_service
                       domains: ["*"]
                       routes:
-                        - match: { prefix: "/grpc/" }
-                          route: { cluster: echo_service, prefix_rewrite: "/" }
+                        - match: { prefix: "/grpc_cardlist/" }
+                          route:
+                            {
+                              cluster: cardlist_grpc_service,
+                              prefix_rewrite: "/",
+                            }
+                        - match: { prefix: "/grpc_board/" }
+                          route:
+                            { cluster: board_grpc_service, prefix_rewrite: "/" }
                         - match: { prefix: "/api/cardlist" }
                           route: { cluster: cardlist_service }
                         - match: { prefix: "/api/board" }
@@ -45,7 +52,7 @@ static_resources:
                       "@type": type.googleapis.com/envoy.extensions.filters.http.router.v3.Router
 
   clusters:
-    - name: echo_service
+    - name: cardlist_grpc_service
       connect_timeout: 1s
       type: LOGICAL_DNS
       typed_extension_protocol_options:
@@ -55,14 +62,32 @@ static_resources:
             http2_protocol_options: {}
       lb_policy: ROUND_ROBIN
       load_assignment:
-        cluster_name: echo_service
+        cluster_name: cardlist_grpc_service
         endpoints:
           - lb_endpoints:
               - endpoint:
                   address:
                     socket_address:
-                      address: host.docker.internal
-                      port_value: 3334
+                      address: backend-cardlist
+                      port_value: 3001
+    - name: board_grpc_service
+      connect_timeout: 1s
+      type: LOGICAL_DNS
+      typed_extension_protocol_options:
+        envoy.extensions.upstreams.http.v3.HttpProtocolOptions:
+          "@type": type.googleapis.com/envoy.extensions.upstreams.http.v3.HttpProtocolOptions
+          explicit_http_config:
+            http2_protocol_options: {}
+      lb_policy: ROUND_ROBIN
+      load_assignment:
+        cluster_name: board_grpc_service
+        endpoints:
+          - lb_endpoints:
+              - endpoint:
+                  address:
+                    socket_address:
+                      address: backend-board
+                      port_value: 3001
     - name: cardlist_service
       connect_timeout: 10s
       type: LOGICAL_DNS

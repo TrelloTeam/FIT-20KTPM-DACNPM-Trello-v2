@@ -13,8 +13,10 @@ async function bootstrap() {
     .filter((n) => n.includes('.proto'))
     .map((n) => join(protoFolder, n))
   const app = await NestFactory.create(WorkspaceServiceModule)
+  const grpcHost = `${process.env.GRPC_HOST || 'localhost'}:${parseInt(`${PORT}`) + 1}`
+
   initSwagger(app, 'api/workspace/swagger', [TrelloApi.WorkspaceApi])
-  initProtos(app, `localhost:${parseInt(`${PORT}`) + 1}`, grpcPaths, ['trello.workspace_service'])
+  initProtos(app, grpcHost, grpcPaths, ['trello.workspace_service'])
   await app.startAllMicroservices()
   await app.listen(PORT, () => console.log(`Cardlist server http://localhost:${PORT}`))
 }
