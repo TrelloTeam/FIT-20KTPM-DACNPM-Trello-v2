@@ -1,10 +1,5 @@
 import React, { useState } from 'react';
 import { styled, useTheme } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import CssBaseline from '@mui/material/CssBaseline';
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
@@ -24,27 +19,6 @@ import { Divider, Drawer } from '@mui/material';
 
 const drawerWidth = 250;
 
-interface AppBarProps extends MuiAppBarProps {
-  open?: boolean;
-}
-
-const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== 'open',
-})<AppBarProps>(({ theme, open }) => ({
-  transition: theme.transitions.create(['margin', 'width'], {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  ...(open && {
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: `${drawerWidth}px`,
-    transition: theme.transitions.create(['margin', 'width'], {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  }),
-}));
-
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
@@ -52,24 +26,21 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   // necessary for content to be below app bar
   ...theme.mixins.toolbar,
   justifyContent: 'flex-end',
+  marginTop: 12
 }));
 
-function SidebarCateWorkSpace() {
+interface Props {
+    open: boolean;
+    handleDrawerClose: () => void;
+  }
+
+const SidebarCateWorkSpace: React.FC<Props> = ({ open, handleDrawerClose }) => {
     const theme = useTheme();
-    const [open, setOpen] = React.useState(false);
     const [isTableHovered, setIsTableHovered] = useState(false);
     const [isCalendarHovered, setIsCalendarHovered] = useState(false);
     const [isYourBoardHovered, setIsYourBoarHovered] = useState(false);
     const [isBoardHovered, setIsBoarHovered] = useState(false);
     const [isStarred, setIsStarred] = useState(false);
-
-    const handleDrawerOpen = () => {
-        setOpen(true);
-    };
-
-    const handleDrawerClose = () => {
-        setOpen(false);
-    };
 
     const handleTableMouseEnter = () => {
         setIsTableHovered(true);
@@ -108,37 +79,14 @@ function SidebarCateWorkSpace() {
     };    
 
     return (
-        <Box sx={{ display: 'flex' }}>
-            <CssBaseline />
-            <AppBar position="fixed" open={open}>
-                <Toolbar>
-                <IconButton
-                    color="inherit"
-                    aria-label="open drawer"
-                    onClick={handleDrawerOpen}
-                    edge="start"
-                    sx={{ mr: 2, ...(open && { display: 'none' }) }}
-                >
-                    <div className="relative">
-                        <div className="rounded-full border border-gray-300 group">
-                            <ChevronRightIcon className="w-6 h-6" />
-                            <span className="absolute top-0 left-1/2 -mt-6 bg-blue-800 text-white px-2 py-2 text-xs whitespace-nowrap rounded opacity-0 transition duration-300 ease-in-out group-hover:opacity-100">Expand sidebar</span>
-                        </div>
-                    </div>
-
-                </IconButton>
-                <Typography variant="h6" noWrap component="div">
-                    Persistent drawer
-                </Typography>
-                </Toolbar>
-            </AppBar>
-
+        <div className="sidebar-cate-workspace mt-12">
             <Drawer sx={{
                 width: drawerWidth,
                 flexShrink: 0,
                 '& .MuiDrawer-paper': {
                     width: drawerWidth,
                     boxSizing: 'border-box',
+                    marginTop: 6
                 },
                 }}
                 variant="persistent"
@@ -268,7 +216,8 @@ function SidebarCateWorkSpace() {
                     </div>
                 </Sidebar>
             </Drawer>
-        </Box>
+        </div>
+        
   );
 }
 
