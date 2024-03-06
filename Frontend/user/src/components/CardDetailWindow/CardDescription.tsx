@@ -21,7 +21,7 @@ function EditButton() {
       }}
       className='flex cursor-pointer items-center justify-center rounded'
     >
-      Edit
+      <p>Edit</p>
     </Box>
   )
 }

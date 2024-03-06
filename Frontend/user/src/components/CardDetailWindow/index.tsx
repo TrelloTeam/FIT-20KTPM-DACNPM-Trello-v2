@@ -10,57 +10,52 @@ import CardDate from './CardDate'
 import CardDescription from './CardDescription'
 import CardSidebar from './CardSidebar'
 import CardChecklist from './CardChecklist'
+import CardActivity from './CardActivity'
 
-// import { Board } from '../../../../../packages/shared/src/schemas/Board'
-// interface CardDetailWindowProps {
-//   board: Board
-// }
-
-export type ModelCheckitem = {
-  _id: number
-  title: string
-  isChecked: boolean
+export type _Feature_Checklist = {
+  _id: string
+  name: string
+  type: string
+  items: _Feature_Checklist_Item[]
 }
 
-export type ModelChecklist = {
-  _id: number
-  title: string
-  array: ModelCheckitem[]
+export type _Feature_Checklist_Item = {
+  _id: string
+  name: string
+  is_check: boolean
 }
 
-const dataChecklistArray1: ModelCheckitem[] = [
-  { _id: 0, title: 'Component design', isChecked: false },
-  { _id: 1, title: 'State management', isChecked: false },
-  { _id: 2, title: 'Data fetching', isChecked: false },
-  { _id: 3, title: 'Event handling', isChecked: false },
-  { _id: 4, title: 'Testing', isChecked: false },
-  { _id: 5, title: 'Code review', isChecked: false },
-  { _id: 6, title: 'Pull request approved', isChecked: false }
-]
-
-const dataChecklist1: ModelChecklist = {
-  _id: 0,
-  title: 'Front-end Boards Page',
-  array: dataChecklistArray1
+const checklist_1: _Feature_Checklist = {
+  _id: '0',
+  name: 'Front-end Boards Page',
+  type: 'checklist',
+  items: [
+    { _id: '0', name: 'Component design', is_check: false },
+    { _id: '1', name: 'State management', is_check: false },
+    { _id: '2', name: 'Data fetching', is_check: false },
+    { _id: '3', name: 'Event handling', is_check: false },
+    { _id: '4', name: 'Testing', is_check: false },
+    { _id: '5', name: 'Code review', is_check: false },
+    { _id: '6', name: 'Pull request approved', is_check: false }
+  ]
 }
 
-const dataChecklistArray2: ModelCheckitem[] = [
-  { _id: 0, title: 'Component design', isChecked: false },
-  { _id: 1, title: 'State management', isChecked: false },
-  { _id: 2, title: 'Data fetching', isChecked: false },
-  { _id: 3, title: 'Event handling', isChecked: false },
-  { _id: 4, title: 'Testing', isChecked: false },
-  { _id: 5, title: 'Code review', isChecked: false },
-  { _id: 6, title: 'Pull request approved', isChecked: false }
-]
-
-const dataChecklist2: ModelChecklist = {
-  _id: 1,
-  title: 'Front-end Card Detail Window',
-  array: dataChecklistArray2
+const checklist_2: _Feature_Checklist = {
+  _id: '1',
+  name: 'Front-end Card Detail Window',
+  type: 'checklist',
+  items: [
+    { _id: '0', name: 'Component design', is_check: false },
+    { _id: '1', name: 'State management', is_check: false },
+    { _id: '2', name: 'Data fetching', is_check: false },
+    { _id: '3', name: 'Event handling', is_check: false },
+    { _id: '4', name: 'Testing', is_check: false },
+    { _id: '5', name: 'Code review', is_check: false },
+    { _id: '6', name: 'Pull request approved', is_check: false }
+  ]
 }
 
-const checklistTableData: ModelChecklist[] = [dataChecklist1, dataChecklist2]
+const checklists: _Feature_Checklist[] = [checklist_1, checklist_2]
 
 export default function CardDetailWindow() {
   const windowBg = '#fff'
@@ -72,7 +67,7 @@ export default function CardDetailWindow() {
     setIsWatching(newState)
   }
 
-  const [checklistTable, setChecklistTable] = useState(checklistTableData)
+  const [allChecklists, setAllChecklists] = useState(checklists)
 
   return (
     <Box
@@ -106,6 +101,7 @@ export default function CardDetailWindow() {
               e.currentTarget.style.borderColor = focusInputColor
             }}
             value='Soạn nội dung thuyết trình'
+            onChange={() => {}}
             className='text-xl font-semibold'
           />
           <Box
@@ -139,15 +135,16 @@ export default function CardDetailWindow() {
           <CardDescription />
           {/* END: Description */}
           {/* START: Checklist */}
-          {checklistTable.map((checklist) => (
+          {allChecklists.map((checklist) => (
             <CardChecklist
               key={checklist._id}
-              checklist={checklist}
-              checklistTable={checklistTable}
-              setChecklistTable={setChecklistTable}
+              currentChecklist={checklist}
+              allChecklists={allChecklists}
+              setAllChecklists={setAllChecklists}
             />
           ))}
           {/* END: Checklist */}
+          <CardActivity />
         </Grid>
         <Grid item xs={3} sx={{ padding: '0 16px 8px 8px' }}>
           <CardSidebar />

@@ -1,6 +1,16 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { IconProp } from '@fortawesome/fontawesome-svg-core'
-import { faSquareCheck, faTag, faUser, faClock, faPaperclip, faGripLines, faArrowRight, faCopy, faBoxArchive } from '@fortawesome/free-solid-svg-icons'
+import {
+  faSquareCheck,
+  faTag,
+  faUser,
+  faClock,
+  faPaperclip,
+  faGripLines,
+  faArrowRight,
+  faCopy,
+  faBoxArchive
+} from '@fortawesome/free-solid-svg-icons'
 import { Box, Stack } from '@mui/material'
 import { colors, colorsButton } from '~/styles'
 
