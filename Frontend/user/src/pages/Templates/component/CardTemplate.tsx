@@ -30,7 +30,7 @@ function CardTemplate() {
               className='detail-item mx-auto mt-8 block h-full w-full text-sm capitalize leading-6 text-gray-600'
             >
               <CardMedia
-                className='h-140 relative w-full'
+                className='h-140 relative w-full transition duration-300 ease-in-out transform hover:shadow-xl'
                 component='img'
                 image='https://trello.com/assets/3919e0fe0976de0298b4.svg'
               />
@@ -44,7 +44,7 @@ function CardTemplate() {
               className='detail-item mx-auto mt-8 block h-full w-full text-sm capitalize leading-6 text-gray-600'
             >
               <CardMedia
-                className='h-140 relative w-full'
+                className='h-140 relative w-full transition duration-300 ease-in-out transform hover:shadow-xl'
                 component='img'
                 image='https://trello.com/assets/157c58403db677619bea.svg'
               />
@@ -58,7 +58,7 @@ function CardTemplate() {
               className='detail-item mx-auto mt-8 block h-full w-full text-sm capitalize leading-6 text-gray-600'
             >
               <CardMedia
-                className='h-140 relative w-full'
+                className='h-140 relative w-full transition duration-300 ease-in-out transform hover:shadow-xl'
                 component='img'
                 image='https://trello.com/assets/dea39a045ff4c4d1d9b1.svg'
               />
@@ -72,7 +72,7 @@ function CardTemplate() {
               className='detail-item mx-auto mt-8 block h-full w-full text-sm capitalize leading-6 text-gray-600'
             >
               <CardMedia
-                className='h-140 relative w-full'
+                className='h-140 relative w-full transition duration-300 ease-in-out transform hover:shadow-xl'
                 component='img'
                 image='https://trello.com/assets/e0b1e866de40a5468aaa.svg'
               />
@@ -86,7 +86,7 @@ function CardTemplate() {
               className='detail-item mx-auto mt-8 block h-full w-full text-sm capitalize leading-6 text-gray-600'
             >
               <CardMedia
-                className='h-140 relative w-full'
+                className='h-140 relative w-full transition duration-300 ease-in-out transform hover:shadow-xl'
                 component='img'
                 image='https://trello.com/assets/757286ddcfc9b405911a.svg'
                 alt='Marketing'
@@ -101,7 +101,7 @@ function CardTemplate() {
               className='detail-item mx-auto mt-8 block h-full w-full text-sm capitalize leading-6 text-gray-600'
             >
               <CardMedia
-                className='h-140 relative w-full'
+                className='h-140 relative w-full transition duration-300 ease-in-out transform hover:shadow-xl'
                 component='img'
                 image='https://trello.com/assets/7d80b8fac2bac70d9e72.svg'
                 alt='Quản Lý Dự Án'
@@ -116,7 +116,7 @@ function CardTemplate() {
               className='detail-item mx-auto mt-8 block h-full w-full text-sm capitalize leading-6 text-gray-600'
             >
               <CardMedia
-                className='h-140 relative w-full'
+                className='h-140 relative w-full transition duration-300 ease-in-out transform hover:shadow-xl'
                 component='img'
                 image='https://trello.com/assets/f03ecb89626f72d4a0aa.svg'
                 alt='Làm Việc Từ Xa'
@@ -141,7 +141,7 @@ function CardTemplate() {
           <Card variant='elevation' elevation={0} className='item-newTemplate min-h-100 mx-auto w-full md:w-72'>
             <div className='cardContainer relative w-72'>
               <CardMedia
-                className='h-40 w-full object-cover'
+                className='h-40 w-full object-cover duration-300 ease-in-out transform hover:shadow-xl'
                 component='img'
                 image='https://trello-backgrounds.s3.amazonaws.com/53baf533e697a982248cd73f/480x480/e4982f6fdaab05c018747688b167997f/shutterstock_261269042.jpg'
                 alt='New Hire Onboarding'
@@ -177,7 +177,7 @@ function CardTemplate() {
           <Card variant='elevation' elevation={0} className='item-newTemplate min-h-100 mx-auto w-full md:w-72'>
             <div className='cardContainer relative w-72'>
               <CardMedia
-                className='h-40 w-full object-cover'
+                className='h-40 w-full object-cover duration-300 ease-in-out transform hover:shadow-xl'
                 component='img'
                 image='https://d2k1ftgv7pobq7.cloudfront.net/images/backgrounds/gradients/alien.svg'
                 alt='Tier List'
@@ -213,7 +213,7 @@ function CardTemplate() {
           <Card variant='elevation' elevation={0} className='item-newTemplate min-h-100 mx-auto w-full md:w-72'>
             <div className='cardContainer relative w-72'>
               <CardMedia
-                className='h-40 w-full object-cover'
+                className='h-40 w-full object-cover duration-300 ease-in-out transform hover:shadow-xl'
                 component='img'
                 image='https://trello-backgrounds.s3.amazonaws.com/5ea92d56642ad37917862ea4/480x322/255c5f56ccf2b7bd68aaf9f51d0dbcc5/Asset_1%404x.png'
                 alt='Better Work Habits Challenge'
@@ -270,7 +270,7 @@ function CardTemplate() {
           >
             <div className='cardContainer relative w-72'>
               <CardMedia
-                className='h-40 w-full object-cover'
+                className='h-40 w-full object-cover duration-300 ease-in-out transform hover:shadow-xl'
                 component='img'
                 image='https://trello-backgrounds.s3.amazonaws.com/5e627d9fa6c99f7637f32c47/480x270/c0d295ff3ef480a03090b113f1eae301/crmble_trello_order-mgmt.png'
                 alt='A Lead Management Pipeline by Crmble'
@@ -310,7 +310,7 @@ function CardTemplate() {
           >
             <div className='cardContainer relative w-72'>
               <CardMedia
-                className='h-40 w-full object-cover'
+                className='h-40 w-full object-cover duration-300 ease-in-out transform hover:shadow-xl'
                 component='img'
                 image='https://trello-backgrounds.s3.amazonaws.com/SharedBackground/320x480/842930275c7de22dfabb6bb21b3cb8cd/photo-1590978553854-f1c0fe76ca70.jpg'
                 alt='Lean Canvas'
@@ -349,7 +349,7 @@ function CardTemplate() {
           >
             <div className='cardContainer relative w-72'>
               <CardMedia
-                className='h-40 w-full object-cover'
+                className='h-40 w-full object-cover duration-300 ease-in-out transform hover:shadow-xl'
                 component='img'
                 image='https://trello-backgrounds.s3.amazonaws.com/SharedBackground/480x320/7f16c6eb93506d217fd0954458890909/photo-1537134394103-214adc4bd836.jpg'
                 alt='Nonprofit Project Management'
@@ -407,7 +407,7 @@ function CardTemplate() {
           >
             <div className='cardContainer relative w-72'>
               <CardMedia
-                className='h-40 w-full object-cover'
+                className='h-40 w-full object-cover duration-300 ease-in-out transform hover:shadow-xl'
                 component='img'
                 image='https://trello-backgrounds.s3.amazonaws.com/SharedBackground/480x320/a28f730ef16a7f6a7e1062c8a7953f14/photo-1487446929682-f62f73984006.jpg'
                 alt='A Lead Management Pipeline by Crmble'
@@ -447,7 +447,7 @@ function CardTemplate() {
           >
             <div className='cardContainer relative w-72'>
               <CardMedia
-                className='h-40 w-full object-cover'
+                className='h-40 w-full object-cover duration-300 ease-in-out transform hover:shadow-xl'
                 component='img'
                 image='https://trello-backgrounds.s3.amazonaws.com/SharedBackground/480x320/5d42cf624a724294c34b89383f9ec56e/photo-1523726491678-bf852e717f6a.jpg'
                 alt='Lean Canvas'
@@ -487,7 +487,7 @@ function CardTemplate() {
           >
             <div className='cardContainer relative w-72'>
               <CardMedia
-                className='h-40 w-full object-cover'
+                className='h-40 w-full object-cover duration-300 ease-in-out transform hover:shadow-xl'
                 component='img'
                 image='https://trello-backgrounds.s3.amazonaws.com/SharedBackground/480x320/3ffe7acdb8d4c2082e873e8a416bdc52/photo-1452860606245-08befc0ff44b.jpg'
                 alt='Nonprofit Project Management'
@@ -544,7 +544,7 @@ function CardTemplate() {
           >
             <div className='cardContainer relative w-72'>
               <CardMedia
-                className='h-40 w-full object-cover'
+                className='h-40 w-full object-cover duration-300 ease-in-out transform hover:shadow-xl'
                 component='img'
                 image='https://trello-backgrounds.s3.amazonaws.com/SharedBackground/480x320/8454170bfcb74380b54c38a28ff21e2f/photo-1428908728789-d2de25dbd4e2.jpg'
                 alt='Remote Class Template'
@@ -586,7 +586,7 @@ function CardTemplate() {
           >
             <div className='cardContainer relative w-72'>
               <CardMedia
-                className='h-40 w-full object-cover'
+                className='h-40 w-full object-cover duration-300 ease-in-out transform hover:shadow-xl'
                 component='img'
                 image='https://trello-backgrounds.s3.amazonaws.com/SharedBackground/480x480/95c7551fff2e76c2d9bdfb50e5ee19b6/photo-1481627834876-b7833e8f5570.jpg'
                 alt='Academic Literature Review'
@@ -629,7 +629,7 @@ function CardTemplate() {
           >
             <div className='cardContainer relative w-72'>
               <CardMedia
-                className='h-40 w-full object-cover'
+                className='h-40 w-full object-cover duration-300 ease-in-out transform hover:shadow-xl'
                 component='img'
                 image='https://trello-backgrounds.s3.amazonaws.com/575584dacedaafdf0d8660c2/480x272/02a67bbc2d5b879d912dad85eb5f3a05/asset_3.png'
                 alt='Teaching: Weekly Planning'
@@ -689,7 +689,7 @@ function CardTemplate() {
           >
             <div className='cardContainer relative w-72'>
               <CardMedia
-                className='h-40 w-full object-cover'
+                className='h-40 w-full object-cover duration-300 ease-in-out transform hover:shadow-xl'
                 component='img'
                 image='https://trello-backgrounds.s3.amazonaws.com/SharedBackground/480x322/47f09f0e3910259568294477d0bdedac/photo-1576502200916-3808e07386a5.jpg'
                 alt='Kanban Template'
@@ -730,7 +730,7 @@ function CardTemplate() {
           >
             <div className='cardContainer relative w-72'>
               <CardMedia
-                className='h-40 w-full object-cover'
+                className='h-40 w-full object-cover duration-300 ease-in-out transform hover:shadow-xl'
                 component='img'
                 image='https://trello-backgrounds.s3.amazonaws.com/4e8eb47da16fe58f9dbdf7d0/480x300/0f299a7485408e6ad3daac75476be678/background.png'
                 alt='Scrum Board'
@@ -771,7 +771,7 @@ function CardTemplate() {
           >
             <div className='cardContainer relative w-72'>
               <CardMedia
-                className='h-40 w-full object-cover'
+                className='h-40 w-full object-cover duration-300 ease-in-out transform hover:shadow-xl'
                 component='img'
                 image='https://trello-backgrounds.s3.amazonaws.com/SharedBackground/480x270/c9ada8526a0585ddf17441d7e68dc9ac/photo-1593689217914-19621b0eac82.jpg'
                 alt='Software Development [Web App, iOS App, Android App]'
@@ -826,7 +826,7 @@ function CardTemplate() {
           >
             <div className='cardContainer relative w-72'>
               <CardMedia
-                className='h-40 w-full object-cover'
+                className='h-40 w-full object-cover duration-300 ease-in-out transform hover:shadow-xl'
                 component='img'
                 image='https://trello-backgrounds.s3.amazonaws.com/SharedBackground/480x320/88badc718574e79916d2330ccd49a75a/photo-1587270804625-48c99a3cc707.jpg'
                 alt='Speaker guide for online events'
@@ -866,7 +866,7 @@ function CardTemplate() {
           >
             <div className='cardContainer relative w-72'>
               <CardMedia
-                className='h-40 w-full object-cover'
+                className='h-40 w-full object-cover duration-300 ease-in-out transform hover:shadow-xl'
                 component='img'
                 image='https://trello-backgrounds.s3.amazonaws.com/SharedBackground/480x281/4ff956445063b6458ae044342d2e76b2/photo-1507842217343-583bb7270b66.jpg'
                 alt='Marketing Content Catalog'
@@ -906,7 +906,7 @@ function CardTemplate() {
           >
             <div className='cardContainer relative w-72'>
               <CardMedia
-                className='h-40 w-full object-cover'
+                className='h-40 w-full object-cover duration-300 ease-in-out transform hover:shadow-xl'
                 component='img'
                 image='https://d2k1ftgv7pobq7.cloudfront.net/images/backgrounds/purty_wood_dark.png'
                 alt='Marketing Overview'
@@ -963,7 +963,7 @@ function CardTemplate() {
           >
             <div className='cardContainer relative w-72'>
               <CardMedia
-                className='h-40 w-full object-cover'
+                className='h-40 w-full object-cover duration-300 ease-in-out transform hover:shadow-xl'
                 component='img'
                 image='https://trello-backgrounds.s3.amazonaws.com/SharedBackground/480x320/368bc33f2c374599a45888b7ce4f9c5a/photo-1472289065668-ce650ac443d2.jpg'
                 alt='Client Workflow Management'
@@ -1003,7 +1003,7 @@ function CardTemplate() {
           >
             <div className='cardContainer relative w-72'>
               <CardMedia
-                className='h-40 w-full object-cover'
+                className='h-40 w-full object-cover duration-300 ease-in-out transform hover:shadow-xl'
                 component='img'
                 image='https://trello-backgrounds.s3.amazonaws.com/575584dacedaafdf0d8660c2/480x480/81aa04d295723176cd358fa887e92596/UN074431_2.JPG.jpg'
                 alt='UNICEF Global Innovation Centre'
@@ -1044,7 +1044,7 @@ function CardTemplate() {
           >
             <div className='cardContainer relative w-72'>
               <CardMedia
-                className='h-40 w-full object-cover'
+                className='h-40 w-full object-cover duration-300 ease-in-out transform hover:shadow-xl'
                 component='img'
                 image='https://trello-backgrounds.s3.amazonaws.com/5423102a85612209a94bcde8/480x270/575c4d97c9004f4f38e6a248ef8ac3ba/Budget_Full_HD.jpg'
                 alt='Advanced Project Budgeting and Time Tracking'
@@ -1103,7 +1103,7 @@ function CardTemplate() {
           >
             <div className='cardContainer relative w-72'>
               <CardMedia
-                className='h-40 w-full object-cover'
+                className='h-40 w-full object-cover duration-300 ease-in-out transform hover:shadow-xl'
                 component='img'
                 image='https://trello-backgrounds.s3.amazonaws.com/SharedBackground/480x320/3bb7c04dcf6a14b2351fbd41e219bc8f/photo-1454117096348-e4abbeba002c.jpg'
                 alt='Work From Home Daily Planner'
@@ -1143,7 +1143,7 @@ function CardTemplate() {
           >
             <div className='cardContainer relative w-72'>
               <CardMedia
-                className='h-40 w-full object-cover'
+                className='h-40 w-full object-cover duration-300 ease-in-out transform hover:shadow-xl'
                 component='img'
                 image='https://trello-backgrounds.s3.amazonaws.com/53454f575358c015080ef729/480x480/7007009bc4fc68614e4d8c21dc20c62d/photo-1416592525293-e65266465eb7.jpeg.jpg'
                 alt='Mr. Rogers: “Watercooler” Video Chat Planner'
@@ -1181,7 +1181,7 @@ function CardTemplate() {
           >
             <div className='cardContainer relative w-72'>
               <CardMedia
-                className='h-40 w-full object-cover'
+                className='h-40 w-full object-cover duration-300 ease-in-out transform hover:shadow-xl'
                 component='img'
                 image='https://trello-backgrounds.s3.amazonaws.com/SharedBackground/480x480/b10c8bd87b80f7abeb56820f50c4db66/photo-1474487548417-781cb71495f3.jpg'
                 alt='Remote Team Hub'
