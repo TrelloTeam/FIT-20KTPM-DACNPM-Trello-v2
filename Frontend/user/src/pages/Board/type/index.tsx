@@ -1,3 +1,9 @@
+import { DbSchemas } from '@trello-v2/shared'
+
+interface Temp {
+  card: DbSchemas.CardlistSchema.ICard
+}
+
 export interface Card {
   id: string
   list_id: string
