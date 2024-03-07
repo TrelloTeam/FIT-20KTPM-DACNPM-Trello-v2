@@ -1,0 +1,45 @@
+syntax = "proto3";
+package trello.board_service;
+
+import "board.proto";
+import "google/protobuf/empty.proto";
+
+message BoardListResponse {
+    repeated trello.board.BoardSchema data=1;
+}
+
+message BoardResponse {
+    trello.board.BoardSchema data=1;
+}
+
+message WorkspaceIdRequest {
+    string workspace_id=1;
+}
+
+message BoardIdRequest {
+    string board_id=1;
+}
+
+message CreateBoardRequest {
+    string workspace_id=1;
+    string name=2;
+    string visibility=3;
+}
+
+message ChangeVisibilityRequest {
+    string _id=1;
+    string visibility=2;
+}
+
+message DeleteBoardRequest {
+    string _id=1;
+}
+
+service BoardService {
+    rpc getAll(google.protobuf.Empty) returns (BoardListResponse);
+    rpc getBoardsByWorkSpaceId(WorkspaceIdRequest) returns (BoardListResponse);
+    rpc create(CreateBoardRequest) returns (BoardResponse);
+    rpc getBoardInfoByBoardId(BoardIdRequest) returns (BoardResponse);
+    rpc changeBoardVisibility(ChangeVisibilityRequest) returns (BoardResponse);
+    rpc deleteBoard(DeleteBoardRequest) returns (BoardResponse);
+}
