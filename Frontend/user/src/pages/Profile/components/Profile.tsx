@@ -15,22 +15,23 @@ export const Profile: React.FC = () => {
 
       <div className='space-y-6'>
         <div>
-          <h2 className={`mb-2 mb-2 text-2xl font-bold ${text_bold_color}`}>Manage your personal information</h2>
+          <h2 className={`mb-2 text-2xl font-bold ${text_bold_color}`}>Manage your personal information</h2>
         </div>
         <div>
-          <h1 className={`mb-2 mb-2 border-b-2 border-gray-300 pb-2 text-xl font-semibold  ${text_bold_color}`}>
+          <h1 className={`mb-2 border-b-2 border-gray-300 pb-2 text-xl font-semibold  ${text_bold_color}`}>
             About
           </h1>
         </div>
-        <div>
+        <div className={`w-8/12`}>
           <label className='mb-2 block' htmlFor='bio'>
             <p className={`${text_profile_color} font-semibold`}>Username</p>
           </label>
-          <input className='w-full resize-none rounded border-4 p-2 mb-2' />
+          <input className='mb-2 w-full resize-none rounded border-4 p-2' />
           <label className='mb-2 block' htmlFor='bio'>
             <p className={`${text_profile_color} font-semibold`}>Bio</p>
           </label>
-          <textarea id='bio' className='w-full rounded border-4 p-2 mb-2 resize-y ' rows={4} />
+          <textarea id='bio' className='mb-2 w-full resize-y rounded border-4 p-2 hover:border-blue-600 ' rows={3} />
+          <button className={`rounded bg-blue-600 text-white w-full mt-10 h-8 `}>Save</button>
         </div>
       </div>
     </div>

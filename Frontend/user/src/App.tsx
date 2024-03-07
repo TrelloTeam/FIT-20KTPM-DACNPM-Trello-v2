@@ -8,7 +8,7 @@ function App() {
   return (
     <Provider store={store}>
       {/* <Header /> */}
-      <AccountManagement/>
+      <AccountManagement page='profile'/>
     </Provider>
   )
 }
