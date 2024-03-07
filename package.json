@@ -3,8 +3,11 @@
   "version": "1.0.0",
   "description": "```\r $ npm install\r ```\r ## 2. Running the app\r ```\r $ npm run dev\r ```",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "gen-p": "protoc -I ./protos --js_out=import_style=commonjs:./protos/builds --grpc-web_out=import_style=typescript,mode=grpcweb:./protos/builds hello.proto",
+    "gen": "cd protos && node gen.js"
   },
   "author": "",
   "license": "ISC",
@@ -14,11 +17,15 @@
     "Frontend/user",
     "packages/shared"
   ],
-  "devDependencies": {
-    "rimraf": "^5.0.5"
-  },
   "dependencies": {
-    "react-pro-sidebar": "^1.1.0",
+	"google-protobuf": "^3.21.2",
+    "protoc-gen-ts": "^0.8.7",
+    "ts-proto": "^1.167.8",
+	"react-pro-sidebar": "^1.1.0",
     "vite": "^5.1.1"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^25.0.7",
+	"rimraf": "^5.0.5"
   }
 }

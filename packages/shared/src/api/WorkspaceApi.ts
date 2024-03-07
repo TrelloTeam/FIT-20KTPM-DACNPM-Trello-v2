@@ -1,28 +1,67 @@
 import { z } from "zod";
+
 import { WorkspaceSchema } from "../schemas/Workspace";
 
-export const GetallWorkspaceByEmailResponseSchema = z.object({
+export const EmailIdSchema = z.object({
+  email: z.string().nullish(),
+});
+
+export type EmailIdType = z.infer<typeof EmailIdSchema>;
+
+//res list workspaces
+export const WorkspaceListResponseSchema = z.object({
   data: WorkspaceSchema.array(),
 });
-export type GetallWorkspaceByEmailResponse = z.infer<
-  typeof GetallWorkspaceByEmailResponseSchema
+export type WorkspaceListResponse = z.infer<typeof WorkspaceListResponseSchema>;
+
+//res workspace
+export const WorspaceResponseSchema = z.object({
+  data: WorkspaceSchema,
+});
+export type WorspaceResponse = z.infer<typeof WorspaceResponseSchema>;
+
+//res workspace by email
+export const WorspaceListByEmailResponseSchema = z.object({
+  data: z.object({
+    owner: WorkspaceSchema.array(),
+    admin: WorkspaceSchema.array(),
+    member: WorkspaceSchema.array(),
+    guest: WorkspaceSchema.array(),
+  }),
+});
+export type WorspaceListByEmailResponse = z.infer<
+  typeof WorspaceListByEmailResponseSchema
 >;
 
+//req create workspace
+export const CreateWorkspaceRequestSchema = WorkspaceSchema.pick({
+  name: true,
+  description: true,
+  members_email: true,
+});
+export type CreateWorspaceRequest = z.infer<
+  typeof CreateWorkspaceRequestSchema
+>;
+
+//req update workspace
 export const UpdateWorkspaceInfoRequestSchema = WorkspaceSchema.omit({
   _id: true,
   type_id: true,
   members_email: true,
+  visibility: true,
 }).partial();
 export type UpdateWorkspaceInfoRequest = z.infer<
   typeof UpdateWorkspaceInfoRequestSchema
 >;
 
-export const ChangeWorkspaceVisiblitySchema = WorkspaceSchema.pick({
+//req change workspace visibility
+export const ChangeWorkspaceVisibilityRequestSchema = WorkspaceSchema.pick({
   visibility: true,
 });
-export type ChangeWorkspaceVisiblity = z.infer<
-  typeof ChangeWorkspaceVisiblitySchema
+export type ChangeWorkspaceVisibilityRequest = z.infer<
+  typeof ChangeWorkspaceVisibilityRequestSchema
 >;
 
+//
 export const InviteWorkspaceSchema = z.object({ email: z.string() });
 export type InviteWorkspace = z.infer<typeof InviteWorkspaceSchema>;

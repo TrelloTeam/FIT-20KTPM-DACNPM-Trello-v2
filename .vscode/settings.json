@@ -1,0 +1,6 @@
+{
+  "cSpell.words": ["cardlist", "cardlists", "Mschema"],
+  "protoc": {
+    "options": ["--proto_path=./protos"]
+  }
+}

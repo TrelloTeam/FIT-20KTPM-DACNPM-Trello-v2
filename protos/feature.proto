@@ -1,0 +1,32 @@
+syntax = "proto3";
+package trello.feature;
+
+
+message FeatureLabelSchema {
+  optional string _id=1;
+  string type=2;
+  string label_id=3;
+}
+
+message FeatureChecklistSchema {
+  optional string _id=1;
+  message ChecklistItem {
+    string name=1;
+    bool is_check=2;
+  }
+  string type=2;
+  repeated ChecklistItem items=3;
+}
+
+message FeatureDateSchema {
+  optional string _id=1;
+  string type=2;
+  optional string start_date=3;
+  string due_date=4;
+}
+
+message FeatureAttachmentSchema {
+  optional string _id=1;
+  string type=2;
+  string link=3;
+}

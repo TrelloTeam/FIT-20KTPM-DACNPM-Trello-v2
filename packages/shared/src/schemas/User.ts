@@ -2,6 +2,7 @@ import { z } from "zod";
 import { ActivitySchema } from "./Activity";
 
 export const UserSchema = z.object({
+  _id: z.string(),
   email: z.string(),
   username: z.string(),
   bio: z.string(),

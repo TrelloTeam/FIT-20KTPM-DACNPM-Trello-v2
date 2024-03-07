@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script type="module" defer>
+      import keycloakJs from 'https://cdn.jsdelivr.net/npm/keycloak-js@23.0.7/+esm'
+      const client = new keycloakJs({
+        realm: 'trello_app',
+        clientId: 'trello_client',
+        url: 'http://localhost:8090'
+      })
+      const redirectUri = 'http://localhost:3333/api/auth/redirect'
+      function login() {
+        client.login({ redirectUri: redirectUri })
+      }
+      function logout() {
+        client.logout({
+          redirectUri: redirectUri
+        })
+      }
+      function register() {
+        client
+          .register({
+            redirectUri: 'http://localhost:3333/api/auth/redirect'
+          })
+          .then(() => console.log('Register user'))
+      }
+      async function fetchAuthEndpoint() {
+        await client.updateToken(30)
+        const res = await fetch('http://localhost:3333/api/test/auth', {
+          headers: {
+            authorization: `Bearer ${client.token || ''}`
+          }
+        })
+        console.log(await res.text())
+      }
+      async function fetchUserInfo() {
+        await client.updateToken(30)
+        const payload = JSON.parse(atob(client.token?.split('.')[1] || ''))
+        console.log(payload)
+        return payload
+      }
+      client
+        .init({
+          onLoad: 'check-sso',
+          redirectUri: redirectUri
+        })
+        .then(async (isLoggedIn) => {
+          const btn1 = document.getElementById('register')
+          const btn = document.getElementById('login')
+          const txt = document.getElementById('userdata')
+          if (isLoggedIn) {
+            btn.innerHTML = 'logout'
+            btn1.innerHTML = 'fetch secrete'
+            document.getElementById('login').onclick = logout
+            document.getElementById('register').onclick = fetchAuthEndpoint
+            txt.innerHTML = JSON.stringify(await fetchUserInfo())
+          } else {
+            btn.innerHTML = 'login'
+            btn1.innerHTML = 'register'
+            document.getElementById('login').onclick = login
+            document.getElementById('register').onclick = register
+            txt.innerHTML = 'no user data'
+          }
+        })
+    </script>
+    <button id="login">login</button>
+    <button id="register">regiester</button>
+    <textarea disabled id="userdata"></textarea>
+  </body>
+</html>

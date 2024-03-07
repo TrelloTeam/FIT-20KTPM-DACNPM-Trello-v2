@@ -1,0 +1,13 @@
+syntax = "proto3";
+package trello.user;
+
+import "activity.proto";
+
+message UserSchema {
+  string _id=1;
+  string username=2;
+  string bio=3;
+  string avatar=4;
+  repeated trello.activity.ActivitySchema activities=5;
+  repeated string workspace_id=6;
+}
