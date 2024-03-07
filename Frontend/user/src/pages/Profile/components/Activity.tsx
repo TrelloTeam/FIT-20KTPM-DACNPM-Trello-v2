@@ -73,7 +73,7 @@ export const ActivityComponent: React.FC = () => {
               <img
                 src={avtPath} // Replace with your avatar image source
                 alt='Avatar'
-                className='-ml-2 mr-1 h-9 w-9 rounded-full border'
+                className='-ml-2 mr-1 h-9 w-9 rounded-full border cursor-pointer hover:opacity-60'
               />
               <div>
                 <p className={`text-gray-700`}>{a.content}</p>
@@ -90,7 +90,7 @@ export const ActivityComponent: React.FC = () => {
         ))}
         {activityCount && activityCount < activityData.length && (
           <div className='my-5 ml-5'>
-            <button className={`rounded bg-gray-200 `} onClick={() => setActivityCount(activityCount + 3)}>
+            <button className={`rounded bg-gray-200 hover:bg-gray-300 `} onClick={() => setActivityCount(activityCount + 3)}>
               <p className={`font-semibold text-gray-700`}>Load more activity</p>
             </button>
           </div>
