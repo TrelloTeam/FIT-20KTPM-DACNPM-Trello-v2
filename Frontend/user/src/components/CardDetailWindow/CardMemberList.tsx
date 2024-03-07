@@ -1,7 +1,10 @@
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Avatar, Box } from '@mui/material'
+import { Avatar, Box, Tooltip } from '@mui/material'
+import { useState } from 'react'
 import { colors, colorsButton } from '~/styles'
+import { CardMemberModal } from './CardModals'
+import { _Card } from '.'
 
 const getContrastColor = (hexColor: string) => {
   // Convert hex color to RGB
@@ -21,7 +24,7 @@ interface MemberAvatarProps {
   bgColor: string
 }
 
-function MemberAvatar({ memberName, bgColor }: MemberAvatarProps) {
+export function MemberAvatar({ memberName, bgColor }: MemberAvatarProps) {
   const textColor = getContrastColor(bgColor)
 
   return (
@@ -44,7 +47,23 @@ function MemberAvatar({ memberName, bgColor }: MemberAvatarProps) {
   )
 }
 
-function AddMemberButton() {
+interface AddMemberButtonProps {
+  currentCard: _Card
+}
+
+function AddMemberButton({ currentCard }: AddMemberButtonProps) {
+  const [anchorEl, setAnchorEl] = useState<null | HTMLDivElement>(null)
+  const [isOpenCardMemberModal, setIsOpenCardMemberModal] = useState(false)
+
+  function openCardMemberModal(event: React.MouseEvent<HTMLDivElement>) {
+    setAnchorEl(event.currentTarget)
+    setIsOpenCardMemberModal(true)
+  }
+
+  function handleClose() {
+    setIsOpenCardMemberModal(false)
+  }
+
   return (
     <Avatar
       sx={{
@@ -59,24 +78,38 @@ function AddMemberButton() {
         }
       }}
       className='cursor-pointer'
+      onBlur={handleClose}
+      onClick={(e) => openCardMemberModal(e)}
     >
       <FontAwesomeIcon icon={faPlus} />
+      {isOpenCardMemberModal && (
+        <CardMemberModal currentCard={currentCard} anchorEl={anchorEl} handleClose={handleClose} />
+      )}
     </Avatar>
   )
 }
 
-export default function CardMemberList() {
+interface CardMemberListProps {
+  currentCard: _Card
+}
+
+export default function CardMemberList({ currentCard }: CardMemberListProps) {
+  const bgColors: string[] = ['#8a2be2', '#1e90ff', '#66cdaa', '#ffa500']
+
   return (
     <Box sx={{ margin: '10px 16px 0 0' }}>
       <h2 style={{ color: colors.primary }} className='mb-2 text-xs font-bold'>
         Members
       </h2>
       <div className='flex flex-row space-x-1'>
-        <MemberAvatar memberName='NV' bgColor='#8a2be2' />
-        <MemberAvatar memberName='AB' bgColor='#1e90ff' />
-        <MemberAvatar memberName='CD' bgColor='#66cdaa' />
-        <MemberAvatar memberName='MN' bgColor='#ffa500' />
-        <AddMemberButton />
+        {currentCard.watcher_email.map((email, index) => (
+          <Tooltip key={index} title={email} arrow>
+            <div style={{ display: 'inline-block' }}>
+              <MemberAvatar memberName={email.slice(0, 2).toUpperCase()} bgColor={bgColors[index]} />
+            </div>
+          </Tooltip>
+        ))}
+        <AddMemberButton currentCard={currentCard} />
       </div>
     </Box>
   )

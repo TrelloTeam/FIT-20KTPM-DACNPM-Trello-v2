@@ -12,6 +12,18 @@ import CardSidebar from './CardSidebar'
 import CardChecklist from './CardChecklist'
 import CardActivity from './CardActivity'
 
+export type _Card = {
+  name: string
+  description: string
+  watcher_email: string[]
+  labels: _Feature_CardLabel[]
+}
+
+export type _Feature_CardLabel = {
+  _id: string
+  name: string
+}
+
 export type _Feature_Checklist = {
   _id: string
   name: string
@@ -23,6 +35,19 @@ export type _Feature_Checklist_Item = {
   _id: string
   name: string
   is_check: boolean
+}
+
+const card_1: _Card = {
+  name: 'Soạn nội dung thuyết trình',
+  description:
+    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Id diam maecenas ultricies mi eget. Morbi tincidunt augue interdum velit euismod. Quis commodo odio aenean sed adipiscing diam donec adipiscing. Sed vulputate mi sit amet mauris commodo quis. Aliquam eleifend mi in nulla posuere sollicitudin aliquam ultrices sagittis. Eu volutpat odio facilisis mauris.',
+  watcher_email: ['reactjs@gmail.com', 'nodejs@gmail.com', 'tailwindcss@gmail.com', 'materialui@gmail.com'],
+  labels: [
+    { _id: '5', name: 'Đã hoàn thành' },
+    { _id: '6', name: 'Sắp hoàn thành' },
+    { _id: '7', name: 'Gấp' },
+    { _id: '13', name: 'Không kịp tiến độ' }
+  ]
 }
 
 const checklist_1: _Feature_Checklist = {
@@ -61,13 +86,40 @@ export default function CardDetailWindow() {
   const windowBg = '#fff'
   const focusInputColor = '#0ff'
 
+  const [currentCardState, setCurrentCardState] = useState(card_1)
+  const [cardNameFieldValue, setCardNameFieldValue] = useState(card_1.name)
+  const [initialCardNameFieldValue, setInitialCardNameFieldValue] = useState(card_1.name)
   const [isWatching, setIsWatching] = useState(false)
+  const [allChecklists, setAllChecklists] = useState(checklists)
 
-  const handleNotification = (newState: boolean) => {
-    setIsWatching(newState)
+  function handleCardNameChange(event: React.ChangeEvent<HTMLInputElement>) {
+    setCardNameFieldValue(event.target.value)
+    const trimmedValue = cardNameFieldValue.replace(/\s+/g, ' ').trim()
+    if (trimmedValue !== initialCardNameFieldValue.trim()) {
+      setCurrentCardState({
+        ...currentCardState,
+        name: trimmedValue
+      })
+      setInitialCardNameFieldValue(trimmedValue)
+    }
   }
 
-  const [allChecklists, setAllChecklists] = useState(checklists)
+  function handleCardNameFieldBlur() {
+    const trimmedValue = cardNameFieldValue.replace(/\s+/g, ' ').trim()
+    if (trimmedValue !== initialCardNameFieldValue.trim()) {
+      setCurrentCardState({
+        ...currentCardState,
+        name: trimmedValue
+      })
+      setInitialCardNameFieldValue(trimmedValue)
+    } else {
+      setCardNameFieldValue(initialCardNameFieldValue)
+    }
+  }
+
+  function handleNotification() {
+    setIsWatching(!isWatching)
+  }
 
   return (
     <Box
@@ -100,8 +152,9 @@ export default function CardDetailWindow() {
             onFocus={(e) => {
               e.currentTarget.style.borderColor = focusInputColor
             }}
-            value='Soạn nội dung thuyết trình'
-            onChange={() => {}}
+            onBlur={handleCardNameFieldBlur}
+            value={cardNameFieldValue}
+            onChange={(e) => handleCardNameChange(e)}
             className='text-xl font-semibold'
           />
           <Box
@@ -125,14 +178,14 @@ export default function CardDetailWindow() {
         <Grid item xs={9} sx={{ padding: '0 8px 8px 16px' }}>
           {/* START: Hero */}
           <div style={{ padding: '0 0 0 40px' }} className='flex flex-row flex-wrap gap-1'>
-            <CardMemberList />
-            <CardLabelList />
+            <CardMemberList currentCard={currentCardState} />
+            <CardLabelList currentCard={currentCardState} />
             <CardNotification isWatching={isWatching} setIsWatching={handleNotification} />
             <CardDate />
           </div>
           {/* END: Hero */}
           {/* START: Description */}
-          <CardDescription />
+          <CardDescription currentCard={currentCardState} setCurrentCard={setCurrentCardState} />
           {/* END: Description */}
           {/* START: Checklist */}
           {allChecklists.map((checklist) => (

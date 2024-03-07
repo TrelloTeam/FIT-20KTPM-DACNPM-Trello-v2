@@ -3,6 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Box, TextareaAutosize } from '@mui/material'
 import { useState } from 'react'
 import { colors, colorsButton } from '~/styles'
+import { TextAreaControl } from './CardChecklist'
+import { _Card } from '.'
 
 function EditButton() {
   return (
@@ -26,15 +28,45 @@ function EditButton() {
   )
 }
 
-export default function CardDescription() {
-  const [textAreaMinRows, setTextAreaMinRows] = useState<number>(6)
+interface CardDescriptionProps {
+  currentCard: _Card
+  setCurrentCard: (newState: _Card) => void
+}
 
-  function handleTextAreaBlur() {
-    setTextAreaMinRows(1)
+export default function CardDescription({ currentCard, setCurrentCard }: CardDescriptionProps) {
+  const [textAreaMinRows, setTextAreaMinRows] = useState<number>(6)
+  const [isOpenTextArea, setIsOpenTextArea] = useState(false)
+  const [initialValue, setInitialValue] = useState(currentCard.description)
+  const [textAreaValue, setTextAreaValue] = useState(currentCard.description)
+
+  function handleTextAreaChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
+    setTextAreaValue(event.target.value)
   }
 
-  function handleTextAreaFocus() {
+  function handleSave() {
+    const trimmedValue = textAreaValue.replace(/\s+/g, ' ').trim()
+    if (trimmedValue !== initialValue.trim()) {
+      const newCard: _Card = {
+        ...currentCard,
+        description: textAreaValue
+      }
+      setCurrentCard(newCard)
+      setInitialValue(trimmedValue)
+    }
+    handleClose()
+  }
+
+  function handleClose() {
+    if (textAreaValue.trim() !== initialValue.trim()) {
+      setTextAreaValue(initialValue)
+    }
+    setTextAreaMinRows(1)
+    setIsOpenTextArea(false)
+  }
+
+  function handleOpen() {
     setTextAreaMinRows(6)
+    setIsOpenTextArea(true)
   }
 
   return (
@@ -54,10 +86,12 @@ export default function CardDescription() {
         style={{ width: '100%', resize: 'none' }}
         className='mt-1 px-3 py-2 text-sm'
         minRows={textAreaMinRows}
-        onBlur={handleTextAreaBlur}
-        onFocus={handleTextAreaFocus}
-        value='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Id diam maecenas ultricies mi eget. Morbi tincidunt augue interdum velit euismod. Quis commodo odio aenean sed adipiscing diam donec adipiscing. Sed vulputate mi sit amet mauris commodo quis. Aliquam eleifend mi in nulla posuere sollicitudin aliquam ultrices sagittis. Eu volutpat odio facilisis mauris.'
+        value={textAreaValue}
+        onChange={handleTextAreaChange}
+        onBlur={handleClose}
+        onFocus={handleOpen}
       />
+      {isOpenTextArea && <TextAreaControl handleSave={handleSave} handleClose={handleClose} />}
     </div>
   )
 }

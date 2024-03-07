@@ -4,6 +4,7 @@ import { Box, LinearProgress, LinearProgressProps, TextareaAutosize, Typography 
 import { ChangeEvent, useEffect, useRef, useState } from 'react'
 import { colors, colorsButton } from '~/styles'
 import { _Feature_Checklist, _Feature_Checklist_Item } from '.'
+import { ChecklistItemModal, DeleteChecklistModal } from './CardModals'
 
 interface ChecklistAddTextAreaProps {
   isInputFocused: boolean
@@ -168,7 +169,29 @@ function ChecklistAddButton({ currentChecklist, allChecklists, setAllChecklists 
   )
 }
 
-function ChecklistDeleteButton() {
+interface ChecklistDeleteButtonProps {
+  currentChecklistName: string
+  handleDelete: () => void
+}
+
+function ChecklistDeleteButton({ currentChecklistName, handleDelete }: ChecklistDeleteButtonProps) {
+  const [anchorEl, setAnchorEl] = useState<null | HTMLDivElement>(null)
+  const [isOpenDeleteChecklistModal, setIsOpenDeleteChecklistModal] = useState(false)
+
+  function openDeleteChecklistModal(event: React.MouseEvent<HTMLDivElement>) {
+    setAnchorEl(event.currentTarget)
+    setIsOpenDeleteChecklistModal(true)
+  }
+
+  function handleDeleteAndClose() {
+    handleDelete()
+    handleClose()
+  }
+
+  function handleClose() {
+    setIsOpenDeleteChecklistModal(false)
+  }
+
   return (
     <Box
       sx={{
@@ -185,31 +208,48 @@ function ChecklistDeleteButton() {
         }
       }}
       className='flex cursor-pointer items-center justify-center rounded'
+      onClick={openDeleteChecklistModal}
     >
       <p>Delete</p>
+      {isOpenDeleteChecklistModal && (
+        <DeleteChecklistModal
+          checklistName={currentChecklistName}
+          anchorEl={anchorEl}
+          handleDelete={handleDeleteAndClose}
+          handleClose={handleClose}
+        />
+      )}
     </Box>
   )
 }
 
-interface ChecklistTitleProps {
-  currentChecklist: _Feature_Checklist
-  allChecklists: _Feature_Checklist[]
-  setAllChecklists: (newState: _Feature_Checklist[]) => void
+interface ChecklistNameFieldProps {
+  checklistNameState: string
+  setChecklistNameState: (newState: string) => void
+  updateChecklistName: () => void
   isInputFocused: boolean
   setIsInputFocused: (newState: boolean) => void
 }
 
-function ChecklistTitle({
-  currentChecklist,
-  allChecklists,
-  setAllChecklists,
+function ChecklistNameField({
+  checklistNameState,
+  setChecklistNameState,
+  updateChecklistName,
   isInputFocused,
   setIsInputFocused
-}: ChecklistTitleProps) {
-  const [textAreaValue, setTextAreaValue] = useState(currentChecklist.name)
+}: ChecklistNameFieldProps) {
+  const [initialValue, setInitialValue] = useState(checklistNameState)
 
-  const handleTextAreaChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    setTextAreaValue(event.target.value)
+  function handleTextAreaChange(event: ChangeEvent<HTMLTextAreaElement>) {
+    setChecklistNameState(event.target.value)
+  }
+
+  function handleSave() {
+    const trimmedValue = checklistNameState.replace(/\s+/g, ' ').trim()
+    if (trimmedValue !== initialValue.trim()) {
+      setInitialValue(checklistNameState)
+      updateChecklistName()
+    }
   }
 
   function handleOpen() {
@@ -217,6 +257,9 @@ function ChecklistTitle({
   }
 
   function handleClose() {
+    if (checklistNameState.trim() !== initialValue.trim()) {
+      setChecklistNameState(initialValue)
+    }
     setIsInputFocused(false)
   }
 
@@ -238,77 +281,37 @@ function ChecklistTitle({
           resize: 'none'
         }}
         minRows={1}
-        value={textAreaValue}
+        value={checklistNameState}
         onChange={handleTextAreaChange}
+        onBlur={handleClose}
         onFocus={handleOpen}
         className='flex font-semibold'
       />
       {/* Title textarea control */}
-      {isInputFocused && (
-        <TextAreaControl
-          currentChecklist={currentChecklist}
-          allChecklists={allChecklists}
-          setAllChecklists={setAllChecklists}
-          handleClose={handleClose}
-          textAreaValue={textAreaValue}
-          setTextAreaValue={setTextAreaValue}
-        />
-      )}
+      {isInputFocused && <TextAreaControl handleSave={handleSave} handleClose={handleClose} />}
     </div>
   )
 }
 
 interface TextAreaControlProps {
-  currentChecklist: _Feature_Checklist
-  allChecklists: _Feature_Checklist[]
-  setAllChecklists: (newState: _Feature_Checklist[]) => void
+  handleSave: () => void
   handleClose: () => void
-  textAreaValue: string
-  setTextAreaValue: (newState: string) => void
 }
 
-function TextAreaControl({
-  currentChecklist,
-  allChecklists,
-  setAllChecklists,
-  handleClose,
-  textAreaValue,
-  setTextAreaValue
-}: TextAreaControlProps) {
-  function handleSave() {
-    // Remove unnecessary white space
-    const trimmedValue = textAreaValue.replace(/\s+/g, ' ').trim()
-    // Check if new checkitem title is empty
-    if (trimmedValue.trim() !== '') {
-      // Update checklist name
-      const updatedAllChecklists = allChecklists.map((checklist) =>
-        checklist._id === currentChecklist._id
-          ? {
-              ...checklist,
-              name: trimmedValue
-            }
-          : checklist
-      )
-      setTextAreaValue(trimmedValue)
-      setAllChecklists(updatedAllChecklists)
-    }
-    // Close textarea
-    handleClose()
-  }
-
+export function TextAreaControl({ handleSave, handleClose }: TextAreaControlProps) {
   return (
     <Box className='mt-2 flex flex-row items-center gap-2'>
       <Box
         sx={{ width: 'fit-content', height: 32, bgcolor: '#0c66e4', color: '#fff', padding: '0 12px' }}
         className='flex cursor-pointer items-center justify-center rounded'
-        onClick={handleSave}
+        onMouseDown={handleSave}
       >
         <p className='text-sm font-semibold'>Save</p>
       </Box>
       <Box
         sx={{ width: 'fit-content', height: 32, color: colors.primary, padding: '0 6px' }}
         className='flex cursor-pointer items-center justify-center rounded'
-        onClick={handleClose}
+        onMouseDown={handleClose}
       >
         <FontAwesomeIcon icon={faXmark} className='text-xl' />
       </Box>
@@ -331,6 +334,78 @@ function LinearProgressWithLabel(props: LinearProgressProps & { value: number })
         />
       </Box>
     </Box>
+  )
+}
+
+interface ChecklistItemNameFieldProps {
+  checklistItemNameState: string
+  setChecklistItemNameState: (newState: string) => void
+  updateChecklistItemName: () => void
+  isInputFocused: boolean
+  setIsInputFocused: (newState: boolean) => void
+}
+
+function ChecklistItemNameField({
+  checklistItemNameState,
+  setChecklistItemNameState,
+  updateChecklistItemName,
+  isInputFocused,
+  setIsInputFocused
+}: ChecklistItemNameFieldProps) {
+  const [initialValue, setInitialValue] = useState(checklistItemNameState)
+
+  function handleTextAreaChange(event: ChangeEvent<HTMLTextAreaElement>) {
+    setChecklistItemNameState(event.target.value)
+  }
+
+  function handleSave() {
+    const trimmedValue = checklistItemNameState.replace(/\s+/g, ' ').trim()
+    if (trimmedValue !== initialValue.trim()) {
+      setInitialValue(trimmedValue)
+      updateChecklistItemName()
+    }
+  }
+
+  function handleOpen() {
+    setIsInputFocused(true)
+  }
+
+  function handleClose() {
+    if (checklistItemNameState.trim() !== initialValue.trim()) {
+      setChecklistItemNameState(initialValue)
+    }
+    setIsInputFocused(false)
+  }
+
+  return (
+    <div
+      style={{
+        width: '100%',
+        padding: '4px 0',
+        margin: '0 10px 0 0',
+        whiteSpace: isInputFocused ? 'normal' : 'wrap',
+        resize: 'none'
+      }}
+      className='flex flex-col'
+    >
+      <TextareaAutosize
+        autoFocus
+        style={{
+          width: '100%',
+          padding: '8px 8px',
+          whiteSpace: isInputFocused ? 'normal' : 'wrap',
+          resize: 'none'
+        }}
+        minRows={3}
+        value={checklistItemNameState}
+        onChange={handleTextAreaChange}
+        onBlur={handleClose}
+        onFocus={handleOpen}
+        className='flex text-sm'
+      />
+      {/* Title textarea control */}
+      {isInputFocused && <TextAreaControl handleSave={handleSave} handleClose={handleClose} />}
+    </div>
   )
 }
 
@@ -365,6 +440,28 @@ function ChecklistItem({
     setAllChecklists(updatedAllChecklists)
   }
 
+  const [openChecklistItemNameField, setOpenChecklistItemNameField] = useState(false)
+  const [checklistItemNameState, setChecklistItemNameState] = useState(currentCheckitem.name)
+
+  function updateChecklistItemName() {
+    // Remove unnecessary white space
+    const trimmedValue = checklistItemNameState.replace(/\s+/g, ' ').trim()
+    // Check if new checkitem name is empty
+    if (trimmedValue !== '') {
+      const updatedAllChecklists = allChecklists.map((checklist) =>
+        checklist._id === currentChecklist._id
+          ? {
+              ...checklist,
+              items: currentChecklist.items.map((checkitem) =>
+                checkitem._id === currentCheckitem._id ? { ...checkitem, name: checklistItemNameState } : checkitem
+              )
+            }
+          : checklist
+      )
+      setAllChecklists(updatedAllChecklists)
+    }
+  }
+
   // useEffect to ensure setProgress is called after setChecklist
   useEffect(() => {
     const count = currentChecklist.items.reduce(
@@ -375,9 +472,34 @@ function ChecklistItem({
     setProgress(progress)
   }, [currentChecklist, setProgress])
 
+  const [anchorEl, setAnchorEl] = useState<null | SVGSVGElement>(null)
+  const [isOpenChecklistItemModal, setIsOpenChecklistItemModal] = useState(false)
+
+  function openChecklistItemModal(event: React.MouseEvent<SVGSVGElement>) {
+    setAnchorEl(event.currentTarget)
+    setIsOpenChecklistItemModal(true)
+  }
+
+  function closeChecklistItemModal() {
+    setIsOpenChecklistItemModal(false)
+    setOnFocus(false)
+  }
+
+  function deleteChecklistItem() {
+    const updatedAllChecklists = allChecklists.map((checklist) =>
+      checklist._id === currentChecklist._id
+        ? {
+            ...checklist,
+            items: checklist.items.filter((checkitem) => checkitem._id !== currentCheckitem._id)
+          }
+        : checklist
+    )
+    setAllChecklists(updatedAllChecklists)
+  }
+
   return (
-    <Box sx={{ width: '100%', height: 36 }} className='flex flex-row items-center'>
-      <Box sx={{ width: 36 }} className='flex items-center justify-center'>
+    <Box sx={{ width: '100%', height: 'fit-content' }} className='flex flex-row'>
+      <Box sx={{ width: 36, marginTop: '12px' }} className='flex justify-center'>
         <input
           style={{ width: 16, height: 16 }}
           type='checkbox'
@@ -389,7 +511,8 @@ function ChecklistItem({
         sx={{
           width: '100%',
           height: '100%',
-          padding: '0 0 0 10px',
+          padding: '4px 0 4px 10px',
+          bgcolor: openChecklistItemNameField ? colorsButton.secondary : 'none',
           '&:hover': {
             bgcolor: colorsButton.secondary
           }
@@ -398,8 +521,25 @@ function ChecklistItem({
         onMouseEnter={() => setOnFocus(true)}
         onMouseLeave={() => setOnFocus(false)}
       >
-        <p className={`text-sm ${currentCheckitem.is_check ? 'line-through' : ''}`}>{currentCheckitem.name}</p>
-        {onFocus && (
+        {!openChecklistItemNameField && (
+          <p
+            style={{ height: 32 }}
+            className={`text-sm ${currentCheckitem.is_check ? 'line-through' : ''} flex items-center`}
+            onClick={() => setOpenChecklistItemNameField(true)}
+          >
+            {currentCheckitem.name}
+          </p>
+        )}
+        {openChecklistItemNameField && (
+          <ChecklistItemNameField
+            checklistItemNameState={checklistItemNameState}
+            setChecklistItemNameState={setChecklistItemNameState}
+            updateChecklistItemName={updateChecklistItemName}
+            isInputFocused={openChecklistItemNameField}
+            setIsInputFocused={setOpenChecklistItemNameField}
+          />
+        )}
+        {onFocus && !openChecklistItemNameField && (
           <Box
             sx={{
               width: 24,
@@ -414,7 +554,19 @@ function ChecklistItem({
             }}
             className='flex items-center justify-center'
           >
-            <FontAwesomeIcon icon={faEllipsis} className='flex items-center justify-center text-sm' />
+            <FontAwesomeIcon
+              icon={faEllipsis}
+              className='flex items-center justify-center text-sm'
+              onClick={(event) => openChecklistItemModal(event)}
+              onBlur={closeChecklistItemModal}
+            />
+            {isOpenChecklistItemModal && onFocus && anchorEl != null && (
+              <ChecklistItemModal
+                anchorEl={anchorEl}
+                handleDelete={deleteChecklistItem}
+                handleClose={closeChecklistItemModal}
+              />
+            )}
           </Box>
         )}
       </Box>
@@ -429,8 +581,40 @@ interface CardChecklistProps {
 }
 
 export default function CardChecklist({ currentChecklist, allChecklists, setAllChecklists }: CardChecklistProps) {
+  // START: Handle edit Checklist name
+  const [checklistNameState, setChecklistNameState] = useState(currentChecklist.name)
   const [isInputFocused, setIsInputFocused] = useState(false)
   const [progress, setProgress] = useState(0)
+
+  function updateChecklistName() {
+    // Remove unnecessary white space
+    const trimmedValue = checklistNameState.replace(/\s+/g, ' ').trim()
+    // Check if new checklist name is empty
+    if (trimmedValue !== '') {
+      // Update checklist name
+      const updatedAllChecklists = allChecklists.map((checklist) =>
+        checklist._id === currentChecklist._id
+          ? {
+              ...checklist,
+              name: trimmedValue
+            }
+          : checklist
+      )
+      setChecklistNameState(trimmedValue)
+      setAllChecklists(updatedAllChecklists)
+    }
+    closeChecklistField()
+  }
+
+  function closeChecklistField() {
+    setIsInputFocused(false)
+  }
+  // END: Handle edit Checklist name
+
+  function deleteChecklist() {
+    const updatedAllChecklists = allChecklists.filter((checklist) => checklist._id !== currentChecklist._id)
+    setAllChecklists(updatedAllChecklists)
+  }
 
   return (
     <div style={{ margin: '30px 0 0 0', color: colors.primary }} className='flex flex-col flex-wrap gap-1'>
@@ -441,16 +625,18 @@ export default function CardChecklist({ currentChecklist, allChecklists, setAllC
           {/* Title icon */}
           <FontAwesomeIcon icon={faSquareCheck} style={{ width: 40, margin: '4px 0 0 0' }} className='text-xl' />
           {/* Title textarea */}
-          <ChecklistTitle
-            currentChecklist={currentChecklist}
-            allChecklists={allChecklists}
-            setAllChecklists={setAllChecklists}
+          <ChecklistNameField
+            checklistNameState={checklistNameState}
+            setChecklistNameState={setChecklistNameState}
+            updateChecklistName={updateChecklistName}
             isInputFocused={isInputFocused}
             setIsInputFocused={setIsInputFocused}
           />
         </div>
-        {/* Edit button */}
-        {!isInputFocused && <ChecklistDeleteButton />}
+        {/* Delete button */}
+        {!isInputFocused && (
+          <ChecklistDeleteButton currentChecklistName={currentChecklist.name} handleDelete={deleteChecklist} />
+        )}
       </div>
       {/* END: Header */}
       {/* START: Body */}
