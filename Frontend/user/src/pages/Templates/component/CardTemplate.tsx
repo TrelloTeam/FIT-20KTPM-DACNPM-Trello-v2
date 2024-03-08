@@ -61,13 +61,6 @@ function CardTemplate() {
                   image={card.image}
                   alt={card.title}
                 />
-                <span
-                  className='circle'
-                  style={{
-                    backgroundImage:
-                      "url('https://trello-logos.s3.amazonaws.com/c58e11193c6dada6aa672b3c72345860/170.png')"
-                  }}
-                ></span>
               </div>
               <CardContent>
                 <label className='content-title flex items-center text-base font-bold text-gray-700'>{card.title}</label>
@@ -162,18 +155,12 @@ function CardTemplate() {
                   image={design.image}
                   alt={design.title}
                 />
-                <span
-                  className='circle'
-                  style={{
-                    backgroundImage: `url('${design.image}')`
-                  }}
-                ></span>
               </div>
               <CardContent>
                 <label className='content-title flex items-center text-base font-bold text-gray-700'>
                   {design.title}
                 </label>
-                <p className='content text-sm leading-6 text-gray-600'>{design.author}</p>
+                <p className='content text-sm leading-6 text-gray-600'>by {design.author}</p>
                 <p className='content text-sm leading-6 text-gray-600'>{design.description}</p>
               </CardContent>
               <CardActions disableSpacing>
@@ -219,18 +206,12 @@ function CardTemplate() {
                   image={education.image}
                   alt={education.title}
                 />
-                <span
-                  className='circle'
-                  style={{
-                    backgroundImage: `url('${education.image}')`
-                  }}
-                ></span>
               </div>
               <CardContent>
                 <label className='content-title flex items-center text-base font-bold text-gray-700'>
                   {education.title}
                 </label>
-                <p className='content text-sm leading-6 text-gray-600'>{education.author}</p>
+                <p className='content text-sm leading-6 text-gray-600'>by {education.author}</p>
                 <p className='content text-sm leading-6 text-gray-600'>{education.description}</p>
               </CardContent>
               <CardActions disableSpacing>
@@ -276,18 +257,12 @@ function CardTemplate() {
                   image={technique.image}
                   alt={technique.title}
                 />
-                <span
-                  className='circle'
-                  style={{
-                    backgroundImage: `url('${technique.image}')`
-                  }}
-                ></span>
               </div>
               <CardContent>
                 <label className='content-title flex items-center text-base font-bold text-gray-700'>
                   {technique.title}
                 </label>
-                <p className='content text-sm leading-6 text-gray-600'>{technique.author}</p>
+                <p className='content text-sm leading-6 text-gray-600'>by {technique.author}</p>
                 <p className='content text-sm leading-6 text-gray-600'>{technique.description}</p>
               </CardContent>
               <CardActions disableSpacing>
@@ -332,18 +307,12 @@ function CardTemplate() {
                   image={marketing.image}
                   alt={marketing.title}
                 />
-                <span
-                  className='circle'
-                  style={{
-                    backgroundImage: `url('${marketing.logo}')`
-                  }}
-                ></span>
               </div>
               <CardContent>
                 <label className='content-title flex items-center text-base font-bold text-gray-700'>
                   {marketing.title}
                 </label>
-                <p className='content text-sm leading-6 text-gray-600'>{marketing.author}</p>
+                <p className='content text-sm leading-6 text-gray-600'>by {marketing.author}</p>
                 <p className='content text-sm leading-6 text-gray-600'>{marketing.description}</p>
               </CardContent>
               <CardActions disableSpacing>
@@ -389,18 +358,12 @@ function CardTemplate() {
                   image={pm.image}
                   alt={pm.title}
                 />
-                <span
-                  className='circle'
-                  style={{
-                    backgroundImage: `url('${pm.logo}')`
-                  }}
-                ></span>
               </div>
               <CardContent>
                 <label className='content-title flex items-center text-base font-bold text-gray-700'>
                   {pm.title}
                 </label>
-                <p className='content text-sm leading-6 text-gray-600'>{pm.author}</p>
+                <p className='content text-sm leading-6 text-gray-600'>by {pm.author}</p>
                 <p className='content text-sm leading-6 text-gray-600'>{pm.description}</p>
               </CardContent>
               <CardActions disableSpacing>
@@ -447,18 +410,12 @@ function CardTemplate() {
                   image={wr.image}
                   alt={wr.title}
                 />
-                <span
-                  className='circle'
-                  style={{
-                    backgroundImage: `url('${wr.logo}')`
-                  }}
-                ></span>
               </div>
               <CardContent>
                 <label className='content-title flex items-center text-base font-bold text-gray-700'>
                   {wr.title}
                 </label>
-                <p className='content text-sm leading-6 text-gray-600'>{wr.author}</p>
+                <p className='content text-sm leading-6 text-gray-600'>by {wr.author}</p>
                 <p className='content text-sm leading-6 text-gray-600'>{wr.description}</p>
               </CardContent>
               <CardActions disableSpacing>
