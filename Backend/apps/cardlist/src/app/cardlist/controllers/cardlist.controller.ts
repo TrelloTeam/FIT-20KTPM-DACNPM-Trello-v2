@@ -91,6 +91,51 @@ export class CardlistController {
       data: data,
     }
   }
+  @InjectRoute(CardlistRoutes.getCardlistsArchivedByBoardId)
+  @SwaggerApi({
+    params: {
+      name: 'boardId',
+      schema: {
+        type: 'string',
+      },
+    },
+    responses: [
+      {
+        status: 200,
+        schema: { $ref: getSchemaPath('GetallCardlistArchivedByBoardIdResponseSchema') },
+      },
+    ],
+  })
+  async getAllArchivedByBoardId(@Param('boardId') boardId: string): Promise<TrelloApi.CardlistApi.GetallCardlistArchivedByBoardIdResponse> {
+    const data = await this.cardlistService.getAllCardlistArchivedByBoardId(boardId)
+    return {
+      data: data,
+    }
+  }
+
+  @InjectRoute(CardlistRoutes.getCardlistsNonArchivedByBoardId)
+  @SwaggerApi({
+    params: {
+      name: 'boardId',
+      schema: {
+        type: 'string',
+      },
+    },
+    responses: [
+      {
+        status: 200,
+        schema: { $ref: getSchemaPath('GetallCardlistNonArchivedByBoardIdResponseSchema') },
+      },
+    ],
+  })
+  async getAllNonArchivedByBoardId(
+    @Param('boardId') boardId: string,
+  ): Promise<TrelloApi.CardlistApi.GetallCardlistNonArchivedByBoardIdResponse> {
+    const data = await this.cardlistService.getAllCardlistNonArchivedByBoardId(boardId)
+    return {
+      data: data,
+    }
+  }
 
   @InjectRoute(CardlistRoutes.sortCardlistsByOldestDate)
   @SwaggerApi({

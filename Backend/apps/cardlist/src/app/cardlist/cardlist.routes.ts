@@ -32,6 +32,16 @@ export const CardlistRoutes = {
     method: RequestMethod.GET,
     jwtSecure: false,
   } as IRouteParams,
+  getCardlistsArchivedByBoardId: {
+    path: '/api/cardlist_archived_by_board/:boardId',
+    method: RequestMethod.GET,
+    jwtSecure: false,
+  } as IRouteParams,
+  getCardlistsNonArchivedByBoardId: {
+    path: '/api/cardlist_non_archived_by_board/:boardId',
+    method: RequestMethod.GET,
+    jwtSecure: false,
+  } as IRouteParams,
   sortCardlistsByOldestDate: {
     path: '/api/sort_oldest_cardlist/:boardId',
     method: RequestMethod.GET,
