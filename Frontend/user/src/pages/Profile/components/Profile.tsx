@@ -5,6 +5,9 @@ export const Profile: React.FC = () => {
   const image = '/src/assets/Profile/profile_img.svg'
   const text_bold_color = 'text-gray-700'
   const text_profile_color = 'text-gray-600'
+  function deleteAccount() {
+    alert('Delete Account')
+  }
   return (
     <div className='mx-auto my-10 max-w-2xl rounded bg-white p-10'>
       <img
@@ -13,14 +16,12 @@ export const Profile: React.FC = () => {
         className='mb-8 w-full'
       />
 
-      <div className='space-y-6'>
+      <div className='space-y-6 '>
         <div>
           <h2 className={`mb-2 text-2xl font-bold ${text_bold_color}`}>Manage your personal information</h2>
         </div>
         <div>
-          <h1 className={`mb-2 border-b-2 border-gray-300 pb-2 text-xl font-semibold  ${text_bold_color}`}>
-            About
-          </h1>
+          <h1 className={`mb-2 border-b-2 border-gray-300 pb-2 text-xl font-semibold  ${text_bold_color}`}>About</h1>
         </div>
         <div className={`w-8/12`}>
           <label className='mb-2 block' htmlFor='bio'>
@@ -31,9 +32,14 @@ export const Profile: React.FC = () => {
             <p className={`${text_profile_color} font-semibold`}>Bio</p>
           </label>
           <textarea id='bio' className='mb-2 w-full resize-y rounded border-4 p-2 hover:border-blue-600 ' rows={3} />
-          <button className={`rounded bg-blue-600 text-white w-full mt-10 h-8 `}>Save</button>
+          <button className={`mt-10 h-8 w-full rounded bg-blue-600 text-white `}>Save</button>
         </div>
       </div>
+      {/* <div className='ml-5 mt-10 mb-0 flex justify-center w-7/12'>
+        <button className={`absolute -bottom-2 rounded bg-gray-200 hover:bg-gray-300 p-2 `} onClick={() => deleteAccount()}>
+          <p className={`font-semibold text-gray-700`}>Delete account</p>
+        </button>
+      </div> */}
     </div>
   )
 }
