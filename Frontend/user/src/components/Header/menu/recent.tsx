@@ -1,20 +1,9 @@
 import * as React from 'react'
-import {
-  Box,
-  Button,
-  ClickAwayListener,
-  Grow,
-  Paper,
-  Popper,
-  MenuItem,
-  MenuList,
-  Stack,
-  Typography
-} from '@mui/material'
+import { Box, Button, ClickAwayListener, Grow, Paper, Popper, MenuList, Stack, Typography } from '@mui/material'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronDown, faStar as starFull } from '@fortawesome/free-solid-svg-icons'
 import { faStar } from '@fortawesome/free-regular-svg-icons'
-import { yellow } from '@mui/material/colors'
+import { useTheme } from './../../Theme/themeContext'
 
 export default function Recent() {
   const [open, setOpen] = React.useState(false)
@@ -22,6 +11,7 @@ export default function Recent() {
   const [isHoveredStar, setIsHoveredStar] = React.useState(false)
   const [star, setStar] = React.useState(false)
   const anchorRef = React.useRef<HTMLButtonElement>(null)
+  const { colors } = useTheme()
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen)
@@ -68,7 +58,7 @@ export default function Recent() {
           sx={{
             fontSize: '13px',
             textTransform: 'none',
-            color: open ? '#579dff' : '#9fadbc',
+            color: open ? '#579dff' : colors.text,
             '&:hover': {
               backgroundColor: 'rgba(255,255,255,0.1)'
             },
@@ -105,7 +95,7 @@ export default function Recent() {
                       marginTop: '8px',
                       transition: 'all 0.1s ease-in',
                       padding: '12px',
-                      backgroundColor: '#282e33',
+                      backgroundColor: colors.background_menu_header,
                       minWidth: '304px',
                       borderRadius: '4px'
                     }}
@@ -118,7 +108,8 @@ export default function Recent() {
                         padding: '4px',
                         cursor: 'pointer',
                         '&:hover': {
-                          backgroundColor: 'rgba(255,255,255,0.1)',
+                          backgroundColor:
+                            colors.background === '#ffffff' ? `rgba(0,0,0,0.1)` : `rgba(255,255,255,0.1)`,
                           borderRadius: '4px'
                         }
                       }}
@@ -141,11 +132,11 @@ export default function Recent() {
                         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                           <Typography
                             variant='body1'
-                            sx={{ fontSize: '14px', fontWeight: 600, color: '#9fadbc', marginLeft: '12px' }}
+                            sx={{ fontSize: '14px', fontWeight: 600, color: colors.text, marginLeft: '12px' }}
                           >
                             front-end
                           </Typography>
-                          <Typography variant='body1' sx={{ fontSize: '12px', color: '#9fadbc', marginLeft: '12px' }}>
+                          <Typography variant='body1' sx={{ fontSize: '12px', color: colors.text, marginLeft: '12px' }}>
                             Trello Workspaces
                           </Typography>
                         </Box>
@@ -155,7 +146,7 @@ export default function Recent() {
                         <FontAwesomeIcon
                           icon={faStar}
                           style={{
-                            color: isHoveredStar ? 'yellow' : '#9fadbc',
+                            color: isHoveredStar ? 'yellow' : colors.text,
                             marginRight: '8px',
                             display: star ? 'none' : 'block',
                             fontSize: isHoveredStar ? '16px' : '14px',

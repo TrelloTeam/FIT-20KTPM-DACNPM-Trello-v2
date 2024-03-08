@@ -38,10 +38,12 @@ export const ActivityComponent: React.FC = () => {
   return (
     <div className='mx-52 mt-4 max-w-2xl bg-white p-8'>
       <div className={`mb-10`}>
+
         <div className={' flex flex-row'}>
           <SlPeople size={'20px'} className={`mr-5 mt-1`} />
           <p className={`border-b-2 border-gray-300 pb-2 text-lg font-semibold text-gray-600`}>Workspaces</p>
           <div className={`flex-grow border-b-2 border-gray-300 pb-2`}></div>
+
         </div>
 
         {workspace?.map((w, index) => (
@@ -62,10 +64,12 @@ export const ActivityComponent: React.FC = () => {
         ))}
       </div>
       <div className={`mb-10`}>
+
         <div className={'flex flex-row mb-3'}>
           <RxActivityLog size={'20px'} className={`mr-5 mt-1`} />
           <p className={`border-b-2 border-gray-300 pb-2 text-lg font-semibold text-gray-700`}>Activity</p>
           <div className={`flex-grow border-b-2 border-gray-300 pb-2`}></div>
+
         </div>
         {activity?.map((a, index) => (
           <div key={index} className='my-2   pb-2'>
@@ -73,7 +77,9 @@ export const ActivityComponent: React.FC = () => {
               <img
                 src={avtPath} // Replace with your avatar image source
                 alt='Avatar'
+
                 className='-ml-2 mr-1 h-9 w-9 rounded-full border cursor-pointer hover:opacity-60'
+
               />
               <div>
                 <p className={`text-gray-700`}>{a.content}</p>

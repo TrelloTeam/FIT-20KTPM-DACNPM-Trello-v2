@@ -1,25 +1,16 @@
 import * as React from 'react'
-import {
-  Box,
-  Button,
-  ClickAwayListener,
-  Grow,
-  Paper,
-  Popper,
-  MenuItem,
-  MenuList,
-  Stack,
-  Typography
-} from '@mui/material'
+import { Box, Button, ClickAwayListener, Grow, Paper, Popper, MenuList, Stack, Typography } from '@mui/material'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChain, faChevronLeft, faClose, faSynagogue, faUsers } from '@fortawesome/free-solid-svg-icons'
+import { faSynagogue, faUsers } from '@fortawesome/free-solid-svg-icons'
 import { faTrello } from '@fortawesome/free-brands-svg-icons'
 import CreateBoard from './createBoard'
+import { useTheme } from './../../Theme/themeContext'
 
 export default function Create() {
   const [open, setOpen] = React.useState(false)
   const [openItem, setOpenItem] = React.useState({ show: false, type: 'Create' })
   const anchorRef = React.useRef<HTMLButtonElement>(null)
+  const { colors } = useTheme()
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen)
@@ -108,7 +99,7 @@ export default function Create() {
                     sx={{
                       marginTop: '8px',
                       transition: 'all 0.1s ease-in',
-                      backgroundColor: '#282e33',
+                      backgroundColor: colors.background_menu_header,
                       width: '304px',
                       padding: '12px 0',
                       borderRadius: '4px',
@@ -131,14 +122,17 @@ export default function Create() {
                           }}
                         >
                           <Box sx={{ display: 'flex' }}>
-                            <FontAwesomeIcon icon={faTrello} style={{ color: '#9fadbc' }} />
+                            <FontAwesomeIcon icon={faTrello} style={{ color: colors.text }} />
 
-                            <Typography variant='body1' sx={{ fontSize: '14px', color: '#9fadbc', marginLeft: '4px' }}>
+                            <Typography
+                              variant='body1'
+                              sx={{ fontSize: '14px', color: colors.text, marginLeft: '4px' }}
+                            >
                               Create board
                             </Typography>
                           </Box>
 
-                          <Typography variant='body1' sx={{ fontSize: '12px', color: '#9fadbc', marginTop: '4px' }}>
+                          <Typography variant='body1' sx={{ fontSize: '12px', color: colors.text, marginTop: '4px' }}>
                             A board is made up of cards ordered on lists. Use it to manage projects, track information,
                             or organize anything.
                           </Typography>
@@ -157,14 +151,17 @@ export default function Create() {
                           }}
                         >
                           <Box sx={{ display: 'flex' }}>
-                            <FontAwesomeIcon icon={faSynagogue} style={{ color: '#9fadbc' }} />
+                            <FontAwesomeIcon icon={faSynagogue} style={{ color: colors.text }} />
 
-                            <Typography variant='body1' sx={{ fontSize: '14px', color: '#9fadbc', marginLeft: '4px' }}>
+                            <Typography
+                              variant='body1'
+                              sx={{ fontSize: '14px', color: colors.text, marginLeft: '4px' }}
+                            >
                               Start with a template
                             </Typography>
                           </Box>
 
-                          <Typography variant='body1' sx={{ fontSize: '12px', color: '#9fadbc', marginTop: '4px' }}>
+                          <Typography variant='body1' sx={{ fontSize: '12px', color: colors.text, marginTop: '4px' }}>
                             Get started faster with a board template.
                           </Typography>
                         </Box>
@@ -182,14 +179,17 @@ export default function Create() {
                           }}
                         >
                           <Box sx={{ display: 'flex' }}>
-                            <FontAwesomeIcon icon={faUsers} style={{ color: '#9fadbc' }} />
+                            <FontAwesomeIcon icon={faUsers} style={{ color: colors.text }} />
 
-                            <Typography variant='body1' sx={{ fontSize: '14px', color: '#9fadbc', marginLeft: '4px' }}>
+                            <Typography
+                              variant='body1'
+                              sx={{ fontSize: '14px', color: colors.text, marginLeft: '4px' }}
+                            >
                               Create Workspaces
                             </Typography>
                           </Box>
 
-                          <Typography variant='body1' sx={{ fontSize: '12px', color: '#9fadbc', marginTop: '4px' }}>
+                          <Typography variant='body1' sx={{ fontSize: '12px', color: colors.text, marginTop: '4px' }}>
                             A Workspace is a group of boards and people. Use it to organize your company, side hustle,
                             family, or friends.
                           </Typography>

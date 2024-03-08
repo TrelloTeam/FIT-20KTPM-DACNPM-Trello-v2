@@ -1,20 +1,9 @@
 import * as React from 'react'
-import {
-  Box,
-  Button,
-  ClickAwayListener,
-  Grow,
-  Paper,
-  Popper,
-  MenuItem,
-  MenuList,
-  Stack,
-  Typography
-} from '@mui/material'
+import { Box, Button, ClickAwayListener, Grow, Paper, Popper, MenuList, Stack, Typography } from '@mui/material'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronDown, faStar as starFull } from '@fortawesome/free-solid-svg-icons'
-import { faStar } from '@fortawesome/free-regular-svg-icons'
 import noneStar from '~/assets/noneStar.svg'
+import { useTheme } from './../../Theme/themeContext'
 
 const length = 1
 
@@ -23,6 +12,7 @@ export default function Starred() {
   const [isHoveredStar, setIsHoveredStar] = React.useState(false)
   const [star, setStar] = React.useState(true)
   const anchorRef = React.useRef<HTMLButtonElement>(null)
+  const { colors } = useTheme()
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen)
@@ -69,7 +59,7 @@ export default function Starred() {
           sx={{
             fontSize: '13px',
             textTransform: 'none',
-            color: open ? '#579dff' : '#9fadbc',
+            color: open ? '#579dff' : colors.text,
             '&:hover': {
               backgroundColor: 'rgba(255,255,255,0.1)'
             },
@@ -105,7 +95,7 @@ export default function Starred() {
                     sx={{
                       marginTop: '8px',
                       transition: 'all 0.1s ease-in',
-                      backgroundColor: '#282e33',
+                      backgroundColor: colors.background_menu_header,
                       width: '280px',
                       padding: '12px',
                       borderRadius: '4px'
@@ -117,7 +107,7 @@ export default function Starred() {
 
                         <Typography
                           variant='body1'
-                          sx={{ fontSize: '14px', color: '#9fadbc', textAlign: 'center', margin: '12px 0 8px 0' }}
+                          sx={{ fontSize: '14px', color: colors.text, textAlign: 'center', margin: '12px 0 8px 0' }}
                         >
                           Star important boards to access them quickly and easily.
                         </Typography>
@@ -131,7 +121,8 @@ export default function Starred() {
                           padding: '4px',
                           cursor: 'pointer',
                           '&:hover': {
-                            backgroundColor: 'rgba(255,255,255,0.1)',
+                            backgroundColor:
+                              colors.background === '#ffffff' ? `rgba(0,0,0,0.1)` : `rgba(255,255,255,0.1)`,
                             borderRadius: '4px'
                           }
                         }}
@@ -152,11 +143,14 @@ export default function Starred() {
                           <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                             <Typography
                               variant='body1'
-                              sx={{ fontSize: '14px', fontWeight: 600, color: '#9fadbc', marginLeft: '12px' }}
+                              sx={{ fontSize: '14px', fontWeight: 600, color: colors.text, marginLeft: '12px' }}
                             >
                               front-end
                             </Typography>
-                            <Typography variant='body1' sx={{ fontSize: '12px', color: '#9fadbc', marginLeft: '12px' }}>
+                            <Typography
+                              variant='body1'
+                              sx={{ fontSize: '12px', color: colors.text, marginLeft: '12px' }}
+                            >
                               Trello Workspaces
                             </Typography>
                           </Box>
