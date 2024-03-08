@@ -78,7 +78,7 @@ function SidebarTemplate() {
               <Menu>
                 <SubMenu
                   label={
-                    <span className='rounded-md bg-white font-bold hover:border-0 hover:bg-blue-500 hover:text-blue-500'>
+                    <span className='rounded-md font-bold hover:border-0 hover:bg-blue-500 hover:text-blue-500'>
                       <div className='flex items-center'>
                         <WorkspacesIcon fontSize='small' className='mr-2' />
                         {w.name}
