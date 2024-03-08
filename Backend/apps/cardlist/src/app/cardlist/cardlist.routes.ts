@@ -67,4 +67,9 @@ export const CardlistRoutes = {
     method: RequestMethod.PATCH,
     jwtSecure: false,
   } as IRouteParams,
+  addWatcher: {
+    path: '/api/add_watcher',
+    method: RequestMethod.PATCH,
+    jwtSecure: false,
+  } as IRouteParams,
 } as const
