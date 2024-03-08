@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import Head from 'next/head'
 import { ActivityComponent, Header, Profile } from './components'
+import { useTheme } from '../../components/Theme/themeContext'
 
 type AccountManagementProps = {
   page: string
@@ -9,6 +10,7 @@ type AccountManagementProps = {
 
 export const AccountManagement: React.FC<AccountManagementProps> = ({ page }) => {
   const [selectedTab, setSelectedTab] = useState<string>('')
+  const { colors } = useTheme()
   useEffect(() => {
     setSelectedTab(page)
     console.log(page)
@@ -16,13 +18,14 @@ export const AccountManagement: React.FC<AccountManagementProps> = ({ page }) =>
   const handleTabSelect = (tab: string) => {
     setSelectedTab(tab)
   }
-
+const darkLightMode = {
+  backgroundColor: colors.background,
+  color: colors.text
+}
   return (
-    <>
-      <Head>
-        <title>Your Profile</title>
-      </Head>
-
+    <div
+      style={darkLightMode}
+    >
       {selectedTab === 'profile' ? (
         <>
           <Header onSelectTab={handleTabSelect} currentTab={selectedTab} />
@@ -34,6 +37,6 @@ export const AccountManagement: React.FC<AccountManagementProps> = ({ page }) =>
           <ActivityComponent />
         </>
       )}
-    </>
+    </div>
   )
 }
