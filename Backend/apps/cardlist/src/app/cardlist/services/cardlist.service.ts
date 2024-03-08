@@ -26,6 +26,8 @@ export abstract class ICardlistService {
   abstract archiveCardlist(cardlist_id: string): Promise<DbSchemas.CardlistSchema.CardList>
 
   abstract addWatcher(data: TrelloApi.CardlistApi.AddWatcherRequest): Promise<DbSchemas.CardlistSchema.CardList>
+
+  abstract addCardToList(data: TrelloApi.CardlistApi.AddCardToListRequest): Promise<DbSchemas.CardlistSchema.CardList>
 }
 
 export class CardlistService implements ICardlistService {
@@ -186,13 +188,14 @@ export class CardlistService implements ICardlistService {
       return { status: 'Not Found', msg: "Can't find any cardlist" } as any
     }
     for (let i = 0; i < cardlist.cards.length; i++) {
-      const card = await this.CardMModel.findById(cardlist.cards[i])
+      const card = await this.CardMModel.findById(cardlist.cards[i]._id)
       if (!card) {
         return { status: 'Not Found', msg: "Can't find any card" } as any
       }
       card.archive_at = currentDate
       cardlist.cards[i].archive_at = currentDate
-      card.save()
+      await card.save()
+      await cardlist.save()
     }
     return cardlist.save()
   }
@@ -204,13 +207,14 @@ export class CardlistService implements ICardlistService {
       return { status: 'Not Found', msg: "Can't find any cardlist" } as any
     }
     for (let i = 0; i < cardlist.cards.length; i++) {
-      const card = await this.CardMModel.findById(cardlist.cards[i])
+      const card = await this.CardMModel.findById(cardlist.cards[i]._id)
       if (!card) {
         return { status: 'Not Found', msg: "Can't find any card" } as any
       }
       card.archive_at = currentDate
       cardlist.cards[i].archive_at = currentDate
-      card.save()
+      await card.save()
+      await cardlist.save()
     }
     cardlist.archive_at = currentDate
     return cardlist.save()
@@ -225,6 +229,25 @@ export class CardlistService implements ICardlistService {
       cardlist.watcher_email.push(data.email)
       return cardlist.save()
     }
+    return cardlist.save()
+  }
+  async addCardToList(data: TrelloApi.CardlistApi.AddCardToListRequest) {
+    const cardlist = await this.CardlistMModel.findById(data.cardlist_id)
+    if (!cardlist) {
+      return { status: 'Not Found', msg: "Can't find any cardlist" } as any
+    }
+    const card = new this.CardMModel({
+      name: data.name,
+      index: data.index,
+      watcher_email: [],
+      archive_at: null,
+      activities: [],
+      features: [],
+      cover: data.cover,
+      description: data.description,
+    })
+    await card.save()
+    cardlist.cards.push(card)
     return cardlist.save()
   }
 }
@@ -346,6 +369,20 @@ export class CardlistServiceMock implements ICardlistService {
         watcher_email: [],
         cards: [],
         name: 'Mock-name',
+      })
+    })
+  }
+  addCardToList(data: TrelloApi.CardlistApi.AddCardToListRequest): Promise<DbSchemas.CardlistSchema.CardList> {
+    return new Promise<DbSchemas.CardlistSchema.CardList>((res) => {
+      res({
+        _id: 'Mock_id',
+        board_id: 'Mock_board_id',
+        index: data.index,
+        name: data.name,
+        cards: [],
+        watcher_email: [],
+        archive_at: null,
+        created_at: null,
       })
     })
   }

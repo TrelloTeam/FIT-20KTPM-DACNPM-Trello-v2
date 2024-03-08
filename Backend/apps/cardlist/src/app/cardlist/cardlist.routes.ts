@@ -72,4 +72,9 @@ export const CardlistRoutes = {
     method: RequestMethod.PATCH,
     jwtSecure: false,
   } as IRouteParams,
+  addCardTolist: {
+    path: '/api/add_card',
+    method: RequestMethod.POST,
+    jwtSecure: false,
+  } as IRouteParams,
 } as const

@@ -1,5 +1,6 @@
 import { z } from "zod";
-import { CardlistSchema } from "../schemas/CardList";
+import { CardSchema, CardlistSchema } from "../schemas/CardList";
+import { Refine_MongoId } from "../utils/RefineMongoId";
 
 export const CreateCardlistRequestSchema = CardlistSchema.omit({
   _id: true,
@@ -66,6 +67,24 @@ export const MoveCardlistRequestSchema = CardlistSchema.omit({
 );
 export type MoveCardlistRequest = z.infer<typeof MoveCardlistRequestSchema>;
 
+export const AddCardToListRequestSchema = CardSchema.omit({
+  _id: true,
+  watcher_email: true,
+  archive_at: true,
+  activities: true,
+  features: true,
+}).merge(
+  z.object({
+    index: z.number().default(0),
+    cardlist_id: z.string().refine(Refine_MongoId, { message: "Invalid id" }),
+  })
+);
+export type AddCardToListRequest = z.infer<typeof AddCardToListRequestSchema>;
+
+export const AddCardToListResponseSchema = z.object({
+  data: CardlistSchema,
+});
+export type AddCardToListResponse = z.infer<typeof AddCardToListResponseSchema>;
 export const CreateCardlistResponseSchema = z.object({
   data: CardlistSchema,
 });
