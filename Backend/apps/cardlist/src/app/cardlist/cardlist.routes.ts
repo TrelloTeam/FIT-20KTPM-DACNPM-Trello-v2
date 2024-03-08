@@ -57,4 +57,14 @@ export const CardlistRoutes = {
     method: RequestMethod.GET,
     jwtSecure: false,
   } as IRouteParams,
+  archiveCardsInList: {
+    path: '/api/archive_cards_in_list/:cardlistId',
+    method: RequestMethod.PATCH,
+    jwtSecure: false,
+  } as IRouteParams,
+  archiveCardList: {
+    path: '/api/archive_card_list/:cardlistId',
+    method: RequestMethod.PATCH,
+    jwtSecure: false,
+  } as IRouteParams,
 } as const

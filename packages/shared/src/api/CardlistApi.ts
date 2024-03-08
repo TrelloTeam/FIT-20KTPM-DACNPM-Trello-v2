@@ -61,7 +61,21 @@ export type CreateCardlistResponse = z.infer<
 export const CopyCardlistResponseSchema = z.object({
   data: CardlistSchema,
 });
-export type CopyCardlistResponse = z.infer<typeof CreateCardlistResponseSchema>;
+export type CopyCardlistResponse = z.infer<typeof CopyCardlistResponseSchema>;
+
+export const ArchiveAllCardsInListResponseSchema = z.object({
+  data: CardlistSchema,
+});
+export type ArchiveAllCardsInListResponse = z.infer<
+  typeof ArchiveAllCardsInListResponseSchema
+>;
+
+export const ArchiveCardlistResponseSchema = z.object({
+  data: CardlistSchema,
+});
+export type ArchiveCardlistResponse = z.infer<
+  typeof ArchiveCardlistResponseSchema
+>;
 
 export const UpdateCardlistResponseSchema = z.object({
   data: CardlistSchema,
