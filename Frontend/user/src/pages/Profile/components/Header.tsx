@@ -1,6 +1,8 @@
 // components/Header.tsx
 import React, { useEffect, useState } from 'react'
 
+import { RxAvatar } from 'react-icons/rx'
+
 interface HeaderProps {
   currentTab: string
   onSelectTab: (selectedTab: string) => void
@@ -18,33 +20,39 @@ export const Header: React.FC<HeaderProps> = ({ currentTab, onSelectTab }) => {
   }
 
   return (
-    <header className='left-0 mx-16 mt-16  bg-white py-2'>
-      <div className='flex max-w-2xl items-center space-x-4'>
-        <img
+
+    <header className='left-0 mx-14  py-2'>
+      <div className='mt-16 flex max-w-2xl items-center space-x-4'>
+        {/* <img
+
           src={avtPath} // Replace with your avatar image source
           alt='Avatar'
-          className='h-10 h-[65px] w-10 w-[65px] rounded-full border'
-        />
+          className=' h-[65px] w-[65px] rounded-full border'
+        /> */}
+        <RxAvatar size={`70px`} />
         <div>
-          <h1 className='text-xl font-bold text-gray-700'>Your Name</h1>
-          <p className='text-sm font-light text-gray-500'>@name123</p>
+          <h1 className='text-xl font-bold'>Your Name</h1>
+          <p className='text-sm font-light '>@name123</p>
         </div>
       </div>
-      <div className='mt-[70px] flex space-x-4 border-b-2 border-gray-300'>
-        <button
-          className={`py-2 ${selectedTab === 'profile' ? 'border-b-4 border-blue-600' : ''}`}
+      <div className='mt-[70px] flex'>
+        <p
+          className={`cursor-pointer border-b-[3px] pb-2 font-bold ${selectedTab === 'profile' ? 'border-blue-600 text-blue-600' : 'border-gray-300  hover:text-blue-600'}`}
           onClick={() => handleTabClick('profile')}
         >
-          <p className={`font-bold ${selectedTab === 'profile' ? 'text-blue-600' : 'text-gray-600'}`}>
-            Profile & Visibility
-          </p>
-        </button>
-        <button
-          className={`py-2 ${selectedTab === 'activity' ? 'border-b-4 border-blue-600' : ''}`}
+          Profile and visibility
+        </p>
+        <div className={` w-[20px] border-b-[3px] border-gray-300`}></div>
+        <p
+          className={`cursor-pointer border-b-[3px] pb-2 font-bold  ${selectedTab === 'activity' ? 'border-blue-600 text-blue-600' : 'border-gray-300  hover:text-blue-600'}`}
           onClick={() => handleTabClick('activity')}
         >
-          <p className={`font-bold ${selectedTab === 'activity' ? 'text-blue-600' : 'text-gray-600'}`}>Activity</p>
-        </button>
+
+          Activity
+        </p>
+
+        <div className={`flex-grow border-b-[3px] border-gray-300`}></div>
+
       </div>
     </header>
   )

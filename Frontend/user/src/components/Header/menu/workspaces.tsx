@@ -2,11 +2,15 @@ import * as React from 'react'
 import { Box, Button, ClickAwayListener, Grow, Paper, Popper, MenuList, Stack, Typography } from '@mui/material'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
+
 import { Link } from 'react-router-dom'
+
+import { useTheme } from './../../Theme/themeContext'
 
 export default function WorkSpaces() {
   const [open, setOpen] = React.useState(false)
   const anchorRef = React.useRef<HTMLButtonElement>(null)
+  const { colors } = useTheme()
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen)
@@ -39,6 +43,8 @@ export default function WorkSpaces() {
     prevOpen.current = open
   }, [open])
 
+  console.log(colors.background)
+
   return (
     <Stack direction='row' spacing={2}>
       <Box>
@@ -53,7 +59,7 @@ export default function WorkSpaces() {
           sx={{
             fontSize: '13px',
             textTransform: 'none',
-            color: open ? '#579dff' : '#9fadbc',
+            color: open ? '#579dff' : colors.text,
             '&:hover': {
               backgroundColor: 'rgba(255,255,255,0.1)'
             },
@@ -90,7 +96,7 @@ export default function WorkSpaces() {
                       marginTop: '8px',
                       transition: 'all 0.1s ease-in',
                       padding: '12px',
-                      backgroundColor: '#282e33',
+                      backgroundColor: colors.background_menu_header,
                       minWidth: '304px',
                       borderRadius: '4px'
                     }}
@@ -98,18 +104,21 @@ export default function WorkSpaces() {
                     <Box sx={{ marginBottom: '20px' }}>
                       <Typography
                         variant='body1'
-                        sx={{ fontSize: '12px', fontWeight: 700, color: '#9fadbc', marginBottom: '8px' }}
+                        sx={{ fontSize: '12px', fontWeight: 700, color: colors.text, marginBottom: '8px' }}
                       >
                         Your Workspaces
                       </Typography>
+
                       <Link to={`/workspace/123`}>
                         <Box
                           sx={{
                             display: 'flex',
                             alignItems: 'center',
                             padding: '8px',
+                            cursor: 'pointer',
                             '&:hover': {
-                              backgroundColor: 'rgba(255,255,255,0.1)',
+                              backgroundColor:
+                                colors.background === '#ffffff' ? `rgba(0,0,0,0.1)` : `rgba(255,255,255,0.1)`,
                               borderRadius: '4px'
                             }
                           }}
@@ -117,22 +126,35 @@ export default function WorkSpaces() {
                           <Typography
                             variant='h4'
                             sx={{
-                              display: 'inline-block',
-                              fontSize: '20px',
-                              fontWeight: 700,
-                              padding: '8px 14px',
-                              borderRadius: '6px',
-                              backgroundImage: 'linear-gradient(to bottom, #E774BB, #943D73)'
+                              display: 'flex',
+                              alignItems: 'center',
+                              padding: '8px',
+                              '&:hover': {
+                                backgroundColor: 'rgba(255,255,255,0.1)',
+                                borderRadius: '4px'
+                              }
                             }}
                           >
-                            T
-                          </Typography>
+                            <Typography
+                              variant='h4'
+                              sx={{
+                                display: 'inline-block',
+                                fontSize: '20px',
+                                fontWeight: 700,
+                                padding: '8px 14px',
+                                borderRadius: '6px',
+                                backgroundImage: 'linear-gradient(to bottom, #E774BB, #943D73)'
+                              }}
+                            >
+                              T
+                            </Typography>
 
-                          <Typography
-                            variant='body1'
-                            sx={{ fontSize: '14px', fontWeight: 700, color: '#9fadbc', marginLeft: '12px' }}
-                          >
-                            test
+                            <Typography
+                              variant='body1'
+                              sx={{ fontSize: '14px', fontWeight: 700, color: '#9fadbc', marginLeft: '12px' }}
+                            >
+                              test
+                            </Typography>
                           </Typography>
                         </Box>
                       </Link>
@@ -140,18 +162,21 @@ export default function WorkSpaces() {
                     <Box>
                       <Typography
                         variant='body1'
-                        sx={{ fontSize: '12px', fontWeight: 700, color: '#9fadbc', marginBottom: '8px' }}
+                        sx={{ fontSize: '12px', fontWeight: 700, color: colors.text, marginBottom: '8px' }}
                       >
                         Guest Workspaces
                       </Typography>
+
                       <Link to={`/workspace/123`}>
                         <Box
                           sx={{
                             display: 'flex',
                             alignItems: 'center',
                             padding: '8px',
+                            cursor: 'pointer',
                             '&:hover': {
-                              backgroundColor: 'rgba(255,255,255,0.1)',
+                              backgroundColor:
+                                colors.background === '#ffffff' ? `rgba(0,0,0,0.1)` : `rgba(255,255,255,0.1)`,
                               borderRadius: '4px'
                             }
                           }}
@@ -159,22 +184,35 @@ export default function WorkSpaces() {
                           <Typography
                             variant='h4'
                             sx={{
-                              display: 'inline-block',
-                              fontSize: '20px',
-                              fontWeight: 700,
-                              padding: '8px 14px',
-                              borderRadius: '6px',
-                              backgroundImage: 'linear-gradient(to bottom, #E774BB, #943D73)'
+                              display: 'flex',
+                              alignItems: 'center',
+                              padding: '8px',
+                              '&:hover': {
+                                backgroundColor: 'rgba(255,255,255,0.1)',
+                                borderRadius: '4px'
+                              }
                             }}
                           >
-                            T
-                          </Typography>
+                            <Typography
+                              variant='h4'
+                              sx={{
+                                display: 'inline-block',
+                                fontSize: '20px',
+                                fontWeight: 700,
+                                padding: '8px 14px',
+                                borderRadius: '6px',
+                                backgroundImage: 'linear-gradient(to bottom, #E774BB, #943D73)'
+                              }}
+                            >
+                              T
+                            </Typography>
 
-                          <Typography
-                            variant='body1'
-                            sx={{ fontSize: '14px', fontWeight: 700, color: '#9fadbc', marginLeft: '12px' }}
-                          >
-                            test
+                            <Typography
+                              variant='body1'
+                              sx={{ fontSize: '14px', fontWeight: 700, color: '#9fadbc', marginLeft: '12px' }}
+                            >
+                              test
+                            </Typography>
                           </Typography>
                         </Box>
                       </Link>
