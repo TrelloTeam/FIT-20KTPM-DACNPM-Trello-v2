@@ -13,17 +13,18 @@ import AddOutlinedIcon from '@mui/icons-material/AddOutlined'
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import StarIcon from '@mui/icons-material/Star';
-import { Sidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar'
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import { Sidebar, Menu, MenuItem } from 'react-pro-sidebar'
 import { Button } from '@mui/base'
 import { Divider, Drawer } from '@mui/material';
 
+import SubMenuSetting from './subMenuSetting';
 const drawerWidth = 250;
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
   ...theme.mixins.toolbar,
   justifyContent: 'flex-end',
   marginTop: 12
@@ -32,51 +33,40 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 interface Props {
     open: boolean;
     handleDrawerClose: () => void;
-  }
+}
+
+type SetterFunction = (value: boolean) => void;
+
+const handleMouseEnter = (setter: SetterFunction) => () => {
+    setter(true);
+};
+
+const handleMouseLeave = (setter: SetterFunction) => () => {
+    setter(false);
+};
 
 const SidebarCateWorkSpace: React.FC<Props> = ({ open, handleDrawerClose }) => {
     const theme = useTheme();
+
     const [isTableHovered, setIsTableHovered] = useState(false);
     const [isCalendarHovered, setIsCalendarHovered] = useState(false);
     const [isYourBoardHovered, setIsYourBoarHovered] = useState(false);
     const [isBoardHovered, setIsBoarHovered] = useState(false);
     const [isStarred, setIsStarred] = useState(false);
 
-    const handleTableMouseEnter = () => {
-        setIsTableHovered(true);
-    };
-
-    const handleTableMouseLeave = () => {
-        setIsTableHovered(false);
-    };
-
-    const handleCalendarMouseEnter = () => {
-        setIsCalendarHovered(true);
-    };
-
-    const handleCalendarMouseLeave = () => {
-        setIsCalendarHovered(false);
-    };
-
-    const handleYourBoardMouseEnter = () => {
-        setIsYourBoarHovered(true);
-    };
-
-    const handleYourBoardMouseLeave = () => {
-        setIsYourBoarHovered(false);
-    };
-
-    const handleBoardMouseEnter = () => {
-        setIsBoarHovered(true);
-    };
-
-    const handleBoardMouseLeave = () => {
-        setIsBoarHovered(false);
-    };
+    const [isSubMenuSetting, setSubMenuSetting] = useState(false);
+    
+    const [menuPosition, setMenuPosition] = useState({ x: 0, y: 0 });
 
     const handleStarClick = () => {
         setIsStarred(!isStarred);
     };    
+
+    const handleToggleMenu = (event: React.MouseEvent<HTMLAnchorElement>) => {
+        setSubMenuSetting(!isSubMenuSetting);
+        const rect = event.currentTarget.getBoundingClientRect();
+        setMenuPosition({ x: rect.right, y: rect.top });
+    };
 
     return (
         <div className="sidebar-cate-workspace mt-12">
@@ -125,23 +115,19 @@ const SidebarCateWorkSpace: React.FC<Props> = ({ open, handleDrawerClose }) => {
                                     Members
                                 </div>
                                 <div>
-                                    <Button>
-                                        <AddOutlinedIcon className='hover:bg-gray-300 rounded-md' fontSize='small' />
+                                    <Button className='w-9'>
+                                        <AddOutlinedIcon className='hover:bg-gray-300 rounded-md ml-auto' fontSize='small' />
                                     </Button>
                                 </div>
                             </div>
                         </MenuItem>
-                        <SubMenu
-                            label={
-                            <span className='menu-item rounded-md bg-white font-bold'>
-                                <div className='flex items-center'>
-                                    <SettingsIcon className='mr-2' fontSize='small' />Workspace settings
-                                </div>
-                            </span>
-                            }>
-                            <MenuItem>Workspace settings</MenuItem>
-                            <MenuItem>Upgrade workspace</MenuItem>
-                        </SubMenu>
+                        <MenuItem onClick={handleToggleMenu}>
+                            <div className="flex items-center">
+                                <SettingsIcon fontSize='small' className='mr-2' />
+                                <div className='font-bold'>Workspace settings</div>
+                                <KeyboardArrowDownIcon fontSize="small" className="ml-auto"/>
+                            </div>
+                        </MenuItem>
                     </Menu>
                 </Sidebar>
 
@@ -149,17 +135,17 @@ const SidebarCateWorkSpace: React.FC<Props> = ({ open, handleDrawerClose }) => {
                 <Sidebar className='workspaces text-sm'>
                     <div>
                         <Menu>
-                            <MenuItem className="menu-item" onMouseEnter={handleTableMouseEnter} onMouseLeave={handleTableMouseLeave}>
+                            <MenuItem className="menu-item" onMouseEnter={handleMouseEnter(setIsTableHovered)} onMouseLeave={handleMouseLeave(setIsTableHovered)}>
                                 <div className="flex items-center">
                                     <TableViewIcon fontSize="small" className="mr-2" />
                                     Table
                                     {isTableHovered && (
-                                        <MoreHorizIcon fontSize="small" className="hover:bg-gray-300 ml-auto" />
+                                        <MoreHorizIcon fontSize="small" className="hover:bg-gray-300 ml-auto"/>
                                     )}
                                 </div>
                             </MenuItem>
 
-                            <MenuItem className="menu-item" onMouseEnter={handleCalendarMouseEnter} onMouseLeave={handleCalendarMouseLeave}>
+                            <MenuItem className="menu-item" onMouseEnter={handleMouseEnter(setIsCalendarHovered)} onMouseLeave={handleMouseLeave(setIsCalendarHovered)}>
                                 <div className="flex items-center">
                                     <CalendarMonthIcon fontSize="small" className="mr-2" />
                                         Calendar
@@ -172,7 +158,7 @@ const SidebarCateWorkSpace: React.FC<Props> = ({ open, handleDrawerClose }) => {
                     </div>
                 </Sidebar>
 
-                <div className='flex w-full items-center justify-between' onMouseEnter={handleYourBoardMouseEnter} onMouseLeave={handleYourBoardMouseLeave}>
+                <div className='flex w-full items-center justify-between' onMouseEnter={handleMouseEnter(setIsYourBoarHovered)} onMouseLeave={handleMouseLeave(setIsYourBoarHovered)}>
                     <h1 className='mb-2 pl-5 text-gray-700 font-bold flex items-center'>Your boards</h1>
                     {isYourBoardHovered && (
                         <MoreHorizIcon fontSize="small" className="ml-auto hover:bg-gray-300" />
@@ -187,7 +173,7 @@ const SidebarCateWorkSpace: React.FC<Props> = ({ open, handleDrawerClose }) => {
                 <Sidebar className='workspaces mb-10 text-sm'>
                     <div>
                         <Menu>
-                            <MenuItem className="menu-item" onMouseEnter={handleBoardMouseEnter} onMouseLeave={handleBoardMouseLeave}>
+                            <MenuItem className="menu-item" onMouseEnter={handleMouseEnter(setIsBoarHovered)} onMouseLeave={handleMouseLeave(setIsBoarHovered)}>
                                 <div className="flex items-center">
                                     <WorkspacesIcon fontSize="small" className="mr-2" />
                                         Project
@@ -216,9 +202,14 @@ const SidebarCateWorkSpace: React.FC<Props> = ({ open, handleDrawerClose }) => {
                     </div>
                 </Sidebar>
             </Drawer>
+
+            {isSubMenuSetting && (
+                <div style={{ position: 'absolute', top: menuPosition.y, left: menuPosition.x }}>
+                    <SubMenuSetting/>
+                </div>
+            )}
         </div>
-        
-  );
+    );
 }
 
 export default SidebarCateWorkSpace
