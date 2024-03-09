@@ -1,29 +1,18 @@
-import { InjectController, InjectRoute } from '@app/common/decorators'
-import { SwaggerApi } from '@app/common/decorators/'
-import { IdParamValidationPipe, ZodValidationPipe } from '@app/common/pipes'
+import { IdParamValidationPipe, InjectController, ZodValidationPipe } from '@app/common'
 import { Body, Param } from '@nestjs/common'
-import { getSchemaPath } from '@nestjs/swagger'
+import { GrpcMethod } from '@nestjs/microservices'
 import { TrelloApi } from '@trello-v2/shared'
 
-import { BoardRoutes } from '../board.routes'
 import { BoardService } from '../services/board.service'
 
 @InjectController({
   name: 'board',
   isCore: true,
 })
-export class BoardController {
+export class BoardMSController {
   constructor(private BoardService: BoardService) {}
 
-  @InjectRoute(BoardRoutes.getAllBoard)
-  @SwaggerApi({
-    responses: [
-      {
-        status: 200,
-        schema: { $ref: getSchemaPath('GetallBoardResponseSchema') },
-      },
-    ],
-  })
+  @GrpcMethod('BoardService', 'getAll')
   async getAll(): Promise<TrelloApi.BoardApi.GetallBoardResponse> {
     const data = await this.BoardService.getAllBoard()
     return {
@@ -31,20 +20,7 @@ export class BoardController {
     }
   }
 
-  @InjectRoute(BoardRoutes.getBoardsByWorkspaceId)
-  @SwaggerApi({
-    params: {
-      name: 'workspace_id',
-      type: 'string',
-      example: 'string',
-    },
-    responses: [
-      {
-        status: 200,
-        schema: { $ref: getSchemaPath('GetallBoardResponseSchema') },
-      },
-    ],
-  })
+  @GrpcMethod('BoardService', 'getBoardsByWorkSpaceId')
   async getBoardsByWorkSpaceId(
     @Param('workspace_id', IdParamValidationPipe)
     workspace_id: TrelloApi.BoardApi.getBoardsByWorkspaceIdRequest,
@@ -55,16 +31,7 @@ export class BoardController {
     }
   }
 
-  @InjectRoute(BoardRoutes.createBoard)
-  @SwaggerApi({
-    body: { schema: { $ref: getSchemaPath('CreateBoardRequestSchema') } },
-    responses: [
-      {
-        status: 200,
-        schema: { $ref: getSchemaPath('CreateBoardResponseSchema') },
-      },
-    ],
-  })
+  @GrpcMethod('BoardService', 'create')
   async create(
     @Body(new ZodValidationPipe(TrelloApi.BoardApi.CreateBoardRequestSchema))
     body: TrelloApi.BoardApi.CreateBoard,
@@ -75,20 +42,7 @@ export class BoardController {
     }
   }
 
-  @InjectRoute(BoardRoutes.getBoardInfoByBoardId)
-  @SwaggerApi({
-    params: {
-      name: 'board_id',
-      type: 'string',
-      example: 'string',
-    },
-    responses: [
-      {
-        status: 200,
-        schema: { $ref: getSchemaPath('GetBoardInfoByBoardIdResponseSchema') },
-      },
-    ],
-  })
+  @GrpcMethod('BoardService', 'getBoardInfoByBoardId')
   async getBoardInfoByBoardId(
     @Param('board_id', IdParamValidationPipe)
     board_id: TrelloApi.BoardApi.GetBoardInfoByBoardIdRequest,
@@ -99,18 +53,7 @@ export class BoardController {
     }
   }
 
-  @InjectRoute(BoardRoutes.changeBoardVisibility)
-  @SwaggerApi({
-    body: {
-      schema: { $ref: getSchemaPath('ChangeBoardVisibilityRequestSchema') },
-    },
-    responses: [
-      {
-        status: 200,
-        schema: { $ref: getSchemaPath('GetBoardInfoByBoardIdResponseSchema') },
-      },
-    ],
-  })
+  @GrpcMethod('BoardService', 'changeBoardVisibility')
   async changeBoardVisibility(
     @Body(new ZodValidationPipe(TrelloApi.BoardApi.ChangeBoardVisibilityRequestSchema))
     body: TrelloApi.BoardApi.ChangeBoardVisibilityRequest,
@@ -121,20 +64,7 @@ export class BoardController {
     }
   }
 
-  @InjectRoute(BoardRoutes.deleteBoard)
-  @SwaggerApi({
-    params: {
-      name: 'board_id',
-      type: 'string',
-      example: 'string',
-    },
-    responses: [
-      {
-        status: 200,
-        schema: { $ref: getSchemaPath('DeleteBoardResponseSchema') },
-      },
-    ],
-  })
+  @GrpcMethod('BoardService', 'deleteBoard')
   async deleteBoard(
     @Param('board_id', IdParamValidationPipe)
     board_id: TrelloApi.BoardApi.DeleteBoardRequest,
