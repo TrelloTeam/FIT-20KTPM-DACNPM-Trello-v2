@@ -11,7 +11,7 @@ export const lists = [
         order: 1,
         name: 'Task 1',
         list_name: 'todo',
-        watcher_email: ['email1', 'email2']
+        watcher_email: ['email1', 'email21231231232132']
       },
       { id: 'task2', list_id: 'list1', order: 2, name: 'Task 2', list_name: 'todo', watcher_email: [] },
       { id: 'task5', list_id: 'list1', order: 2, name: 'Task 5', list_name: 'todo', watcher_email: [] },

@@ -1,4 +1,3 @@
-
 import { useState, useEffect, lazy, Suspense } from 'react'
 import { lists } from './testData/test_data'
 import { List, Card } from './type/index'
@@ -23,7 +22,6 @@ import { BoardLayout } from '~/layouts'
 import { generatePlaceHolderCard } from '~/utils/fomatter'
 import LoadingComponent from '~/components/Loading'
 import { CardComponent, ListComponent } from './components'
-
 
 const ACTIVE_DRAG_ITEM_TYPE = {
   COLUMN: 'ACTIVE_DRAG_ITEM_TYPE_COLUMN',
@@ -272,23 +270,32 @@ export function Board() {
       }
     })
   }
+  const [openCardSetting, setOpenCardSetting] = useState<string>('')
+  useEffect(() => {
+    console.log(openCardSetting)
+    if (openCardSetting) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = 'auto'
+    }
+  }, [openCardSetting])
   return (
-    <BoardLayout>
-      <div className='mx-auto p-4 text-center text-3xl font-bold uppercase text-black'>Header Area</div>
+    <BoardLayout openCardSetting={openCardSetting}>
+      <div className={`mx-auto p-4 text-center text-3xl font-bold uppercase text-black`}>Header Area</div>
 
       <DndContext sensors={sensors} onDragStart={handleDragStart} onDragMove={handleDragOver} onDragEnd={handleDragEnd}>
         {listsData && (
-          <div className={`w-[100%]`}>
+          <div className={`relative z-20 w-[100%]`}>
             <Suspense fallback={<LoadingComponent />}>
-              <LazyListsComponent lists={listsData} />
+              <LazyListsComponent lists={listsData} setOpenCardSetting={setOpenCardSetting} />
             </Suspense>
             <DragOverlay dropAnimation={customDropAnimation}>
               {!activeDragItemId || !activeDragItemType}
               {activeDragItemId && activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN && (
-                <ListComponent list={activeDragItemData} />
+                <ListComponent list={activeDragItemData} setOpenCardSetting={(data) => setOpenCardSetting(data)} />
               )}
               {activeDragItemId && activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.CARD && (
-                <CardComponent card={activeDragItemData} />
+                <CardComponent card={activeDragItemData} setOpenCardSetting={(data) => setOpenCardSetting(data)} />
               )}
             </DragOverlay>
           </div>
