@@ -1,85 +1,85 @@
 export const featureData = [
     {
-      name: "Business",
-      image: "https://trello.com/assets/3919e0fe0976de0298b4.svg"
+      name: 'Business',
+      image: 'https://trello.com/assets/3919e0fe0976de0298b4.svg'
     },
     {
-      name: "Design",
-      image: "https://trello.com/assets/157c58403db677619bea.svg"
+      name: 'Design',
+      image: 'https://trello.com/assets/157c58403db677619bea.svg'
     },
     {
-      name: "Education",
-      image: "https://trello.com/assets/dea39a045ff4c4d1d9b1.svg"
+      name: 'Education',
+      image: 'https://trello.com/assets/dea39a045ff4c4d1d9b1.svg'
     },
     {
-      name: "Engineering",
-      image: "https://trello.com/assets/e0b1e866de40a5468aaa.svg"
+      name: 'Engineering',
+      image: 'https://trello.com/assets/e0b1e866de40a5468aaa.svg'
     },
     {
-      name: "Marketing",
-      image: "https://trello.com/assets/757286ddcfc9b405911a.svg"
+      name: 'Marketing',
+      image: 'https://trello.com/assets/757286ddcfc9b405911a.svg'
     },
     {
-      name: "Project management",
-      image: "https://trello.com/assets/7d80b8fac2bac70d9e72.svg"
+      name: 'Project management',
+      image: 'https://trello.com/assets/7d80b8fac2bac70d9e72.svg'
     },
     {
-      name: "Remote work",
-      image: "https://trello.com/assets/f03ecb89626f72d4a0aa.svg"
+      name: 'Remote work',
+      image: 'https://trello.com/assets/f03ecb89626f72d4a0aa.svg'
     }
   ]
 
   export const newTemplateData = [
     {
-      title: "New Hire Onboarding",
-      author: "Trello Team",
-      description: "Help new employees start strong with this onboarding template",
-      image: "https://trello-backgrounds.s3.amazonaws.com/53baf533e697a982248cd73f/480x480/e4982f6fdaab05c018747688b167997f/shutterstock_261269042.jpg",
-      likes: "18.3N",
-      views: "131.3N"
+      title: 'New Hire Onboarding',
+      author: 'Trello Team',
+      description: 'Help new employees start strong with this onboarding template',
+      image: 'https://trello-backgrounds.s3.amazonaws.com/53baf533e697a982248cd73f/480x480/e4982f6fdaab05c018747688b167997f/shutterstock_261269042.jpg',
+      likes: '18.3N',
+      views: '131.3N'
     },
     {
-      title: "Tier List",
-      author: "Trello Engineering Team",
-      description: "Use this template to create a tier list for anything you want...",
-      image: "https://d2k1ftgv7pobq7.cloudfront.net/images/backgrounds/gradients/alien.svg",
-      likes: "2.9N",
-      views: "23.3N"
+      title: 'Tier List',
+      author: 'Trello Engineering Team',
+      description: 'Use this template to create a tier list for anything you want...',
+      image: 'https://d2k1ftgv7pobq7.cloudfront.net/images/backgrounds/gradients/alien.svg',
+      likes: '2.9N',
+      views: '23.3N'
     },
     {
-      title: "Better Work Habits Challenge",
-      author: "Trello Team",
-      description: "Track, reflect, and celebrate new effective habits that you want to build at work.",
-      image: "https://trello-backgrounds.s3.amazonaws.com/5ea92d56642ad37917862ea4/480x322/255c5f56ccf2b7bd68aaf9f51d0dbcc5/Asset_1%404x.png",
-      likes: "3.1N",
-      views: "28N"
+      title: 'Better Work Habits Challenge',
+      author: 'Trello Team',
+      description: 'Track, reflect, and celebrate new effective habits that you want to build at work.',
+      image: 'https://trello-backgrounds.s3.amazonaws.com/5ea92d56642ad37917862ea4/480x322/255c5f56ccf2b7bd68aaf9f51d0dbcc5/Asset_1%404x.png',
+      likes: '3.1N',
+      views: '28N'
     }
   ]
 
   export const businessData = [
     {
-      title: "A Lead Management Pipeline by Crmble",
-      author: "Toni, Founder @ Crmble",
-      description: "Use this board to manage inventory or swag requests with the Crmble Power-Up!",
-      image: "https://trello-backgrounds.s3.amazonaws.com/5e627d9fa6c99f7637f32c47/480x270/c0d295ff3ef480a03090b113f1eae301/crmble_trello_order-mgmt.png",
-      likes: "30.3N",
-      views: "185.8N"
+      title: 'A Lead Management Pipeline by Crmble',
+      author: 'Toni, Founder @ Crmble',
+      description: 'Use this board to manage inventory or swag requests with the Crmble Power-Up!',
+      image: 'https://trello-backgrounds.s3.amazonaws.com/5e627d9fa6c99f7637f32c47/480x270/c0d295ff3ef480a03090b113f1eae301/crmble_trello_order-mgmt.png',
+      likes: '30.3N',
+      views: '185.8N'
     },
     {
-      title: "Lean Canvas",
-      author: "Syarfandi Achmad",
-      description: "Lean Canvas is a 1-page business plan template created by Ash Maurya that helps you deconstruct your idea into its key assumptions.",
-      image: "https://trello-backgrounds.s3.amazonaws.com/SharedBackground/320x480/842930275c7de22dfabb6bb21b3cb8cd/photo-1590978553854-f1c0fe76ca70.jpg",
-      likes: "34.9N",
-      views: "205.2N"
+      title: 'Lean Canvas',
+      author: 'Syarfandi Achmad',
+      description: 'Lean Canvas is a 1-page business plan template created by Ash Maurya that helps you deconstruct your idea into its key assumptions.',
+      image: 'https://trello-backgrounds.s3.amazonaws.com/SharedBackground/320x480/842930275c7de22dfabb6bb21b3cb8cd/photo-1590978553854-f1c0fe76ca70.jpg',
+      likes: '34.9N',
+      views: '205.2N'
     },
     {
-      title: "Nonprofit Project Management",
-      author: "Atlassian",
-      description: "Turn big dreams into bigger results. Use this Trello template to build your nonprofit team's ideal workflow, for projects big or small.",
-      image: "https://trello-backgrounds.s3.amazonaws.com/SharedBackground/480x320/7f16c6eb93506d217fd0954458890909/photo-1537134394103-214adc4bd836.jpg",
-      likes: "2.1N",
-      views: "10.3N"
+      title: 'Nonprofit Project Management',
+      author: 'Atlassian',
+      description: `Turn big dreams into bigger results. Use this Trello template to build your nonprofit team's ideal workflow, for projects big or small.`,
+      image: 'https://trello-backgrounds.s3.amazonaws.com/SharedBackground/480x320/7f16c6eb93506d217fd0954458890909/photo-1537134394103-214adc4bd836.jpg',
+      likes: '2.1N',
+      views: '10.3N'
     }
   ]
 

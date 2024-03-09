@@ -3,7 +3,17 @@ import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopyOutlined'
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined'
 import SearchIcon from '@mui/icons-material/Search'
 
-import { featureData, newTemplateData, businessData, designData, educationData, techniqueData, marketingData, pmData, wrData} from '../testData/templatesData'
+import { 
+  featureData,
+  newTemplateData,
+  businessData,
+  designData,
+  educationData,
+  techniqueData,
+  marketingData,
+  pmData,
+  wrData
+} from '../testData/templatesData'
 
 function CardTemplate() {
   return (
@@ -27,9 +37,13 @@ function CardTemplate() {
         <div className='nameFeatures scrollbar-thin scrollbar-thumb-black scrollbar-track-black flex w-full justify-start overflow-x-auto'>
           {featureData.map((feature, index) => (
             <div key={index} className='item-feature mb-16 mr-3 flex w-32 flex-col items-center text-center'>
-              <Card variant='elevation' elevation={0} className='detail-item mx-auto mt-8 block h-full w-full text-sm capitalize leading-6 text-gray-600 hover:cursor-pointer'>
+              <Card
+              variant='elevation'
+              elevation={0}
+              className='detail-item mx-auto mt-8 block h-full w-full text-sm capitalize leading-6 text-gray-600 hover:cursor-pointer'
+              >
                 <CardMedia
-                  className='h-140 relative w-full transition duration-300 ease-in-out transform hover:shadow-xl'
+                  className='h-140 relative w-full transform transition duration-300 ease-in-out hover:shadow-xl'
                   component='img'
                   image={feature.image}
                   alt={feature.name}
@@ -53,17 +67,24 @@ function CardTemplate() {
         </div>
         <div className='detail-newTemplate justify-starts mt-5 flex w-full flex-wrap'>
           {newTemplateData.map((card, index) => (
-            <Card key={index} variant='elevation' elevation={0} className='item-newTemplate min-h-100 mx-auto w-full md:w-72 hover:cursor-pointer'>
+            <Card
+            key={index}
+            variant='elevation'
+            elevation={0}
+            className='item-newTemplate min-h-100 mx-auto w-full hover:cursor-pointer md:w-72'
+            >
               <div className='cardContainer relative w-72'>
                 <CardMedia
-                  className='h-40 w-full object-cover duration-300 ease-in-out transform hover:shadow-xl'
+                  className='h-40 w-full transform object-cover duration-300 ease-in-out hover:shadow-xl'
                   component='img'
                   image={card.image}
                   alt={card.title}
                 />
               </div>
               <CardContent>
-                <label className='content-title flex items-center text-base font-bold text-gray-700'>{card.title}</label>
+                <label className='content-title flex items-center text-base font-bold text-gray-700'>
+                  {card.title}
+                </label>
                 <p className='content text-sm leading-6 text-gray-600'>by {card.author}</p>
                 <p className='content text-sm leading-6 text-gray-600'>{card.description}</p>
               </CardContent>
@@ -97,17 +118,24 @@ function CardTemplate() {
         </div>
         <div className='detail-newTemplate mt-5 flex w-full flex-wrap justify-start'>
           {businessData.map((business, index) => (
-            <Card key={index} variant='elevation' elevation={0} className='item-newTemplate min-h-100 mx-auto w-full max-w-sm border-0 md:w-72 hover:cursor-pointer'>
+            <Card
+            key={index}
+            variant='elevation'
+            elevation={0}
+            className='item-newTemplate min-h-100 mx-auto w-full max-w-sm border-0 hover:cursor-pointer md:w-72'
+            >
               <div className='cardContainer relative w-72'>
                 <CardMedia
-                  className='h-40 w-full object-cover duration-300 ease-in-out transform hover:shadow-xl'
+                  className='h-40 w-full transform object-cover duration-300 ease-in-out hover:shadow-xl'
                   component='img'
                   image={business.image}
                   alt={business.title}
                 />
               </div>
               <CardContent>
-                <label className='content-title flex items-center text-base font-bold text-gray-700'>{business.title}</label>
+                <label className='content-title flex items-center text-base font-bold text-gray-700'>
+                  {business.title}
+                </label>
                 <p className='content text-sm leading-6 text-gray-600'>by {business.author}</p>
                 <p className='content text-sm leading-6 text-gray-600'>{business.description}</p>
               </CardContent>
@@ -146,11 +174,11 @@ function CardTemplate() {
               key={index}
               variant='elevation'
               elevation={0}
-              className='item-newTemplate min-h-100 mx-auto w-full max-w-sm md:w-72 hover:cursor-pointer'
+              className='item-newTemplate min-h-100 mx-auto w-full max-w-sm hover:cursor-pointer md:w-72'
             >
               <div className='cardContainer relative w-72'>
                 <CardMedia
-                  className='h-40 w-full object-cover duration-300 ease-in-out transform hover:shadow-xl'
+                  className='h-40 w-full transform object-cover duration-300 ease-in-out hover:shadow-xl'
                   component='img'
                   image={design.image}
                   alt={design.title}
@@ -197,11 +225,11 @@ function CardTemplate() {
               key={index}
               variant='elevation'
               elevation={0}
-              className='item-newTemplate min-h-100 mx-auto w-full max-w-sm md:w-72 hover:cursor-pointer'
+              className='item-newTemplate min-h-100 mx-auto w-full max-w-sm hover:cursor-pointer md:w-72'
             >
               <div className='cardContainer relative w-72'>
                 <CardMedia
-                  className='h-40 w-full object-cover duration-300 ease-in-out transform hover:shadow-xl'
+                  className='h-40 w-full transform object-cover duration-300 ease-in-out hover:shadow-xl'
                   component='img'
                   image={education.image}
                   alt={education.title}
@@ -248,11 +276,11 @@ function CardTemplate() {
               key={index}
               variant='elevation'
               elevation={0}
-              className='item-newTemplate min-h-100 mx-auto w-full max-w-sm md:w-72 hover:cursor-pointer'
+              className='item-newTemplate min-h-100 mx-auto w-full max-w-sm hover:cursor-pointer md:w-72'
             >
               <div className='cardContainer relative w-72'>
                 <CardMedia
-                  className='h-40 w-full object-cover duration-300 ease-in-out transform hover:shadow-xl'
+                  className='h-40 w-full transform object-cover duration-300 ease-in-out hover:shadow-xl'
                   component='img'
                   image={technique.image}
                   alt={technique.title}
@@ -287,22 +315,23 @@ function CardTemplate() {
             src='https://trello.com/assets/3695bf4ae87a54c23f88.svg'
             width='24px'
             height='24px'
-          ></img>
+          >
+          </img>
           <label className='text-lg font-bold'>Marketing</label>
           <button className='ml-auto mr-6 inline-flex cursor-pointer items-center justify-center rounded-md bg-gray-200 px-3 py-1 font-sans text-base font-medium text-gray-700 transition-colors duration-200 ease-in-out hover:bg-gray-300'>
             More templates for Marketing</button>
         </div>
-        <div className='detail-newTemplate mt-5  flex w-full flex-wrap justify-start'>
+        <div className='detail-newTemplate mt-5 flex w-full flex-wrap justify-start'>
           {marketingData.map((marketing, index) => (
             <Card
               key={index}
               variant='elevation'
               elevation={0}
-              className='item-newTemplate min-h-100 mx-auto w-full max-w-sm md:w-72 hover: cursor-pointer'
+              className='item-newTemplate min-h-100 mx-auto w-full max-w-sm hover: cursor-pointer md:w-72'
             >
               <div className='cardContainer relative w-72'>
                 <CardMedia
-                  className='h-40 w-full object-cover duration-300 ease-in-out transform hover:shadow-xl'
+                  className='h-40 w-full transform object-cover duration-300 ease-in-out hover:shadow-xl'
                   component='img'
                   image={marketing.image}
                   alt={marketing.title}
@@ -349,19 +378,18 @@ function CardTemplate() {
               key={index}
               variant='elevation'
               elevation={0}
-              className='item-newTemplate min-h-100 mx-auto w-full max-w-sm md:w-72 hover:cursor-pointer'
+              className='item-newTemplate min-h-100 mx-auto w-full max-w-sm hover:cursor-pointer md:w-72'
             >
               <div className='cardContainer relative w-72'>
                 <CardMedia
-                  className='h-40 w-full object-cover duration-300 ease-in-out transform hover:shadow-xl'
+                  className='h-40 w-full transform object-cover duration-300 ease-in-out hover:shadow-xl'
                   component='img'
                   image={pm.image}
                   alt={pm.title}
                 />
               </div>
               <CardContent>
-                <label className='content-title flex items-center text-base font-bold text-gray-700'>
-                  {pm.title}
+                <label className='content-title flex items-center text-base font-bold text-gray-700'>{pm.title}
                 </label>
                 <p className='content text-sm leading-6 text-gray-600'>by {pm.author}</p>
                 <p className='content text-sm leading-6 text-gray-600'>{pm.description}</p>
@@ -401,19 +429,18 @@ function CardTemplate() {
               key={index}
               variant='elevation'
               elevation={0}
-              className='item-newTemplate min-h-100 mx-auto w-full max-w-sm md:w-72 hover:cursor-pointer'
+              className='item-newTemplate min-h-100 mx-auto w-full max-w-sm hover:cursor-pointer md:w-72'
             >
               <div className='cardContainer relative w-72'>
                 <CardMedia
-                  className='h-40 w-full object-cover duration-300 ease-in-out transform hover:shadow-xl'
+                  className='h-40 w-full transform object-cover duration-300 ease-in-out hover:shadow-xl'
                   component='img'
                   image={wr.image}
                   alt={wr.title}
                 />
               </div>
               <CardContent>
-                <label className='content-title flex items-center text-base font-bold text-gray-700'>
-                  {wr.title}
+                <label className='content-title flex items-center text-base font-bold text-gray-700'>{wr.title}
                 </label>
                 <p className='content text-sm leading-6 text-gray-600'>by {wr.author}</p>
                 <p className='content text-sm leading-6 text-gray-600'>{wr.description}</p>
