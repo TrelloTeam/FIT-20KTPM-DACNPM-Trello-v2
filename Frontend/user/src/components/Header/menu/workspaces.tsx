@@ -4,8 +4,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
 
 import { Link } from 'react-router-dom'
+import { useTheme } from '../../Theme/themeContext'
 
-import { useTheme } from './../../Theme/themeContext'
+
 
 export default function WorkSpaces() {
   const [open, setOpen] = React.useState(false)
@@ -123,18 +124,7 @@ export default function WorkSpaces() {
                             }
                           }}
                         >
-                          <Typography
-                            variant='h4'
-                            sx={{
-                              display: 'flex',
-                              alignItems: 'center',
-                              padding: '8px',
-                              '&:hover': {
-                                backgroundColor: 'rgba(255,255,255,0.1)',
-                                borderRadius: '4px'
-                              }
-                            }}
-                          >
+
                             <Typography
                               variant='h4'
                               sx={{
@@ -155,7 +145,7 @@ export default function WorkSpaces() {
                             >
                               test
                             </Typography>
-                          </Typography>
+                   
                         </Box>
                       </Link>
                     </Box>
@@ -181,18 +171,7 @@ export default function WorkSpaces() {
                             }
                           }}
                         >
-                          <Typography
-                            variant='h4'
-                            sx={{
-                              display: 'flex',
-                              alignItems: 'center',
-                              padding: '8px',
-                              '&:hover': {
-                                backgroundColor: 'rgba(255,255,255,0.1)',
-                                borderRadius: '4px'
-                              }
-                            }}
-                          >
+
                             <Typography
                               variant='h4'
                               sx={{
@@ -213,7 +192,7 @@ export default function WorkSpaces() {
                             >
                               test
                             </Typography>
-                          </Typography>
+                        
                         </Box>
                       </Link>
                     </Box>
