@@ -14,7 +14,7 @@ import * as _ from 'lodash'
   name: 'board',
   isCore: true,
 })
-export class BoardController {
+export class BoardMSController {
   constructor(private BoardService: BoardService) {}
 
   @InjectRoute(BoardRoutes.getAllBoard)
