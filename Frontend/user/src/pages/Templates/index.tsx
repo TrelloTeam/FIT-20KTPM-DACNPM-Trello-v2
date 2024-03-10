@@ -1,5 +1,6 @@
-import SidebarTemplate from '../Templates/component/SidebarTemplate'
-import CardTemplate from '../Templates/component/CardTemplate'
+
+import SidebarTemplate from '../../components/SidebarTemplate';
+import CardTemplate from '../Templates/component/CardTemplate';
 
 export function Templates() {
   return (

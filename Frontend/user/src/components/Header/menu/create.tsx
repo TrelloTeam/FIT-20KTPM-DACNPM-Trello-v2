@@ -4,9 +4,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSynagogue, faUsers } from '@fortawesome/free-solid-svg-icons'
 import { faTrello } from '@fortawesome/free-brands-svg-icons'
 import CreateBoard from './createBoard'
+import CreateWorkspace from './createWorkspace'
 
 export default function Create() {
   const [open, setOpen] = React.useState(false)
+  const [openWorkspace, setOpenWorkspace] = React.useState(false)
   const [openItem, setOpenItem] = React.useState({ show: false, type: 'Create' })
   const anchorRef = React.useRef<HTMLButtonElement>(null)
 
@@ -161,7 +163,11 @@ export default function Create() {
                       !openItem.show && (
                         <Box
                           key='create-workspace'
-                          onClick={() => setOpenItem({ show: true, type: 'Create workspace' })}
+                          onClick={() => {
+                            setOpenItem({ show: false, type: 'Create workspace' }),
+                              setOpenWorkspace(true),
+                              setOpen(false)
+                          }}
                           sx={{
                             padding: '6px 12px',
                             cursor: 'pointer',
@@ -202,6 +208,9 @@ export default function Create() {
             </Grow>
           )}
         </Popper>
+        {openWorkspace && openItem.type === 'Create workspace' && (
+          <CreateWorkspace onClose={() => setOpenWorkspace(false)} />
+        )}
       </Box>
     </Stack>
   )

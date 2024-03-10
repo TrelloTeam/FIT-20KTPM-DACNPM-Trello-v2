@@ -5,6 +5,7 @@ import { Profile } from './../pages/Profile/components/Profile'
 import { Templates } from './../pages/Templates/index'
 import { BoardsPage } from '~/pages'
 import { ActivityComponent } from './../pages/Profile/components/Activity'
+import CardDetailWindow from '~/components/CardDetailWindow'
 
 export const router = createBrowserRouter([
   {
@@ -29,6 +30,10 @@ export const router = createBrowserRouter([
       {
         path: '/activity',
         element: <ActivityComponent />
+      },
+      {
+        path: '/carddetail',
+        element: <CardDetailWindow />
       }
     ]
   }
