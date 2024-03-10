@@ -9,8 +9,8 @@ import GridViewOutlinedIcon from '@mui/icons-material/GridViewOutlined'
 import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined'
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined'
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined'
-import { workspaceData } from '../testData'
-import { Workspace } from '../type'
+import { workspaceData } from '../pages/Templates/testData'
+import { Workspace } from '../pages/Templates/type'
 import { Button } from '@mui/base'
 
 function SidebarTemplate() {
@@ -78,7 +78,7 @@ function SidebarTemplate() {
               <Menu>
                 <SubMenu
                   label={
-                    <span className='rounded-md bg-white font-bold hover:border-0 hover:bg-blue-500 hover:text-blue-500'>
+                    <span className='rounded-md font-bold hover:border-0 hover:bg-blue-500 hover:text-blue-500'>
                       <div className='flex items-center'>
                         <WorkspacesIcon fontSize='small' className='mr-2' />
                         {w.name}
