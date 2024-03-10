@@ -9,7 +9,7 @@
     "typescript": "^5.3.3"
   },
   "scripts": {
-    "build": "rm -r ./dist && npx tsc",
+    "build": "rm -rf ./dist && npx tsc",
     "dev": "tsc -w",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
