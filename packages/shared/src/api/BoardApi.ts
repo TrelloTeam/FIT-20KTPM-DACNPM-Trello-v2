@@ -2,6 +2,11 @@ import { z } from "zod";
 import { BoardSchema } from "../schemas/Board";
 import { emailRegex } from "../utils/regex";
 
+export type BoardIdRequest = z.infer<typeof BoardSchema>["_id"];
+export type workSpaceIdRequest = z.infer<typeof BoardSchema>["workspace_id"];
+
+///
+
 export const GetallBoardRequestSchema = z.object({
   workspace_id: z.string(),
 });
