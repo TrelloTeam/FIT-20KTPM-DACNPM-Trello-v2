@@ -87,7 +87,7 @@ async function bootstrap() {
   }
   SwaggerModule.setup('swagger', app, document)
 
-  writeFileSync('./swagger-spec.json', JSON.stringify(document))
+  //writeFileSync('./swagger-spec.json', JSON.stringify(document))
 
   const PORT = process.env.PORT || 3000
   app.startAllMicroservices()
