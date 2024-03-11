@@ -300,6 +300,56 @@ export function Board() {
             </DragOverlay>
           </div>
         )}
+        {showAddListForm ? (
+          // Render the form when showAddListForm is true
+          <div
+            style={{
+              backgroundColor: darkMode ? 'black' : '#f1f2f6',
+              color: darkMode ? '#d2dae2' : '#2f3542'
+            }}
+            className={`ml-5 mr-2 flex min-h-full w-[300px]  flex-col rounded-xl border p-2 shadow-sm`}
+          >
+            {/* Implement your form with input fields here */}
+            <input
+              type='text'
+              value={newListName}
+              placeholder='List name'
+              onChange={(e) => setNewListName(e.target.value)}
+              style={{
+                backgroundColor: darkMode ? '#2c3e50' : 'white',
+                color: colors.text
+              }}
+              className={` h-full w-full rounded-lg px-2 py-1 text-left focus:border-0 focus:outline-none focus:ring focus:ring-blue-400 `}
+            />
+            <div className={`mt-2 flex flex-row space-x-2`}>
+              <button
+                className=' rounded   bg-blue-600 px-3 py-2 hover:bg-blue-700'
+                onClick={() => {
+                  handleSaveListClick()
+                }}
+              >
+                <p className={`text-left font-semibold text-white`}> Add card</p>
+              </button>
+              <button
+                className={` rounded-lg px-3 py-2 ${darkMode ? 'hover:bg-gray-600' : 'hover:bg-gray-300'}`}
+                onClick={() => {
+                  setShowAddListForm(false)
+                  setNewListName('')
+                }}
+              >
+                <p className={`text-left font-semibold`}> X </p>
+              </button>
+            </div>
+          </div>
+        ) : (
+          // Render the button when showAddListForm is false
+          <button
+            className={`ml-5 w-[300px] rounded-xl border bg-black bg-opacity-20 p-3 text-left font-semibold text-white`}
+            onClick={handleAddListClick}
+          >
+            + Add another list
+          </button>
+        )}
       </DndContext>
     </BoardLayout>
   )
