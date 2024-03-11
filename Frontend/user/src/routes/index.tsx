@@ -2,8 +2,9 @@ import { createBrowserRouter } from 'react-router-dom'
 import App from '../App'
 import HomePage from '~/pages/Home'
 import { Templates } from './../pages/Templates/index'
-import { AccountManagement, Board, BoardsPage } from '~/pages'
-// import { ActivityComponent, Profile } from '~/pages/Profile/components'
+import { AccountManagement, BoardsPage } from '~/pages'
+import { ActivityComponent } from './../pages/Profile/components/Activity'
+import CardDetailWindow from '~/components/CardDetailWindow'
 
 export const router = createBrowserRouter([
   {
@@ -26,12 +27,12 @@ export const router = createBrowserRouter([
         element: <BoardsPage />
       },
       {
-        path: '/board/:id',
-        element: <Board />
+        path: '/activity',
+        element: <ActivityComponent />
       },
       {
-        path: '/activity/:id',
-        element: <AccountManagement page={`activity`} />
+        path: '/carddetail',
+        element: <CardDetailWindow />
       }
     ]
   }
