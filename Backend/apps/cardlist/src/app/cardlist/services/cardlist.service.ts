@@ -1,6 +1,4 @@
 import { Model } from 'mongoose'
-
-import { objectOutputType, ZodString, ZodTypeAny } from 'zod'
 import { InjectModel } from '@nestjs/mongoose'
 import { DbSchemas, TrelloApi } from '@trello-v2/shared'
 
@@ -17,9 +15,19 @@ export abstract class ICardlistService {
 
   abstract getAllCardlistByBoardId(board_id: string): Promise<DbSchemas.CardlistSchema.CardList[]>
 
+  abstract getAllCardlistArchivedByBoardId(board_id: string): Promise<DbSchemas.CardlistSchema.CardList[]>
+
+  abstract getAllCardlistNonArchivedByBoardId(board_id: string): Promise<DbSchemas.CardlistSchema.CardList[]>
   abstract sortCardlistByOldestDate(board_id: string): Promise<DbSchemas.CardlistSchema.CardList[]>
   abstract sortCardlistByNewestDate(board_id: string): Promise<DbSchemas.CardlistSchema.CardList[]>
   abstract sortCardlistByName(board_id: string): Promise<DbSchemas.CardlistSchema.CardList[]>
+
+  abstract archiveCardsInlist(cardlist_id: string): Promise<DbSchemas.CardlistSchema.CardList>
+  abstract archiveCardlist(cardlist_id: string): Promise<DbSchemas.CardlistSchema.CardList>
+
+  abstract addWatcher(data: TrelloApi.CardlistApi.AddWatcherRequest): Promise<DbSchemas.CardlistSchema.CardList>
+
+  abstract addCardToList(data: TrelloApi.CardlistApi.AddCardToListRequest): Promise<DbSchemas.CardlistSchema.CardList>
 }
 
 export class CardlistService implements ICardlistService {
@@ -28,6 +36,8 @@ export class CardlistService implements ICardlistService {
     private CardlistMModel: Model<DbSchemas.CardlistSchema.CardList>,
     @InjectModel(DbSchemas.COLLECTION_NAMES[1])
     private BoardMModel: Model<DbSchemas.BoardSchema.Board>,
+    @InjectModel(DbSchemas.COLLECTION_NAMES[5])
+    private CardMModel: Model<DbSchemas.CardlistSchema.Card>,
   ) {}
 
   async createCardlist(data: TrelloApi.CardlistApi.CreateCardlistRequest): Promise<DbSchemas.CardlistSchema.CardList> {
@@ -99,6 +109,14 @@ export class CardlistService implements ICardlistService {
     return this.CardlistMModel.find({ board_id }).exec()
   }
 
+  async getAllCardlistArchivedByBoardId(board_id: string) {
+    return this.CardlistMModel.find({ board_id, archive_at: { $ne: null } }).exec()
+  }
+
+  async getAllCardlistNonArchivedByBoardId(board_id: string) {
+    return this.CardlistMModel.find({ board_id, archive_at: null }).exec()
+  }
+
   async sortCardlistByOldestDate(board_id: string) {
     const cardlists = await this.CardlistMModel.find({ board_id }).exec()
     cardlists.sort((a, b) => {
@@ -162,6 +180,76 @@ export class CardlistService implements ICardlistService {
     })
     return cardlists
   }
+
+  async archiveCardsInlist(cardlist_id: string) {
+    const cardlist = await this.CardlistMModel.findById(cardlist_id)
+    const currentDate = new Date()
+    if (!cardlist) {
+      return { status: 'Not Found', msg: "Can't find any cardlist" } as any
+    }
+    for (let i = 0; i < cardlist.cards.length; i++) {
+      const card = await this.CardMModel.findById(cardlist.cards[i]._id)
+      if (!card) {
+        return { status: 'Not Found', msg: "Can't find any card" } as any
+      }
+      card.archive_at = currentDate
+      cardlist.cards[i].archive_at = currentDate
+      await card.save()
+      await cardlist.save()
+    }
+    return cardlist.save()
+  }
+
+  async archiveCardlist(cardlist_id: string) {
+    const cardlist = await this.CardlistMModel.findById(cardlist_id)
+    const currentDate = new Date()
+    if (!cardlist) {
+      return { status: 'Not Found', msg: "Can't find any cardlist" } as any
+    }
+    for (let i = 0; i < cardlist.cards.length; i++) {
+      const card = await this.CardMModel.findById(cardlist.cards[i]._id)
+      if (!card) {
+        return { status: 'Not Found', msg: "Can't find any card" } as any
+      }
+      card.archive_at = currentDate
+      cardlist.cards[i].archive_at = currentDate
+      await card.save()
+      await cardlist.save()
+    }
+    cardlist.archive_at = currentDate
+    return cardlist.save()
+  }
+
+  async addWatcher(data: TrelloApi.CardlistApi.AddWatcherRequest) {
+    const cardlist = await this.CardlistMModel.findById(data._id)
+    if (!cardlist) {
+      return { status: 'Not Found', msg: "Can't find any cardlist" } as any
+    }
+    if (!cardlist.watcher_email.includes(data.email)) {
+      cardlist.watcher_email.push(data.email)
+      return cardlist.save()
+    }
+    return cardlist.save()
+  }
+  async addCardToList(data: TrelloApi.CardlistApi.AddCardToListRequest) {
+    const cardlist = await this.CardlistMModel.findById(data.cardlist_id)
+    if (!cardlist) {
+      return { status: 'Not Found', msg: "Can't find any cardlist" } as any
+    }
+    const card = new this.CardMModel({
+      name: data.name,
+      index: data.index,
+      watcher_email: [],
+      archive_at: null,
+      activities: [],
+      features: [],
+      cover: data.cover,
+      description: data.description,
+    })
+    await card.save()
+    cardlist.cards.push(card)
+    return cardlist.save()
+  }
 }
 
 export class CardlistServiceMock implements ICardlistService {
@@ -220,6 +308,18 @@ export class CardlistServiceMock implements ICardlistService {
     })
   }
 
+  getAllCardlistArchivedByBoardId() {
+    return new Promise<DbSchemas.CardlistSchema.CardList[]>((res) => {
+      res([])
+    })
+  }
+
+  getAllCardlistNonArchivedByBoardId() {
+    return new Promise<DbSchemas.CardlistSchema.CardList[]>((res) => {
+      res([])
+    })
+  }
+
   sortCardlistByOldestDate(): Promise<DbSchemas.CardlistSchema.CardList[]> {
     return new Promise<DbSchemas.CardlistSchema.CardList[]>((res) => {
       res([])
@@ -235,6 +335,55 @@ export class CardlistServiceMock implements ICardlistService {
   sortCardlistByName(): Promise<DbSchemas.CardlistSchema.CardList[]> {
     return new Promise<DbSchemas.CardlistSchema.CardList[]>((res) => {
       res([])
+    })
+  }
+  archiveCardsInlist(cardlist_id: string): Promise<DbSchemas.CardlistSchema.CardList> {
+    return new Promise<DbSchemas.CardlistSchema.CardList>((res) => {
+      res({
+        _id: cardlist_id,
+        board_id: 'Mock-id',
+        watcher_email: [],
+        cards: [],
+        name: 'Mock-name',
+      })
+    })
+  }
+
+  archiveCardlist(cardlist_id: string): Promise<DbSchemas.CardlistSchema.CardList> {
+    return new Promise<DbSchemas.CardlistSchema.CardList>((res) => {
+      res({
+        _id: cardlist_id,
+        board_id: 'Mock-id',
+        watcher_email: [],
+        cards: [],
+        name: 'Mock-name',
+      })
+    })
+  }
+
+  addWatcher(data: TrelloApi.CardlistApi.AddWatcherRequest): Promise<DbSchemas.CardlistSchema.CardList> {
+    return new Promise<DbSchemas.CardlistSchema.CardList>((res) => {
+      res({
+        ...data,
+        board_id: 'Mock-id',
+        watcher_email: [],
+        cards: [],
+        name: 'Mock-name',
+      })
+    })
+  }
+  addCardToList(data: TrelloApi.CardlistApi.AddCardToListRequest): Promise<DbSchemas.CardlistSchema.CardList> {
+    return new Promise<DbSchemas.CardlistSchema.CardList>((res) => {
+      res({
+        _id: 'Mock_id',
+        board_id: 'Mock_board_id',
+        index: data.index,
+        name: data.name,
+        cards: [],
+        watcher_email: [],
+        archive_at: null,
+        created_at: null,
+      })
     })
   }
 }

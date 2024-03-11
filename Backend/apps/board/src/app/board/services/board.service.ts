@@ -1,9 +1,8 @@
-import { InjectModel } from '@nestjs/mongoose'
-import { DbSchemas } from '@trello-v2/shared'
-import { TrelloApi } from '@trello-v2/shared'
-import { Model } from 'mongoose'
-// eslint-disable-next-line @typescript-eslint/naming-convention
 import * as _ from 'lodash'
+import { Model } from 'mongoose'
+
+import { InjectModel } from '@nestjs/mongoose'
+import { DbSchemas, TrelloApi } from '@trello-v2/shared'
 
 export abstract class IBoardService {
   abstract createBoard(data: TrelloApi.BoardApi.CreateBoard): Promise<DbSchemas.BoardSchema.Board>

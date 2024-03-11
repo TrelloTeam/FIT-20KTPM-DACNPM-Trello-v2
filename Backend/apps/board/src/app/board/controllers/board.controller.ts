@@ -1,14 +1,14 @@
-import { InjectController, InjectRoute } from '@app/common/decorators'
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { BoardService } from '../services/board.service'
-import { BoardRoutes } from '../board.routes'
-import { Body, Param } from '@nestjs/common'
-import { ZodValidationPipe, IdParamValidationPipe } from '@app/common/pipes'
-import { TrelloApi } from '@trello-v2/shared'
-import { SwaggerApi } from '@app/common/decorators/'
-import { getSchemaPath } from '@nestjs/swagger'
-// eslint-disable-next-line @typescript-eslint/naming-convention
 import * as _ from 'lodash'
+
+import { InjectController, InjectRoute } from '@app/common/decorators'
+import { SwaggerApi } from '@app/common/decorators/'
+import { IdParamValidationPipe, ZodValidationPipe } from '@app/common/pipes'
+import { Body, Param } from '@nestjs/common'
+import { getSchemaPath } from '@nestjs/swagger'
+import { TrelloApi } from '@trello-v2/shared'
+
+import { BoardRoutes } from '../board.routes'
+import { BoardService } from '../services/board.service'
 
 @InjectController({
   name: 'board',
