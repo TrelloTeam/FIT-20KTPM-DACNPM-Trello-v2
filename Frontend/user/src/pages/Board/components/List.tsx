@@ -5,6 +5,7 @@ import { CSS } from '@dnd-kit/utilities'
 import { useEffect, useRef, useState } from 'react'
 // import { useEffect, useState } from 'react'
 import { HiOutlineDotsHorizontal } from 'react-icons/hi'
+import { IoMdClose } from 'react-icons/io'
 import { IoImagesOutline } from 'react-icons/io5'
 import { useTheme } from '~/components/Theme/themeContext'
 export default function ListComponent({ list, setOpenCardSetting }: ListComponentProps) {
@@ -45,7 +46,7 @@ export default function ListComponent({ list, setOpenCardSetting }: ListComponen
     transform: CSS.Transform.toString(transform),
     opacity: isDragging ? 0.5 : undefined,
     backgroundColor: darkMode ? 'black' : '#f1f2f6',
-    color: darkMode ? '#d2dae2' : '#2f3542'
+    color: colors.text
   }
 
   return (
@@ -60,31 +61,32 @@ export default function ListComponent({ list, setOpenCardSetting }: ListComponen
         <h2 className={`font-bold  `}>{list.name}</h2>
         <HiOutlineDotsHorizontal
           size={'20px'}
-          className={`relative rounded-lg  ${darkMode ? 'hover:bg-gray-600' : 'hover:bg-gray-300'}`}
+          className={` top-50 absolute right-0 rounded-lg   ${darkMode ? 'hover:bg-gray-600' : 'hover:bg-gray-300'}`}
           onClick={() => setListSettingOpen(list.id)}
         />
-        {listSettingOpen && listSettingOpen === list.id && (
+      </div>
+      <div className={` relative`}>
+      {listSettingOpen && listSettingOpen === list.id && (
           <div ref={componentRef_ListSetting}>
             <ListSetting closeListSetting={() => setListSettingOpen('')} />
           </div>
         )}
-      </div>
-      <div className={` relative`}>
         <SortableContext items={list.data.map((c) => c.id)} strategy={verticalListSortingStrategy}>
           {list.data &&
             list.data.map((card, index) => (
               <CardComponent key={index} card={card} setOpenCardSetting={setOpenCardSetting} />
             ))}
         </SortableContext>
+     
         {addCardOpenAt &&
           addCardOpenAt === list.id &&
           (list.data[0].placeHolder === false ? (
-            <div ref={componentRef_AddCard}>
-              <div className={` mx-2 mt-2 rounded-xl  `}>
+            <div ref={componentRef_AddCard} className='mx-3 '>
+              <div className={` mt-2 rounded-xl  `}>
                 <div className={`flex flex-row items-center   justify-between`}>
                   <input
                     style={{
-                      backgroundColor: darkMode ? '#2c3e50' : 'white',
+                      backgroundColor: colors.background,
                       color: colors.text
                     }}
                     className={` h-full w-full rounded-lg px-2 pb-8 text-left focus:border-0 focus:outline-none focus:ring-0 `}
@@ -93,7 +95,7 @@ export default function ListComponent({ list, setOpenCardSetting }: ListComponen
                   ></input>
                 </div>
               </div>
-              <div className={`m-2 flex flex-row space-x-2`}>
+              <div className={`my-2 flex flex-row space-x-2`}>
                 <button
                   className=' rounded   bg-blue-600 px-3 py-2 hover:bg-blue-700'
                   onClick={() => setAddCardOpenAt(list.id)}
@@ -104,17 +106,20 @@ export default function ListComponent({ list, setOpenCardSetting }: ListComponen
                   className={` rounded-lg px-3 py-2 ${darkMode ? 'hover:bg-gray-600' : 'hover:bg-gray-300'}`}
                   onClick={() => setAddCardOpenAt('')}
                 >
-                  <p className={`text-left font-semibold`}> X </p>
+                  <p className={`text-left font-semibold`}>
+                    {' '}
+                    <IoMdClose className={``} size={'20px'} />{' '}
+                  </p>
                 </button>
               </div>
             </div>
           ) : (
-            <div ref={componentRef_AddCard} className='absolute top-0 w-full'>
-              <div className={` mx-2 space-y-2 rounded-xl  `}>
+            <div ref={componentRef_AddCard} className='absolute top-0 m-3 w-full pr-7'>
+              <div className={` space-y-2 rounded-xl  `}>
                 <div className={`flex flex-row items-center   justify-between`}>
                   <input
                     style={{
-                      backgroundColor: darkMode ? '#2c3e50' : 'white',
+                      backgroundColor: colors.background,
                       color: colors.text
                     }}
                     className={` h-full w-full rounded-lg px-2 pb-8 text-left focus:border-0 focus:outline-none focus:ring-0 `}
@@ -123,7 +128,7 @@ export default function ListComponent({ list, setOpenCardSetting }: ListComponen
                   ></input>
                 </div>
               </div>
-              <div className={`m-2 flex flex-row space-x-2`}>
+              <div className={`my-2 flex flex-row space-x-2`}>
                 <button
                   className=' rounded   bg-blue-600 px-3 py-2 hover:bg-blue-700'
                   onClick={() => setAddCardOpenAt(list.id)}
@@ -134,14 +139,17 @@ export default function ListComponent({ list, setOpenCardSetting }: ListComponen
                   className={` rounded-lg px-3 py-2 ${darkMode ? 'hover:bg-gray-600' : 'hover:bg-gray-300'}`}
                   onClick={() => setAddCardOpenAt('')}
                 >
-                  <p className={`text-left font-semibold `}> X </p>
+                  <p className={`text-left font-semibold `}>
+                    {' '}
+                    <IoMdClose className={``} size={'20px'} />{' '}
+                  </p>
                 </button>
               </div>
             </div>
           ))}
       </div>
       {!addCardOpenAt && (
-        <div className={`m-2 flex flex-row space-x-2`}>
+        <div className={`mx-3 my-2 flex flex-row space-x-2`}>
           <button
             className={`w-10/12 rounded-lg p-2 ${darkMode ? 'hover:bg-gray-600' : 'hover:bg-gray-300'}`}
             onClick={() => {

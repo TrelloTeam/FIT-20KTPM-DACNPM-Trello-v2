@@ -22,6 +22,7 @@ import { BoardLayout } from '~/layouts'
 import { generatePlaceHolderCard } from '~/utils/fomatter'
 import LoadingComponent from '~/components/Loading'
 import { CardComponent, ListComponent } from './components'
+import { useTheme } from '~/components/Theme/themeContext'
 
 const ACTIVE_DRAG_ITEM_TYPE = {
   COLUMN: 'ACTIVE_DRAG_ITEM_TYPE_COLUMN',
@@ -31,6 +32,7 @@ const ACTIVE_DRAG_ITEM_TYPE = {
 // const LazyListComponent = lazy(() => import('./components/List'))
 const LazyListsComponent = lazy(() => import('./components/Lists'))
 export function Board() {
+  // const { colors, darkMode } = useTheme()
   const [oldListWhenDragging, setOldListWhenDraggingCard] = useState<List>()
   const [listsData, setListsData] = useState<Array<List>>()
   const [activeDragItemId, setActiveDragItemId] = useState<string>('')
@@ -279,26 +281,36 @@ export function Board() {
       document.body.style.overflow = 'auto'
     }
   }, [openCardSetting])
+
   return (
     <BoardLayout openCardSetting={openCardSetting}>
-      <DndContext sensors={sensors} onDragStart={handleDragStart} onDragMove={handleDragOver} onDragEnd={handleDragEnd}>
-        {listsData && (
-          <div className={`relative z-20 w-[100%]`}>
-            <Suspense fallback={<LoadingComponent />}>
-              <LazyListsComponent lists={listsData} setOpenCardSetting={setOpenCardSetting} />
-            </Suspense>
-            <DragOverlay dropAnimation={customDropAnimation}>
-              {!activeDragItemId || !activeDragItemType}
-              {activeDragItemId && activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN && (
-                <ListComponent list={activeDragItemData} setOpenCardSetting={(data) => setOpenCardSetting(data)} />
-              )}
-              {activeDragItemId && activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.CARD && (
-                <CardComponent card={activeDragItemData} setOpenCardSetting={(data) => setOpenCardSetting(data)} />
-              )}
-            </DragOverlay>
-          </div>
-        )}
-      </DndContext>
+      <div className={`mx-auto p-4 text-center text-3xl font-bold uppercase text-black`}>Header Area</div>
+      <div className={`flex flex-row justify-start`}>
+        <DndContext
+          sensors={sensors}
+          onDragStart={handleDragStart}
+          onDragMove={handleDragOver}
+          onDragEnd={handleDragEnd}
+        >
+          {listsData && (
+            <div className={`relative z-20 w-[100%]`}>
+              <Suspense fallback={<LoadingComponent />}>
+                <LazyListsComponent lists={listsData} setOpenCardSetting={setOpenCardSetting} />
+              </Suspense>
+              <DragOverlay dropAnimation={customDropAnimation}>
+                {!activeDragItemId || !activeDragItemType}
+                {activeDragItemId && activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN && (
+                  <ListComponent list={activeDragItemData} setOpenCardSetting={(data) => setOpenCardSetting(data)} />
+                )}
+                {activeDragItemId && activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.CARD && (
+                  <CardComponent card={activeDragItemData} setOpenCardSetting={(data) => setOpenCardSetting(data)} />
+                )}
+              </DragOverlay>
+            </div>
+          )}
+        </DndContext>
+        
+      </div>
     </BoardLayout>
   )
 }
