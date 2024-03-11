@@ -6,14 +6,11 @@ import { MdOutlineLock, MdOutlineLockOpen } from 'react-icons/md'
 
 import { RxActivityLog, RxAvatar } from 'react-icons/rx'
 import { SlPeople } from 'react-icons/sl'
-import { useTheme } from '~/components/Theme/themeContext'
 
 export const ActivityComponent: React.FC = () => {
-  const avtPath = '/src/assets/Profile/avt.png'
   const [activity, setActivity] = useState<Activity[]>()
   const [workspace, setWorkspace] = useState<Workspace[]>()
   const [activityCount, setActivityCount] = useState<number>(3)
-  const { colors } = useTheme()
   useEffect(() => {
     addWorkSpaceName()
   }, [activityCount])
@@ -45,16 +42,13 @@ export const ActivityComponent: React.FC = () => {
           <div className={`flex-grow border-b-2 border-gray-300 pb-2`}></div>
         </div>
 
-
         {workspace?.map((w, index) => (
-
           <div key={index} className={`flex flex-row`}>
             <div className={`w-[40px]`}></div>
             <div
               className={` flex w-full cursor-pointer flex-row items-center space-x-4 border-b-2 border-gray-300 py-2 hover:bg-gray-200`}
             >
               <p className={`ml-2  `}>{w.name}</p>
-
 
               {w.visibility === 'public' ? (
                 <MdOutlineLockOpen className='text-green-500' />
@@ -79,9 +73,9 @@ export const ActivityComponent: React.FC = () => {
                 alt='Avatar'
                 className='-ml-2 mr-1 h-9 w-9 cursor-pointer rounded-full border hover:opacity-60'
               /> */}
-               <RxAvatar  className={`-ml-2 mr-1 h-9 w-9 cursor-pointer rounded-full  hover:opacity-60`}/>
+              <RxAvatar className={`-ml-2 mr-1 h-9 w-9 cursor-pointer rounded-full  hover:opacity-60`} />
               <div>
-                <p >{a.content}</p>
+                <p>{a.content}</p>
                 <div className={`flex flex-row items-center space-x-2`}>
                   <p className={`text-sm font-light  `}>Jan 29 at 9.00 AM. On board </p>
                   <p className={`flex cursor-pointer flex-row items-center font-semibold`}>

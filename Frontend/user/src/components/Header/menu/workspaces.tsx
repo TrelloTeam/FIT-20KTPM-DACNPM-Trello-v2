@@ -6,12 +6,10 @@ import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom'
 import { useTheme } from '../../Theme/themeContext'
 
-
-
 export default function WorkSpaces() {
   const [open, setOpen] = React.useState(false)
   const anchorRef = React.useRef<HTMLButtonElement>(null)
-  const { colors } = useTheme()
+  const { darkMode, colors } = useTheme()
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen)
@@ -44,8 +42,6 @@ export default function WorkSpaces() {
     prevOpen.current = open
   }, [open])
 
-  console.log(colors.background)
-
   return (
     <Stack direction='row' spacing={2}>
       <Box>
@@ -62,7 +58,7 @@ export default function WorkSpaces() {
             textTransform: 'none',
             color: open ? '#579dff' : colors.text,
             '&:hover': {
-              backgroundColor: 'rgba(255,255,255,0.1)'
+              backgroundColor: open ? colors.bg_button_active_hover : colors.bg_button_hover
             },
             backgroundColor: open ? 'rgba(86,157,255,0.1)' : 'transparent',
             transition: 'all 0.1s ease-in',
@@ -118,34 +114,31 @@ export default function WorkSpaces() {
                             padding: '8px',
                             cursor: 'pointer',
                             '&:hover': {
-                              backgroundColor:
-                                colors.background === '#ffffff' ? `rgba(0,0,0,0.1)` : `rgba(255,255,255,0.1)`,
+                              backgroundColor: !darkMode ? `rgba(0,0,0,0.1)` : `rgba(255,255,255,0.1)`,
                               borderRadius: '4px'
                             }
                           }}
                         >
+                          <Typography
+                            variant='h4'
+                            sx={{
+                              display: 'inline-block',
+                              fontSize: '20px',
+                              fontWeight: 700,
+                              padding: '8px 14px',
+                              borderRadius: '6px',
+                              backgroundImage: 'linear-gradient(to bottom, #E774BB, #943D73)'
+                            }}
+                          >
+                            T
+                          </Typography>
 
-                            <Typography
-                              variant='h4'
-                              sx={{
-                                display: 'inline-block',
-                                fontSize: '20px',
-                                fontWeight: 700,
-                                padding: '8px 14px',
-                                borderRadius: '6px',
-                                backgroundImage: 'linear-gradient(to bottom, #E774BB, #943D73)'
-                              }}
-                            >
-                              T
-                            </Typography>
-
-                            <Typography
-                              variant='body1'
-                              sx={{ fontSize: '14px', fontWeight: 700, color: '#9fadbc', marginLeft: '12px' }}
-                            >
-                              test
-                            </Typography>
-                   
+                          <Typography
+                            variant='body1'
+                            sx={{ fontSize: '14px', fontWeight: 700, color: colors.text, marginLeft: '12px' }}
+                          >
+                            test
+                          </Typography>
                         </Box>
                       </Link>
                     </Box>
@@ -171,28 +164,26 @@ export default function WorkSpaces() {
                             }
                           }}
                         >
+                          <Typography
+                            variant='h4'
+                            sx={{
+                              display: 'inline-block',
+                              fontSize: '20px',
+                              fontWeight: 700,
+                              padding: '8px 14px',
+                              borderRadius: '6px',
+                              backgroundImage: 'linear-gradient(to bottom, #E774BB, #943D73)'
+                            }}
+                          >
+                            T
+                          </Typography>
 
-                            <Typography
-                              variant='h4'
-                              sx={{
-                                display: 'inline-block',
-                                fontSize: '20px',
-                                fontWeight: 700,
-                                padding: '8px 14px',
-                                borderRadius: '6px',
-                                backgroundImage: 'linear-gradient(to bottom, #E774BB, #943D73)'
-                              }}
-                            >
-                              T
-                            </Typography>
-
-                            <Typography
-                              variant='body1'
-                              sx={{ fontSize: '14px', fontWeight: 700, color: '#9fadbc', marginLeft: '12px' }}
-                            >
-                              test
-                            </Typography>
-                        
+                          <Typography
+                            variant='body1'
+                            sx={{ fontSize: '14px', fontWeight: 700, color: colors.text, marginLeft: '12px' }}
+                          >
+                            test
+                          </Typography>
                         </Box>
                       </Link>
                     </Box>

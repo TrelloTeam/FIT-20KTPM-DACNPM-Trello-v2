@@ -8,6 +8,7 @@ import { MdOutlineRemoveRedEye } from 'react-icons/md'
 import { useTheme } from '~/components/Theme/themeContext'
 import randomColor from 'randomcolor'
 export default function CardComponent({ card, setOpenCardSetting }: CardComponentProps) {
+
   const { colors, darkMode } = useTheme()
   const [bgColorEmailWatcher, setBgColorEmailWatcher] = useState<Array<string>>([])
   useEffect(() => {
@@ -18,6 +19,7 @@ export default function CardComponent({ card, setOpenCardSetting }: CardComponen
     }
     setBgColorEmailWatcher(bgColorCode)
   }, [])
+
 
   const { attributes, listeners, setNodeRef, transform, isDragging } = useSortable({
     id: card.id,

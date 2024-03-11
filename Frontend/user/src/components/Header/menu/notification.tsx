@@ -2,10 +2,12 @@ import * as React from 'react'
 import { Box, ClickAwayListener, Grow, Paper, Popper, MenuList, Stack, Typography, Badge } from '@mui/material'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBell } from '@fortawesome/free-regular-svg-icons'
+import { useTheme } from './../../Theme/themeContext'
 
 export default function Notification() {
   const [open, setOpen] = React.useState(false)
   const anchorRef = React.useRef<HTMLButtonElement>(null)
+  const { colors } = useTheme()
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen)
@@ -56,7 +58,7 @@ export default function Notification() {
             borderRadius: '50%',
             '&:hover': {
               transition: 'all 0.1s ease-in',
-              backgroundColor: 'rgba(255,255,255,0.1)'
+              backgroundColor: colors.bg_button_hover
             },
             marginRight: '4px',
             cursor: 'pointer'
@@ -92,7 +94,7 @@ export default function Notification() {
                     sx={{
                       marginTop: '8px',
                       transition: 'all 0.1s ease-in',
-                      backgroundColor: '#282e33',
+                      backgroundColor: colors.background,
                       minWidth: '424px',
                       borderRadius: '4px'
                     }}
@@ -104,7 +106,7 @@ export default function Notification() {
                           sx={{
                             fontSize: '20px',
                             fontWeight: 500,
-                            color: '#9fadbc',
+                            color: colors.text,
                             padding: '20px 0',
                             borderBottom: '1px solid #9fadbc'
                           }}
@@ -117,7 +119,7 @@ export default function Notification() {
                         variant='body1'
                         sx={{
                           fontSize: '12px',
-                          color: '#9fadbc',
+                          color: colors.text,
                           textAlign: 'right',
                           padding: '12px',
                           cursor: 'pointer',
@@ -129,7 +131,7 @@ export default function Notification() {
                         Mark all as read
                       </Typography>
 
-                      <Box sx={{ display: 'flex', padding: '12px 0 12px 12px', backgroundColor: '#1c2b41' }}>
+                      <Box sx={{ display: 'flex', padding: '12px 0 12px 12px', backgroundColor: colors.bg_noti }}>
                         <Box sx={{ width: '90%' }}>
                           <Box
                             sx={{
@@ -148,11 +150,11 @@ export default function Notification() {
                               variant='body1'
                               sx={{
                                 fontSize: '14px',
-                                color: '#9fadbc',
+                                color: colors.text,
                                 cursor: 'pointer',
-                                backgroundColor: '#22272b',
+                                backgroundColor: colors.background,
                                 '&:hover': {
-                                  backgroundColor: '#282e33'
+                                  backgroundColor: colors.background_menu_header
                                 },
                                 padding: '10px',
                                 borderRadius: '8px'
@@ -176,7 +178,7 @@ export default function Notification() {
                           <Box
                             sx={{
                               display: 'flex',
-                              backgroundColor: '#2c333a',
+                              backgroundColor: colors.background,
                               padding: '10px',
                               borderEndLeftRadius: '4px',
                               borderEndRightRadius: '4px'
@@ -205,7 +207,7 @@ export default function Notification() {
                                   fontWeight: '600',
                                   lineHeight: '20px',
                                   padding: '4px 0',
-                                  color: '#9fadbc'
+                                  color: colors.text
                                 }}
                               >
                                 Hữu Chính Trần
@@ -215,7 +217,7 @@ export default function Notification() {
                                 variant='body1'
                                 sx={{
                                   fontSize: '14px',
-                                  color: '#9fadbc',
+                                  color: colors.text,
                                   lineHeight: '20px',
                                   padding: '4px 0'
                                 }}
@@ -227,7 +229,7 @@ export default function Notification() {
                                 variant='body1'
                                 sx={{
                                   fontSize: '14px',
-                                  color: '#9fadbc',
+                                  color: colors.text,
                                   lineHeight: '20px',
                                   padding: '4px 0'
                                 }}

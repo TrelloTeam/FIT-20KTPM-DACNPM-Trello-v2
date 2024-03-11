@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react'
 
 import { Sidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar'
@@ -14,6 +13,7 @@ import AddOutlinedIcon from '@mui/icons-material/AddOutlined'
 import { workspaceData } from '../pages/Templates/testData'
 import { Workspace } from '../pages/Templates/type'
 import { Button } from '@mui/base'
+import { Link } from 'react-router-dom'
 
 function SidebarTemplate() {
   const [workspace, setWorkspace] = useState<Workspace[]>()
@@ -30,18 +30,22 @@ function SidebarTemplate() {
             className='menu-item rounded-md bg-white font-bold hover:border-0 hover:bg-blue-500 hover:text-blue-500'
             style={{ marginBottom: '4px' }}
           >
-            <div className='flex items-center'>
-              <SpaceDashboardOutlinedIcon fontSize='small' className='mr-2' />
-              Boards
-            </div>
+            <Link to={'/board/1'}>
+              <div className='flex items-center'>
+                <SpaceDashboardOutlinedIcon fontSize='small' className='mr-2' />
+                Boards
+              </div>
+            </Link>
           </MenuItem>
           <SubMenu
             label={
               <span className='menu-item rounded-md bg-white font-bold hover:border-0 hover:bg-blue-500 hover:text-blue-500'>
-                <div className='flex items-center'>
-                  <DashboardOutlinedIcon className='mr-2' fontSize='small' />
-                  Templates
-                </div>
+                <Link to={'/template'}>
+                  <div className='flex items-center'>
+                    <DashboardOutlinedIcon className='mr-2' fontSize='small' />
+                    Templates
+                  </div>
+                </Link>
               </span>
             }
             defaultOpen={true}
@@ -65,10 +69,12 @@ function SidebarTemplate() {
             className='menu-item home border-b-3 rounded-md border-blue-500 bg-white font-bold hover:border-0 hover:bg-blue-500 hover:text-blue-500 '
             style={{ marginBottom: '4px' }}
           >
-            <div className='flex items-center'>
-              <HomeOutlinedIcon fontSize='small' className='mr-2' />
-              Home
-            </div>
+            <Link to={'/'}>
+              <div className='flex items-center'>
+                <HomeOutlinedIcon fontSize='small' className='mr-2' />
+                Home
+              </div>
+            </Link>
           </MenuItem>
         </Menu>
       </Sidebar>

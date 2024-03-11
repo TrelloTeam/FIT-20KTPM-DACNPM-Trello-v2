@@ -15,7 +15,7 @@ export default function BoardsPageRow({ boards, enableAddBoard }: BoardsPageRowP
     <Grid container spacing={2}>
       {boards.map((board: BoardSubset, index: number) => (
         <Grid item xs={3} key={index}>
-          <Link to={`/board/123`}>
+          <Link to={`/workspace/123`}>
             <BoardsPageCard board={board} />
           </Link>
         </Grid>

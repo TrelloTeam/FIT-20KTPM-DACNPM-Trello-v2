@@ -10,4 +10,6 @@ export const COLLECTION_NAMES = [
   "boards",
   "workspaces",
   "users",
+  "members",
+  "cards",
 ] as const;

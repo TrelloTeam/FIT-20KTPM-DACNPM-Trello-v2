@@ -119,7 +119,7 @@ export default function Create() {
                             padding: '6px 12px',
                             cursor: 'pointer',
                             '&:hover': {
-                              backgroundColor: 'rgba(255,255,255,0.1)'
+                              backgroundColor: colors.bg_button_hover
                             }
                           }}
                         >
@@ -148,7 +148,7 @@ export default function Create() {
                             padding: '6px 12px',
                             cursor: 'pointer',
                             '&:hover': {
-                              backgroundColor: 'rgba(255,255,255,0.1)'
+                              backgroundColor: colors.bg_button_hover
                             }
                           }}
                         >
@@ -180,7 +180,7 @@ export default function Create() {
                             padding: '6px 12px',
                             cursor: 'pointer',
                             '&:hover': {
-                              backgroundColor: 'rgba(255,255,255,0.1)'
+                              backgroundColor: colors.bg_button_hover
                             }
                           }}
                         >

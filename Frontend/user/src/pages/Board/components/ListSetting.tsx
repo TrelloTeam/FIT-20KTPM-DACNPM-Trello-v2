@@ -5,7 +5,7 @@ interface ListSettingProps {
 }
 
 export default function ListSetting({ closeListSetting }: ListSettingProps) {
-  const { colors, darkMode } = useTheme()
+  const { darkMode } = useTheme()
   return (
     <div
       style={{
@@ -33,7 +33,7 @@ export default function ListSetting({ closeListSetting }: ListSettingProps) {
           <button className={`m-0 w-full p-2 text-left hover:bg-gray-200`}>Watch</button>
         </div>
         <div className='my-2 flex justify-center'>
-          <hr className={`h-[1px] w-11/12 border-0 ${darkMode?'bg-gray-500':'bg-gray-300'}`}></hr>
+          <hr className={`h-[1px] w-11/12 border-0 ${darkMode ? 'bg-gray-500' : 'bg-gray-300'}`}></hr>
         </div>
         <div className={``}>
           <p className={`w-full p-2 text-left text-xs font-bold`}>Sort by...</p>
@@ -42,14 +42,14 @@ export default function ListSetting({ closeListSetting }: ListSettingProps) {
           <button className={`m-0 w-full p-2 text-left hover:bg-gray-200`}>Card name (alphabetically)</button>
         </div>
         <div className='my-2 flex justify-center'>
-          <hr className={`h-[1px] w-11/12 border-0 ${darkMode?'bg-gray-500':'bg-gray-300'}`}></hr>
+          <hr className={`h-[1px] w-11/12 border-0 ${darkMode ? 'bg-gray-500' : 'bg-gray-300'}`}></hr>
         </div>
         <div className={``}>
           <button className={`m-0 w-full p-2 text-left hover:bg-gray-200`}>Move all card in this list</button>
           <button className={`m-0 w-full p-2 text-left hover:bg-gray-200`}>Archive all card in this list</button>
         </div>
         <div className='my-2 flex justify-center'>
-          <hr className={`h-[1px] w-11/12 border-0 ${darkMode?'bg-gray-500':'bg-gray-300'}`}></hr>
+          <hr className={`h-[1px] w-11/12 border-0 ${darkMode ? 'bg-gray-500' : 'bg-gray-300'}`}></hr>
         </div>
         <div className={``}>
           <button className={`m-0 w-full p-2 text-left hover:bg-gray-200`}>Archive this list</button>

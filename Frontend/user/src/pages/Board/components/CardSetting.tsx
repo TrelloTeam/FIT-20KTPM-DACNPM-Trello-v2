@@ -6,10 +6,12 @@ import { FaRegClock } from 'react-icons/fa'
 import { FaArrowRight } from 'react-icons/fa'
 import { MdOutlineContentCopy } from 'react-icons/md'
 import { FiArchive } from 'react-icons/fi'
+
 import { useTheme } from '~/components/Theme/themeContext'
 interface CardSettingProps {
   closeCardSetting: () => void
 }
+
 export default function CardSetting() {
   const { colors, darkMode } = useTheme()
   return (

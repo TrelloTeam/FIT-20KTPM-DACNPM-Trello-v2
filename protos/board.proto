@@ -1,0 +1,23 @@
+syntax = "proto3";
+package trello.board;
+
+import "activity.proto";
+
+message BoardLabelSchema {
+    string _id=1;
+    string color=2;
+    string name=3;
+}
+
+message BoardSchema {
+    string _id=1;
+    string name=2;
+    string workspace_id=3;
+    string background=4;
+    repeated trello.activity.ActivitySchema activities=5;
+    repeated string members_email=6;
+    repeated BoardLabelSchema labels=7;
+    bool is_star=8;
+    repeated string watcher_email=9;
+    repeated string visibility=10;
+}

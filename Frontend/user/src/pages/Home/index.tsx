@@ -1,18 +1,18 @@
-
 import StarBorderIcon from '@mui/icons-material/StarBorder'
 import AccessTimeIcon from '@mui/icons-material/AccessTime'
 import CardHightLightContent from './components/CardHighLightUI'
 import ProjectTile from './components/ProjectTile'
 import './home.css'
-import BoardBar from '~/components/BoardBar/BoardBar'
+import SidebarTemplate from '~/components/SidebarTemplate'
 
 export default function HomePage() {
   return (
     <>
-      <BoardBar></BoardBar>
-      <div className='home-container' >
+      <div className='home-container'>
         <div className='home-sticky-container -p'>
-          <nav className='home-left-sidebar-container'>{/* Add your left sidebar content here */}</nav>
+          <nav className='home-left-sidebar-container'>
+            <SidebarTemplate />
+          </nav>
 
           {/* highlight main content */}
           <div className='home-main-content-container'>

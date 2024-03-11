@@ -5,11 +5,7 @@ import { useTheme } from '~/components/Theme/themeContext'
 export const Profile: React.FC = () => {
   const image = '/src/assets/Profile/profile_img.svg'
   const { colors } = useTheme()
-  const text_bold_color = 'text-gray-700'
-  const text_profile_color = 'text-gray-600'
-  function deleteAccount() {
-    alert('Delete Account')
-  }
+
   return (
     <div className='mx-auto mt-10 max-w-2xl rounded p-10'>
       <img
@@ -20,12 +16,10 @@ export const Profile: React.FC = () => {
 
       <div className='space-y-6 '>
         <div>
-
           <h2 className={`mb-2 text-2xl font-bold `}>Manage your personal information</h2>
         </div>
         <div>
           <h1 className={`mb-2 border-b-2 border-gray-300 pb-2 text-xl font-semibold `}>About</h1>
-
         </div>
         <div className={`w-8/12`}>
           <label className='mb-2 block' htmlFor='bio'>
@@ -54,7 +48,6 @@ export const Profile: React.FC = () => {
             rows={3}
           />
           <button className={`mt-10 h-8 w-full rounded bg-blue-600 text-white `}>Save</button>
-
         </div>
       </div>
       {/* <div className='ml-5 mt-10 mb-0 flex justify-center w-7/12'>

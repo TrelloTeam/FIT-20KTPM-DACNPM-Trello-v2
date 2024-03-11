@@ -10,7 +10,6 @@ interface HeaderProps {
 
 export const Header: React.FC<HeaderProps> = ({ currentTab, onSelectTab }) => {
   const [selectedTab, setSelectedTab] = useState<string>('')
-  const avtPath = '/src/assets/Profile/avt.png'
   useEffect(() => {
     setSelectedTab(currentTab)
   }, [currentTab])
@@ -20,7 +19,6 @@ export const Header: React.FC<HeaderProps> = ({ currentTab, onSelectTab }) => {
   }
 
   return (
-
     <header className='left-0 mx-14  py-2'>
       <div className='mt-16 flex max-w-2xl items-center space-x-4'>
         {/* <img
@@ -47,12 +45,10 @@ export const Header: React.FC<HeaderProps> = ({ currentTab, onSelectTab }) => {
           className={`cursor-pointer border-b-[3px] pb-2 font-bold  ${selectedTab === 'activity' ? 'border-blue-600 text-blue-600' : 'border-gray-300  hover:text-blue-600'}`}
           onClick={() => handleTabClick('activity')}
         >
-
           Activity
         </p>
 
         <div className={`flex-grow border-b-[3px] border-gray-300`}></div>
-
       </div>
     </header>
   )
