@@ -1,0 +1,62 @@
+syntax = "proto3";
+package trello.board_service;
+
+import "board.proto";
+import "google/protobuf/empty.proto";
+
+message BoardListResponse {
+    repeated trello.board.BoardSchema data=1;
+}
+
+message BoardResponse {
+    trello.board.BoardSchema data=1;
+}
+
+message WorkspaceIdRequest {
+    string workspace_id=1;
+}
+
+message BoardIdRequest {
+    string board_id=1;
+}
+
+message CreateBoardRequest {
+    string workspace_id=1;
+    string name=2;
+    string visibility=3;
+}
+
+message ChangeVisibilityRequest {
+    string _id=1;
+    string visibility=2;
+}
+
+message DeleteBoardRequest {
+    string board_id=1;
+}
+
+message UpdateBoardRequest {
+    string _id=1;
+    optional string name=2;
+    optional string background=3;
+    optional bool is_star=4;
+    optional string visibility=5;
+}
+
+message MemberBoardRequest {
+    string _id=1;
+    optional string email=2;
+}
+
+service BoardService {
+    rpc getAll(google.protobuf.Empty) returns (BoardListResponse);
+    rpc getBoardsByWorkSpaceId(WorkspaceIdRequest) returns (BoardListResponse);
+    rpc create(CreateBoardRequest) returns (BoardResponse);
+    rpc getBoardInfoByBoardId(BoardIdRequest) returns (BoardResponse);
+    rpc deleteBoard(DeleteBoardRequest) returns (BoardResponse);
+    rpc updateBoard(UpdateBoardRequest) returns (BoardResponse);
+    rpc addMember(MemberBoardRequest) returns (BoardResponse);
+    rpc removeMember(MemberBoardRequest) returns (BoardResponse);
+    rpc addWatcher(MemberBoardRequest) returns (BoardResponse);
+    rpc removeWatcher(MemberBoardRequest) returns (BoardResponse);
+}

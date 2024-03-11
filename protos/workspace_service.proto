@@ -1,0 +1,66 @@
+syntax = "proto3";
+package trello.workspace_service;
+
+import "member.proto";
+import "workspace.proto";
+import "google/protobuf/empty.proto";
+
+message WorkspaceObjectResponse {
+    repeated trello.workspace.WorkspaceSchema owner=1;
+    repeated trello.workspace.WorkspaceSchema admin=2;
+    repeated trello.workspace.WorkspaceSchema member=3;
+    repeated trello.workspace.WorkspaceSchema guest=4;
+}
+
+message WorkspaceListByEmailResponse{
+    WorkspaceObjectResponse data=1;
+}
+
+message WorkspaceListResponse {
+    repeated trello.workspace.WorkspaceSchema data=1;
+}
+
+message WorkspaceResponse {
+    trello.workspace.WorkspaceSchema data=1;
+}
+
+message WorkspaceByEmailRequest {
+    string email=1;
+}
+
+message WorkspaceByIdRequest{
+    string id=1;
+}
+
+message CreateWorkspaceRequest {
+  string name=1;
+  optional string description=2;
+  optional string members=3;
+}
+
+message UpdateWorkspaceRequest {
+    optional string name=1;
+    optional string short_name=2;
+    optional string description=3;
+    repeated trello.member.MemberSchema members=4;
+    optional string logo=5;
+    optional string website=6;
+}
+  
+message UpdateVisibilityRequest {
+    string visibility=1;
+}
+
+service WorkspaceService {
+    rpc getAll(google.protobuf.Empty) returns (WorkspaceListResponse);
+    rpc getAllWorkspacesByEmail(google.protobuf.Empty) returns (WorkspaceListByEmailResponse);
+    rpc getWorkspaceById(WorkspaceByIdRequest) returns (WorkspaceResponse);
+    rpc getAdminWorkspacesByEmail(google.protobuf.Empty) returns (WorkspaceListResponse);
+    rpc getGuestWorkspacesByEmail(google.protobuf.Empty) returns (WorkspaceListResponse);
+    rpc getMemberWorkspacesByEmail(google.protobuf.Empty) returns (WorkspaceListResponse);
+    rpc getOwnerWorkspacesByEmail(google.protobuf.Empty) returns (WorkspaceListResponse);
+    rpc getPendingWorkspacesByEmail(google.protobuf.Empty) returns (WorkspaceListResponse);
+    rpc createWorkspace(CreateWorkspaceRequest) returns (WorkspaceResponse);
+    rpc updateWorkspaceInfo(UpdateWorkspaceRequest) returns (WorkspaceResponse);
+    rpc changeWorkspaceVisibility(UpdateVisibilityRequest) returns (WorkspaceResponse);
+}
