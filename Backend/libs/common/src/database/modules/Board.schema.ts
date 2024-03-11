@@ -1,6 +1,9 @@
 import mongoose from 'mongoose'
+
 import { DbSchemas } from '@trello-v2/shared'
+
 import { ActivityMSchema } from './Activity.schema'
+
 const { Schema } = mongoose
 
 export const BoardLabelMSchema = new Schema<DbSchemas.BoardSchema.BoardLabel>({
