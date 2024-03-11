@@ -1,21 +1,21 @@
-import * as _ from 'lodash'
-
 import { InjectController, InjectRoute } from '@app/common/decorators'
-import { SwaggerApi } from '@app/common/decorators/'
-import { IdParamValidationPipe, ZodValidationPipe } from '@app/common/pipes'
-import { Body, Param } from '@nestjs/common'
-import { getSchemaPath } from '@nestjs/swagger'
-import { TrelloApi } from '@trello-v2/shared'
-
-import { BoardRoutes } from '../board.routes'
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { BoardService } from '../services/board.service'
+import { BoardRoutes } from '../board.routes'
+import { Body, Param } from '@nestjs/common'
+import { ZodValidationPipe, IdParamValidationPipe } from '@app/common/pipes'
+import { TrelloApi } from '@trello-v2/shared'
+import { SwaggerApi } from '@app/common/decorators/'
+import { getSchemaPath } from '@nestjs/swagger'
+// eslint-disable-next-line @typescript-eslint/naming-convention
+import * as _ from 'lodash'
 
 @InjectController({
   name: 'board',
   isCore: true,
 })
-export class BoardController {
-  constructor(private boardService: BoardService) {}
+export class BoardMSController {
+  constructor(private BoardService: BoardService) {}
 
   @InjectRoute(BoardRoutes.getAllBoard)
   @SwaggerApi({
@@ -27,7 +27,7 @@ export class BoardController {
     ],
   })
   async getAll(): Promise<TrelloApi.BoardApi.GetallBoardResponse> {
-    const data = await this.boardService.getAllBoard()
+    const data = await this.BoardService.getAllBoard()
     return {
       data: data,
     }
@@ -49,9 +49,9 @@ export class BoardController {
   })
   async getBoardsByWorkSpaceId(
     @Param('workspace_id', IdParamValidationPipe)
-    workspace_id: TrelloApi.BoardApi.workSpaceIdRequest,
+    workspace_id: string,
   ): Promise<TrelloApi.BoardApi.GetallBoardResponse> {
-    const data = await this.boardService.getBoardsByWorkspaceId(workspace_id)
+    const data = await this.BoardService.getBoardsByWorkspaceId(workspace_id)
 
     return {
       data: data,
@@ -72,7 +72,7 @@ export class BoardController {
     @Body(new ZodValidationPipe(TrelloApi.BoardApi.CreateBoardRequestSchema))
     body: TrelloApi.BoardApi.CreateBoard,
   ): Promise<TrelloApi.BoardApi.CreateBoardResponse> {
-    const data = await this.boardService.createBoard(body)
+    const data = await this.BoardService.createBoard(body)
     return {
       data: data,
     }
@@ -94,9 +94,9 @@ export class BoardController {
   })
   async getBoardInfoByBoardId(
     @Param('board_id', IdParamValidationPipe)
-    board_id: TrelloApi.BoardApi.BoardIdRequest,
+    board_id: string,
   ): Promise<TrelloApi.BoardApi.GetBoardInfoByBoardIdResponse> {
-    const data = await this.boardService.getBoardInfoByBoardId(board_id)
+    const data = await this.BoardService.getBoardInfoByBoardId(board_id)
 
     return {
       data: data,
@@ -119,9 +119,9 @@ export class BoardController {
   })
   async deleteBoard(
     @Param('board_id', IdParamValidationPipe)
-    board_id: TrelloApi.BoardApi.BoardIdRequest,
+    board_id: string,
   ): Promise<TrelloApi.BoardApi.DeleteBoardResponse> {
-    const data = await this.boardService.deleteBoard(board_id)
+    const data = await this.BoardService.deleteBoard(board_id)
     return {
       data: data,
     }
@@ -143,7 +143,7 @@ export class BoardController {
     @Body(new ZodValidationPipe(TrelloApi.BoardApi.UpdateBoardRequestSchema))
     body: TrelloApi.BoardApi.UpdateBoardRequest,
   ): Promise<TrelloApi.BoardApi.UpdateBoardResponse> {
-    const data = await this.boardService.updateBoard(body)
+    const data = await this.BoardService.updateBoard(body)
     return {
       data: data,
     }
@@ -165,9 +165,9 @@ export class BoardController {
     @Body(new ZodValidationPipe(TrelloApi.BoardApi.AddMemberRequestSchema))
     body: TrelloApi.BoardApi.AddMemberRequest,
   ): Promise<TrelloApi.BoardApi.AddMemberResponse> {
-    const board = await this.boardService.getBoardInfoByBoardId(body._id)
+    const board = await this.BoardService.getBoardInfoByBoardId(body._id)
     const update = { _id: body._id, members_email: _.union(board?.members_email, [body.email]) }
-    const data = await this.boardService.updateBoard(update)
+    const data = await this.BoardService.updateBoard(update)
     return {
       data: data,
     }
@@ -189,9 +189,9 @@ export class BoardController {
     @Body(new ZodValidationPipe(TrelloApi.BoardApi.RemoveMemberRequestSchema))
     body: TrelloApi.BoardApi.RemoveMemberRequest,
   ): Promise<TrelloApi.BoardApi.RemoveMemberResponse> {
-    const board = await this.boardService.getBoardInfoByBoardId(body._id)
+    const board = await this.BoardService.getBoardInfoByBoardId(body._id)
     const update = { _id: body._id, members_email: board?.members_email.filter((item) => item !== body.email) }
-    const data = await this.boardService.updateBoard(update)
+    const data = await this.BoardService.updateBoard(update)
     return {
       data: data,
     }
@@ -213,9 +213,9 @@ export class BoardController {
     @Body(new ZodValidationPipe(TrelloApi.BoardApi.AddWatcherRequestSchema))
     body: TrelloApi.BoardApi.AddWatcherRequest,
   ): Promise<TrelloApi.BoardApi.AddWatcherResponse> {
-    const board = await this.boardService.getBoardInfoByBoardId(body._id)
+    const board = await this.BoardService.getBoardInfoByBoardId(body._id)
     const update = { _id: body._id, watcher_email: _.union(board?.watcher_email, [body.email]) }
-    const data = await this.boardService.updateBoard(update)
+    const data = await this.BoardService.updateBoard(update)
     return {
       data: data,
     }
@@ -237,9 +237,9 @@ export class BoardController {
     @Body(new ZodValidationPipe(TrelloApi.BoardApi.RemoveWatcherRequestSchema))
     body: TrelloApi.BoardApi.RemoveWatcherRequest,
   ): Promise<TrelloApi.BoardApi.RemoveWatcherResponse> {
-    const board = await this.boardService.getBoardInfoByBoardId(body._id)
+    const board = await this.BoardService.getBoardInfoByBoardId(body._id)
     const update = { _id: body._id, watcher_email: board?.watcher_email.filter((item) => item !== body.email) }
-    const data = await this.boardService.updateBoard(update)
+    const data = await this.BoardService.updateBoard(update)
     return {
       data: data,
     }
