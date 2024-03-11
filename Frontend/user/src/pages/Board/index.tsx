@@ -281,8 +281,6 @@ export function Board() {
   }, [openCardSetting])
   return (
     <BoardLayout openCardSetting={openCardSetting}>
-      <div className={`mx-auto p-4 text-center text-3xl font-bold uppercase text-black`}>Header Area</div>
-
       <DndContext sensors={sensors} onDragStart={handleDragStart} onDragMove={handleDragOver} onDragEnd={handleDragEnd}>
         {listsData && (
           <div className={`relative z-20 w-[100%]`}>

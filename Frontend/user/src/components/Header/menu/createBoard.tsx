@@ -3,6 +3,7 @@ import { Box, Button, Autocomplete, TextField } from '@mui/material'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheck, faChevronLeft, faClose } from '@fortawesome/free-solid-svg-icons'
 import bgHeader from '~/assets/bg_header_create_board.svg'
+import { useTheme } from './../../Theme/themeContext'
 
 interface AutocompleteContainerProps {
   onClose: () => void
@@ -56,6 +57,7 @@ export default function CreateBoard(props: AutocompleteContainerProps) {
   const [boardTitle, setBoardTitle] = React.useState('')
   const [activeBg, setActiveBg] = React.useState({ check: true, index: 0, type: 'color', data: bg_color[0].color })
   const anchorRef = React.useRef<HTMLButtonElement>(null)
+  const { colors } = useTheme()
 
   const handleTitleBoard = (event: React.ChangeEvent<HTMLInputElement>) => {
     setBoardTitle(event.target.value)
@@ -79,7 +81,7 @@ export default function CreateBoard(props: AutocompleteContainerProps) {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          color: '#fff'
+          color: colors.text
         }}
       >
         <Box
@@ -136,7 +138,7 @@ export default function CreateBoard(props: AutocompleteContainerProps) {
           <img src={bgHeader} alt='' />
         </Box>
 
-        <p style={{ fontSize: '12px', fontWeight: 700, marginBottom: '4px', color: '#9fadbc' }}>Background</p>
+        <p style={{ fontSize: '12px', fontWeight: 700, marginBottom: '4px', color: colors.text }}>Background</p>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
           {bg_image &&
             bg_image.map((item, index) => (
@@ -231,7 +233,7 @@ export default function CreateBoard(props: AutocompleteContainerProps) {
         </Box>
 
         <Box sx={{ marginBottom: '8px' }}>
-          <p style={{ fontSize: '12px', fontWeight: 700, color: '#9fadbc', marginBottom: '4px' }}>
+          <p style={{ fontSize: '12px', fontWeight: 700, color: colors.text, marginBottom: '4px' }}>
             Board title <span style={{ color: 'red' }}>*</span>
           </p>
 
@@ -243,11 +245,18 @@ export default function CreateBoard(props: AutocompleteContainerProps) {
               width: '100%',
               padding: '4px 8px',
               fontSize: '14px',
-              color: '#9fadbc',
-              backgroundColor: '#22272b',
-              border: '1px solid #e34935',
+              color: colors.text,
+              backgroundColor: colors.background,
+              border: '2px solid #e34935',
               borderRadius: '4px',
-              marginBottom: '4px'
+              marginBottom: '4px',
+              outline: 'none'
+            }}
+            onFocus={(e) => {
+              e.target.style.border = '2px solid #85b8ff'
+            }}
+            onBlur={(e) => {
+              e.target.style.border = '2px solid #e34935'
             }}
           />
 
@@ -255,22 +264,22 @@ export default function CreateBoard(props: AutocompleteContainerProps) {
             <span role='img' aria-label='wave'>
               👋
             </span>
-            <p style={{ fontSize: '14px', color: '#9fadbc', marginLeft: '6px' }}>Board title is required</p>
+            <p style={{ fontSize: '14px', color: colors.text, marginLeft: '6px' }}>Board title is required</p>
           </Box>
         </Box>
 
         <Box sx={{ marginBottom: '8px' }}>
-          <p style={{ fontSize: '12px', fontWeight: 700, color: '#9fadbc', marginBottom: '4px' }}>Workspace</p>
+          <p style={{ fontSize: '12px', fontWeight: 700, color: colors.text, marginBottom: '4px' }}>Workspace</p>
 
           <Autocomplete
             size='small'
             value={valueWorkspace}
             disableClearable
-            onChange={(event: React.SyntheticEvent, newValue: string | undefined) => {
+            onChange={(_event: React.SyntheticEvent, newValue: string | undefined) => {
               setValueWorkspace(newValue)
             }}
             inputValue={inputValueWorkspace}
-            onInputChange={(event: React.SyntheticEvent, newInputValue: string) => {
+            onInputChange={(_event: React.SyntheticEvent, newInputValue: string) => {
               setInputValueWorkspace(newInputValue)
             }}
             id='controllable-states-demo'
@@ -282,10 +291,10 @@ export default function CreateBoard(props: AutocompleteContainerProps) {
               },
               '& .MuiInputBase-input': {
                 fontSize: '12px',
-                color: '#9fadbc'
+                color: colors.text
               },
               '& .MuiSvgIcon-root': {
-                color: '#9fadbc'
+                color: colors.text
               },
               border: '1px solid #384148',
               borderRadius: '4px'
@@ -295,17 +304,17 @@ export default function CreateBoard(props: AutocompleteContainerProps) {
         </Box>
 
         <Box sx={{ marginBottom: '18px' }}>
-          <p style={{ fontSize: '12px', fontWeight: 700, color: '#9fadbc', marginBottom: '4px' }}>Visibility</p>
+          <p style={{ fontSize: '12px', fontWeight: 700, color: colors.text, marginBottom: '4px' }}>Visibility</p>
 
           <Autocomplete
             size='small'
             value={valueVisibility}
             disableClearable
-            onChange={(event: React.SyntheticEvent, newValue: string | undefined) => {
+            onChange={(_event: React.SyntheticEvent, newValue: string | undefined) => {
               setValueVisibility(newValue)
             }}
             inputValue={inputValueVisibility}
-            onInputChange={(event: React.SyntheticEvent, newInputValue: string) => {
+            onInputChange={(_event: React.SyntheticEvent, newInputValue: string) => {
               setInputValueVisibility(newInputValue)
             }}
             id='controllable-states-demo'
@@ -314,10 +323,10 @@ export default function CreateBoard(props: AutocompleteContainerProps) {
               width: '100%',
               '& .MuiInputBase-input': {
                 fontSize: '12px',
-                color: '#9fadbc'
+                color: colors.text
               },
               '& .MuiSvgIcon-root': {
-                color: '#9fadbc'
+                color: colors.text
               },
               border: '1px solid #384148',
               borderRadius: '4px'

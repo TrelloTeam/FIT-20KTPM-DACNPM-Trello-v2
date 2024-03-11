@@ -60,7 +60,7 @@ export default function Recent() {
             textTransform: 'none',
             color: open ? '#579dff' : colors.text,
             '&:hover': {
-              backgroundColor: 'rgba(255,255,255,0.1)'
+              backgroundColor: open ? colors.bg_button_active_hover : colors.bg_button_hover
             },
             backgroundColor: open ? 'rgba(86,157,255,0.1)' : 'transparent',
             transition: 'all 0.1s ease-in',

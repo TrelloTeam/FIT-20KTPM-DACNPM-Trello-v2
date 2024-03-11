@@ -1,6 +1,5 @@
 // pages/account-management.tsx
 import React, { useEffect, useState } from 'react'
-import Head from 'next/head'
 import { ActivityComponent, Header, Profile } from './components'
 import { useTheme } from '../../components/Theme/themeContext'
 
@@ -20,16 +19,12 @@ export const AccountManagement: React.FC<AccountManagementProps> = ({ page }) =>
   const handleTabSelect = (tab: string) => {
     setSelectedTab(tab)
   }
-const darkLightMode = {
-  backgroundColor: colors.background,
-  color: colors.text
-}
+  const darkLightMode = {
+    backgroundColor: colors.background,
+    color: colors.text
+  }
   return (
-
-    <div
-      style={darkLightMode}
-    >
-
+    <div style={darkLightMode}>
       {selectedTab === 'profile' ? (
         <>
           <Header onSelectTab={handleTabSelect} currentTab={selectedTab} />
@@ -41,8 +36,6 @@ const darkLightMode = {
           <ActivityComponent />
         </>
       )}
-
     </div>
-
   )
 }

@@ -7,7 +7,7 @@ import CardSetting from './CardSetting'
 import { MdOutlineRemoveRedEye } from 'react-icons/md'
 import { useTheme } from '~/components/Theme/themeContext'
 export default function CardComponent({ card, setOpenCardSetting }: CardComponentProps) {
-  const { colors, darkMode } = useTheme()
+  const { darkMode } = useTheme()
 
   const { attributes, listeners, setNodeRef, transform, isDragging } = useSortable({
     id: card.id,

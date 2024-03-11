@@ -1,5 +1,3 @@
-import React from 'react'
-
 export default function LoadingComponent() {
   return (
     <div className='mt-28 flex items-center justify-center text-center'>

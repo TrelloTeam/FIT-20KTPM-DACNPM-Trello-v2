@@ -2,7 +2,7 @@ import { CardComponent, ListSetting } from '.'
 import { ListComponentProps } from '../type'
 import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 // import { useEffect, useState } from 'react'
 import { HiOutlineDotsHorizontal } from 'react-icons/hi'
 import { IoImagesOutline } from 'react-icons/io5'
@@ -54,9 +54,9 @@ export default function ListComponent({ list, setOpenCardSetting }: ListComponen
       style={styleList}
       {...attributes}
       {...listeners}
-      className='mr-2 flex min-h-full  w-[300px] flex-col rounded-xl border shadow-sm '
+      className='mr-2 flex min-h-full w-[300px] flex-col rounded-xl border shadow-sm '
     >
-      <div className=' relative mx-6 my-4 flex flex-row items-center justify-between'>
+      <div className=' relative mx-6 my-2 flex flex-row items-center justify-between'>
         <h2 className={`font-bold  `}>{list.name}</h2>
         <HiOutlineDotsHorizontal
           size={'20px'}

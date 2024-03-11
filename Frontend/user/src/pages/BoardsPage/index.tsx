@@ -7,6 +7,7 @@ import BoardsPageWorkspaceControl from '~/components/BoardsPageWorkspaceControl'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrello } from '@fortawesome/free-brands-svg-icons'
 import BoardsPageRowTemplate from '~/components/BoardsPageRowTemplate'
+import SidebarTemplate from '~/components/SidebarTemplate'
 
 export type BoardTemplate = {
   [x: string]: unknown
@@ -57,7 +58,7 @@ export function BoardsPage() {
       <Grid container sx={{ maxWidth: 1280 }}>
         {/* (reserved) Left panel */}
         <Grid item xs={4}>
-          <Container></Container>
+          <SidebarTemplate />
         </Grid>
         {/* Boards Page */}
         <Grid item xs={8}>

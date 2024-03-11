@@ -33,7 +33,7 @@ interface TextAreaControlProps {
   setButtonEnabled: (newState: boolean) => void
 }
 
-function TextAreaControl({ textAreaValue, setTextAreaFocus, buttonEnabled, setButtonEnabled }: TextAreaControlProps) {
+function TextAreaControl({ setTextAreaFocus, buttonEnabled, setButtonEnabled }: TextAreaControlProps) {
   function handleSave() {
     setButtonEnabled(false)
     setTextAreaFocus(false)

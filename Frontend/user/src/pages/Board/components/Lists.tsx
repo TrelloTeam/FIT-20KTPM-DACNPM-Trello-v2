@@ -6,7 +6,7 @@ import { SortableContext, horizontalListSortingStrategy } from '@dnd-kit/sortabl
 export default function ListsComponent({ lists, setOpenCardSetting }: ListsComponentProps) {
   return (
     <SortableContext items={lists?.map((l) => l.id)} strategy={horizontalListSortingStrategy}>
-      <div className=' relative z-30 my-10 ml-10 flex flex-row'>
+      <div className='mt-[64px] flex flex-row items-start p-4'>
         {lists.map((list) => (
           <ListComponent list={list} setOpenCardSetting={setOpenCardSetting} />
 

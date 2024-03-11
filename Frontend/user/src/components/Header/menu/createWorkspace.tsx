@@ -3,6 +3,7 @@ import { Box, Button, Autocomplete, TextField } from '@mui/material'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faClose } from '@fortawesome/free-solid-svg-icons'
 import workspace from '~/assets/workspace_img.svg'
+import { useTheme } from './../../Theme/themeContext'
 
 interface AutocompleteContainerProps {
   onClose: () => void
@@ -24,6 +25,7 @@ export default function CreateWorkspace(props: AutocompleteContainerProps) {
   const [inputValueWorkspace, setInputValueWorkspace] = React.useState('')
   const [workspaceName, setWorkspaceName] = React.useState('')
   const [workspaceDescription, setWorkspaceDescription] = React.useState('')
+  const { colors } = useTheme()
 
   const handleWorkspaceName = (event: React.ChangeEvent<HTMLInputElement>) => {
     setWorkspaceName(event.target.value)
@@ -45,12 +47,13 @@ export default function CreateWorkspace(props: AutocompleteContainerProps) {
         width: '100vw',
         height: '100vh',
         backgroundColor: 'rgba(0,0,0,0.4)',
-        color: '#9fadbc'
+        color: colors.text,
+        zIndex: 1001
       }}
     >
       <Box
         sx={{
-          backgroundColor: '#22272b',
+          backgroundColor: colors.background,
           display: 'flex',
           alignItems: 'stretch',
           borderRadius: '4px',
@@ -97,9 +100,10 @@ export default function CreateWorkspace(props: AutocompleteContainerProps) {
                 width: '100%',
                 padding: '8px 10px',
                 fontSize: '14px',
-                color: '#9fadbc',
-                backgroundColor: '#22272b',
+                color: colors.text,
+                backgroundColor: colors.background,
                 border: '3px solid #384148',
+                borderColor: colors.text,
                 borderRadius: '4px',
                 marginBottom: '6px',
                 outline: 'none',
@@ -135,11 +139,11 @@ export default function CreateWorkspace(props: AutocompleteContainerProps) {
               size='small'
               value={valueWorkspace}
               disableClearable
-              onChange={(event: React.SyntheticEvent, newValue: string | undefined) => {
+              onChange={(_event: React.SyntheticEvent, newValue: string | undefined) => {
                 setValueWorkspace(newValue)
               }}
               inputValue={inputValueWorkspace}
-              onInputChange={(event: React.SyntheticEvent, newInputValue: string) => {
+              onInputChange={(_event: React.SyntheticEvent, newInputValue: string) => {
                 setInputValueWorkspace(newInputValue)
               }}
               id='controllable-states-demo'
@@ -155,9 +159,10 @@ export default function CreateWorkspace(props: AutocompleteContainerProps) {
                 },
                 borderRadius: '4px',
                 fontSize: '14px',
-                color: '#9fadbc',
-                backgroundColor: '#22272b',
+                color: colors.text,
+                backgroundColor: colors.background,
                 border: '3px solid #384148',
+                borderColor: colors.text,
                 marginBottom: '6px',
                 outline: 'none',
                 transition: 'all 0.1s ease-in'
@@ -188,8 +193,9 @@ export default function CreateWorkspace(props: AutocompleteContainerProps) {
                 padding: '8px 10px',
                 fontSize: '14px',
                 color: '#9fadbc',
-                backgroundColor: '#22272b',
+                backgroundColor: colors.background,
                 border: '3px solid #384148',
+                borderColor: colors.text,
                 borderRadius: '4px',
                 marginBottom: '6px',
                 outline: 'none',
@@ -198,7 +204,6 @@ export default function CreateWorkspace(props: AutocompleteContainerProps) {
               }}
               onFocus={(e) => {
                 e.target.style.border = '3px solid #85b8ff'
-                // e.target.style.outline = 'solid'
               }}
               onBlur={(e) => {
                 e.target.style.borderColor = '#384148'
@@ -254,7 +259,7 @@ export default function CreateWorkspace(props: AutocompleteContainerProps) {
             position: 'absolute',
             top: '2rem',
             right: '1.4rem',
-            color: '#dee4ea',
+            color: colors.text,
             fontSize: '24px',
             padding: '4px',
             cursor: 'pointer'
