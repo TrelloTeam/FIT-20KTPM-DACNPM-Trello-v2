@@ -7,7 +7,6 @@
 # Backend
 # Backend/*
 node_modules
-
 #packages/shared
 dist
 
