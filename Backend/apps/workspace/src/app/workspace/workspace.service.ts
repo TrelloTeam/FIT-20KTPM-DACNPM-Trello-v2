@@ -159,12 +159,11 @@ export class WorkspaceService implements IWorkspaceService {
 
   async changeWorkspaceVisibility(
     body: TrelloApi.WorkspaceApi.ChangeWorkspaceVisibilityRequest,
-    workspace_id: string,
   ): Promise<DbSchemas.WorkspaceSchema.Workspace | null> {
     const res = await this.workspaceModel
       .findOneAndUpdate(
         {
-          _id: workspace_id,
+          _id: body._id,
         },
 
         {
@@ -179,14 +178,11 @@ export class WorkspaceService implements IWorkspaceService {
     return res.toJSON()
   }
 
-  async updateWorkspaceInfo(
-    body: TrelloApi.WorkspaceApi.UpdateWorkspaceInfoRequest,
-    workspace_id: string,
-  ): Promise<DbSchemas.WorkspaceSchema.Workspace | null> {
+  async updateWorkspaceInfo(body: TrelloApi.WorkspaceApi.UpdateWorkspaceInfoRequest): Promise<DbSchemas.WorkspaceSchema.Workspace | null> {
     const res = await this.workspaceModel
       .findOneAndUpdate(
         {
-          _id: workspace_id,
+          _id: body._id,
         },
 
         {
