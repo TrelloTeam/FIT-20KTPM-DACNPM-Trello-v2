@@ -13,10 +13,11 @@ message BoardSchema {
     string _id=1;
     string name=2;
     string workspace_id=3;
-    repeated trello.activity.ActivitySchema activities=4;
-    repeated string members_email=5;
-    repeated BoardLabelSchema labels=6;
-    bool is_star=7;
-    repeated string watcher_email=8;
-    repeated string visibility=9;
+    string background=4;
+    repeated trello.activity.ActivitySchema activities=5;
+    repeated string members_email=6;
+    repeated BoardLabelSchema labels=7;
+    bool is_star=8;
+    repeated string watcher_email=9;
+    repeated string visibility=10;
 }
