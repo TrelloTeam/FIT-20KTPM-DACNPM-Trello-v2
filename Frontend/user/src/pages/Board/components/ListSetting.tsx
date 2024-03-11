@@ -12,15 +12,15 @@ export default function ListSetting({ closeListSetting }: ListSettingProps) {
         backgroundColor: colors.background,
         color: colors.text,
         borderWidth:"1px",
-        borderColor:colors.background,
+        borderColor: darkMode ? '#2c3e50':'',
       }}
-      className={`absolute -right-2/3 top-full z-50 flex w-[300px] flex-row rounded-lg   px-1 py-2 font-semibold`}
+      className={`absolute shadow-lg  -right-64  z-50 flex w-[300px] flex-row rounded-lg   px-1 py-2 font-semibold`}
     >
       <div className={`relative w-full`}>
         <div className={`mb-2 flex justify-between items-center p-2`}>
           <div></div>
           <div>
-            <p className={`font-bold`}>List actions</p>
+            <p className={`font-bold ml-7`}>List actions</p>
           </div>
           <div className='mr-2 cursor-pointer rounded-lg hover:bg-gray-100 p-1' onClick={closeListSetting}>
             <IoMdClose className={``} size={'20px'}/>

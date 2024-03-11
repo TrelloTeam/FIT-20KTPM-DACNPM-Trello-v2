@@ -79,7 +79,7 @@ export default function CardComponent({ card, setOpenCardSetting }: CardComponen
               backgroundColor: colors.background,
               color: colors.text
             }}
-            className={`m-3 space-y-2 rounded-lg p-2  ${darkMode ? '' : 'shadow-sm shadow-gray-300'} hover:border-[3px] hover:border-blue-400 ${card.placeHolder ? 'invisible' : 'visible'}`}
+            className={`mx-3 mb-3 space-y-2 rounded-lg p-2  ${darkMode ? '' : 'shadow-sm shadow-gray-300'} hover:border-[3px] hover:border-blue-400 ${card.placeHolder ? 'invisible' : 'visible'}`}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
           >

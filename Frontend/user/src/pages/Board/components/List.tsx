@@ -61,22 +61,23 @@ export default function ListComponent({ list, setOpenCardSetting }: ListComponen
         <h2 className={`font-bold  `}>{list.name}</h2>
         <HiOutlineDotsHorizontal
           size={'20px'}
-          className={` absolute top-50 right-0 text-black rounded-lg  ${darkMode ? 'hover:bg-gray-600' : 'hover:bg-gray-300'}`}
+          className={` top-50 absolute right-0 rounded-lg   ${darkMode ? 'hover:bg-gray-600' : 'hover:bg-gray-300'}`}
           onClick={() => setListSettingOpen(list.id)}
         />
-        {listSettingOpen && listSettingOpen === list.id && (
+      </div>
+      <div className={` relative`}>
+      {listSettingOpen && listSettingOpen === list.id && (
           <div ref={componentRef_ListSetting}>
             <ListSetting closeListSetting={() => setListSettingOpen('')} />
           </div>
         )}
-      </div>
-      <div className={` relative`}>
         <SortableContext items={list.data.map((c) => c.id)} strategy={verticalListSortingStrategy}>
           {list.data &&
             list.data.map((card, index) => (
               <CardComponent key={index} card={card} setOpenCardSetting={setOpenCardSetting} />
             ))}
         </SortableContext>
+     
         {addCardOpenAt &&
           addCardOpenAt === list.id &&
           (list.data[0].placeHolder === false ? (
@@ -105,12 +106,15 @@ export default function ListComponent({ list, setOpenCardSetting }: ListComponen
                   className={` rounded-lg px-3 py-2 ${darkMode ? 'hover:bg-gray-600' : 'hover:bg-gray-300'}`}
                   onClick={() => setAddCardOpenAt('')}
                 >
-                  <p className={`text-left font-semibold`}>  <IoMdClose className={``} size={'20px'}/> </p>
+                  <p className={`text-left font-semibold`}>
+                    {' '}
+                    <IoMdClose className={``} size={'20px'} />{' '}
+                  </p>
                 </button>
               </div>
             </div>
           ) : (
-            <div ref={componentRef_AddCard} className='absolute top-0 w-full m-3 pr-7'>
+            <div ref={componentRef_AddCard} className='absolute top-0 m-3 w-full pr-7'>
               <div className={` space-y-2 rounded-xl  `}>
                 <div className={`flex flex-row items-center   justify-between`}>
                   <input
@@ -135,14 +139,17 @@ export default function ListComponent({ list, setOpenCardSetting }: ListComponen
                   className={` rounded-lg px-3 py-2 ${darkMode ? 'hover:bg-gray-600' : 'hover:bg-gray-300'}`}
                   onClick={() => setAddCardOpenAt('')}
                 >
-                  <p className={`text-left font-semibold `}>  <IoMdClose className={``} size={'20px'}/> </p>
+                  <p className={`text-left font-semibold `}>
+                    {' '}
+                    <IoMdClose className={``} size={'20px'} />{' '}
+                  </p>
                 </button>
               </div>
             </div>
           ))}
       </div>
       {!addCardOpenAt && (
-        <div className={`my-2 mx-3 flex flex-row space-x-2`}>
+        <div className={`mx-3 my-2 flex flex-row space-x-2`}>
           <button
             className={`w-10/12 rounded-lg p-2 ${darkMode ? 'hover:bg-gray-600' : 'hover:bg-gray-300'}`}
             onClick={() => {
