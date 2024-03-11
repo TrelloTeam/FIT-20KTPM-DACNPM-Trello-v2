@@ -32,7 +32,20 @@ message ChangeVisibilityRequest {
 }
 
 message DeleteBoardRequest {
+    string board_id=1;
+}
+
+message UpdateBoardRequest {
     string _id=1;
+    optional string name=2;
+    optional string background=3;
+    optional bool is_star=4;
+    optional string visibility=5;
+}
+
+message MemberBoardRequest {
+    string _id=1;
+    optional string email=2;
 }
 
 service BoardService {
@@ -40,6 +53,10 @@ service BoardService {
     rpc getBoardsByWorkSpaceId(WorkspaceIdRequest) returns (BoardListResponse);
     rpc create(CreateBoardRequest) returns (BoardResponse);
     rpc getBoardInfoByBoardId(BoardIdRequest) returns (BoardResponse);
-    rpc changeBoardVisibility(ChangeVisibilityRequest) returns (BoardResponse);
     rpc deleteBoard(DeleteBoardRequest) returns (BoardResponse);
+    rpc updateBoard(UpdateBoardRequest) returns (BoardResponse);
+    rpc addMember(MemberBoardRequest) returns (BoardResponse);
+    rpc removeMember(MemberBoardRequest) returns (BoardResponse);
+    rpc addWatcher(MemberBoardRequest) returns (BoardResponse);
+    rpc removeWatcher(MemberBoardRequest) returns (BoardResponse);
 }
