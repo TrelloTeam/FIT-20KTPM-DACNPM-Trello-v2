@@ -2,12 +2,16 @@ import { InjectModel } from '@nestjs/mongoose'
 import { DbSchemas } from '@trello-v2/shared'
 import { TrelloApi } from '@trello-v2/shared'
 import { Model } from 'mongoose'
+// eslint-disable-next-line @typescript-eslint/naming-convention
 import * as _ from 'lodash'
 
 export abstract class IBoardService {
   abstract createBoard(data: TrelloApi.BoardApi.CreateBoard): Promise<DbSchemas.BoardSchema.Board>
-
   abstract getAllBoard(): Promise<DbSchemas.BoardSchema.Board[]>
+  abstract getBoardsByWorkspaceId(workspace_id: string): Promise<DbSchemas.BoardSchema.Board[]>
+  abstract getBoardInfoByBoardId(board_id: string): Promise<DbSchemas.BoardSchema.Board | null>
+  abstract updateBoard(data: DbSchemas.BoardSchema.Board): Promise<DbSchemas.BoardSchema.Board | null>
+  abstract deleteBoard(board_id: string): Promise<DbSchemas.BoardSchema.Board | null>
 }
 
 export class BoardService implements IBoardService {
@@ -25,24 +29,24 @@ export class BoardService implements IBoardService {
     return this.BoardMModel.find().exec()
   }
 
-  async getBoardsByWorkspaceId(workspace_id: TrelloApi.BoardApi.getBoardsByWorkspaceIdRequest) {
-    return this.BoardMModel.find({ workspace_id: workspace_id }).exec()
+  async getBoardsByWorkspaceId(workspace_id: string) {
+    return await this.BoardMModel.find({ workspace_id: workspace_id }).exec()
   }
 
-  async getBoardInfoByBoardId(board_id: TrelloApi.BoardApi.GetBoardInfoByBoardIdRequest) {
+  async getBoardInfoByBoardId(board_id: string) {
     return await this.BoardMModel.findById(board_id).exec()
   }
 
-  async updateBoard(data: TrelloApi.BoardApi.ChangeBoardVisibilityRequest) {
+  async updateBoard(data: Partial<DbSchemas.BoardSchema.Board>) {
     const filter = { _id: data._id }
-    const update: Partial<DbSchemas.BoardSchema.Board> = _.pickBy(data, _.identity)
+    const update: Partial<DbSchemas.BoardSchema.Board> = _.omitBy(data, (value, key) => _.isUndefined(value) || key === '_id')
 
     return await this.BoardMModel.findOneAndUpdate(filter, update, {
       new: true,
     })
   }
 
-  async deleteBoard(board_id: TrelloApi.BoardApi.DeleteBoardRequest) {
+  async deleteBoard(board_id: string) {
     return await this.BoardMModel.findOneAndDelete({
       _id: board_id,
     }).exec()
@@ -62,6 +66,7 @@ export class BoardServiceMock implements IBoardService {
         members_email: [],
         labels: [],
         is_star: false,
+        background: '',
       })
     })
   }
@@ -72,7 +77,26 @@ export class BoardServiceMock implements IBoardService {
     })
   }
 
-  getBoardInfoByBoardId(board_id: TrelloApi.BoardApi.GetBoardInfoByBoardIdRequest) {
+  getBoardsByWorkspaceId(workspace_id: string) {
+    return new Promise<DbSchemas.BoardSchema.Board[]>((res) => {
+      res([
+        {
+          _id: 'Mock-id',
+          watcher_email: [],
+          activities: [],
+          members_email: [],
+          labels: [],
+          is_star: false,
+          workspace_id: workspace_id,
+          name: '',
+          visibility: 'private',
+          background: '',
+        },
+      ])
+    })
+  }
+
+  getBoardInfoByBoardId(board_id: string) {
     return new Promise<DbSchemas.BoardSchema.Board>((res) => {
       res({
         _id: board_id,
@@ -84,6 +108,7 @@ export class BoardServiceMock implements IBoardService {
         workspace_id: 'Mock-id',
         name: '',
         visibility: 'private',
+        background: '',
       })
     })
   }
@@ -96,7 +121,7 @@ export class BoardServiceMock implements IBoardService {
     })
   }
 
-  deleteBoard(board_id: TrelloApi.BoardApi.DeleteBoardRequest) {
+  deleteBoard(board_id: string) {
     return new Promise<DbSchemas.BoardSchema.Board>((res) => {
       res({
         _id: board_id,
@@ -108,6 +133,7 @@ export class BoardServiceMock implements IBoardService {
         workspace_id: 'Mock-id',
         name: '',
         visibility: 'private',
+        background: '',
       })
     })
   }

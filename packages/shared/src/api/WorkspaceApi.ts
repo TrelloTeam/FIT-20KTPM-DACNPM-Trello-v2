@@ -8,6 +8,12 @@ export const EmailIdSchema = z.object({
 
 export type EmailIdType = z.infer<typeof EmailIdSchema>;
 
+export const WorkspaceIdRequestSchema = WorkspaceSchema.pick({
+  _id: true,
+});
+
+export type WorkspaceIdRequest = z.infer<typeof WorkspaceIdRequestSchema>;
+
 //res list workspaces
 export const WorkspaceListResponseSchema = z.object({
   data: WorkspaceSchema.array(),
@@ -45,7 +51,6 @@ export type CreateWorspaceRequest = z.infer<
 
 //req update workspace
 export const UpdateWorkspaceInfoRequestSchema = WorkspaceSchema.omit({
-  _id: true,
   type_id: true,
   members_email: true,
   visibility: true,
@@ -56,6 +61,7 @@ export type UpdateWorkspaceInfoRequest = z.infer<
 
 //req change workspace visibility
 export const ChangeWorkspaceVisibilityRequestSchema = WorkspaceSchema.pick({
+  _id: true,
   visibility: true,
 });
 export type ChangeWorkspaceVisibilityRequest = z.infer<

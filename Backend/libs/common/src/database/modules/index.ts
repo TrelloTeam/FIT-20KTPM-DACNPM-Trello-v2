@@ -41,5 +41,10 @@ export const UserMModule = MongooseModule.forFeature([
     schema: UserMschema.UserMSchema,
   },
 ])
-
+export const CardMModule = MongooseModule.forFeature([
+  {
+    name: DbSchemas.COLLECTION_NAMES[5],
+    schema: CardlistMSchema.CardMSchema,
+  },
+])
 export { ActivityMSchema, CardlistMSchema, BoardMSchema, WorkspaceMschema, UserMschema }
