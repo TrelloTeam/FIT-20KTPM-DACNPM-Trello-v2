@@ -23,6 +23,7 @@ export const defaultCard = {
 }
 export interface CardComponentProps {
   card: Card
+  setOpenCardSetting: (data: string) => void
 }
 export interface List {
   id: string
@@ -33,7 +34,9 @@ export interface List {
 }
 export interface ListComponentProps {
   list: List
+  setOpenCardSetting: (data: string) => void
 }
 export interface ListsComponentProps {
   lists: List[]
+  setOpenCardSetting: (data: string) => void
 }

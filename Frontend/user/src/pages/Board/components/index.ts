@@ -1,4 +1,6 @@
 export * from './TestTitle'
+export { default as CardSetting } from './CardSetting'
+export { default as ListSetting } from './ListSetting'
 export { default as CardComponent } from './Card'
 export { default as ListComponent } from './List'
 export { default as ListsComponent } from './Lists'
