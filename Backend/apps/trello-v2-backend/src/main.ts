@@ -62,6 +62,7 @@ async function bootstrap_2() {
 
 async function bootstrap() {
   const app = await initApplication()
+  app.enableCors()
 
   const protoFolder = resolve('./../protos')
 
