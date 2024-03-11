@@ -11,13 +11,21 @@ import Help from './menu/help'
 import Notification from './menu/notification'
 import Account from './menu/account'
 
+import { Link } from 'react-router-dom'
+
+import { useTheme } from './../Theme/themeContext'
+import { Button } from '@mui/base'
+
+
 const Header = () => {
+  const { darkMode, toggleDarkMode, colors } = useTheme()
+
   return (
     <Box
       sx={{
         position: 'fixed',
         width: '100%',
-        backgroundColor: '#1d2125',
+        backgroundColor: colors.background,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -25,8 +33,9 @@ const Header = () => {
         borderColor: '#9fadbc',
         borderStyle: 'solid',
         padding: '8px',
-        color: '#9fadbc',
-        zIndex: '1000'
+        color: colors.text,
+        zIndex: '1000',
+        transition: darkMode ? 'all 0.2s ease-in' : 'all 0.2s ease-in'
       }}
     >
       <Box
@@ -65,10 +74,14 @@ const Header = () => {
         </Box>
 
         <Box sx={{ padding: '0 5px' }}>
-          <Templates />
+          <Link to={`/template`}>
+            <Templates />
+          </Link>
         </Box>
 
         <Create />
+
+        <Button onClick={toggleDarkMode}>Toggle Dark Mode</Button>
       </Box>
 
       <Box sx={{ display: 'flex', alignItems: 'center' }}>

@@ -1,4 +1,4 @@
 export * from './TestTitle'
-export * from './Card'
-export * from './List'
-export * from './Lists'
+export { default as CardComponent } from './Card'
+export { default as ListComponent } from './List'
+export { default as ListsComponent } from './Lists'

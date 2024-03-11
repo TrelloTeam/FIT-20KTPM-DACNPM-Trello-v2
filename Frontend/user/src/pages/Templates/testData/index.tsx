@@ -9,7 +9,7 @@ export const workspaceData = [
     type_id: 'type1',
     owner_email: '123@gmail.com',
     visibility: 'public',
-    members_email: ["1@gmail.com","2@gmail.com"]
+    members_email: ['1@gmail.com', '2@gmail.com']
   },
   {
     _id: 'wp_2',
@@ -21,6 +21,6 @@ export const workspaceData = [
     type_id: 'type1',
     owner_email: '123@gmail.com',
     visibility: 'private',
-    members_email: ['1@gmail.com','2@gmail.com']
+    members_email: ['1@gmail.com', '2@gmail.com']
   }
 ]
