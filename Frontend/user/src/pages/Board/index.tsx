@@ -166,7 +166,7 @@ export function Board() {
     return listsData?.find((list) => list?.cards?.map((card) => card._id)?.includes(cardId))
   }
   function isCard(obj: any): obj is Card {
-    return 'cards' in obj
+    return 'cards' in obj == false
   }
   function handleUpdateAfterDragging() {
     // Gọi API update data ở phía backend

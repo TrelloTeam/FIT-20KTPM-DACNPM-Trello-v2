@@ -54,7 +54,6 @@ const bg_color = [
 export default function CreateBoard(props: AutocompleteContainerProps) {
   const [createBoard] = BoardApiRTQ.BoardApiSlice.useCreateBoardMutation()
   const [getAllBoard] = BoardApiRTQ.BoardApiSlice.useLazyGetAllBoardQuery()
-
   const [valueWorkspace, setValueWorkspace] = React.useState<string | undefined>(workspace[0])
   const [valueVisibility, setValueVisibility] = React.useState<string | undefined>(visibility[0])
   const [inputValueWorkspace, setInputValueWorkspace] = React.useState('')

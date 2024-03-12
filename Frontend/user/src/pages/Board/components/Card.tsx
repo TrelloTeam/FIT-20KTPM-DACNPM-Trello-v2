@@ -8,18 +8,16 @@ import { MdOutlineRemoveRedEye } from 'react-icons/md'
 import { useTheme } from '~/components/Theme/themeContext'
 import randomColor from 'randomcolor'
 export default function CardComponent({ card, setOpenCardSetting }: CardComponentProps) {
-
   const { colors, darkMode } = useTheme()
   const [bgColorEmailWatcher, setBgColorEmailWatcher] = useState<Array<string>>([])
   useEffect(() => {
-    let bgColorCode = []
+    const bgColorCode = []
     for (let i = 0; i < card.watcher_email.length; i++) {
       const randomBgColor = randomColor({ luminosity: 'dark' })
       bgColorCode.push(randomBgColor)
     }
     setBgColorEmailWatcher(bgColorCode)
   }, [])
-
 
   const { attributes, listeners, setNodeRef, transform, isDragging } = useSortable({
     id: card._id,
@@ -107,7 +105,7 @@ export default function CardComponent({ card, setOpenCardSetting }: CardComponen
                     <div onMouseEnter={() => handleMouseOver(watcher)} onMouseLeave={handleMouseLeave}>
                       <div
                         style={{ backgroundColor: bgColorEmailWatcher[index] }}
-                        className={`mx-1 rounded-full h-[22px] w-[23px] pt-[3px] text-center  text-[10px]  font-semibold text-white hover:opacity-50`}
+                        className={`mx-1 h-[22px] w-[23px] rounded-full pt-[3px] text-center  text-[10px]  font-semibold text-white hover:opacity-50`}
                       >
                         HM
                       </div>
@@ -157,12 +155,12 @@ export default function CardComponent({ card, setOpenCardSetting }: CardComponen
                   {card.watcher_email.map((watcher, index) => (
                     <div key={index} className={` flex flex-row items-center justify-between`}>
                       <div onMouseOver={() => handleMouseOver(watcher)} onMouseLeave={handleMouseLeave}>
-                      <div
-                        style={{ backgroundColor: bgColorEmailWatcher[index] }}
-                        className={`mx-1 rounded-full h-[22px] w-[23px] pt-[3px] text-center  text-[10px]  font-semibold text-white hover:opacity-50`}
-                      >
-                        HM
-                      </div>
+                        <div
+                          style={{ backgroundColor: bgColorEmailWatcher[index] }}
+                          className={`mx-1 h-[22px] w-[23px] rounded-full pt-[3px] text-center  text-[10px]  font-semibold text-white hover:opacity-50`}
+                        >
+                          HM
+                        </div>
                         {isHoveredWatcher && isHoveredWatcher === watcher && (
                           <div className='absolute -bottom-10 right-0 z-20 ml-6 bg-yellow-100 p-1 hover:bg-gray-100'>
                             {watcher}

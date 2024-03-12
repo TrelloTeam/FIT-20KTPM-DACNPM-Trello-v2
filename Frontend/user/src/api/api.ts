@@ -1,5 +1,4 @@
-import axios from "axios";
-
+import axios from 'axios'
 
 //Export default thì ko nên đôi khi import thì mình ko biết là đang import cái nào
 // VD: import axios from '../api/api';
@@ -17,7 +16,7 @@ import axios from "axios";
 //     return config;
 //   });
 export const axiosPrivate = axios.create({
-    baseURL: "http://localhost:3333",
-    headers: { "Content-Type": "application/json" },
-    withCredentials: true
-});
+  baseURL: 'http://localhost:3333',
+  headers: { 'Content-Type': 'application/json' },
+  withCredentials: true
+})

@@ -9,7 +9,7 @@ import { HiOutlineDotsHorizontal } from 'react-icons/hi'
 import { IoMdClose } from 'react-icons/io'
 import { IoImagesOutline } from 'react-icons/io5'
 import { useTheme } from '~/components/Theme/themeContext'
-import { createCardAPI } from '~/api/Card'
+// import { createCardAPI } from '~/api/Card'
 import { CardApiRTQ, CardlistApiRTQ } from '~/api'
 export default function ListComponent({ list, setOpenCardSetting }: ListComponentProps) {
   const [createCard] = CardApiRTQ.CardApiSlice.useCreateCardMutation()
@@ -42,11 +42,12 @@ export default function ListComponent({ list, setOpenCardSetting }: ListComponen
   }, [])
   const [newCardName, setNewCardName] = useState<string>('')
   async function addCard() {
+    const index = list.cards.length == 1 && list.cards[0].placeHolder ? 0 : list.cards.length
     console.log(list.cards.length)
     createCard({
       name: newCardName,
       cardlist_id: list._id,
-      index: list.cards.length
+      index: index
     }).then(() => {
       setAddCardOpenAt('')
       getAllCardlist()
@@ -149,7 +150,7 @@ export default function ListComponent({ list, setOpenCardSetting }: ListComponen
               </div>
             </div>
           ) : (
-            <div ref={componentRef_AddCard} className='absolute top-0 m-3 w-full pr-7'>
+            <div ref={componentRef_AddCard} className=' top-0 m-3 -mt-12 w-full pr-7'>
               <div className={` space-y-2 rounded-xl  `}>
                 <div className={`flex flex-row items-center   justify-between`}>
                   <input

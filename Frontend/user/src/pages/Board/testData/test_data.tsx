@@ -1,4 +1,4 @@
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from 'uuid'
 export const lists = [
   {
     id: uuidv4(),
@@ -14,11 +14,46 @@ export const lists = [
         list_name: 'To do',
         watcher_email: ['email1', 'email21231231232132']
       },
-      { id: uuidv4(), list_id: uuidv4(), order: 2, name: 'Task 2', list_name: 'todo', watcher_email: ['email1', 'email21231231232132'] },
-      { id: uuidv4(), list_id: uuidv4(), order: 2, name: 'Task 5', list_name: 'todo', watcher_email: ['email1', 'email21231231232132'] },
-      { id: uuidv4(), list_id: uuidv4(), order: 2, name: 'Task 6', list_name: 'todo', watcher_email: ['email1', 'email21231231232132'] },
-      { id: uuidv4(), list_id: uuidv4(), order: 2, name: 'Task 7', list_name: 'todo', watcher_email: ['email1', 'email21231231232132'] },
-      { id: uuidv4(), list_id: uuidv4(), order: 2, name: 'Task 8', list_name: 'todo', watcher_email: ['email1', 'email21231231232132'] }
+      {
+        id: uuidv4(),
+        list_id: uuidv4(),
+        order: 2,
+        name: 'Task 2',
+        list_name: 'todo',
+        watcher_email: ['email1', 'email21231231232132']
+      },
+      {
+        id: uuidv4(),
+        list_id: uuidv4(),
+        order: 2,
+        name: 'Task 5',
+        list_name: 'todo',
+        watcher_email: ['email1', 'email21231231232132']
+      },
+      {
+        id: uuidv4(),
+        list_id: uuidv4(),
+        order: 2,
+        name: 'Task 6',
+        list_name: 'todo',
+        watcher_email: ['email1', 'email21231231232132']
+      },
+      {
+        id: uuidv4(),
+        list_id: uuidv4(),
+        order: 2,
+        name: 'Task 7',
+        list_name: 'todo',
+        watcher_email: ['email1', 'email21231231232132']
+      },
+      {
+        id: uuidv4(),
+        list_id: uuidv4(),
+        order: 2,
+        name: 'Task 8',
+        list_name: 'todo',
+        watcher_email: ['email1', 'email21231231232132']
+      }
     ]
   },
   {
@@ -26,7 +61,16 @@ export const lists = [
     name: 'Doing',
     board_id: 1,
     order: 2,
-    data: [{ id: uuidv4(), list_id:uuidv4(), order: 1, name: 'Task 3', list_name: 'Doing', watcher_email: ['email1', 'email21231231232132'] }]
+    data: [
+      {
+        id: uuidv4(),
+        list_id: uuidv4(),
+        order: 1,
+        name: 'Task 3',
+        list_name: 'Doing',
+        watcher_email: ['email1', 'email21231231232132']
+      }
+    ]
   },
   {
     id: uuidv4(),

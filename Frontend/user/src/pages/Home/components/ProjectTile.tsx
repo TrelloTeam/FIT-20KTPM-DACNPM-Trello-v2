@@ -1,4 +1,3 @@
-
 import StarBorderIcon from '@mui/icons-material/StarBorder'
 
 const ProjectTile = () => {
