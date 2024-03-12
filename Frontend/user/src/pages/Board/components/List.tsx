@@ -10,9 +10,11 @@ import { IoMdClose } from 'react-icons/io'
 import { IoImagesOutline } from 'react-icons/io5'
 import { useTheme } from '~/components/Theme/themeContext'
 import { createCardAPI } from '~/api/Card'
+import { CardApiRTQ, CardlistApiRTQ } from '~/api'
 export default function ListComponent({ list, setOpenCardSetting }: ListComponentProps) {
+  const [createCard] = CardApiRTQ.CardApiSlice.useCreateCardMutation()
+  const [getAllCardlist] = CardlistApiRTQ.CardListApiSlice.useLazyGetAllCardlistQuery()
   const { colors, darkMode } = useTheme()
-
   const [listSettingOpen, setListSettingOpen] = useState<string>()
   const [addCardOpenAt, setAddCardOpenAt] = useState<string>('')
 
@@ -40,15 +42,24 @@ export default function ListComponent({ list, setOpenCardSetting }: ListComponen
   }, [])
   const [newCardName, setNewCardName] = useState<string>('')
   async function addCard() {
-    const data = {
+    console.log(list.cards.length)
+    createCard({
       name: newCardName,
-      index: 1,
-      cover: '',
-      description: '',
-      cardlist_id: '12345'
-    }
-    const res = await createCardAPI(data)
-    console.log(res)
+      cardlist_id: list._id,
+      index: list.cards.length
+    }).then(() => {
+      setAddCardOpenAt('')
+      getAllCardlist()
+    })
+    // const data = {
+    //   name: newCardName,
+    //   index: 1,
+    //   cover: '',
+    //   description: '',
+    //   cardlist_id: '12345'
+    // }
+    // const res = await createCardAPI(data)
+    // console.log(res)
   }
   const { attributes, listeners, setNodeRef, transform, isDragging } = useSortable({
     id: list._id,
