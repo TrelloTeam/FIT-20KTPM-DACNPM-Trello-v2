@@ -27,7 +27,7 @@ export default function CardComponent({ card, setOpenCardSetting }: CardComponen
   })
   const styleList = {
     transform: CSS.Transform.toString(transform),
-    height: card.placeHolder === true ? '100%' : '',
+    height: '100%',
     opacity: isDragging ? 0.5 : undefined
     // border: isDragging ? 0.5 : undefined
   }

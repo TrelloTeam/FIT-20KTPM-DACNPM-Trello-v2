@@ -13,7 +13,7 @@ export const defaultCard = {
   order: 0,
   name: '',
   list_name: '',
-  watcher_email: []
+  watcher_email: ['email1', 'email21231231232132'] 
 }
 export interface CardComponentProps {
   card: Card

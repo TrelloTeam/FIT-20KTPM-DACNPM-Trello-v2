@@ -5,6 +5,7 @@ import AddListForm from './AddNewList'
 
 import { SortableContext, horizontalListSortingStrategy } from '@dnd-kit/sortable'
 import { useEffect, useRef, useState } from 'react'
+import { UniqueIdentifier } from '@dnd-kit/core'
 
 export default function ListsComponent({ lists, setOpenCardSetting }: ListsComponentProps) {
   const { colors, darkMode } = useTheme()
@@ -45,7 +46,7 @@ export default function ListsComponent({ lists, setOpenCardSetting }: ListsCompo
     // console.log(res)
   }
   return (
-    <SortableContext items={lists?.map((l) => l.id)} strategy={horizontalListSortingStrategy}>
+    <SortableContext items={lists as (UniqueIdentifier | { id: UniqueIdentifier })[]} strategy={horizontalListSortingStrategy}>
       <div className='relative z-30 flex flex-row items-start p-4'>
         {lists.map((list) => (
           <ListComponent list={list} setOpenCardSetting={setOpenCardSetting} key={list.id} />

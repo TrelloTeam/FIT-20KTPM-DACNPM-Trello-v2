@@ -1,3 +1,4 @@
+import { UniqueIdentifier } from '@dnd-kit/core'
 import { CardComponent, ListSetting } from '.'
 import { ListComponentProps } from '../type'
 import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable'
@@ -71,7 +72,7 @@ export default function ListComponent({ list, setOpenCardSetting }: ListComponen
             <ListSetting closeListSetting={() => setListSettingOpen('')} />
           </div>
         )}
-        <SortableContext items={list.data.map((c) => c.id)} strategy={verticalListSortingStrategy}>
+        <SortableContext items={list.data as (UniqueIdentifier | { id: UniqueIdentifier })[]} strategy={verticalListSortingStrategy}>
           {list.data &&
             list.data.map((card, index) => (
               <CardComponent key={index} card={card} setOpenCardSetting={setOpenCardSetting} />
