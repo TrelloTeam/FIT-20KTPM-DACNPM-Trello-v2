@@ -22,7 +22,7 @@ export default function CardComponent({ card, setOpenCardSetting }: CardComponen
 
 
   const { attributes, listeners, setNodeRef, transform, isDragging } = useSortable({
-    id: card.id,
+    id: card._id,
     data: { ...card }
   })
   const styleList = {
@@ -91,8 +91,8 @@ export default function CardComponent({ card, setOpenCardSetting }: CardComponen
                 <BsPencil
                   className=''
                   onClick={() => {
-                    setCardSettingOpen(card.id)
-                    setOpenCardSetting(card.id)
+                    setCardSettingOpen(card._id)
+                    setOpenCardSetting(card._id)
                   }}
                 />
               )}
@@ -124,7 +124,7 @@ export default function CardComponent({ card, setOpenCardSetting }: CardComponen
           </div>
         </div>
       )}
-      {cardSettingOpen && cardSettingOpen === card.id && (
+      {cardSettingOpen && cardSettingOpen === card._id && (
         <div className={`pointer-events-auto `}>
           <div
             style={{

@@ -46,10 +46,13 @@ export default function ListsComponent({ lists, setOpenCardSetting }: ListsCompo
     // console.log(res)
   }
   return (
-    <SortableContext items={lists as (UniqueIdentifier | { id: UniqueIdentifier })[]} strategy={horizontalListSortingStrategy}>
+    <SortableContext
+      items={lists?.map((l) => l._id) as (UniqueIdentifier | { id: UniqueIdentifier })[]}
+      strategy={horizontalListSortingStrategy}
+    >
       <div className='relative z-30 flex flex-row items-start p-4'>
-        {lists.map((list) => (
-          <ListComponent list={list} setOpenCardSetting={setOpenCardSetting} key={list.id} />
+        {lists?.map((list) => (
+          <ListComponent list={list} setOpenCardSetting={setOpenCardSetting} key={list._id} />
         ))}
         {showAddListForm ? (
           <div ref={listFormRef} className={`h-[120px]`}>

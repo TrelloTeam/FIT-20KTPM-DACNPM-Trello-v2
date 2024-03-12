@@ -9,6 +9,7 @@ import { HiOutlineDotsHorizontal } from 'react-icons/hi'
 import { IoMdClose } from 'react-icons/io'
 import { IoImagesOutline } from 'react-icons/io5'
 import { useTheme } from '~/components/Theme/themeContext'
+import { createCardAPI } from '~/api/Card'
 export default function ListComponent({ list, setOpenCardSetting }: ListComponentProps) {
   const { colors, darkMode } = useTheme()
 
@@ -37,9 +38,20 @@ export default function ListComponent({ list, setOpenCardSetting }: ListComponen
       document.removeEventListener('mousedown', handleClickOutside_ListSetting)
     }
   }, [])
-
+  const [newCardName, setNewCardName] = useState<string>('')
+  async function addCard() {
+    const data = {
+      name: newCardName,
+      index: 1,
+      cover: '',
+      description: '',
+      cardlist_id: '12345'
+    }
+    const res = await createCardAPI(data)
+    console.log(res)
+  }
   const { attributes, listeners, setNodeRef, transform, isDragging } = useSortable({
-    id: list.id,
+    id: list._id,
     data: { ...list }
   })
 
@@ -63,25 +75,28 @@ export default function ListComponent({ list, setOpenCardSetting }: ListComponen
         <HiOutlineDotsHorizontal
           size={'20px'}
           className={` top-50 absolute right-0 rounded-lg   ${darkMode ? 'hover:bg-gray-600' : 'hover:bg-gray-300'}`}
-          onClick={() => setListSettingOpen(list.id)}
+          onClick={() => setListSettingOpen(list._id)}
         />
       </div>
       <div className={` relative`}>
-      {listSettingOpen && listSettingOpen === list.id && (
+        {listSettingOpen && listSettingOpen === list._id && (
           <div ref={componentRef_ListSetting}>
             <ListSetting closeListSetting={() => setListSettingOpen('')} />
           </div>
         )}
-        <SortableContext items={list.data as (UniqueIdentifier | { id: UniqueIdentifier })[]} strategy={verticalListSortingStrategy}>
-          {list.data &&
-            list.data.map((card, index) => (
+        <SortableContext
+          items={list.cards.map((c) => c._id) as (UniqueIdentifier | { id: UniqueIdentifier })[]}
+          strategy={verticalListSortingStrategy}
+        >
+          {list.cards &&
+            list.cards.map((card, index) => (
               <CardComponent key={index} card={card} setOpenCardSetting={setOpenCardSetting} />
             ))}
         </SortableContext>
-     
+
         {addCardOpenAt &&
-          addCardOpenAt === list.id &&
-          (list.data[0].placeHolder === false ? (
+          addCardOpenAt === list._id &&
+          (list.cards[0].placeHolder === false ? (
             <div ref={componentRef_AddCard} className='mx-3 '>
               <div className={` mt-2 rounded-xl  `}>
                 <div className={`flex flex-row items-center   justify-between`}>
@@ -92,6 +107,8 @@ export default function ListComponent({ list, setOpenCardSetting }: ListComponen
                     }}
                     className={` h-full w-full rounded-lg px-2 pb-8 text-left focus:border-0 focus:outline-none focus:ring-0 `}
                     placeholder='Enter the title for this card...'
+                    value={newCardName}
+                    onChange={(e) => setNewCardName(e.target.value)}
                     autoFocus
                   ></input>
                 </div>
@@ -99,13 +116,19 @@ export default function ListComponent({ list, setOpenCardSetting }: ListComponen
               <div className={`my-2 flex flex-row space-x-2`}>
                 <button
                   className=' rounded   bg-blue-600 px-3 py-2 hover:bg-blue-700'
-                  onClick={() => setAddCardOpenAt(list.id)}
+                  onClick={() => {
+                    if (list._id) setAddCardOpenAt(list._id)
+                    addCard()
+                  }}
                 >
                   <p className={`text-left font-semibold text-white`}> Add card</p>
                 </button>
                 <button
                   className={` rounded-lg px-3 py-2 ${darkMode ? 'hover:bg-gray-600' : 'hover:bg-gray-300'}`}
-                  onClick={() => setAddCardOpenAt('')}
+                  onClick={() => {
+                    setAddCardOpenAt('')
+                    setNewCardName('')
+                  }}
                 >
                   <p className={`text-left font-semibold`}>
                     {' '}
@@ -125,6 +148,8 @@ export default function ListComponent({ list, setOpenCardSetting }: ListComponen
                     }}
                     className={` h-full w-full rounded-lg px-2 pb-8 text-left focus:border-0 focus:outline-none focus:ring-0 `}
                     placeholder='Enter the title for this card...'
+                    value={newCardName}
+                    onChange={(e) => setNewCardName(e.target.value)}
                     autoFocus
                   ></input>
                 </div>
@@ -132,13 +157,19 @@ export default function ListComponent({ list, setOpenCardSetting }: ListComponen
               <div className={`my-2 flex flex-row space-x-2`}>
                 <button
                   className=' rounded   bg-blue-600 px-3 py-2 hover:bg-blue-700'
-                  onClick={() => setAddCardOpenAt(list.id)}
+                  onClick={() => {
+                    if (list._id) setAddCardOpenAt(list._id)
+                    addCard()
+                  }}
                 >
                   <p className={`text-left font-semibold text-white`}> Add card</p>
                 </button>
                 <button
                   className={` rounded-lg px-3 py-2 ${darkMode ? 'hover:bg-gray-600' : 'hover:bg-gray-300'}`}
-                  onClick={() => setAddCardOpenAt('')}
+                  onClick={() => {
+                    setAddCardOpenAt('')
+                    setNewCardName('')
+                  }}
                 >
                   <p className={`text-left font-semibold `}>
                     {' '}
@@ -154,7 +185,7 @@ export default function ListComponent({ list, setOpenCardSetting }: ListComponen
           <button
             className={`w-10/12 rounded-lg p-2 ${darkMode ? 'hover:bg-gray-600' : 'hover:bg-gray-300'}`}
             onClick={() => {
-              setAddCardOpenAt(list.id)
+              setAddCardOpenAt(list._id)
             }}
           >
             <p className={`text-left font-semibold `}>+ Add a card</p>
