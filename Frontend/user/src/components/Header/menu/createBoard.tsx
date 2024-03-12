@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheck, faChevronLeft, faClose } from '@fortawesome/free-solid-svg-icons'
 import bgHeader from '~/assets/bg_header_create_board.svg'
 import { useTheme } from './../../Theme/themeContext'
+import axios from 'axios'
 
 interface AutocompleteContainerProps {
   onClose: () => void
@@ -58,6 +59,22 @@ export default function CreateBoard(props: AutocompleteContainerProps) {
   const [activeBg, setActiveBg] = React.useState({ check: true, index: 0, type: 'color', data: bg_color[0].color })
   const anchorRef = React.useRef<HTMLButtonElement>(null)
   const { colors } = useTheme()
+
+
+
+  async function fetchData() {
+    try {
+        const response = await axios.get('http://localhost:3333/api/workspace'); // Thay đổi URL thành địa chỉ thực tế của API bạn muốn gọi
+        console.log(response.data); // Log dữ liệu trả về từ API
+        // Bạn có thể thực hiện xử lý dữ liệu ở đây
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    }
+
+  }
+  React.useEffect(()=> {
+    fetchData()
+  }, [])
 
   const handleTitleBoard = (event: React.ChangeEvent<HTMLInputElement>) => {
     setBoardTitle(event.target.value)

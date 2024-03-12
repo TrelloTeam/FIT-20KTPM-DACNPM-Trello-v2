@@ -12,7 +12,7 @@ export const BoardLayout: React.FC<LayoutProps> = ({ children, openCardSetting }
     opacity: 0.7
   }
   return (
-    <div className={`relative`} style={{ minHeight: 'calc(100vh - 114px)' }}>
+    <div className={`relative`} style={{ minHeight: 'calc(100vh - 50px)' }}>
       <div className={`absolute inset-0`} style={backgroundStyle} />
       <main className={`relative z-0 ${openCardSetting ? 'pointer-events-none' : ''}`}>{children}</main>
     </div>

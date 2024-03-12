@@ -284,7 +284,6 @@ export function Board() {
 
   return (
     <BoardLayout openCardSetting={openCardSetting}>
-      <div className={`mx-auto p-4 text-center text-3xl font-bold uppercase text-black`}>Header Area</div>
       <div className={`flex flex-row justify-start`}>
         <DndContext
           sensors={sensors}
@@ -293,7 +292,7 @@ export function Board() {
           onDragEnd={handleDragEnd}
         >
           {listsData && (
-            <div className={`relative z-20 w-[100%]`}>
+            <div className={`relative z-20 mt-[64px] w-[100%]`}>
               <Suspense fallback={<LoadingComponent />}>
                 <LazyListsComponent lists={listsData} setOpenCardSetting={setOpenCardSetting} />
               </Suspense>
@@ -309,7 +308,6 @@ export function Board() {
             </div>
           )}
         </DndContext>
-        
       </div>
     </BoardLayout>
   )

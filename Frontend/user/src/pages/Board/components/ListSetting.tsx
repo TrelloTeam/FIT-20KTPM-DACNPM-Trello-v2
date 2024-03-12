@@ -5,7 +5,7 @@ interface ListSettingProps {
 }
 
 export default function ListSetting({ closeListSetting }: ListSettingProps) {
-  const { darkMode } = useTheme()
+  const { colors, darkMode } = useTheme()
   return (
     <div
       style={{

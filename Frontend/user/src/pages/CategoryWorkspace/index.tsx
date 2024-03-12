@@ -70,7 +70,7 @@ export function CategoryWorkspace() {
         <AppBar
           position='fixed'
           open={open}
-          className='mt-[53px]'
+          className='mt-[51px]'
           sx={{ backgroundColor: 'rgba(54, 55, 61, 0.9)', zIndex: 100 }}
         >
           <Toolbar sx={{ backgroundColor: 'transparent' }}>

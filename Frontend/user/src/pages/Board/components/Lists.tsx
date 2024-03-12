@@ -5,7 +5,6 @@ import AddListForm from './AddNewList'
 
 import { SortableContext, horizontalListSortingStrategy } from '@dnd-kit/sortable'
 import { useEffect, useRef, useState } from 'react'
-import { IoMdClose } from 'react-icons/io'
 
 export default function ListsComponent({ lists, setOpenCardSetting }: ListsComponentProps) {
   const { colors, darkMode } = useTheme()
@@ -47,24 +46,20 @@ export default function ListsComponent({ lists, setOpenCardSetting }: ListsCompo
   }
   return (
     <SortableContext items={lists?.map((l) => l.id)} strategy={horizontalListSortingStrategy}>
-      <div className='relative z-30 my-10 ml-10 flex flex-row'>
+      <div className='relative z-30 flex flex-row items-start p-4'>
         {lists.map((list) => (
           <ListComponent list={list} setOpenCardSetting={setOpenCardSetting} key={list.id} />
         ))}
         {showAddListForm ? (
-          <div
-          ref={listFormRef}
-          className={`h-[120px]`}
-          >
-          <AddListForm
-           
-            darkMode={darkMode}
-            colors={colors}
-            newListName={newListName}
-            setShowAddListForm={setShowAddListForm}
-            setNewListName={setNewListName}
-            handleSaveListClick={handleSaveListClick}
-          />
+          <div ref={listFormRef} className={`h-[120px]`}>
+            <AddListForm
+              darkMode={darkMode}
+              colors={colors}
+              newListName={newListName}
+              setShowAddListForm={setShowAddListForm}
+              setNewListName={setNewListName}
+              handleSaveListClick={handleSaveListClick}
+            />
           </div>
         ) : (
           <button
