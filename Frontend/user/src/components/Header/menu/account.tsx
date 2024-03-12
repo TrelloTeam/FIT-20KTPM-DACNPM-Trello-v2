@@ -1,9 +1,12 @@
 import * as React from 'react'
 import { Box, ClickAwayListener, Grow, Paper, Popper, MenuList, Stack, Typography } from '@mui/material'
+import { Link } from 'react-router-dom'
+import { useTheme } from './../../Theme/themeContext'
 
 export default function Account() {
   const [open, setOpen] = React.useState(false)
   const anchorRef = React.useRef<HTMLButtonElement>(null)
+  const { darkMode, toggleDarkMode, colors } = useTheme()
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen)
@@ -51,7 +54,7 @@ export default function Account() {
             padding: '5px',
             '&:hover': {
               transition: 'all 0.1s ease-in',
-              backgroundColor: 'rgba(255,255,255,0.1)'
+              backgroundColor: colors.bg_button_hover
             },
             cursor: 'pointer'
           }}
@@ -97,7 +100,7 @@ export default function Account() {
                       marginTop: '8px',
                       transition: 'all 0.1s ease-in',
                       padding: '12px 0 6px 0',
-                      backgroundColor: '#282e33',
+                      backgroundColor: colors.background,
                       minWidth: '224px',
                       borderRadius: '4px'
                     }}
@@ -128,10 +131,10 @@ export default function Account() {
                         </Typography>
 
                         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                          <Typography variant='body1' sx={{ fontSize: '14px', color: '#9fadbc', marginLeft: '12px' }}>
+                          <Typography variant='body1' sx={{ fontSize: '14px', color: colors.text, marginLeft: '12px' }}>
                             Hữu Chính Trần
                           </Typography>
-                          <Typography variant='body1' sx={{ fontSize: '12px', color: '#9fadbc', marginLeft: '12px' }}>
+                          <Typography variant='body1' sx={{ fontSize: '12px', color: colors.text, marginLeft: '12px' }}>
                             abc@gmail.com
                           </Typography>
                         </Box>
@@ -143,61 +146,63 @@ export default function Account() {
                           sx={{
                             fontSize: '10px',
                             fontWeight: 700,
-                            color: '#9fadbc',
+                            color: colors.text,
                             marginBottom: '4px',
                             padding: '0 20px'
                           }}
                         >
                           TRELLO
                         </Typography>
-
+                        <Link to={'/profile/123'}>
+                          <Typography
+                            variant='body1'
+                            sx={{
+                              cursor: 'pointer',
+                              fontSize: '14px',
+                              color: colors.text,
+                              marginBottom: '4px',
+                              padding: '10px 20px',
+                              '&:hover': {
+                                backgroundColor: colors.bg_button_hover
+                              }
+                            }}
+                          >
+                            Account management
+                          </Typography>
+                        </Link>
+                        <Link to={'/activity/123'}>
+                          <Typography
+                            variant='body1'
+                            sx={{
+                              cursor: 'pointer',
+                              fontSize: '14px',
+                              color: colors.text,
+                              marginBottom: '4px',
+                              padding: '10px 20px',
+                              '&:hover': {
+                                backgroundColor: colors.bg_button_hover
+                              }
+                            }}
+                          >
+                            Activity
+                          </Typography>
+                        </Link>
                         <Typography
+                          onClick={toggleDarkMode}
                           variant='body1'
                           sx={{
                             cursor: 'pointer',
                             fontSize: '14px',
-                            color: '#b6c2cf',
+                            color: colors.text,
                             marginBottom: '4px',
                             padding: '10px 20px',
                             '&:hover': {
-                              backgroundColor: 'rgba(255,255,255,0.1)'
-                            }
-                          }}
-                        >
-                          Account management
-                        </Typography>
-
-                        <Typography
-                          variant='body1'
-                          sx={{
-                            cursor: 'pointer',
-                            fontSize: '14px',
-                            color: '#b6c2cf',
-                            marginBottom: '4px',
-                            padding: '10px 20px',
-                            '&:hover': {
-                              backgroundColor: 'rgba(255,255,255,0.1)'
-                            }
-                          }}
-                        >
-                          Activity
-                        </Typography>
-
-                        <Typography
-                          variant='body1'
-                          sx={{
-                            cursor: 'pointer',
-                            fontSize: '14px',
-                            color: '#b6c2cf',
-                            marginBottom: '4px',
-                            padding: '10px 20px',
-                            '&:hover': {
-                              backgroundColor: 'rgba(255,255,255,0.1)'
+                              backgroundColor: colors.bg_button_hover
                             },
                             borderBottom: '1px solid #b6c2cf'
                           }}
                         >
-                          Cards
+                          {darkMode ? 'Light Mode' : 'Dark Mode'}
                         </Typography>
 
                         <Typography
@@ -205,10 +210,10 @@ export default function Account() {
                           sx={{
                             cursor: 'pointer',
                             fontSize: '14px',
-                            color: '#b6c2cf',
+                            color: colors.text,
                             padding: '10px 20px',
                             '&:hover': {
-                              backgroundColor: 'rgba(255,255,255,0.1)'
+                              backgroundColor: colors.bg_button_hover
                             }
                           }}
                         >

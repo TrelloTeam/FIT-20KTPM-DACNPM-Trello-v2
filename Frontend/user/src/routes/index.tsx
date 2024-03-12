@@ -1,10 +1,11 @@
 import { createBrowserRouter } from 'react-router-dom'
 import App from '../App'
 import HomePage from '~/pages/Home'
-import { Profile } from './../pages/Profile/components/Profile'
 import { Templates } from './../pages/Templates/index'
-import { BoardsPage } from '~/pages'
+import { AccountManagement, Board, BoardsPage } from '~/pages'
 import { ActivityComponent } from './../pages/Profile/components/Activity'
+import CardDetailWindow from '~/components/CardDetailWindow'
+import { CategoryWorkspace } from '~/pages/CategoryWorkspace'
 
 export const router = createBrowserRouter([
   {
@@ -12,23 +13,35 @@ export const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <HomePage />
+        element: <BoardsPage />
       },
       {
-        path: '/profile',
-        element: <Profile />
+        path: '/profile/:id',
+        element: <AccountManagement page={`profile`} />
       },
       {
         path: '/template',
         element: <Templates />
       },
       {
-        path: '/board',
+        path: '/workspace/:workspaceId',
+        element: <CategoryWorkspace />
+      },
+      {
+        path: '/board/:id?',
         element: <BoardsPage />
       },
       {
-        path: '/activity',
-        element: <ActivityComponent />
+        path: '/activity/:id',
+        element: <AccountManagement page={`activity`} />
+      },
+      {
+        path: '/carddetail',
+        element: <CardDetailWindow />
+      },
+      {
+        path: '/cardlist',
+        element: <Board />
       }
     ]
   }

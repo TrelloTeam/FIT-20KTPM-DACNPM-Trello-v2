@@ -7,6 +7,9 @@ import BoardsPageWorkspaceControl from '~/components/BoardsPageWorkspaceControl'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrello } from '@fortawesome/free-brands-svg-icons'
 import BoardsPageRowTemplate from '~/components/BoardsPageRowTemplate'
+import SidebarTemplate from '~/components/SidebarTemplate'
+import { BoardApiRTQ } from '~/api'
+import { useEffect } from 'react'
 
 export type BoardTemplate = {
   [x: string]: unknown
@@ -51,13 +54,18 @@ export function BoardsPageLabel({ title }: BoardsPageLabelProps) {
 
 export function BoardsPage() {
   const starredBoards = data2.filter((board) => board.is_star == true)
+  const [getAllBoard, { data: boardData }] = BoardApiRTQ.BoardApiSlice.useLazyGetAllBoardQuery()
 
+  useEffect(() => {
+    getAllBoard().then((v) => console.log(v))
+  }, [])
+  console.log(boardData?.data)
   return (
     <Box display='flex' justifyContent='center' alignItems='center' className='my-10'>
       <Grid container sx={{ maxWidth: 1280 }}>
         {/* (reserved) Left panel */}
         <Grid item xs={4}>
-          <Container></Container>
+          <SidebarTemplate />
         </Grid>
         {/* Boards Page */}
         <Grid item xs={8}>
@@ -66,7 +74,7 @@ export function BoardsPage() {
             <FontAwesomeIcon icon={faTrello} style={{ fontSize: 28 }} />
             <h1 className='ml-2 p-0 text-xl font-bold'>Most popular templates</h1>
           </Box>
-          <BoardsPageRowTemplate boards={data1} />
+          <BoardsPageRowTemplate boards={[...data1]} />
           {/* END: Recently Viewed Boards section */}
           {/* spacing */}
           <Container sx={{ height: 40 }}></Container>
@@ -84,7 +92,17 @@ export function BoardsPage() {
             <AccessTimeIcon style={{ fontSize: 28 }} />
             <h1 className='ml-2 p-0 text-lg font-bold'>Recently viewed</h1>
           </Box>
-          <BoardsPageRow boards={data2} enableAddBoard={false} />
+          <BoardsPageRow
+            boards={[
+              ...(boardData?.data || []).map((e) => ({
+                ...e,
+                _id: e._id || '',
+                is_star: false
+              })),
+              ...data2
+            ]}
+            enableAddBoard={false}
+          />
           {/* END: Recently Viewed Boards section */}
           {/* spacing */}
           <Container sx={{ height: 80 }}></Container>

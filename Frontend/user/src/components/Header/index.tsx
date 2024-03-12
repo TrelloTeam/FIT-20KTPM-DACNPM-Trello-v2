@@ -11,13 +11,20 @@ import Help from './menu/help'
 import Notification from './menu/notification'
 import Account from './menu/account'
 
+import { Link } from 'react-router-dom'
+
+import { useTheme } from './../Theme/themeContext'
+import { Button } from '@mui/base'
+
 const Header = () => {
+  const { darkMode, colors } = useTheme()
+
   return (
     <Box
       sx={{
         position: 'fixed',
         width: '100%',
-        backgroundColor: '#1d2125',
+        backgroundColor: colors.background,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -25,8 +32,9 @@ const Header = () => {
         borderColor: '#9fadbc',
         borderStyle: 'solid',
         padding: '8px',
-        color: '#9fadbc',
-        zIndex: '1000'
+        color: colors.text,
+        zIndex: '1000',
+        transition: darkMode ? 'all 0.2s ease-in' : 'all 0.2s ease-in'
       }}
     >
       <Box
@@ -35,22 +43,28 @@ const Header = () => {
           alignItems: 'center'
         }}
       >
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            marginRight: '2px',
-            padding: '2px 8px',
-            cursor: 'pointer',
-            '&:hover': { backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: '4px' }
-          }}
-        >
-          <FontAwesomeIcon icon={faTrello} />
+        <Link to={'/'}>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              marginRight: '2px',
+              padding: '2px 8px',
+              cursor: 'pointer',
+              color: colors.text,
+              '&:hover': {
+                backgroundColor: colors.bg_button_hover,
+                borderRadius: '4px'
+              }
+            }}
+          >
+            <FontAwesomeIcon icon={faTrello} />
 
-          <Typography variant='body1' sx={{ fontSize: '20px', fontWeight: 700, marginLeft: '4px' }}>
-            Trello
-          </Typography>
-        </Box>
+            <Typography variant='body1' sx={{ fontSize: '20px', fontWeight: 700, marginLeft: '4px' }}>
+              Trello
+            </Typography>
+          </Box>
+        </Link>
 
         <Box sx={{ padding: '0 5px' }}>
           <WorkSpaces />
@@ -65,7 +79,9 @@ const Header = () => {
         </Box>
 
         <Box sx={{ padding: '0 5px' }}>
-          <Templates />
+          <Link to={`/template`}>
+            <Templates />
+          </Link>
         </Box>
 
         <Create />
