@@ -5,6 +5,7 @@ import { faCheck, faChevronLeft, faClose } from '@fortawesome/free-solid-svg-ico
 import bgHeader from '~/assets/bg_header_create_board.svg'
 import { useTheme } from './../../Theme/themeContext'
 import axios from 'axios'
+import { BoardApiRTQ } from '~/api'
 
 interface AutocompleteContainerProps {
   onClose: () => void
@@ -51,6 +52,9 @@ const bg_color = [
 ]
 
 export default function CreateBoard(props: AutocompleteContainerProps) {
+  const [createBoard] = BoardApiRTQ.BoardApiSlice.useCreateBoardMutation()
+  const [getAllBoard] = BoardApiRTQ.BoardApiSlice.useLazyGetAllBoardQuery()
+
   const [valueWorkspace, setValueWorkspace] = React.useState<string | undefined>(workspace[0])
   const [valueVisibility, setValueVisibility] = React.useState<string | undefined>(visibility[0])
   const [inputValueWorkspace, setInputValueWorkspace] = React.useState('')
@@ -60,19 +64,16 @@ export default function CreateBoard(props: AutocompleteContainerProps) {
   const anchorRef = React.useRef<HTMLButtonElement>(null)
   const { colors } = useTheme()
 
-
-
   async function fetchData() {
-    try {
-        const response = await axios.get('http://localhost:3333/api/workspace'); // Thay đổi URL thành địa chỉ thực tế của API bạn muốn gọi
-        console.log(response.data); // Log dữ liệu trả về từ API
-        // Bạn có thể thực hiện xử lý dữ liệu ở đây
-    } catch (error) {
-        console.error('Error fetching data:', error);
-    }
-
+    // try {
+    //   const response = await axios.get('http://localhost:3333/api/workspace') // Thay đổi URL thành địa chỉ thực tế của API bạn muốn gọi
+    //   console.log(response.data) // Log dữ liệu trả về từ API
+    //   // Bạn có thể thực hiện xử lý dữ liệu ở đây
+    // } catch (error) {
+    //   console.error('Error fetching data:', error)
+    // }
   }
-  React.useEffect(()=> {
+  React.useEffect(() => {
     fetchData()
   }, [])
 
@@ -85,13 +86,16 @@ export default function CreateBoard(props: AutocompleteContainerProps) {
   }
 
   const onSubmit = () => {
-    console.log(valueWorkspace)
-    console.log(valueVisibility)
-    console.log(boardTitle)
+    console.log(valueWorkspace, valueVisibility, boardTitle)
+    createBoard({
+      name: boardTitle || '',
+      workspace_id: valueWorkspace || '',
+      visibility: 'private'
+    }).then(() => getAllBoard())
   }
 
   return (
-    <Box sx={{ padding: '0 12px' }}>
+    <Box sx={{ padding: '0 12px', overflow: 'scroll' }}>
       <Box
         onClick={props.onBack}
         sx={{
