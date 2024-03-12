@@ -31,6 +31,7 @@ interface WorkspaceData {
 function SidebarTemplate() {
   const [workspace, setWorkspace] = useState<WorkspaceData[]>()
   const params = useParams()
+  console.log(params)
 
   const fetchData = async () => {
     try {

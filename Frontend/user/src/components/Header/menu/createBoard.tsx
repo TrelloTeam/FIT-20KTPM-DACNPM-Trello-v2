@@ -84,7 +84,7 @@ export default function CreateBoard(props: AutocompleteContainerProps) {
   const [boardTitle, setBoardTitle] = React.useState('')
   const [activeBg, setActiveBg] = React.useState({ check: true, index: 0, type: 'color', data: bg_color[0].color })
   const anchorRef = React.useRef<HTMLButtonElement>(null)
-  const { colors } = useTheme()
+  const { darkMode, colors } = useTheme()
   const navigator = useNavigate()
 
   const fetchData = async () => {
@@ -405,7 +405,7 @@ export default function CreateBoard(props: AutocompleteContainerProps) {
             width: '100%',
             fontSize: '13px',
             textTransform: 'none',
-            color: '#1d2125',
+            color: darkMode ? '#1d2125' : '#fff',
             backgroundColor: boardTitle.length === 0 ? 'rgba(86,157,255,0.1)' : '#579dff',
             '&:hover': {
               backgroundColor: '#85b8ff'

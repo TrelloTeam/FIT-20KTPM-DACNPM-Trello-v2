@@ -27,7 +27,7 @@ export default function CreateWorkspace(props: AutocompleteContainerProps) {
   const [inputValueWorkspace, setInputValueWorkspace] = React.useState('')
   const [workspaceName, setWorkspaceName] = React.useState('')
   const [workspaceDescription, setWorkspaceDescription] = React.useState('')
-  const { colors } = useTheme()
+  const { darkMode, colors } = useTheme()
   const navigator = useNavigate()
 
   const onSubmit = async () => {
@@ -242,7 +242,7 @@ export default function CreateWorkspace(props: AutocompleteContainerProps) {
               width: '100%',
               fontSize: '14px',
               textTransform: 'none',
-              color: '#1d2125',
+              color: darkMode ? '#1d2125' : '#fff',
               padding: '12px 0',
               backgroundColor:
                 workspaceName.length === 0 || valueWorkspace === 'Choose...' ? 'rgba(86,157,255,0.1)' : '#579dff',
