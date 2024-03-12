@@ -8,6 +8,32 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrello } from '@fortawesome/free-brands-svg-icons'
 import BoardsPageRowTemplate from '~/components/BoardsPageRowTemplate'
 import SidebarTemplate from '~/components/SidebarTemplate'
+import axios from 'axios'
+import React from 'react'
+import { useParams } from 'react-router-dom'
+
+interface BoardData {
+  _id: string
+  name: string
+  workspace_id: string
+  activities: []
+  members_email: []
+  labels: []
+  is_star: boolean
+  watcher_email: string
+  visibility: string
+}
+interface WorkspaceData {
+  _id: string
+  name: string
+  short_name: string
+  description: string
+  website: string
+  logo: string
+  type_id: string
+  visibility: string
+  members: []
+}
 
 export type BoardTemplate = {
   [x: string]: unknown
@@ -23,19 +49,19 @@ export type BoardSubset = {
   is_star: boolean
 }
 
-const data1: BoardTemplate[] = [
-  { _id: '0', name: 'Project Management', is_star: false },
-  { _id: '1', name: 'Kanban Template', is_star: true }
-]
+// const data1: BoardTemplate[] = [
+//   { _id: '0', name: 'Project Management', is_star: false },
+//   { _id: '1', name: 'Kanban Template', is_star: true }
+// ]
 
 const data2: BoardSubset[] = [
-  { _id: '0', name: 'Project Trello', is_star: true },
-  { _id: '1', name: 'Board 2', is_star: false },
-  { _id: '2', name: 'Board 3', is_star: false },
-  { _id: '3', name: 'Board 3', is_star: false },
-  { _id: '4', name: 'Board 3', is_star: true },
-  { _id: '5', name: 'Board 3', is_star: false },
-  { _id: '6 ', name: 'Board 3', is_star: false }
+  // { _id: '0', name: 'Project Trello', is_star: true },
+  // { _id: '1', name: 'Board 2', is_star: false },
+  // { _id: '2', name: 'Board 3', is_star: false },
+  // { _id: '3', name: 'Board 3', is_star: false },
+  // { _id: '4', name: 'Board 3', is_star: true },
+  // { _id: '5', name: 'Board 3', is_star: false },
+  // { _id: '6 ', name: 'Board 3', is_star: false }
 ]
 
 interface BoardsPageLabelProps {
@@ -51,7 +77,51 @@ export function BoardsPageLabel({ title }: BoardsPageLabelProps) {
 }
 
 export function BoardsPage() {
+  const [data1, setData1] = React.useState<BoardData[]>([
+    {
+      _id: '',
+      name: '',
+      workspace_id: '',
+      activities: [],
+      members_email: [],
+      labels: [],
+      is_star: false,
+      watcher_email: '',
+      visibility: ''
+    }
+  ])
+  const [workspaceDetail, setWorkspaceDetail] = React.useState<WorkspaceData>({
+    _id: '',
+    name: '',
+    short_name: '',
+    description: '',
+    website: '',
+    logo: '',
+    type_id: '',
+    visibility: '',
+    members: []
+  })
   const starredBoards = data2.filter((board) => board.is_star == true)
+  const params = useParams()
+
+  const fetchData = async () => {
+    try {
+      const responseListBoard = await axios.get('http://localhost:3333/api/board/' + params.workspaceId)
+      const responseWorkspaceDetail = await axios.get('http://localhost:3333/api/workspace/' + params.workspaceId)
+
+      console.log()
+
+      if (responseListBoard && responseListBoard.data) {
+        setData1([...responseListBoard.data.data])
+      }
+      if (responseWorkspaceDetail && responseWorkspaceDetail.data) setWorkspaceDetail(responseWorkspaceDetail.data.data)
+    } catch (error) {
+      console.error('Error fetching data:', error)
+    }
+  }
+  React.useEffect(() => {
+    fetchData()
+  }, [params])
 
   return (
     <Box display='flex' justifyContent='center' alignItems='center' className='my-10'>
@@ -65,7 +135,7 @@ export function BoardsPage() {
           {/* START: Recently Viewed Boards section */}
           <Box style={{ color: colors.primary }} sx={{ display: 'flex', alignItems: 'center' }} className='my-4'>
             <FontAwesomeIcon icon={faTrello} style={{ fontSize: 28 }} />
-            <h1 className='ml-2 p-0 text-xl font-bold'>Most popular templates</h1>
+            <h1 className='ml-2 p-0 text-xl font-bold'>Board</h1>
           </Box>
           <BoardsPageRowTemplate boards={data1} />
           {/* END: Recently Viewed Boards section */}
@@ -100,10 +170,10 @@ export function BoardsPage() {
                   sx={{ width: 32, height: 32, color: 'white' }}
                   className='my-4 flex items-center justify-center rounded-md bg-gradient-to-b from-green-600 to-green-400'
                 >
-                  <p className='m-0 p-0 text-2xl font-bold leading-none'>Â</p>
+                  <p className='m-0 p-0 text-2xl font-bold leading-none'>{workspaceDetail.name.charAt(0)}</p>
                 </Box>
                 <h1 style={{ color: colors.primary }} className='ml-3 p-0 text-lg font-semibold'>
-                  Âu Hồng Minh's workspace
+                  {workspaceDetail.name}
                 </h1>
               </Box>
             </Grid>

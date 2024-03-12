@@ -9,8 +9,20 @@ import { colors } from '~/styles'
 const cardBg02 =
   'https://trello-backgrounds.s3.amazonaws.com/SharedBackground/480x322/47f09f0e3910259568294477d0bdedac/photo-1576502200916-3808e07386a5.jpg'
 
+interface BoardData {
+  _id: string
+  name: string
+  workspace_id: string
+  activities: []
+  members_email: []
+  labels: []
+  is_star: boolean
+  watcher_email: string
+  visibility: string
+}
+
 interface BoardsPageCardTemplateProps {
-  board: BoardTemplate
+  board: BoardData
 }
 
 export default function BoardsPageCardTemplate({ board }: BoardsPageCardTemplateProps) {

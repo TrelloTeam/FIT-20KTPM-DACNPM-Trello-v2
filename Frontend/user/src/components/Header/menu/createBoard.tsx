@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheck, faChevronLeft, faClose } from '@fortawesome/free-solid-svg-icons'
 import bgHeader from '~/assets/bg_header_create_board.svg'
 import { useTheme } from './../../Theme/themeContext'
+import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
 interface AutocompleteContainerProps {
@@ -11,7 +12,18 @@ interface AutocompleteContainerProps {
   onBack: () => void
 }
 
-const workspace = ['Team', 'Trello Workspace']
+interface WorkspaceData {
+  _id: string
+  name: string
+  short_name: string
+  description: string
+  website: string
+  logo: string
+  type_id: string
+  visibility: string
+  members: []
+}
+
 const visibility = ['Workspace', 'Public', 'Private']
 
 const bg_image = [
@@ -51,30 +63,47 @@ const bg_color = [
 ]
 
 export default function CreateBoard(props: AutocompleteContainerProps) {
-  const [valueWorkspace, setValueWorkspace] = React.useState<string | undefined>(workspace[0])
-  const [valueVisibility, setValueVisibility] = React.useState<string | undefined>(visibility[0])
+  const [workspaceOptionsData, setWorkspaceOptionsData] = React.useState<WorkspaceData[]>([
+    {
+      _id: '',
+      name: '',
+      short_name: '',
+      description: '',
+      website: '',
+      logo: '',
+      type_id: '',
+      visibility: '',
+      members: []
+    }
+  ])
+
+  const [valueWorkspace, setValueWorkspace] = React.useState<WorkspaceData>(workspaceOptionsData[0])
+  const [valueVisibility, setValueVisibility] = React.useState<string>(visibility[0])
   const [inputValueWorkspace, setInputValueWorkspace] = React.useState('')
   const [inputValueVisibility, setInputValueVisibility] = React.useState('')
   const [boardTitle, setBoardTitle] = React.useState('')
   const [activeBg, setActiveBg] = React.useState({ check: true, index: 0, type: 'color', data: bg_color[0].color })
   const anchorRef = React.useRef<HTMLButtonElement>(null)
   const { colors } = useTheme()
+  const navigator = useNavigate()
 
-
-
-  async function fetchData() {
+  const fetchData = async () => {
     try {
-        const response = await axios.get('http://localhost:3333/api/workspace'); // Thay đổi URL thành địa chỉ thực tế của API bạn muốn gọi
-        console.log(response.data); // Log dữ liệu trả về từ API
-        // Bạn có thể thực hiện xử lý dữ liệu ở đây
-    } catch (error) {
-        console.error('Error fetching data:', error);
-    }
+      const response = await axios.get('http://localhost:3333/api/workspace')
 
+      if (response && response.data) {
+        setWorkspaceOptionsData([...response.data.data])
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error)
+    }
   }
-  React.useEffect(()=> {
+  React.useEffect(() => {
     fetchData()
   }, [])
+  React.useEffect(() => {
+    setValueWorkspace(workspaceOptionsData[0])
+  }, [workspaceOptionsData])
 
   const handleTitleBoard = (event: React.ChangeEvent<HTMLInputElement>) => {
     setBoardTitle(event.target.value)
@@ -84,10 +113,22 @@ export default function CreateBoard(props: AutocompleteContainerProps) {
     setActiveBg({ check: true, type, index, data })
   }
 
-  const onSubmit = () => {
-    console.log(valueWorkspace)
-    console.log(valueVisibility)
-    console.log(boardTitle)
+  const onSubmit = async () => {
+    try {
+      const data = {
+        workspace_id: valueWorkspace._id,
+        name: boardTitle,
+        visibility: valueVisibility.toLowerCase()
+      }
+      const response = await axios.post('http://localhost:3333/api/board/create', data)
+
+      if (response && response.statusText === 'OK') {
+        navigator(`/board/${response.data.data._id}`)
+        props.onClose()
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error)
+    }
   }
 
   return (
@@ -292,7 +333,7 @@ export default function CreateBoard(props: AutocompleteContainerProps) {
             size='small'
             value={valueWorkspace}
             disableClearable
-            onChange={(_event: React.SyntheticEvent, newValue: string | undefined) => {
+            onChange={(_event: React.SyntheticEvent, newValue: WorkspaceData) => {
               setValueWorkspace(newValue)
             }}
             inputValue={inputValueWorkspace}
@@ -300,12 +341,14 @@ export default function CreateBoard(props: AutocompleteContainerProps) {
               setInputValueWorkspace(newInputValue)
             }}
             id='controllable-states-demo'
-            options={workspace}
+            options={workspaceOptionsData}
+            getOptionLabel={(option: WorkspaceData) => option.name}
             sx={{
               width: '100%',
               '& .MuiAutocomplete-option': {
                 backgroundColor: 'red !important'
               },
+
               '& .MuiInputBase-input': {
                 fontSize: '12px',
                 color: colors.text
@@ -327,7 +370,7 @@ export default function CreateBoard(props: AutocompleteContainerProps) {
             size='small'
             value={valueVisibility}
             disableClearable
-            onChange={(_event: React.SyntheticEvent, newValue: string | undefined) => {
+            onChange={(_event: React.SyntheticEvent, newValue: string) => {
               setValueVisibility(newValue)
             }}
             inputValue={inputValueVisibility}

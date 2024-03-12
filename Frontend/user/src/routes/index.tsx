@@ -25,11 +25,11 @@ export const router = createBrowserRouter([
       },
       {
         path: '/workspace/:workspaceId',
-        element: <CategoryWorkspace />
+        element: <BoardsPage />
       },
       {
         path: '/board/:id',
-        element: <BoardsPage />
+        element: <CategoryWorkspace />
       },
       {
         path: '/activity/:id',

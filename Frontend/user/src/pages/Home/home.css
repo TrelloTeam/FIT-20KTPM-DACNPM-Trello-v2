@@ -24,7 +24,7 @@
   }
 
   .home-main-content-container {
-    @apply mt-14 pl-12 ml-24;
+    @apply mt-3 pl-12 ml-24;
   }
 
   .home-right-sidebar-container {
@@ -302,7 +302,7 @@
   }
 
   .home-right-sidebar-container {
-    @apply mt-14 overflow-y-auto pl-12 sticky w-full top-24 max-w-[342px] h-[90vh];
+    @apply overflow-y-auto pl-12 sticky w-full top-16 max-w-[342px] h-[90vh];
   }
 
   .home-recently-veiwed {

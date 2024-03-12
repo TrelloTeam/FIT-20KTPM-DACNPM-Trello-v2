@@ -4,6 +4,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faClose } from '@fortawesome/free-solid-svg-icons'
 import workspace from '~/assets/workspace_img.svg'
 import { useTheme } from './../../Theme/themeContext'
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 
 interface AutocompleteContainerProps {
   onClose: () => void
@@ -26,6 +28,24 @@ export default function CreateWorkspace(props: AutocompleteContainerProps) {
   const [workspaceName, setWorkspaceName] = React.useState('')
   const [workspaceDescription, setWorkspaceDescription] = React.useState('')
   const { colors } = useTheme()
+  const navigator = useNavigate()
+
+  const onSubmit = async () => {
+    const data = {
+      name: workspaceName,
+      description: workspaceDescription
+    }
+    try {
+      const response = await axios.post('http://localhost:3333/api/worspace', data)
+
+      if (response && response.statusText === 'OK') {
+        navigator(`/workspace/${response.data.data._id}`)
+        props.onClose()
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error)
+    }
+  }
 
   const handleWorkspaceName = (event: React.ChangeEvent<HTMLInputElement>) => {
     setWorkspaceName(event.target.value)
@@ -152,10 +172,10 @@ export default function CreateWorkspace(props: AutocompleteContainerProps) {
                 width: '100%',
                 '& .MuiInputBase-input': {
                   fontSize: '14px',
-                  color: '#9fadbc'
+                  color: colors.text
                 },
                 '& .MuiSvgIcon-root': {
-                  color: '#9fadbc'
+                  color: colors.text
                 },
                 borderRadius: '4px',
                 fontSize: '14px',
@@ -192,7 +212,7 @@ export default function CreateWorkspace(props: AutocompleteContainerProps) {
                 width: '100%',
                 padding: '8px 10px',
                 fontSize: '14px',
-                color: '#9fadbc',
+                color: colors.text,
                 backgroundColor: colors.background,
                 border: '3px solid #384148',
                 borderColor: colors.text,
@@ -216,6 +236,7 @@ export default function CreateWorkspace(props: AutocompleteContainerProps) {
           </Box>
 
           <Button
+            onClick={onSubmit}
             disabled={workspaceName.length === 0 || valueWorkspace === 'Choose...' ? true : false}
             sx={{
               width: '100%',
