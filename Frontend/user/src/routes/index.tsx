@@ -28,7 +28,7 @@ export const router = createBrowserRouter([
         element: <CategoryWorkspace />
       },
       {
-        path: '/board/:id',
+        path: '/board/:id?',
         element: <BoardsPage />
       },
       {
@@ -40,7 +40,7 @@ export const router = createBrowserRouter([
         element: <CardDetailWindow />
       },
       {
-        path: '/board/:id',
+        path: '/cardlist',
         element: <Board />
       }
     ]
