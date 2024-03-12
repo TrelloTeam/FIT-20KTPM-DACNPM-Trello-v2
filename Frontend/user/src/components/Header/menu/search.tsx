@@ -2,10 +2,12 @@ import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import { Box, ClickAwayListener, Grow, MenuList, Paper, Popper, Typography } from '@mui/material'
+import { useTheme } from './../../Theme/themeContext'
 
 const SearchMenu = () => {
   const [open, setOpen] = React.useState(false)
   const anchorRef = React.useRef<HTMLButtonElement>(null)
+  const { colors } = useTheme()
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen)
@@ -55,13 +57,17 @@ const SearchMenu = () => {
           style={{
             width: '400px',
             backgroundColor: 'transparent',
-            border: '1px solid #9fadbc',
+            border: '2px solid #9fadbc',
             borderRadius: '4px',
             padding: '4px 10px 4px 30px',
-            fontSize: '14px'
+            fontSize: '14px',
+            outline: 'none'
           }}
           onFocus={(e) => {
-            e.target.style.borderWidth = '2px' // Thay đổi màu viền khi focus
+            e.target.style.border = '2px solid #85b8ff' // Thay đổi màu viền khi focus
+          }}
+          onBlur={(e) => {
+            e.target.style.border = '2px solid #9fadbc' // Thay đổi màu viền khi focus
           }}
         />
 
@@ -70,7 +76,7 @@ const SearchMenu = () => {
           style={{
             fontSize: '12px',
             position: 'absolute',
-            color: '#9fadbc',
+            color: colors.text,
             top: '50%',
             left: 0,
             translate: '0 -50%',
@@ -106,14 +112,14 @@ const SearchMenu = () => {
                     marginTop: '8px',
                     transition: 'all 0.1s ease-in',
                     padding: '12px 0 6px 0',
-                    backgroundColor: '#282e33',
+                    backgroundColor: colors.background,
                     minWidth: '224px',
                     borderRadius: '4px'
                   }}
                 >
                   <Typography
                     variant='body1'
-                    sx={{ fontSize: '11px', fontWeight: 500, color: '#9fadbc', margin: '0 18px 8px 18px' }}
+                    sx={{ fontSize: '11px', fontWeight: 500, color: colors.text, margin: '0 18px 8px 18px' }}
                   >
                     RECENT BOARD
                   </Typography>
@@ -126,7 +132,7 @@ const SearchMenu = () => {
                       padding: '4px 18px',
                       cursor: 'pointer',
                       '&:hover': {
-                        backgroundColor: 'rgba(255,255,255,0.1)'
+                        backgroundColor: colors.background === '#ffffff' ? `rgba(0,0,0,0.1)` : `rgba(255,255,255,0.1)`
                       }
                     }}
                   >
@@ -146,11 +152,11 @@ const SearchMenu = () => {
                       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                         <Typography
                           variant='body1'
-                          sx={{ fontSize: '14px', fontWeight: 500, color: '#9fadbc', marginLeft: '12px' }}
+                          sx={{ fontSize: '14px', fontWeight: 500, color: colors.text, marginLeft: '12px' }}
                         >
                           Front-end
                         </Typography>
-                        <Typography variant='body1' sx={{ fontSize: '12px', color: '#9fadbc', marginLeft: '12px' }}>
+                        <Typography variant='body1' sx={{ fontSize: '12px', color: colors.text, marginLeft: '12px' }}>
                           Trello Workspaces
                         </Typography>
                       </Box>
@@ -165,7 +171,7 @@ const SearchMenu = () => {
                       padding: '4px 18px',
                       cursor: 'pointer',
                       '&:hover': {
-                        backgroundColor: 'rgba(255,255,255,0.1)'
+                        backgroundColor: colors.background === '#ffffff' ? `rgba(0,0,0,0.1)` : `rgba(255,255,255,0.1)`
                       }
                     }}
                   >
@@ -185,11 +191,11 @@ const SearchMenu = () => {
                       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                         <Typography
                           variant='body1'
-                          sx={{ fontSize: '14px', fontWeight: 500, color: '#9fadbc', marginLeft: '12px' }}
+                          sx={{ fontSize: '14px', fontWeight: 500, color: colors.text, marginLeft: '12px' }}
                         >
                           Grab
                         </Typography>
-                        <Typography variant='body1' sx={{ fontSize: '12px', color: '#9fadbc', marginLeft: '12px' }}>
+                        <Typography variant='body1' sx={{ fontSize: '12px', color: colors.text, marginLeft: '12px' }}>
                           Brab Workspaces
                         </Typography>
                       </Box>
@@ -204,7 +210,7 @@ const SearchMenu = () => {
                       padding: '4px 18px',
                       cursor: 'pointer',
                       '&:hover': {
-                        backgroundColor: 'rgba(255,255,255,0.1)'
+                        backgroundColor: colors.background === '#ffffff' ? `rgba(0,0,0,0.1)` : `rgba(255,255,255,0.1)`
                       }
                     }}
                   >
@@ -224,11 +230,11 @@ const SearchMenu = () => {
                       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                         <Typography
                           variant='body1'
-                          sx={{ fontSize: '14px', fontWeight: 500, color: '#9fadbc', marginLeft: '12px' }}
+                          sx={{ fontSize: '14px', fontWeight: 500, color: colors.text, marginLeft: '12px' }}
                         >
                           La lá là
                         </Typography>
-                        <Typography variant='body1' sx={{ fontSize: '12px', color: '#9fadbc', marginLeft: '12px' }}>
+                        <Typography variant='body1' sx={{ fontSize: '12px', color: colors.text, marginLeft: '12px' }}>
                           Trello Workspaces
                         </Typography>
                       </Box>
@@ -243,7 +249,7 @@ const SearchMenu = () => {
                       padding: '4px 18px',
                       cursor: 'pointer',
                       '&:hover': {
-                        backgroundColor: 'rgba(255,255,255,0.1)'
+                        backgroundColor: colors.background === '#ffffff' ? `rgba(0,0,0,0.1)` : `rgba(255,255,255,0.1)`
                       }
                     }}
                   >
@@ -263,11 +269,11 @@ const SearchMenu = () => {
                       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                         <Typography
                           variant='body1'
-                          sx={{ fontSize: '14px', fontWeight: 500, color: '#9fadbc', marginLeft: '12px' }}
+                          sx={{ fontSize: '14px', fontWeight: 500, color: colors.text, marginLeft: '12px' }}
                         >
                           Test
                         </Typography>
-                        <Typography variant='body1' sx={{ fontSize: '12px', color: '#9fadbc', marginLeft: '12px' }}>
+                        <Typography variant='body1' sx={{ fontSize: '12px', color: colors.text, marginLeft: '12px' }}>
                           Hữu Chính Workspaces
                         </Typography>
                       </Box>

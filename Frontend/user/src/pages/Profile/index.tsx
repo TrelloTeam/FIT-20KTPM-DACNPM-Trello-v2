@@ -1,22 +1,41 @@
 // pages/account-management.tsx
-import React, { useState } from 'react'
-import Head from 'next/head'
+import React, { useEffect, useState } from 'react'
 import { ActivityComponent, Header, Profile } from './components'
+import { useTheme } from '../../components/Theme/themeContext'
 
-export const AccountManagement: React.FC = () => {
-  const [selectedTab, setSelectedTab] = useState('profile')
+type AccountManagementProps = {
+  page: string
+}
 
+export const AccountManagement: React.FC<AccountManagementProps> = ({ page }) => {
+  const [selectedTab, setSelectedTab] = useState<string>('')
+
+  const { colors } = useTheme()
+
+  useEffect(() => {
+    setSelectedTab(page)
+    console.log(page)
+  }, [page])
   const handleTabSelect = (tab: string) => {
     setSelectedTab(tab)
   }
-
+  const darkLightMode = {
+    backgroundColor: colors.background,
+    color: colors.text
+  }
   return (
-    <>
-      <Head>
-        <title>Your Profile</title>
-      </Head>
-      <Header onSelectTab={handleTabSelect} />
-      {selectedTab === 'profile' ? <Profile /> : <ActivityComponent />}
-    </>
+    <div style={darkLightMode}>
+      {selectedTab === 'profile' ? (
+        <>
+          <Header onSelectTab={handleTabSelect} currentTab={selectedTab} />
+          <Profile />
+        </>
+      ) : (
+        <>
+          <Header onSelectTab={handleTabSelect} currentTab={selectedTab} />
+          <ActivityComponent />
+        </>
+      )}
+    </div>
   )
 }

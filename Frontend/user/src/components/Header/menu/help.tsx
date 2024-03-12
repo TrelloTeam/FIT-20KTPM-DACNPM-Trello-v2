@@ -3,10 +3,12 @@ import { Box, ClickAwayListener, Grow, Paper, Popper, MenuList, Stack, Typograph
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faQuestionCircle } from '@fortawesome/free-regular-svg-icons'
 import bgHelp from '~/assets/bg_help.png'
+import { useTheme } from './../../Theme/themeContext'
 
 export default function Help() {
   const [open, setOpen] = React.useState(false)
   const anchorRef = React.useRef<HTMLButtonElement>(null)
+  const { colors } = useTheme()
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen)
@@ -57,7 +59,7 @@ export default function Help() {
             padding: '6px',
             '&:hover': {
               transition: 'all 0.1s ease-in',
-              backgroundColor: 'rgba(255,255,255,0.1)'
+              backgroundColor: colors.bg_button_hover
             },
             marginRight: '4px',
             cursor: 'pointer'
@@ -90,7 +92,7 @@ export default function Help() {
                     sx={{
                       marginTop: '8px',
                       transition: 'all 0.1s ease-in',
-                      backgroundColor: '#282e33',
+                      backgroundColor: colors.background,
                       width: '377px',
                       padding: '20px',
                       borderRadius: '4px'
@@ -108,7 +110,7 @@ export default function Help() {
                         sx={{
                           fontSize: '14px',
                           fontWeight: 600,
-                          color: '#9fadbc',
+                          color: colors.text,
                           textAlign: 'center',
                           padding: '0 12px',
                           margin: '16px 0'
@@ -138,7 +140,7 @@ export default function Help() {
                           justifyContent: 'center',
                           gap: '10px',
                           marginTop: '10px',
-                          color: '#9fadbc'
+                          color: colors.text
                         }}
                       >
                         <Box
@@ -146,7 +148,7 @@ export default function Help() {
                             padding: '4px 8px',
                             cursor: 'pointer',
                             '&:hover': {
-                              backgroundColor: 'rgba(255,255,255,0.1)',
+                              backgroundColor: colors.bg_button_hover,
                               borderRadius: '4px'
                             }
                           }}
@@ -158,7 +160,7 @@ export default function Help() {
                             padding: '4px 8px',
                             cursor: 'pointer',
                             '&:hover': {
-                              backgroundColor: 'rgba(255,255,255,0.1)',
+                              backgroundColor: colors.bg_button_hover,
                               borderRadius: '4px'
                             }
                           }}
@@ -170,7 +172,7 @@ export default function Help() {
                             padding: '4px 8px',
                             cursor: 'pointer',
                             '&:hover': {
-                              backgroundColor: 'rgba(255,255,255,0.1)',
+                              backgroundColor: colors.bg_button_hover,
                               borderRadius: '4px'
                             }
                           }}
@@ -182,7 +184,7 @@ export default function Help() {
                             padding: '4px 8px',
                             cursor: 'pointer',
                             '&:hover': {
-                              backgroundColor: 'rgba(255,255,255,0.1)',
+                              backgroundColor: colors.bg_button_hover,
                               borderRadius: '4px'
                             }
                           }}
@@ -198,7 +200,7 @@ export default function Help() {
                           justifyContent: 'center',
                           gap: '10px',
                           marginTop: '10px',
-                          color: '#9fadbc'
+                          color: colors.text
                         }}
                       >
                         <Box
@@ -206,7 +208,7 @@ export default function Help() {
                             padding: '4px 8px',
                             cursor: 'pointer',
                             '&:hover': {
-                              backgroundColor: 'rgba(255,255,255,0.1)',
+                              backgroundColor: colors.bg_button_hover,
                               borderRadius: '4px'
                             }
                           }}
@@ -219,7 +221,7 @@ export default function Help() {
                             padding: '4px 8px',
                             cursor: 'pointer',
                             '&:hover': {
-                              backgroundColor: 'rgba(255,255,255,0.1)',
+                              backgroundColor: colors.bg_button_hover,
                               borderRadius: '4px'
                             }
                           }}
