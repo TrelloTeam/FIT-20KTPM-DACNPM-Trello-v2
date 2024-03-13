@@ -1,5 +1,4 @@
 import { useState, useEffect, lazy, Suspense } from 'react'
-import { lists } from './testData/test_data'
 import { List, Card } from './type/index'
 
 import {
