@@ -32,14 +32,10 @@ services:
   envoy:
     image: lamlance/trello-envoy:latest
     ports:
-      - "10000:10000"
+      - "80:10000"
 
   backend-cardlist:
-    build:
-      dockerfile: dockerfile
-      image: lamlance/trello-backend:dev
-      args:
-        - SERVICE_NAME=cardlist
+    image: lamlance/trello-backend:latest
     environment:
       - GRPC_HOST=0.0.0.0
       - PORT=3000

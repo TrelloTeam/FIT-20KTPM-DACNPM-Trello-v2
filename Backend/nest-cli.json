@@ -4,9 +4,7 @@
   "sourceRoot": "apps/trello-v2-backend/src",
   "compilerOptions": {
     "deleteOutDir": true,
-    "assets": [
-      "../protos/*.proto"
-    ],
+    "assets": ["../protos/*.proto"],
     "watchAssets": true,
     "webpack": false,
     "tsConfigPath": "apps/trello-v2-backend/tsconfig.app.json"
