@@ -50,6 +50,16 @@ const card_1: _Card = {
   ]
 }
 
+const workspaceLabels: _Feature_CardLabel[] = [
+  { _id: '5', name: 'Đã hoàn thành' },
+  { _id: '6', name: 'Sắp hoàn thành' },
+  { _id: '7', name: 'Gấp' },
+  { _id: '13', name: 'Không kịp tiến độ' },
+  { _id: '9', name: '' },
+  { _id: '20', name: '' },
+  { _id: '14', name: '' }
+]
+
 const checklist_1: _Feature_Checklist = {
   _id: '0',
   name: 'Front-end Boards Page',
@@ -86,6 +96,7 @@ export default function CardDetailWindow() {
   const windowBg = '#fff'
   const focusInputColor = '#0ff'
 
+  const [workspaceLabelState, setWorkspaceLabelState] = useState(workspaceLabels)
   const [currentCardState, setCurrentCardState] = useState(card_1)
   const [cardNameFieldValue, setCardNameFieldValue] = useState(card_1.name)
   const [initialCardNameFieldValue, setInitialCardNameFieldValue] = useState(card_1.name)
@@ -179,7 +190,12 @@ export default function CardDetailWindow() {
           {/* START: Hero */}
           <div style={{ padding: '0 0 0 40px' }} className='flex flex-row flex-wrap gap-1'>
             <CardMemberList currentCard={currentCardState} />
-            <CardLabelList currentCard={currentCardState} />
+            <CardLabelList
+              currentCard={currentCardState}
+              setCurrentCard={setCurrentCardState}
+              workspaceLabelState={workspaceLabelState}
+              setWorkspaceLabelState={setWorkspaceLabelState}
+            />
             <CardNotification isWatching={isWatching} setIsWatching={handleNotification} />
             <CardDate />
           </div>

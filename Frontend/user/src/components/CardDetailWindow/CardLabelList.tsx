@@ -2,9 +2,9 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Box } from '@mui/material'
 import { colors, colorsButton } from '~/styles'
-import { _Card } from '.'
-import { useState } from 'react'
-import { CardLabelModal } from './CardModals'
+import { _Card, _Feature_CardLabel } from '.'
+import { useRef, useState } from 'react'
+import { CardLabelListModal, CreateCardLabelModal, EditCardLabelModal } from './CardModals'
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const labelColors: string[] = [
@@ -58,7 +58,7 @@ interface CardLabelItemProps {
   bgColor: string
 }
 
-function CardLabelItem({ title, bgColor }: CardLabelItemProps) {
+export function CardLabelItem({ title, bgColor }: CardLabelItemProps) {
   const textColor = getContrastColor(bgColor)
 
   return (
@@ -82,23 +82,71 @@ function CardLabelItem({ title, bgColor }: CardLabelItemProps) {
 
 interface CardLabelListProps {
   currentCard: _Card
+  setCurrentCard: (newState: _Card) => void
+  workspaceLabelState: _Feature_CardLabel[]
+  setWorkspaceLabelState: (newState: _Feature_CardLabel[]) => void
 }
 
-export default function CardLabelList({ currentCard }: CardLabelListProps) {
+export default function CardLabelList({
+  currentCard,
+  setCurrentCard,
+  workspaceLabelState,
+  setWorkspaceLabelState
+}: CardLabelListProps) {
+  const boxRef = useRef(null)
   const [anchorEl, setAnchorEl] = useState<null | HTMLDivElement>(null)
-  const [isOpenCardLabelModal, setIsOpenCardLabelModal] = useState(false)
+  const [modalState, setModalState] = useState([false, false, false])
+  const [selectedLabel, setSelectedLabel] = useState(workspaceLabelState[0])
 
-  function openCardLabelModal(event: React.MouseEvent<HTMLDivElement>) {
-    setAnchorEl(event.currentTarget)
-    setIsOpenCardLabelModal(true)
+  function openModal(modalIndex: number) {
+    const updatedOpenModal = modalState.map((state, index) => (index === modalIndex ? true : state))
+    setModalState(updatedOpenModal)
   }
 
-  function closeCardLabelModal() {
-    setIsOpenCardLabelModal(false)
+  function addWorkspaceLabel(_id: string, name: string) {
+    const newWorkspaceLabel: _Feature_CardLabel = {
+      _id: _id,
+      name: name
+    }
+    setWorkspaceLabelState([...workspaceLabelState, newWorkspaceLabel])
+  }
+
+  function isLabelIncluded(label: _Feature_CardLabel): boolean {
+    return currentCard.labels.some((_label) => _label._id === label._id && _label.name === label.name)
+  }
+
+  function removeWorkspaceLabel() {
+    // Remove label from Workspace
+    const updatedWorkspaceLabelList = workspaceLabelState.filter((label) => label._id !== selectedLabel._id)
+    setWorkspaceLabelState(updatedWorkspaceLabelList)
+    // Remove label from Card as well
+    if (isLabelIncluded(selectedLabel)) {
+      const updatedCard = {
+        ...currentCard,
+        labels: currentCard.labels.filter((label) => label._id !== selectedLabel._id)
+      }
+      setCurrentCard(updatedCard)
+    }
+  }
+
+  function handleIncludeLabel(label: _Feature_CardLabel) {
+    const updatedCard = {
+      ...currentCard,
+      labels: [...currentCard.labels, label]
+    }
+    setCurrentCard(updatedCard)
+  }
+
+  function handleExcludeLabel(label: _Feature_CardLabel) {
+    const updatedCard = {
+      ...currentCard,
+      labels: currentCard.labels.filter((_label) => _label._id !== label._id)
+    }
+    setCurrentCard(updatedCard)
   }
 
   return (
-    <Box sx={{ margin: '10px 20px 0 0' }}>
+    <Box ref={boxRef} sx={{ margin: '10px 20px 0 0' }}>
       <h2 style={{ color: colors.primary }} className='mb-2 text-xs font-bold'>
         Labels
       </h2>
@@ -106,11 +154,6 @@ export default function CardLabelList({ currentCard }: CardLabelListProps) {
         {currentCard.labels.map((label) => (
           <CardLabelItem key={label._id} title={label.name} bgColor={labelColors[parseInt(label._id, 10)]} />
         ))}
-        {/* <CardLabelItem title='Đã hoàn thành' bgColor='#00fa9a' />
-        <CardLabelItem title='Sắp hoàn thành' bgColor='#ffd700' />
-        <CardLabelItem title='Gấp' bgColor='#ffa500' />
-        <CardLabelItem title='Không kịp tiến độ' bgColor='#ff0000' /> */}
-        {/* Button add label */}
         <Box
           sx={{
             bgcolor: colorsButton.secondary,
@@ -124,11 +167,43 @@ export default function CardLabelList({ currentCard }: CardLabelListProps) {
             }
           }}
           className='flex cursor-pointer items-center justify-center rounded'
-          onClick={(e) => openCardLabelModal(e)}
+          onClick={() => {
+            setAnchorEl(boxRef.current)
+            openModal(0)
+          }}
         >
           <FontAwesomeIcon icon={faPlus} />
         </Box>
-        {isOpenCardLabelModal && <CardLabelModal anchorEl={anchorEl} handleClose={closeCardLabelModal} />}
+        {modalState[0] && (
+          <CardLabelListModal
+            anchorEl={anchorEl}
+            setModalState={setModalState}
+            currentCard={currentCard}
+            workspaceLabels={workspaceLabelState}
+            setSelectedLabel={setSelectedLabel}
+            handleIncludeLabel={handleIncludeLabel}
+            handleExcludeLabel={handleExcludeLabel}
+          />
+        )}
+        {modalState[1] && (
+          <CreateCardLabelModal
+            anchorEl={anchorEl}
+            setModalState={setModalState}
+            addWorkspaceLabel={addWorkspaceLabel}
+          />
+        )}
+        {modalState[2] && (
+          <EditCardLabelModal
+            anchorEl={anchorEl}
+            setModalState={setModalState}
+            currentCard={currentCard}
+            setCurrentCard={setCurrentCard}
+            currentLabel={selectedLabel}
+            workspaceLabelState={workspaceLabelState}
+            setWorkspaceLabelState={setWorkspaceLabelState}
+            removeWorkspaceLabel={removeWorkspaceLabel}
+          />
+        )}
       </div>
     </Box>
   )
