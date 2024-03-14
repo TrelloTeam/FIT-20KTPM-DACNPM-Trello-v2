@@ -8,7 +8,6 @@ import { WorkspaceService } from '../workspace.service'
 
 @InjectController({
   name: workspaceRoutes.index,
-  isCore: true,
 })
 export class WorkspaceMSController {
   constructor(private workspaceService: WorkspaceService) {}
@@ -120,27 +119,27 @@ export class WorkspaceMSController {
     }
   }
 
-  @GrpcMethod('WorkspaceService', 'updateWorkspaceInfo')
-  async updateWorkspaceInfo(
-    @ValidateGrpcInput(TrelloApi.WorkspaceApi.UpdateWorkspaceInfoRequestSchema.safeParse)
-    body: TrelloApi.WorkspaceApi.UpdateWorkspaceInfoRequest,
-  ): Promise<TrelloApi.WorkspaceApi.WorspaceResponse> {
-    const workspaceUpdated = await this.workspaceService.updateWorkspaceInfo(body)
+  // @GrpcMethod('WorkspaceService', 'updateWorkspaceInfo')
+  // async updateWorkspaceInfo(
+  //   @ValidateGrpcInput(TrelloApi.WorkspaceApi.UpdateWorkspaceInfoRequestSchema.safeParse)
+  //   body: TrelloApi.WorkspaceApi.UpdateWorkspaceInfoRequest,
+  // ): Promise<TrelloApi.WorkspaceApi.WorspaceResponse> {
+  //   const workspaceUpdated = await this.workspaceService.updateWorkspaceInfo(body)
 
-    if (!workspaceUpdated) throw new InternalServerErrorException("Can't update workspace infomation")
+  //   if (!workspaceUpdated) throw new InternalServerErrorException("Can't update workspace infomation")
 
-    return { data: workspaceUpdated }
-  }
+  //   return { data: workspaceUpdated }
+  // }
 
-  @GrpcMethod('WorkspaceService', 'changeWorkspaceVisibility')
-  async changeWorkspaceVisibility(
-    @ValidateGrpcInput(TrelloApi.WorkspaceApi.ChangeWorkspaceVisibilityRequestSchema.safeParse)
-    body: TrelloApi.WorkspaceApi.ChangeWorkspaceVisibilityRequest,
-  ): Promise<TrelloApi.WorkspaceApi.WorspaceResponse> {
-    const workspaceUpdated = await this.workspaceService.changeWorkspaceVisibility(body)
+  // @GrpcMethod('WorkspaceService', 'changeWorkspaceVisibility')
+  // async changeWorkspaceVisibility(
+  //   @ValidateGrpcInput(TrelloApi.WorkspaceApi.ChangeWorkspaceVisibilityRequestSchema.safeParse)
+  //   body: TrelloApi.WorkspaceApi.ChangeWorkspaceVisibilityRequest,
+  // ): Promise<TrelloApi.WorkspaceApi.WorspaceResponse> {
+  //   const workspaceUpdated = await this.workspaceService.changeWorkspaceVisibility(body)
 
-    if (!workspaceUpdated) throw new InternalServerErrorException("Can't update workspace's visibility")
+  //   if (!workspaceUpdated) throw new InternalServerErrorException("Can't update workspace's visibility")
 
-    return { data: workspaceUpdated }
-  }
+  //   return { data: workspaceUpdated }
+  // }
 }

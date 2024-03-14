@@ -8,7 +8,6 @@ import { BoardService } from '../services/board.service'
 
 @InjectController({
   name: 'board',
-  isCore: true,
 })
 export class BoardMSController {
   constructor(private boardService: BoardService) {}

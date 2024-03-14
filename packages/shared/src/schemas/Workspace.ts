@@ -1,4 +1,5 @@
 import { z } from "zod";
+
 import { Refine_MongoId } from "../utils/RefineMongoId";
 
 export const STATUS_WORKSPACE = {
@@ -13,6 +14,11 @@ export const ROLE_WORKSPACE = {
   admin: "admin",
 };
 
+export const VISIBILITY_WORKSPACE = {
+  private: "private",
+  public: "public",
+};
+
 export const MemberSchema = z.object({
   _id: z.string().refine(Refine_MongoId, { message: "Invalid id" }).optional(),
   status: z
@@ -22,7 +28,7 @@ export const MemberSchema = z.object({
       z.literal(STATUS_WORKSPACE.owner),
       z.literal(STATUS_WORKSPACE.member),
     ])
-    .default(STATUS_WORKSPACE.guest),
+    .optional(),
   role: z
     .union([z.literal(ROLE_WORKSPACE.admin), z.literal(ROLE_WORKSPACE.member)])
     .default(ROLE_WORKSPACE.member),
@@ -38,8 +44,11 @@ export const WorkspaceSchema = z.object({
   logo: z.string().default(""),
   type_id: z.string().nullish(),
   visibility: z
-    .union([z.literal("public"), z.literal("private")])
-    .default("private"),
+    .union([
+      z.literal(VISIBILITY_WORKSPACE.public),
+      z.literal(VISIBILITY_WORKSPACE.private),
+    ])
+    .default(VISIBILITY_WORKSPACE.private),
   members: MemberSchema.array().default([]),
 });
 

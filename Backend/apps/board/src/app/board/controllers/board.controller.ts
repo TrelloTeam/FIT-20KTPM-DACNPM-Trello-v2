@@ -12,7 +12,6 @@ import { BoardService } from '../services/board.service'
 
 @InjectController({
   name: 'board',
-  isCore: true,
 })
 export class BoardController {
   constructor(private boardService: BoardService) {}
