@@ -4,7 +4,7 @@ import { Box } from '@mui/material'
 import { colors, colorsButton } from '~/styles'
 import { _Card, _Feature_CardLabel } from '.'
 import { useRef, useState } from 'react'
-import { CardLabelListModal, CreateCardLabelModal, EditCardLabelModal } from './CardModals'
+import { CardLabelListModal, CreateCardLabelModal, EditCardLabelModal } from './modals/CardLabelModal'
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const labelColors: string[] = [
@@ -83,42 +83,42 @@ export function CardLabelItem({ title, bgColor }: CardLabelItemProps) {
 interface CardLabelListProps {
   currentCard: _Card
   setCurrentCard: (newState: _Card) => void
-  workspaceLabelState: _Feature_CardLabel[]
-  setWorkspaceLabelState: (newState: _Feature_CardLabel[]) => void
+  boardLabelState: _Feature_CardLabel[]
+  setBoardLabelState: (newState: _Feature_CardLabel[]) => void
 }
 
 export default function CardLabelList({
   currentCard,
   setCurrentCard,
-  workspaceLabelState,
-  setWorkspaceLabelState
+  boardLabelState,
+  setBoardLabelState
 }: CardLabelListProps) {
   const boxRef = useRef(null)
   const [anchorEl, setAnchorEl] = useState<null | HTMLDivElement>(null)
   const [modalState, setModalState] = useState([false, false, false])
-  const [selectedLabel, setSelectedLabel] = useState(workspaceLabelState[0])
+  const [selectedLabel, setSelectedLabel] = useState(boardLabelState[0])
 
   function openModal(modalIndex: number) {
     const updatedOpenModal = modalState.map((state, index) => (index === modalIndex ? true : state))
     setModalState(updatedOpenModal)
   }
 
-  function addWorkspaceLabel(_id: string, name: string) {
-    const newWorkspaceLabel: _Feature_CardLabel = {
+  function addBoardLabel(_id: string, name: string) {
+    const newBoardLabel: _Feature_CardLabel = {
       _id: _id,
       name: name
     }
-    setWorkspaceLabelState([...workspaceLabelState, newWorkspaceLabel])
+    setBoardLabelState([...boardLabelState, newBoardLabel])
   }
 
   function isLabelIncluded(label: _Feature_CardLabel): boolean {
     return currentCard.labels.some((_label) => _label._id === label._id && _label.name === label.name)
   }
 
-  function removeWorkspaceLabel() {
-    // Remove label from Workspace
-    const updatedWorkspaceLabelList = workspaceLabelState.filter((label) => label._id !== selectedLabel._id)
-    setWorkspaceLabelState(updatedWorkspaceLabelList)
+  function removeBoardLabel() {
+    // Remove label from Board
+    const updatedBoardLabelList = boardLabelState.filter((label) => label._id !== selectedLabel._id)
+    setBoardLabelState(updatedBoardLabelList)
     // Remove label from Card as well
     if (isLabelIncluded(selectedLabel)) {
       const updatedCard = {
@@ -179,18 +179,14 @@ export default function CardLabelList({
             anchorEl={anchorEl}
             setModalState={setModalState}
             currentCard={currentCard}
-            workspaceLabels={workspaceLabelState}
+            boardLabels={boardLabelState}
             setSelectedLabel={setSelectedLabel}
             handleIncludeLabel={handleIncludeLabel}
             handleExcludeLabel={handleExcludeLabel}
           />
         )}
         {modalState[1] && (
-          <CreateCardLabelModal
-            anchorEl={anchorEl}
-            setModalState={setModalState}
-            addWorkspaceLabel={addWorkspaceLabel}
-          />
+          <CreateCardLabelModal anchorEl={anchorEl} setModalState={setModalState} addBoardLabel={addBoardLabel} />
         )}
         {modalState[2] && (
           <EditCardLabelModal
@@ -199,9 +195,9 @@ export default function CardLabelList({
             currentCard={currentCard}
             setCurrentCard={setCurrentCard}
             currentLabel={selectedLabel}
-            workspaceLabelState={workspaceLabelState}
-            setWorkspaceLabelState={setWorkspaceLabelState}
-            removeWorkspaceLabel={removeWorkspaceLabel}
+            boardLabelState={boardLabelState}
+            setBoardLabelState={setBoardLabelState}
+            removeBoardLabel={removeBoardLabel}
           />
         )}
       </div>

@@ -3,23 +3,23 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Box, LinearProgress, LinearProgressProps, TextareaAutosize, Typography } from '@mui/material'
 import { ChangeEvent, useEffect, useRef, useState } from 'react'
 import { colors, colorsButton } from '~/styles'
-import { _Feature_Checklist, _Feature_Checklist_Item } from '.'
-import { ChecklistItemModal, DeleteChecklistModal } from './CardModals'
+import { _Card, _Feature_Checklist, _Feature_Checklist_Item } from '.'
+import { ChecklistItemModal, DeleteChecklistModal } from './modals/CardChecklistModal'
 
 interface ChecklistAddTextAreaProps {
   isInputFocused: boolean
   setIsInputFocused: (newState: boolean) => void
   currentChecklist: _Feature_Checklist
-  allChecklists: _Feature_Checklist[]
-  setAllChecklists: (newState: _Feature_Checklist[]) => void
+  currentCard: _Card
+  setCurrentCard: (newState: _Card) => void
 }
 
 function ChecklistAddTextArea({
   isInputFocused,
   setIsInputFocused,
   currentChecklist,
-  allChecklists,
-  setAllChecklists
+  currentCard,
+  setCurrentCard
 }: ChecklistAddTextAreaProps) {
   const [textAreaValue, setTextAreaValue] = useState('')
 
@@ -41,9 +41,11 @@ function ChecklistAddTextArea({
     // Check if new checkitem title is empty
     if (trimmedValue.trim() !== '') {
       // Create id of new checkitem
-      const newCheckitemIndex = (
-        parseInt(currentChecklist.items[currentChecklist.items.length - 1]._id, 10) + 1
-      ).toString()
+      let newCheckitemIndex = '0'
+      // If checklist is not empty
+      if (currentChecklist.items.length !== 0) {
+        newCheckitemIndex = (parseInt(currentChecklist.items[currentChecklist.items.length - 1]._id, 10) + 1).toString()
+      }
       // Create new checkitem
       const newCheckitem: _Feature_Checklist_Item = {
         _id: newCheckitemIndex,
@@ -51,15 +53,18 @@ function ChecklistAddTextArea({
         is_check: false
       }
       // Update checklist table
-      const updatedAllChecklists = allChecklists.map((checklist) =>
-        checklist._id === currentChecklist._id
-          ? {
-              ...checklist,
-              items: [...checklist.items, newCheckitem]
-            }
-          : checklist
-      )
-      setAllChecklists(updatedAllChecklists)
+      const updatedCard = {
+        ...currentCard,
+        checklists: currentCard.checklists.map((checklist) =>
+          checklist._id === currentChecklist._id
+            ? {
+                ...checklist,
+                items: [...checklist.items, newCheckitem]
+              }
+            : checklist
+        )
+      }
+      setCurrentCard(updatedCard)
     }
     // Close textarea
     handleClose()
@@ -126,11 +131,11 @@ function ChecklistAddTextArea({
 
 interface ChecklistAddButtonProps {
   currentChecklist: _Feature_Checklist
-  allChecklists: _Feature_Checklist[]
-  setAllChecklists: (newState: _Feature_Checklist[]) => void
+  currentCard: _Card
+  setCurrentCard: (newState: _Card) => void
 }
 
-function ChecklistAddButton({ currentChecklist, allChecklists, setAllChecklists }: ChecklistAddButtonProps) {
+function ChecklistAddButton({ currentChecklist, currentCard, setCurrentCard }: ChecklistAddButtonProps) {
   const [isInputFocused, setIsInputFocused] = useState(false)
 
   return (
@@ -161,8 +166,8 @@ function ChecklistAddButton({ currentChecklist, allChecklists, setAllChecklists 
           isInputFocused={isInputFocused}
           setIsInputFocused={setIsInputFocused}
           currentChecklist={currentChecklist}
-          allChecklists={allChecklists}
-          setAllChecklists={setAllChecklists}
+          currentCard={currentCard}
+          setCurrentCard={setCurrentCard}
         />
       )}
     </Box>
@@ -412,32 +417,35 @@ function ChecklistItemNameField({
 interface ChecklistItemProps {
   currentCheckitem: _Feature_Checklist_Item
   currentChecklist: _Feature_Checklist
-  allChecklists: _Feature_Checklist[]
-  setAllChecklists: (newState: _Feature_Checklist[]) => void
+  currentCard: _Card
+  setCurrentCard: (newState: _Card) => void
   setProgress: (newState: number) => void
 }
 
 function ChecklistItem({
   currentCheckitem,
   currentChecklist,
-  allChecklists,
-  setAllChecklists,
+  currentCard,
+  setCurrentCard,
   setProgress
 }: ChecklistItemProps) {
   const [onFocus, setOnFocus] = useState(false)
 
   function handleCheckbox() {
-    const updatedAllChecklists = allChecklists.map((checklist) =>
-      checklist._id === currentChecklist._id
-        ? {
-            ...checklist,
-            items: currentChecklist.items.map((checkitem) =>
-              checkitem._id === currentCheckitem._id ? { ...checkitem, is_check: !checkitem.is_check } : checkitem
-            )
-          }
-        : checklist
-    )
-    setAllChecklists(updatedAllChecklists)
+    const updatedCard = {
+      ...currentCard,
+      checklists: currentCard.checklists.map((checklist) =>
+        checklist._id === currentChecklist._id
+          ? {
+              ...checklist,
+              items: currentChecklist.items.map((checkitem) =>
+                checkitem._id === currentCheckitem._id ? { ...checkitem, is_check: !checkitem.is_check } : checkitem
+              )
+            }
+          : checklist
+      )
+    }
+    setCurrentCard(updatedCard)
   }
 
   const [openChecklistItemNameField, setOpenChecklistItemNameField] = useState(false)
@@ -448,17 +456,20 @@ function ChecklistItem({
     const trimmedValue = checklistItemNameState.replace(/\s+/g, ' ').trim()
     // Check if new checkitem name is empty
     if (trimmedValue !== '') {
-      const updatedAllChecklists = allChecklists.map((checklist) =>
-        checklist._id === currentChecklist._id
-          ? {
-              ...checklist,
-              items: currentChecklist.items.map((checkitem) =>
-                checkitem._id === currentCheckitem._id ? { ...checkitem, name: checklistItemNameState } : checkitem
-              )
-            }
-          : checklist
-      )
-      setAllChecklists(updatedAllChecklists)
+      const updatedCard = {
+        ...currentCard,
+        checklists: currentCard.checklists.map((checklist) =>
+          checklist._id === currentChecklist._id
+            ? {
+                ...checklist,
+                items: currentChecklist.items.map((checkitem) =>
+                  checkitem._id === currentCheckitem._id ? { ...checkitem, name: checklistItemNameState } : checkitem
+                )
+              }
+            : checklist
+        )
+      }
+      setCurrentCard(updatedCard)
     }
   }
 
@@ -486,15 +497,18 @@ function ChecklistItem({
   }
 
   function deleteChecklistItem() {
-    const updatedAllChecklists = allChecklists.map((checklist) =>
-      checklist._id === currentChecklist._id
-        ? {
-            ...checklist,
-            items: checklist.items.filter((checkitem) => checkitem._id !== currentCheckitem._id)
-          }
-        : checklist
-    )
-    setAllChecklists(updatedAllChecklists)
+    const updatedCard = {
+      ...currentCard,
+      checklists: currentCard.checklists.map((checklist) =>
+        checklist._id === currentChecklist._id
+          ? {
+              ...checklist,
+              items: checklist.items.filter((checkitem) => checkitem._id !== currentCheckitem._id)
+            }
+          : checklist
+      )
+    }
+    setCurrentCard(updatedCard)
   }
 
   return (
@@ -576,11 +590,11 @@ function ChecklistItem({
 
 interface CardChecklistProps {
   currentChecklist: _Feature_Checklist
-  allChecklists: _Feature_Checklist[]
-  setAllChecklists: (newState: _Feature_Checklist[]) => void
+  currentCard: _Card
+  setCurrentCard: (newState: _Card) => void
 }
 
-export default function CardChecklist({ currentChecklist, allChecklists, setAllChecklists }: CardChecklistProps) {
+export default function CardChecklist({ currentChecklist, currentCard, setCurrentCard }: CardChecklistProps) {
   // START: Handle edit Checklist name
   const [checklistNameState, setChecklistNameState] = useState(currentChecklist.name)
   const [isInputFocused, setIsInputFocused] = useState(false)
@@ -592,16 +606,19 @@ export default function CardChecklist({ currentChecklist, allChecklists, setAllC
     // Check if new checklist name is empty
     if (trimmedValue !== '') {
       // Update checklist name
-      const updatedAllChecklists = allChecklists.map((checklist) =>
-        checklist._id === currentChecklist._id
-          ? {
-              ...checklist,
-              name: trimmedValue
-            }
-          : checklist
-      )
+      const updatedCard = {
+        ...currentCard,
+        checklists: currentCard.checklists.map((checklist) =>
+          checklist._id === currentChecklist._id
+            ? {
+                ...checklist,
+                name: trimmedValue
+              }
+            : checklist
+        )
+      }
       setChecklistNameState(trimmedValue)
-      setAllChecklists(updatedAllChecklists)
+      setCurrentCard(updatedCard)
     }
     closeChecklistField()
   }
@@ -612,8 +629,11 @@ export default function CardChecklist({ currentChecklist, allChecklists, setAllC
   // END: Handle edit Checklist name
 
   function deleteChecklist() {
-    const updatedAllChecklists = allChecklists.filter((checklist) => checklist._id !== currentChecklist._id)
-    setAllChecklists(updatedAllChecklists)
+    const updatedCard = {
+      ...currentCard,
+      checklists: currentCard.checklists.filter((checklist) => checklist._id !== currentChecklist._id)
+    }
+    setCurrentCard(updatedCard)
   }
 
   return (
@@ -647,15 +667,15 @@ export default function CardChecklist({ currentChecklist, allChecklists, setAllC
             key={checkitem._id}
             currentCheckitem={checkitem}
             currentChecklist={currentChecklist}
-            allChecklists={allChecklists}
-            setAllChecklists={setAllChecklists}
+            currentCard={currentCard}
+            setCurrentCard={setCurrentCard}
             setProgress={setProgress}
           />
         ))}
         <ChecklistAddButton
           currentChecklist={currentChecklist}
-          allChecklists={allChecklists}
-          setAllChecklists={setAllChecklists}
+          currentCard={currentCard}
+          setCurrentCard={setCurrentCard}
         />
       </Box>
       {/* END: Body */}

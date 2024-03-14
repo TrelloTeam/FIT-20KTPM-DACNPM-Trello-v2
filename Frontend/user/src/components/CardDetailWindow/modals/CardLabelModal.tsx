@@ -1,125 +1,10 @@
+import { Box, Grid, Popover } from '@mui/material'
+import { labelColors } from '../CardLabelList'
+import { colors, colorsButton } from '~/styles'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronLeft, faPen, faXmark } from '@fortawesome/free-solid-svg-icons'
-import { Box, Grid, Popover } from '@mui/material'
-import { colors, colorsButton } from '~/styles'
-import { _Card, _Feature_CardLabel } from '.'
-import { MemberAvatar } from './CardMemberList'
 import { ChangeEvent, useState } from 'react'
-import { labelColors } from './CardLabelList'
-
-interface MemberAvatarAndNameProps {
-  email: string
-  bgColor: string
-}
-
-function MemberAvatarAndName({ email, bgColor }: MemberAvatarAndNameProps) {
-  return (
-    <Grid
-      container
-      sx={{ width: '100%', height: 40, padding: '4px', '&:hover': { bgcolor: colorsButton.secondary } }}
-      className='flex cursor-pointer items-center'
-    >
-      <Grid item xs={2} sx={{ height: '100%' }}>
-        <MemberAvatar memberName={email ? email.slice(0, 2).toUpperCase() : ''} bgColor={bgColor} />
-      </Grid>
-      <Grid item xs={10} sx={{ height: '100%' }} className='flex items-center'>
-        <p className='text-sm'>{email}</p>
-      </Grid>
-    </Grid>
-  )
-}
-
-interface CardMemberModalProps {
-  currentCard: _Card
-  anchorEl: (EventTarget & HTMLDivElement) | null
-  handleClose: () => void
-}
-
-export function CardMemberModal({ currentCard, anchorEl, handleClose }: CardMemberModalProps) {
-  const bgColors: string[] = ['#8a2be2', '#1e90ff', '#66cdaa', '#ffa500', '#FFD700', '#DC143C']
-  const boardMemberEmails: string[] = ['restjs@gmail.com', 'mongodb@gmail.com']
-
-  const [searchValue, setSearchValue] = useState('')
-  // Card member emails
-  const [cardMemberListState, setCardMemberListState] = useState(currentCard.watcher_email)
-  // Board member emails
-  const [boardMemberListState, setBoardMemberListState] = useState(boardMemberEmails)
-
-  function filterMemberLists(event: React.ChangeEvent<HTMLInputElement>) {
-    setSearchValue(event.currentTarget.value)
-    // Filter card member list
-    setCardMemberListState(
-      currentCard.watcher_email.filter((email) => email.toLowerCase().includes(event.currentTarget.value.toLowerCase()))
-    )
-    // Filter board member list
-    setBoardMemberListState(
-      boardMemberEmails.filter((email) => email.toLowerCase().includes(event.currentTarget.value.toLowerCase()))
-    )
-  }
-
-  return (
-    <Popover
-      open={true}
-      anchorEl={anchorEl}
-      anchorOrigin={{
-        vertical: 'bottom',
-        horizontal: 'left'
-      }}
-      transformOrigin={{
-        vertical: 'top',
-        horizontal: 'left'
-      }}
-      onClose={handleClose}
-      sx={{ margin: '6px 0 0 0' }}
-    >
-      <Box
-        sx={{ width: 300, height: 'fit-content', margin: '0 8px', padding: '8px 0px', color: colors.primary }}
-        className='flex flex-col'
-      >
-        {/* START: Modal heading */}
-        <Grid container sx={{ width: '100%', margin: '0 0 12px 0' }}>
-          <Grid item xs={1}></Grid>
-          <Grid item xs={10} className='flex items-center justify-center'>
-            <h2 className='overflow-hidden overflow-ellipsis whitespace-nowrap text-sm font-semibold'>Members</h2>
-          </Grid>
-          <Grid item xs={1} className='flex items-center justify-center'>
-            <FontAwesomeIcon icon={faXmark} className='cursor-pointer' onMouseDown={handleClose} />
-          </Grid>
-        </Grid>
-        {/* END: Modal heading */}
-        {/* Search bar */}
-        <input
-          autoFocus
-          style={{ width: '100%', height: 32, margin: '0 0 20px 0', padding: '4px 6px', color: colors.primary }}
-          className='flex items-center text-sm'
-          value={searchValue}
-          onChange={(e) => filterMemberLists(e)}
-          placeholder='Search members'
-        />
-        {/* Card member list */}
-        <p style={{ margin: '10px 0', color: colors.primary }} className='text-xs font-semibold'>
-          Card members
-        </p>
-        <Box className='flex flex-col'>
-          {cardMemberListState.length != 0 &&
-            cardMemberListState.map((email, index) => (
-              <MemberAvatarAndName key={index} email={email} bgColor={bgColors[index]} />
-            ))}
-        </Box>
-        {/* Board member list */}
-        <p style={{ margin: '20px 0 10px 0', color: colors.primary }} className='text-xs font-semibold'>
-          Board members
-        </p>
-        <Box className='flex flex-col'>
-          {boardMemberListState.length != 0 &&
-            boardMemberListState.map((email, index) => (
-              <MemberAvatarAndName key={index} email={email} bgColor={bgColors[index + 4]} />
-            ))}
-        </Box>
-      </Box>
-    </Popover>
-  )
-}
+import { _Card, _Feature_CardLabel } from '..'
 
 interface CardLabelListTileProps {
   currentLabel: _Feature_CardLabel
@@ -195,7 +80,7 @@ interface CardLabelListModalProps {
   anchorEl: null | HTMLDivElement
   setModalState: (newState: boolean[]) => void
   currentCard: _Card
-  workspaceLabels: _Feature_CardLabel[]
+  boardLabels: _Feature_CardLabel[]
   setSelectedLabel: (newState: _Feature_CardLabel) => void
   handleIncludeLabel: (card: _Feature_CardLabel) => void
   handleExcludeLabel: (card: _Feature_CardLabel) => void
@@ -205,19 +90,19 @@ export function CardLabelListModal({
   anchorEl,
   setModalState,
   currentCard,
-  workspaceLabels,
+  boardLabels,
   setSelectedLabel,
   handleIncludeLabel,
   handleExcludeLabel
 }: CardLabelListModalProps) {
   const [searchValue, setSearchValue] = useState('')
-  const [workspaceLabelState, setWorkspaceLabelState] = useState(workspaceLabels)
+  const [boardLabelState, setBoardLabelState] = useState(boardLabels)
 
   function filterLabelList(event: React.ChangeEvent<HTMLInputElement>) {
     setSearchValue(event.currentTarget.value)
     // Filter card member list
-    setWorkspaceLabelState(
-      workspaceLabels.filter((label) => label.name.toLowerCase().includes(event.currentTarget.value.toLowerCase()))
+    setBoardLabelState(
+      boardLabels.filter((label) => label.name.toLowerCase().includes(event.currentTarget.value.toLowerCase()))
     )
   }
 
@@ -250,7 +135,7 @@ export function CardLabelListModal({
         horizontal: 'left'
       }}
       onClose={handleClose}
-      sx={{ margin: '6px 0 0 0' }}
+      sx={{ margin: '10px 0 0 0' }}
     >
       <Box
         sx={{ width: 300, height: 'fit-content', margin: '0 8px', padding: '8px 0px', color: colors.primary }}
@@ -272,13 +157,13 @@ export function CardLabelListModal({
           autoFocus
           style={{
             width: '100%',
-            height: 32,
+            height: 36,
             margin: '0 0 10px 0',
             padding: '4px 6px',
             color: colors.primary,
             border: `2px solid ${colorsButton.secondary}`
           }}
-          className='flex items-center text-sm'
+          className='flex items-center rounded-sm text-sm'
           value={searchValue}
           onChange={(e) => filterLabelList(e)}
           placeholder='Search labels'
@@ -287,7 +172,7 @@ export function CardLabelListModal({
         <p style={{ margin: '10px 0', color: colors.primary }} className='text-xs font-semibold'>
           Labels
         </p>
-        {workspaceLabelState.map((label, index) => (
+        {boardLabelState.map((label, index) => (
           <CardLabelListTile
             key={index}
             currentLabel={label}
@@ -377,10 +262,10 @@ function getContrastColor(hexColor: string) {
 interface CreateCardLabelModalProps {
   anchorEl: (EventTarget & HTMLDivElement) | null
   setModalState: (newState: boolean[]) => void
-  addWorkspaceLabel: (_id: string, name: string) => void
+  addBoardLabel: (_id: string, name: string) => void
 }
 
-export function CreateCardLabelModal({ anchorEl, setModalState, addWorkspaceLabel }: CreateCardLabelModalProps) {
+export function CreateCardLabelModal({ anchorEl, setModalState, addBoardLabel }: CreateCardLabelModalProps) {
   const [labelNameFieldValue, setLabelNameFieldValue] = useState('')
   const [selectedColor, setSelectedColor] = useState(labelColors[0])
 
@@ -409,7 +294,6 @@ export function CreateCardLabelModal({ anchorEl, setModalState, addWorkspaceLabe
         horizontal: 'left'
       }}
       onClose={handleClose}
-      sx={{ margin: '6px 0 0 0' }}
     >
       <Box sx={{ width: 300, height: 'fit-content', color: colors.primary }} className='flex flex-col'>
         {/* START: Modal heading */}
@@ -502,7 +386,7 @@ export function CreateCardLabelModal({ anchorEl, setModalState, addWorkspaceLabe
           }}
           className='flex cursor-pointer items-center justify-center rounded'
           onClick={() => {
-            addWorkspaceLabel(labelColors.indexOf(selectedColor).toString(), labelNameFieldValue)
+            addBoardLabel(labelColors.indexOf(selectedColor).toString(), labelNameFieldValue)
             handleReturn()
           }}
         >
@@ -519,9 +403,9 @@ interface EditCardLabelModalProps {
   currentCard: _Card
   setCurrentCard: (newState: _Card) => void
   currentLabel: _Feature_CardLabel
-  workspaceLabelState: _Feature_CardLabel[]
-  setWorkspaceLabelState: (newState: _Feature_CardLabel[]) => void
-  removeWorkspaceLabel: () => void
+  boardLabelState: _Feature_CardLabel[]
+  setBoardLabelState: (newState: _Feature_CardLabel[]) => void
+  removeBoardLabel: () => void
 }
 
 export function EditCardLabelModal({
@@ -530,9 +414,9 @@ export function EditCardLabelModal({
   currentCard,
   setCurrentCard,
   currentLabel,
-  workspaceLabelState,
-  setWorkspaceLabelState,
-  removeWorkspaceLabel
+  boardLabelState,
+  setBoardLabelState,
+  removeBoardLabel
 }: EditCardLabelModalProps) {
   const [labelNameFieldValue, setLabelNameFieldValue] = useState(currentLabel.name)
   const [selectedColor, setSelectedColor] = useState(labelColors[parseInt(currentLabel._id, 10)])
@@ -541,14 +425,14 @@ export function EditCardLabelModal({
     setLabelNameFieldValue(event.currentTarget.value)
   }
 
-  function handleEditWorkspaceLabel() {
-    // Update Workspace label list
-    const updateWorkspaceLabel = workspaceLabelState.map((label) => {
+  function handleEditBoardLabel() {
+    // Update Board label list
+    const updatedBoardLabel = boardLabelState.map((label) => {
       return label._id === currentLabel._id
         ? { _id: labelColors.indexOf(selectedColor).toString(), name: labelNameFieldValue }
         : label
     })
-    setWorkspaceLabelState(updateWorkspaceLabel)
+    setBoardLabelState(updatedBoardLabel)
     // Update Card
     const updatedCard = {
       ...currentCard,
@@ -582,7 +466,7 @@ export function EditCardLabelModal({
         horizontal: 'left'
       }}
       onClose={handleClose}
-      sx={{ margin: '6px 0 0 0' }}
+      sx={{ margin: '0 0 0 0' }}
     >
       <Box sx={{ width: 300, height: 'fit-content', color: colors.primary }} className='flex flex-col'>
         {/* START: Modal heading */}
@@ -658,7 +542,7 @@ export function EditCardLabelModal({
         <Box sx={{ width: '100%', height: 2, margin: '10px 0 10px 0', padding: '0 12px' }}>
           <Box sx={{ width: '100%', height: 2, bgcolor: colorsButton.secondary }}></Box>
         </Box>
-        {/* Create button */}
+        {/* Buttons */}
         <Box sx={{ width: '100%', height: 'fit-content' }} className='flex flex-row justify-between'>
           <Box
             sx={{
@@ -676,7 +560,7 @@ export function EditCardLabelModal({
             }}
             className='flex cursor-pointer items-center justify-center rounded'
             onClick={() => {
-              handleEditWorkspaceLabel()
+              handleEditBoardLabel()
               handleReturn()
             }}
           >
@@ -698,145 +582,12 @@ export function EditCardLabelModal({
             }}
             className='flex cursor-pointer items-center justify-center rounded'
             onClick={() => {
-              removeWorkspaceLabel()
+              removeBoardLabel()
               handleReturn()
             }}
           >
             <p>Delete</p>
           </Box>
-        </Box>
-      </Box>
-    </Popover>
-  )
-}
-
-interface DeleteChecklistModalProps {
-  checklistName: string
-  anchorEl: (EventTarget & HTMLDivElement) | null
-  handleDelete: () => void
-  handleClose: () => void
-}
-
-export function DeleteChecklistModal({
-  checklistName,
-  anchorEl,
-  handleDelete,
-  handleClose
-}: DeleteChecklistModalProps) {
-  function handleDeleteAndClose() {
-    handleDelete()
-    handleClose()
-  }
-
-  return (
-    <Popover
-      open={true}
-      anchorEl={anchorEl}
-      anchorOrigin={{
-        vertical: 'bottom',
-        horizontal: 'left'
-      }}
-      transformOrigin={{
-        vertical: 'top',
-        horizontal: 'left'
-      }}
-      onClose={handleClose}
-      sx={{ margin: '6px 0 0 0' }}
-    >
-      <Box
-        sx={{ width: 300, height: 'fit-content', margin: '0 8px', padding: '8px 0px', color: colors.primary }}
-        className='flex flex-col'
-      >
-        {/* START: Modal heading */}
-        <Grid container sx={{ width: '100%', margin: '0 0 12px 0' }}>
-          <Grid item xs={1}></Grid>
-          <Grid item xs={10} className='flex items-center justify-center'>
-            <h2 className='overflow-hidden overflow-ellipsis whitespace-nowrap text-sm font-semibold'>
-              Delete {checklistName}
-            </h2>
-          </Grid>
-          <Grid item xs={1} className='flex items-center justify-center'>
-            <FontAwesomeIcon icon={faXmark} className='cursor-pointer' onMouseDown={handleClose} />
-          </Grid>
-        </Grid>
-        {/* END: Modal heading */}
-        {/* Warning */}
-        <p className='mb-4 mt-1 text-sm'>Deleting a checklist is permanent and there is no way to get it back.</p>
-        {/* Button */}
-        <Box
-          sx={{
-            width: '100%',
-            height: 32,
-            padding: '0 8px',
-            bgcolor: '#f00',
-            '&:hover': {
-              filter: 'brightness(90%)'
-            }
-          }}
-          className='flex cursor-pointer items-center justify-center rounded'
-          onClick={handleDeleteAndClose}
-        >
-          <h2 className='text-sm font-semibold text-white'>Delete checklist</h2>
-        </Box>
-      </Box>
-    </Popover>
-  )
-}
-
-interface ChecklistItemModalProps {
-  anchorEl: (EventTarget & SVGSVGElement) | null
-  handleDelete: () => void
-  handleClose: () => void
-}
-
-export function ChecklistItemModal({ anchorEl, handleDelete, handleClose }: ChecklistItemModalProps) {
-  function handleDeleteAndClose() {
-    handleDelete()
-    handleClose()
-  }
-
-  return (
-    <Popover
-      open={true}
-      anchorEl={anchorEl}
-      anchorOrigin={{
-        vertical: 'bottom',
-        horizontal: 'left'
-      }}
-      transformOrigin={{
-        vertical: 'top',
-        horizontal: 'left'
-      }}
-      onClose={handleClose}
-    >
-      <Box
-        sx={{ width: 300, height: 'fit-content', padding: '8px 0px', color: colors.primary }}
-        className='flex flex-col'
-      >
-        {/* START: Modal heading */}
-        <Grid container sx={{ width: '100%', margin: '0 0 12px 0' }}>
-          <Grid item xs={1}></Grid>
-          <Grid item xs={10} className='flex justify-center'>
-            <h2 className='text-sm font-semibold'>Item actions</h2>
-          </Grid>
-          <Grid item xs={1}>
-            <FontAwesomeIcon icon={faXmark} className='cursor-pointer' onClick={handleClose} />
-          </Grid>
-        </Grid>
-        {/* END: Modal heading */}
-        <Box
-          sx={{
-            width: '100%',
-            height: 32,
-            padding: '0 8px',
-            '&:hover': {
-              bgcolor: colorsButton.secondary
-            }
-          }}
-          className='flex cursor-pointer items-center'
-          onClick={handleDeleteAndClose}
-        >
-          <h2 className='text-sm'>Delete</h2>
         </Box>
       </Box>
     </Popover>
