@@ -1,13 +1,12 @@
-import { InjectController, InjectRoute, ValidateGrpcInput } from '@app/common/decorators'
-import { CardService } from '../services/card.service'
-import { Body, InternalServerErrorException, NotFoundException, Query } from '@nestjs/common'
+import { InjectController, ValidateGrpcInput } from '@app/common/decorators'
+import { InternalServerErrorException, NotFoundException } from '@nestjs/common'
+import { GrpcMethod, RpcException } from '@nestjs/microservices'
 import { TrelloApi } from '@trello-v2/shared'
-import { RpcException, GrpcMethod } from '@nestjs/microservices'
-import { Metadata, ServerUnaryCall } from '@grpc/grpc-js'
+
+import { CardService } from '../services/card.service'
 
 @InjectController({
   name: 'card',
-  isCore: true,
 })
 export class CardMSController {
   constructor(private cardService: CardService) {}

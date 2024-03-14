@@ -1,15 +1,15 @@
 import { InjectController, InjectRoute } from '@app/common/decorators'
-import { CardlistService } from '../services/cardlist.service'
-import { CardlistRoutes } from '../cardlist.routes'
-import { Body, Param } from '@nestjs/common'
-import { ZodValidationPipe } from '@app/common/pipes'
-import { TrelloApi } from '@trello-v2/shared'
 import { SwaggerApi } from '@app/common/decorators/swagger.decorator'
+import { ZodValidationPipe } from '@app/common/pipes'
+import { Body, Param } from '@nestjs/common'
 import { getSchemaPath } from '@nestjs/swagger'
+import { TrelloApi } from '@trello-v2/shared'
+
+import { CardlistRoutes } from '../cardlist.routes'
+import { CardlistService } from '../services/cardlist.service'
 
 @InjectController({
   name: 'cardlist',
-  isCore: true,
 })
 export class CardlistController {
   constructor(private cardlistService: CardlistService) {}

@@ -1,23 +1,6 @@
-// import { LocalAuthGuard } from '@/api/auth/guards'
-import { IS_PUBLIC_KEY, ROLES_KEY } from '@app/common'
-import {
-  applyDecorators,
-  createParamDecorator,
-  Delete,
-  ExecutionContext,
-  Get,
-  HttpCode,
-  HttpStatus,
-  Patch,
-  Post,
-  Put,
-  RequestMethod,
-  SetMetadata,
-} from '@nestjs/common'
+import { applyDecorators, Delete, Get, HttpCode, HttpStatus, Patch, Post, Put, RequestMethod } from '@nestjs/common'
 
 import { SwaggerApi } from './swagger.decorator'
-
-import type { CustomDecorator } from '@nestjs/common'
 
 import type { UserRole } from '@app/common'
 
@@ -33,23 +16,7 @@ export interface IRouteParams {
   swaggerInfo?: ISwaggerParams
 }
 
-function Public(): CustomDecorator {
-  return SetMetadata(IS_PUBLIC_KEY, true)
-}
-
-export function UserRoles(roles: UserRole[]): CustomDecorator {
-  return SetMetadata(ROLES_KEY, roles)
-}
-
-export function InjectRoute({
-  path = '/',
-  roles = [],
-  swaggerInfo = { secure: true },
-  jwtSecure = true,
-  //   localSecure = false,
-  code = HttpStatus.OK,
-  method = RequestMethod.GET,
-}: IRouteParams) {
+export function InjectRoute({ path = '/', swaggerInfo = {}, code = HttpStatus.OK, method = RequestMethod.GET }: IRouteParams) {
   const methodDecorator = {
     [RequestMethod.GET]: Get,
     [RequestMethod.PUT]: Put,
@@ -58,24 +25,7 @@ export function InjectRoute({
     [RequestMethod.PATCH]: Patch,
   }
 
-  const decorators = [methodDecorator[method](path), HttpCode(code), SwaggerApi({ secure: jwtSecure, ...swaggerInfo })]
-
-  if (roles.length > 0) {
-    decorators.push(UserRoles(roles))
-  }
-
-  if (!jwtSecure) {
-    decorators.push(Public())
-  }
-
-  //   if (localSecure) {
-  //     decorators.push(UseGuards(LocalAuthGuard))
-  //   }
+  const decorators = [methodDecorator[method](path), HttpCode(code), SwaggerApi({ ...swaggerInfo })]
 
   return applyDecorators(...decorators)
 }
-
-export const ReqUser = createParamDecorator((data: unknown, ctx: ExecutionContext) => {
-  const request = ctx.switchToHttp().getRequest()
-  return request.user
-})
