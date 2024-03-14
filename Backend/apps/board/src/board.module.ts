@@ -4,11 +4,10 @@ import * as Joi from 'joi'
 import { ConfigModule } from '@nestjs/config'
 import { configuration } from '@app/common'
 import { MongooseModule } from '@nestjs/mongoose'
+import { ServeStaticModule } from '@nestjs/serve-static'
 
 const EnvSchema = {
   PORT: Joi.number(),
-  JWT_SECRET: Joi.string().required(),
-  JWT_REFRESH_SECRET: Joi.string().required(),
   DB_CONN_STR: Joi.string().required(),
 }
 
@@ -17,6 +16,11 @@ const EnvSchema = {
     ConfigModule.forRoot({
       validationSchema: Joi.object().keys(EnvSchema),
       load: [configuration],
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: './public',
+      serveRoot: '/api/board/swagger',
+      exclude: ['/api/board/swagger/index.html'],
     }),
     MongooseModule.forRoot(process.env.DB_CONN_STR || ''),
     BoardModule,

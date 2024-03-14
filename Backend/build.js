@@ -1,14 +1,21 @@
-const { readFileSync, writeFileSync, copyFileSync } = require('fs')
+const { readFileSync, writeFileSync, copyFileSync, existsSync, mkdirSync } = require('fs')
 const { exec } = require('child_process')
 const fs = require('fs')
+const { join } = require('path')
 
-const service_name = process.argv.slice(2)[0]
-exec(`npx ncc build apps/${service_name}/src/main.ts --out build`, (err, stdout, stderr) => {
-  console.log(err, stderr, stdout)
-  copyFileSync('.env', 'build/.env')
-  const file = readFileSync('./build/index.js')
-  writeFileSync('./build/index.js', file.toString().replace('`${`${__dirname}/default`}`', '__dirname'))
-})
+console.log('Running fix build')
+
+const file = readFileSync('./build/index.js')
+writeFileSync('./build/index.js', file.toString().replace('`${`${__dirname}/default`}`', '__dirname'))
+
+const swagger_ui_dist = join(__dirname, '..', 'node_modules', 'swagger-ui-dist')
+if (existsSync(swagger_ui_dist)) {
+  const swagger_files = fs.readdirSync(swagger_ui_dist)
+  if (!existsSync('./build/public/')) {
+    mkdirSync('./build/public/swagger', { recursive: true })
+  }
+  swagger_files.forEach((f) => copyFileSync(`./../node_modules/swagger-ui-dist/${f}`, `./build/public/${f}`))
+}
 
 // const file = readFileSync('./build/index.js')
 // writeFileSync('./build/index.js', file.toString().replace('`${`${__dirname}/default`}`', '__dirname'))

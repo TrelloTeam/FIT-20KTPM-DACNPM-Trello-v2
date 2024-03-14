@@ -10,15 +10,19 @@ COPY . .
 RUN npm i -g @vercel/ncc
 RUN npm install
 RUN npm run build -w @trello-v2/shared
-RUN if [[ -z "$SERVICE_NAME" ]] ; then echo Argument not provided ; else npm run ncc:build -w @trello-v2/backend -- $SERVICE_NAME ; fi
+
+WORKDIR /app/Backend
+RUN npx ncc build apps/$SERVICE_NAME/src/main.ts --out build
+RUN node build.js $SERVICE_NAME
+
+WORKDIR /app
 RUN rm -r node_modules
 RUN npm uninstall -g @vercel/ncc
 
 FROM node:iron-alpine3.19
 WORKDIR /app
 COPY --from=build /app .
+WORKDIR /app/Backend
 
-CMD ["sh", "-c", "node Backend/build/index.js"]
-# RUN cd /Backend && npm run start:dev cardlist
-# # Development
-# CMD ["npm", "run", "start:dev"]
+CMD ["sh", "-c", "node build/index.js"]
+

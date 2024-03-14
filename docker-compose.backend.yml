@@ -35,11 +35,7 @@ services:
       - "10000:10000"
 
   backend-cardlist:
-    build:
-      dockerfile: dockerfile
-      image: lamlance/trello-backend:dev
-      args:
-        - SERVICE_NAME=cardlist
+    image: lamlance/trello-backend:cardlist-latest
     environment:
       - GRPC_HOST=0.0.0.0
       - PORT=3000
@@ -50,7 +46,7 @@ services:
       - 3011:3001
 
   backend-board:
-    image: lamlance/trello-backend:latest
+    image: lamlance/trello-backend:board-latest
     environment:
       - GRPC_HOST=0.0.0.0
       - PORT=3000
@@ -61,7 +57,7 @@ services:
       - 3021:3001
 
   backend-workspace:
-    image: lamlance/trello-backend:latest
+    image: lamlance/trello-backend:workspace-latest
     environment:
       - GRPC_HOST=0.0.0.0
       - PORT=3000
