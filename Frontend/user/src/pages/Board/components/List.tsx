@@ -24,6 +24,7 @@ export default function ListComponent({ list, setOpenCardSetting }: ListComponen
     const handleClickOutside_AddCard = (event: MouseEvent) => {
       if (componentRef_AddCard.current && !componentRef_AddCard.current.contains(event.target as Node)) {
         // Clicked outside of Component A, hide it
+        setNewCardName('')
         setAddCardOpenAt('')
       }
     }
@@ -50,6 +51,7 @@ export default function ListComponent({ list, setOpenCardSetting }: ListComponen
       index: index
     }).then(() => {
       setAddCardOpenAt('')
+      setNewCardName('')
       getAllCardlist()
     })
     // const data = {
