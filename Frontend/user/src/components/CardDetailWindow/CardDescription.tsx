@@ -1,12 +1,16 @@
 import { faAlignJustify } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Box, TextareaAutosize } from '@mui/material'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { colors, colorsButton } from '~/styles'
 import { TextAreaControl } from './CardChecklist'
 import { _Card } from '.'
 
-function EditButton() {
+interface EditButtonProps {
+  onClick: () => void
+}
+
+function EditButton({ onClick }: EditButtonProps) {
   return (
     <Box
       sx={{
@@ -22,6 +26,7 @@ function EditButton() {
         }
       }}
       className='flex cursor-pointer items-center justify-center rounded'
+      onClick={onClick}
     >
       <p>Edit</p>
     </Box>
@@ -38,6 +43,7 @@ export default function CardDescription({ currentCard, setCurrentCard }: CardDes
   const [isOpenTextArea, setIsOpenTextArea] = useState(false)
   const [initialValue, setInitialValue] = useState(currentCard.description)
   const [textAreaValue, setTextAreaValue] = useState(currentCard.description)
+  const textAreaRef = useRef<HTMLTextAreaElement>(null)
 
   function handleTextAreaChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
     setTextAreaValue(event.target.value)
@@ -67,6 +73,9 @@ export default function CardDescription({ currentCard, setCurrentCard }: CardDes
   function handleOpen() {
     setTextAreaMinRows(6)
     setIsOpenTextArea(true)
+    if (textAreaRef.current) {
+      textAreaRef.current.focus()
+    }
   }
 
   return (
@@ -79,10 +88,11 @@ export default function CardDescription({ currentCard, setCurrentCard }: CardDes
           <h2 className='font-semibold'>Description</h2>
         </div>
         {/* Edit button */}
-        <EditButton />
+        <EditButton onClick={handleOpen} />
       </div>
       {/* END: Header */}
       <TextareaAutosize
+        ref={textAreaRef}
         style={{ width: '100%', resize: 'none' }}
         className='mt-1 px-3 py-2 text-sm'
         minRows={textAreaMinRows}

@@ -3,10 +3,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Avatar, Box, Tooltip } from '@mui/material'
 import { useState } from 'react'
 import { colors, colorsButton } from '~/styles'
-import { CardMemberModal } from './CardModals'
 import { _Card } from '.'
+import { CardMemberModal } from './modals/CardMemberModal'
+
+// eslint-disable-next-line react-refresh/only-export-components
+export const bgColors: string[] = ['#8a2be2', '#1e90ff', '#66cdaa', '#ffa500', '#FFD700', '#DC143C']
 
 const getContrastColor = (hexColor: string) => {
+  if (!hexColor) {
+    return '#ffffff'
+  }
   // Convert hex color to RGB
   const r = parseInt(hexColor.slice(1, 3), 16)
   const g = parseInt(hexColor.slice(3, 5), 16)
@@ -49,9 +55,11 @@ export function MemberAvatar({ memberName, bgColor }: MemberAvatarProps) {
 
 interface AddMemberButtonProps {
   currentCard: _Card
+  setCurrentCard: (newState: _Card) => void
+  boardMembers: string[]
 }
 
-function AddMemberButton({ currentCard }: AddMemberButtonProps) {
+function AddMemberButton({ currentCard, setCurrentCard, boardMembers }: AddMemberButtonProps) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLDivElement>(null)
   const [isOpenCardMemberModal, setIsOpenCardMemberModal] = useState(false)
 
@@ -65,37 +73,45 @@ function AddMemberButton({ currentCard }: AddMemberButtonProps) {
   }
 
   return (
-    <Avatar
-      sx={{
-        bgcolor: colorsButton.secondary,
-        width: 32,
-        height: 32,
-        color: colors.primary,
-        fontSize: 14,
-        fontWeight: 500,
-        '&:hover': {
-          bgcolor: colorsButton.secondary_hover
-        }
-      }}
-      className='cursor-pointer'
-      onBlur={handleClose}
-      onClick={(e) => openCardMemberModal(e)}
-    >
-      <FontAwesomeIcon icon={faPlus} />
+    <div>
+      <Avatar
+        sx={{
+          bgcolor: colorsButton.secondary,
+          width: 32,
+          height: 32,
+          color: colors.primary,
+          fontSize: 14,
+          fontWeight: 500,
+          '&:hover': {
+            bgcolor: colorsButton.secondary_hover
+          }
+        }}
+        className='cursor-pointer'
+        onBlur={handleClose}
+        onClick={(e) => openCardMemberModal(e)}
+      >
+        <FontAwesomeIcon icon={faPlus} />
+      </Avatar>
       {isOpenCardMemberModal && (
-        <CardMemberModal currentCard={currentCard} anchorEl={anchorEl} handleClose={handleClose} />
+        <CardMemberModal
+          anchorEl={anchorEl}
+          currentCard={currentCard}
+          setCurrentCard={setCurrentCard}
+          boardMembers={boardMembers}
+          handleClose={handleClose}
+        />
       )}
-    </Avatar>
+    </div>
   )
 }
 
 interface CardMemberListProps {
   currentCard: _Card
+  setCurrentCard: (newState: _Card) => void
+  boardMembers: string[]
 }
 
-export default function CardMemberList({ currentCard }: CardMemberListProps) {
-  const bgColors: string[] = ['#8a2be2', '#1e90ff', '#66cdaa', '#ffa500']
-
+export default function CardMemberList({ currentCard, setCurrentCard, boardMembers }: CardMemberListProps) {
   return (
     <Box sx={{ margin: '10px 16px 0 0' }}>
       <h2 style={{ color: colors.primary }} className='mb-2 text-xs font-bold'>
@@ -109,7 +125,7 @@ export default function CardMemberList({ currentCard }: CardMemberListProps) {
             </div>
           </Tooltip>
         ))}
-        <AddMemberButton currentCard={currentCard} />
+        <AddMemberButton currentCard={currentCard} setCurrentCard={setCurrentCard} boardMembers={boardMembers} />
       </div>
     </Box>
   )
