@@ -2,8 +2,9 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Box, Grid, Popover } from '@mui/material'
 import { colors, colorsButton } from '~/styles'
-import { _Card, _Feature_Checklist } from '..'
+import { _Card, _Feature_Activity, _Feature_Checklist } from '..'
 import { useState } from 'react'
+import moment from 'moment'
 
 interface CreateCardChecklistModalProps {
   anchorEl: (EventTarget & HTMLDivElement) | null
@@ -32,9 +33,18 @@ export function CreateCardChecklistModal({
       type: 'checklist',
       items: []
     }
+    const newActivity: _Feature_Activity = {
+      workspace_id: '0',
+      board_id: '0',
+      cardlist_id: '0',
+      card_id: '0',
+      content: `TrelloUser added ${trimmedValue} to this card`,
+      time: moment().format()
+    }
     const updatedCard = {
       ...currentCard,
-      checklists: [...currentCard.checklists, newChecklist]
+      checklists: [...currentCard.checklists, newChecklist],
+      activities: [...currentCard.activities, newActivity]
     }
     setCurrentCard(updatedCard)
   }

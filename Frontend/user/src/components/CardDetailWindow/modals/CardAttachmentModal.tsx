@@ -3,7 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Box, Grid, Popover, styled } from '@mui/material'
 import { useState } from 'react'
 import { colors, colorsButton } from '~/styles'
-import { _Card, _Feature_Attachment } from '..'
+import { _Card, _Feature_Activity, _Feature_Attachment } from '..'
+import moment from 'moment'
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -48,9 +49,18 @@ export function CardAttachmentModal({ anchorEl, currentCard, setCurrentCard, han
         link: attachmentLinkValue,
         title: attachmentTitleValue
       }
+      const newActivity: _Feature_Activity = {
+        workspace_id: '0',
+        board_id: '0',
+        cardlist_id: '0',
+        card_id: '0',
+        content: `TrelloUser attached ${attachmentLinkValue} to this card`,
+        time: moment().format()
+      }
       const updatedCard = {
         ...currentCard,
-        attachments: [...currentCard.attachments, newAttachment]
+        attachments: [...currentCard.attachments, newAttachment],
+        activities: [...currentCard.activities, newActivity]
       }
       setCurrentCard(updatedCard)
     }

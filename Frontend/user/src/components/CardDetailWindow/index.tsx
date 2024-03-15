@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCreditCard, faEye, faTimes } from '@fortawesome/free-solid-svg-icons'
 import { Box, Grid, Stack } from '@mui/material'
-import { colors } from '~/styles'
+import { colors, colorsButton } from '~/styles'
 import CardMemberList from './CardMemberList'
 import CardLabelList from './CardLabelList'
 import CardNotification from './CardNotification'
@@ -18,6 +18,9 @@ import { SidebarButtonDates } from './sidebar/CardDateSidebar'
 import dayjs, { Dayjs } from 'dayjs'
 import { SidebarButtonAttachments } from './sidebar/CardAttachmentSidebar'
 import { CardAttachment } from './CardAttachment'
+import { SidebarButtonMove } from './sidebar/CardMoveSidebar'
+import { SidebarButtonCopy } from './sidebar/CardCopySidebar'
+import { SidebarButtonArchive } from './sidebar/CardArchiveSidebar'
 
 export type _Card = {
   name: string
@@ -27,6 +30,7 @@ export type _Card = {
   checklists: _Feature_Checklist[]
   dates: _Feature_Date
   attachments: _Feature_Attachment[]
+  activities: _Feature_Activity[]
 }
 
 export type _Feature_CardLabel = {
@@ -59,6 +63,15 @@ export type _Feature_Attachment = {
   type: string
   link: string
   title: string
+}
+
+export type _Feature_Activity = {
+  workspace_id: string
+  board_id: string
+  cardlist_id: string
+  card_id: string
+  content: string
+  time: string
 }
 
 const checklist_1: _Feature_Checklist = {
@@ -107,6 +120,41 @@ const card_attachments: _Feature_Attachment[] = [
   }
 ]
 
+const card_activities: _Feature_Activity[] = [
+  {
+    workspace_id: '0',
+    board_id: '0',
+    cardlist_id: '0',
+    card_id: '0',
+    content: 'TrelloUser added attachment',
+    time: '2024-03-15 12:30:00'
+  },
+  {
+    workspace_id: '0',
+    board_id: '0',
+    cardlist_id: '0',
+    card_id: '1',
+    content: 'TrelloUser added checklist',
+    time: '2024-03-14 15:30:00'
+  },
+  {
+    workspace_id: '0',
+    board_id: '0',
+    cardlist_id: '0',
+    card_id: '2',
+    content: 'TrelloUser archived this card',
+    time: '2024-03-15 15:00:00'
+  },
+  {
+    workspace_id: '0',
+    board_id: '0',
+    cardlist_id: '0',
+    card_id: '3',
+    content: 'TrelloUser removed AnotherMember from this card',
+    time: '2024-03-12 15:00:00'
+  }
+]
+
 const card_1: _Card = {
   name: 'Soạn nội dung thuyết trình',
   description:
@@ -120,7 +168,8 @@ const card_1: _Card = {
   ],
   checklists: [checklist_1, checklist_2],
   dates: card_dates,
-  attachments: card_attachments
+  attachments: card_attachments,
+  activities: card_activities
 }
 
 const boardMembers: string[] = [
@@ -269,25 +318,13 @@ export default function CardDetailWindow() {
             />
           ))}
           {/* END: Checklist */}
-          <CardActivity />
+          <CardActivity currentCard={currentCardState} setCurrentCard={setCurrentCardState} />
         </Grid>
         <Grid item xs={3} sx={{ padding: '0 16px 8px 8px' }}>
           <Stack sx={{ padding: '10px 0 0 0' }}>
             <h2 style={{ color: colors.primary }} className='mb-2 text-xs font-bold'>
               Add to card
             </h2>
-            {/* <SidebarButtonLabels icon={faUser} title='Members' onClick={() => openModal(ButtonType.Members)} />
-            <SidebarButton icon={faTag} title='Labels' />
-            <SidebarButton icon={faSquareCheck} title='Checklist' />
-            <SidebarButton icon={faClock} title='Dates' />
-            <SidebarButton icon={faPaperclip} title='Attachment' />
-            <SidebarButton icon={faGripLines} title='Custom Fields' />
-            <h2 style={{ color: colors.primary }} className='mb-2 mt-6 text-xs font-bold'>
-              Actions
-            </h2>
-            <SidebarButton icon={faArrowRight} title='Move' />
-            <SidebarButton icon={faCopy} title='Copy' />
-            <SidebarButton icon={faBoxArchive} title='Archive' /> */}
             <SidebarButtonMembers
               type={ButtonType.Members}
               currentCard={currentCardState}
@@ -313,6 +350,27 @@ export default function CardDetailWindow() {
             />
             <SidebarButtonAttachments
               type={ButtonType.Attachments}
+              currentCard={currentCardState}
+              setCurrentCard={setCurrentCardState}
+            />
+            <h2 style={{ color: colors.primary }} className='mb-2 mt-6 text-xs font-bold'>
+              Actions
+            </h2>
+            <SidebarButtonMove
+              type={ButtonType.Move}
+              currentCard={currentCardState}
+              setCurrentCard={setCurrentCardState}
+            />
+            <SidebarButtonCopy
+              type={ButtonType.Copy}
+              currentCard={currentCardState}
+              setCurrentCard={setCurrentCardState}
+            />
+            <Box sx={{ width: '100%', height: 2, padding: '0 0 10px 0' }}>
+              <Box sx={{ width: '100%', height: 2, bgcolor: colorsButton.secondary }}></Box>
+            </Box>
+            <SidebarButtonArchive
+              type={ButtonType.Archive}
               currentCard={currentCardState}
               setCurrentCard={setCurrentCardState}
             />
