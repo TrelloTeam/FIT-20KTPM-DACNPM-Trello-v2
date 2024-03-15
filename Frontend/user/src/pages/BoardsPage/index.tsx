@@ -8,32 +8,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrello } from '@fortawesome/free-brands-svg-icons'
 import BoardsPageRowTemplate from '~/components/BoardsPageRowTemplate'
 import SidebarTemplate from '~/components/SidebarTemplate'
-import axios from 'axios'
-import React from 'react'
-import { useParams } from 'react-router-dom'
-
-interface BoardData {
-  _id: string
-  name: string
-  workspace_id: string
-  activities: []
-  members_email: []
-  labels: []
-  is_star: boolean
-  watcher_email: string
-  visibility: string
-}
-interface WorkspaceData {
-  _id: string
-  name: string
-  short_name: string
-  description: string
-  website: string
-  logo: string
-  type_id: string
-  visibility: string
-  members: []
-}
+import { BoardApiRTQ } from '~/api'
+import { useEffect } from 'react'
 
 export type BoardTemplate = {
   [x: string]: unknown
@@ -49,10 +25,10 @@ export type BoardSubset = {
   is_star: boolean
 }
 
-// const data1: BoardTemplate[] = [
-//   { _id: '0', name: 'Project Management', is_star: false },
-//   { _id: '1', name: 'Kanban Template', is_star: true }
-// ]
+const data1: BoardTemplate[] = [
+  { _id: '0', name: 'Project Management', is_star: false },
+  { _id: '1', name: 'Kanban Template', is_star: true }
+]
 
 const data2: BoardSubset[] = [
   // { _id: '0', name: 'Project Trello', is_star: true },
@@ -77,52 +53,37 @@ export function BoardsPageLabel({ title }: BoardsPageLabelProps) {
 }
 
 export function BoardsPage() {
-  const [data1, setData1] = React.useState<BoardData[]>([
-    {
-      _id: '',
-      name: '',
-      workspace_id: '',
-      activities: [],
-      members_email: [],
-      labels: [],
-      is_star: false,
-      watcher_email: '',
-      visibility: ''
-    }
-  ])
-  const [workspaceDetail, setWorkspaceDetail] = React.useState<WorkspaceData>({
-    _id: '',
-    name: '',
-    short_name: '',
-    description: '',
-    website: '',
-    logo: '',
-    type_id: '',
-    visibility: '',
-    members: []
-  })
+  // const [data1, setData1] = React.useState<BoardData[]>([
+  //   {
+  //     _id: '',
+  //     name: '',
+  //     workspace_id: '',
+  //     activities: [],
+  //     members_email: [],
+  //     labels: [],
+  //     is_star: false,
+  //     watcher_email: '',
+  //     visibility: ''
+  //   }
+  // ])
+  // const [workspaceDetail, setWorkspaceDetail] = React.useState<WorkspaceData>({
+  //   _id: '',
+  //   name: '',
+  //   short_name: '',
+  //   description: '',
+  //   website: '',
+  //   logo: '',
+  //   type_id: '',
+  //   visibility: '',
+  //   members: []
+  // })
   const starredBoards = data2.filter((board) => board.is_star == true)
-  const params = useParams()
+  const [getAllBoard, { data: boardData }] = BoardApiRTQ.BoardApiSlice.useLazyGetAllBoardQuery()
 
-  const fetchData = async () => {
-    try {
-      const responseListBoard = await axios.get('http://localhost:3333/api/board/' + params.workspaceId)
-      const responseWorkspaceDetail = await axios.get('http://localhost:3333/api/workspace/' + params.workspaceId)
-
-      console.log()
-
-      if (responseListBoard && responseListBoard.data) {
-        setData1([...responseListBoard.data.data])
-      }
-      if (responseWorkspaceDetail && responseWorkspaceDetail.data) setWorkspaceDetail(responseWorkspaceDetail.data.data)
-    } catch (error) {
-      console.error('Error fetching data:', error)
-    }
-  }
-  React.useEffect(() => {
-    fetchData()
-  }, [params])
-
+  useEffect(() => {
+    getAllBoard().then((v) => console.log(v))
+  }, [])
+  console.log(boardData?.data)
   return (
     <Box display='flex' justifyContent='center' alignItems='center' className='my-10'>
       <Grid container sx={{ maxWidth: 1280 }}>
@@ -137,7 +98,7 @@ export function BoardsPage() {
             <FontAwesomeIcon icon={faTrello} style={{ fontSize: 28 }} />
             <h1 className='ml-2 p-0 text-xl font-bold'>Board</h1>
           </Box>
-          <BoardsPageRowTemplate boards={data1} />
+          <BoardsPageRowTemplate boards={[...data1]} />
           {/* END: Recently Viewed Boards section */}
           {/* spacing */}
           <Container sx={{ height: 40 }}></Container>
@@ -155,7 +116,17 @@ export function BoardsPage() {
             <AccessTimeIcon style={{ fontSize: 28 }} />
             <h1 className='ml-2 p-0 text-lg font-bold'>Recently viewed</h1>
           </Box>
-          <BoardsPageRow boards={data2} enableAddBoard={false} />
+          <BoardsPageRow
+            boards={[
+              ...(boardData?.data || []).map((e) => ({
+                ...e,
+                _id: e._id || '',
+                is_star: false
+              })),
+              ...data2
+            ]}
+            enableAddBoard={false}
+          />
           {/* END: Recently Viewed Boards section */}
           {/* spacing */}
           <Container sx={{ height: 80 }}></Container>
@@ -170,10 +141,10 @@ export function BoardsPage() {
                   sx={{ width: 32, height: 32, color: 'white' }}
                   className='my-4 flex items-center justify-center rounded-md bg-gradient-to-b from-green-600 to-green-400'
                 >
-                  <p className='m-0 p-0 text-2xl font-bold leading-none'>{workspaceDetail.name.charAt(0)}</p>
+                  <p className='m-0 p-0 text-2xl font-bold leading-none'>T</p>
                 </Box>
                 <h1 style={{ color: colors.primary }} className='ml-3 p-0 text-lg font-semibold'>
-                  {workspaceDetail.name}
+                  Trello Project
                 </h1>
               </Box>
             </Grid>

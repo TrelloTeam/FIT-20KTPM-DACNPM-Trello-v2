@@ -25,11 +25,11 @@ export const router = createBrowserRouter([
       },
       {
         path: '/workspace/:workspaceId',
-        element: <BoardsPage />
+        element: <CategoryWorkspace />
       },
       {
-        path: '/board/:id',
-        element: <CategoryWorkspace />
+        path: '/board/:id?',
+        element: <BoardsPage />
       },
       {
         path: '/activity/:id',
@@ -40,7 +40,7 @@ export const router = createBrowserRouter([
         element: <CardDetailWindow />
       },
       {
-        path: '/board/:id',
+        path: '/cardlist',
         element: <Board />
       }
     ]

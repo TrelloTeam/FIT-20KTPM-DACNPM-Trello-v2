@@ -6,6 +6,7 @@ import workspace from '~/assets/workspace_img.svg'
 import { useTheme } from './../../Theme/themeContext'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import { WorkspaceApiRTQ } from '~/api'
 
 interface AutocompleteContainerProps {
   onClose: () => void
@@ -23,6 +24,8 @@ const type = [
 ]
 
 export default function CreateWorkspace(props: AutocompleteContainerProps) {
+  const [createWorkspace] = WorkspaceApiRTQ.WorkspaceApiSlice.useCreateWorkspaceMutation()
+  const [getAllWorkspace] = WorkspaceApiRTQ.WorkspaceApiSlice.useLazyGetAllWorkspaceQuery()
   const [valueWorkspace, setValueWorkspace] = React.useState<string | undefined>(type[0])
   const [inputValueWorkspace, setInputValueWorkspace] = React.useState('')
   const [workspaceName, setWorkspaceName] = React.useState('')
@@ -31,20 +34,25 @@ export default function CreateWorkspace(props: AutocompleteContainerProps) {
   const navigator = useNavigate()
 
   const onSubmit = async () => {
-    const data = {
-      name: workspaceName,
-      description: workspaceDescription
-    }
-    try {
-      const response = await axios.post('http://localhost:3333/api/worspace', data)
+    // const data = {
+    //   name: workspaceName,
+    //   description: workspaceDescription
+    // }
+    // try {
+    //   const response = await axios.post('http://localhost:3333/api/worspace', data)
 
-      if (response && response.statusText === 'OK') {
-        navigator(`/workspace/${response.data.data._id}`)
-        props.onClose()
-      }
-    } catch (error) {
-      console.error('Error fetching data:', error)
-    }
+    //   if (response && response.statusText === 'OK') {
+    //     navigator(`/workspace/${response.data.data._id}`)
+    //     props.onClose()
+    //   }
+    // } catch (error) {
+    //   console.error('Error fetching data:', error)
+    // }
+
+    createWorkspace({
+      name: workspaceName || '',
+      description: workspaceDescription || ''
+    }).then(() => getAllWorkspace())
   }
 
   const handleWorkspaceName = (event: React.ChangeEvent<HTMLInputElement>) => {

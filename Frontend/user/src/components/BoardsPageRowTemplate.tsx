@@ -4,28 +4,16 @@ import { BoardTemplate } from '~/pages'
 import BoardsPageCardTemplate from './BoardsPageCardTemplate'
 import { Link } from 'react-router-dom'
 
-interface BoardData {
-  _id: string
-  name: string
-  workspace_id: string
-  activities: []
-  members_email: []
-  labels: []
-  is_star: boolean
-  watcher_email: string
-  visibility: string
-}
-
 interface BoardsPageRowTemplateProps {
-  boards: BoardData[]
+  boards: BoardTemplate[]
 }
 
 export default function BoardsPageRowTemplate({ boards }: BoardsPageRowTemplateProps) {
   return (
     <Grid container spacing={2}>
-      {boards.map((board: BoardData, index: number) => (
+      {boards.map((board: BoardTemplate, index: number) => (
         <Grid item xs={3} key={index}>
-          <Link to={`/board/${board._id}`}>
+          <Link to={`/workspace/${board._id}`}>
             <BoardsPageCardTemplate board={board} />
           </Link>
         </Grid>

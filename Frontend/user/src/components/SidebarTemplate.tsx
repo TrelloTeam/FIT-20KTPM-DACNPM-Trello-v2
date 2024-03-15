@@ -15,6 +15,7 @@ import { Workspace } from '../pages/Templates/type'
 import { Button } from '@mui/base'
 import { Link, useParams } from 'react-router-dom'
 import axios from 'axios'
+import { WorkspaceApiRTQ } from '~/api'
 
 interface WorkspaceData {
   _id: string
@@ -29,23 +30,10 @@ interface WorkspaceData {
 }
 
 function SidebarTemplate() {
-  const [workspace, setWorkspace] = useState<WorkspaceData[]>()
-  const params = useParams()
-  console.log(params)
+  const [getALlWorkspace, { data: workspaceData }] = WorkspaceApiRTQ.WorkspaceApiSlice.useLazyGetAllWorkspaceQuery()
 
-  const fetchData = async () => {
-    try {
-      const response = await axios.get('http://localhost:3333/api/workspace/')
-
-      if (response && response.data) {
-        setWorkspace([...response.data.data])
-      }
-    } catch (error) {
-      console.error('Error fetching data:', error)
-    }
-  }
   React.useEffect(() => {
-    fetchData()
+    getALlWorkspace().then((v) => console.log(v))
   }, [])
 
   return (
@@ -107,7 +95,7 @@ function SidebarTemplate() {
       <h1 className='mb-2 pl-5 pt-2 text-gray-700'>Workspaces</h1>
       <Sidebar className='workspaces mb-10'>
         <div>
-          {workspace?.map((w, index) => (
+          {workspaceData?.data?.owner.map((w, index) => (
             <div key={index}>
               <Menu>
                 <SubMenu
