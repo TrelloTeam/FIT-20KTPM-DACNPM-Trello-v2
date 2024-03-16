@@ -22,7 +22,10 @@ jobs:
         password: ${{ secrets.DOCKERHUB_TOKEN }}
         
     - name: Build the Docker image
-      run: docker build -f Dockerfile.backend --build-arg SERVICE_NAME=cardlist -t lamlance/trello-backend:cardlist-latest .
+      run: |
+        docker build -f Dockerfile.backend --build-arg SERVICE_NAME=cardlist -t lamlance/trello-backend:cardlist-latest .
+        echo "Building from branch: $GITHUB_REF"
+      
 
     - name: Push the Docker image
       run: docker push lamlance/trello-backend:cardlist-latest
