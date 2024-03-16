@@ -15,5 +15,4 @@ export default async function bootstrap() {
   await app.startAllMicroservices()
   await app.listen(PORT, () => console.log(`Cardlist server http://localhost:${PORT}`))
 }
-
 bootstrap()
