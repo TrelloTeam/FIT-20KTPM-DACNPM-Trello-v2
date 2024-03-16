@@ -3,7 +3,7 @@ import { RequestMethod } from '@nestjs/common'
 
 export const CardlistRoutes = {
   getAllCardlistApi: {
-    path: '/api/cardlist/haine',
+    path: '/api/cardlist',
     method: RequestMethod.GET,
     jwtSecure: false,
   } as IRouteParams,
