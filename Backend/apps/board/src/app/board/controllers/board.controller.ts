@@ -3,15 +3,15 @@ import * as _ from 'lodash'
 import { InjectController, InjectRoute } from '@app/common/decorators'
 import { SwaggerApi } from '@app/common/decorators/'
 import { IdParamValidationPipe, ZodValidationPipe } from '@app/common/pipes'
-import { Body, Param } from '@nestjs/common'
+import { Body, HttpStatus, Param } from '@nestjs/common'
 import { getSchemaPath } from '@nestjs/swagger'
 import { TrelloApi } from '@trello-v2/shared'
 
-import { BoardRoutes } from '../board.routes'
+import BoardRoutes from '../board.routes'
 import { BoardService } from '../services/board.service'
 
 @InjectController({
-  name: 'board',
+  name: BoardRoutes.index,
 })
 export class BoardController {
   constructor(private boardService: BoardService) {}
@@ -20,7 +20,7 @@ export class BoardController {
   @SwaggerApi({
     responses: [
       {
-        status: 200,
+        status: HttpStatus.OK,
         schema: { $ref: getSchemaPath('GetallBoardResponseSchema') },
       },
     ],
@@ -41,7 +41,7 @@ export class BoardController {
     },
     responses: [
       {
-        status: 200,
+        status: HttpStatus.OK,
         schema: { $ref: getSchemaPath('GetallBoardResponseSchema') },
       },
     ],
@@ -62,7 +62,7 @@ export class BoardController {
     body: { schema: { $ref: getSchemaPath('CreateBoardRequestSchema') } },
     responses: [
       {
-        status: 200,
+        status: HttpStatus.OK,
         schema: { $ref: getSchemaPath('CreateBoardResponseSchema') },
       },
     ],
@@ -86,7 +86,7 @@ export class BoardController {
     },
     responses: [
       {
-        status: 200,
+        status: HttpStatus.OK,
         schema: { $ref: getSchemaPath('GetBoardInfoByBoardIdResponseSchema') },
       },
     ],
@@ -111,7 +111,7 @@ export class BoardController {
     },
     responses: [
       {
-        status: 200,
+        status: HttpStatus.OK,
         schema: { $ref: getSchemaPath('DeleteBoardResponseSchema') },
       },
     ],
@@ -133,7 +133,7 @@ export class BoardController {
     },
     responses: [
       {
-        status: 200,
+        status: HttpStatus.OK,
         schema: { $ref: getSchemaPath('UpdateBoardResponseSchema') },
       },
     ],
@@ -155,7 +155,7 @@ export class BoardController {
     },
     responses: [
       {
-        status: 200,
+        status: HttpStatus.OK,
         schema: { $ref: getSchemaPath('AddMemberResponseSchema') },
       },
     ],
@@ -179,7 +179,7 @@ export class BoardController {
     },
     responses: [
       {
-        status: 200,
+        status: HttpStatus.OK,
         schema: { $ref: getSchemaPath('RemoveMemberResponseSchema') },
       },
     ],
@@ -203,7 +203,7 @@ export class BoardController {
     },
     responses: [
       {
-        status: 200,
+        status: HttpStatus.OK,
         schema: { $ref: getSchemaPath('AddWatcherResponseSchema') },
       },
     ],
@@ -227,7 +227,7 @@ export class BoardController {
     },
     responses: [
       {
-        status: 200,
+        status: HttpStatus.OK,
         schema: { $ref: getSchemaPath('RemoveWatcherResponseSchema') },
       },
     ],
