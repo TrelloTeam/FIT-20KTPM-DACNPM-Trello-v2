@@ -13,7 +13,7 @@ export default function CardSetting() {
   const { colors, darkMode } = useTheme()
   return (
     <div
-      className={`absolute left-[102%] z-50 flex w-max cursor-default flex-col items-start justify-center space-y-1 font-semibold`}
+      className={`absolute left-[102%] z-10 flex w-max cursor-default flex-col items-start justify-center space-y-1 font-semibold`}
     >
       <button
         onClick={() => alert('click')}

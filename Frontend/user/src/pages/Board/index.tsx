@@ -356,7 +356,7 @@ export function Board() {
           onDragEnd={handleDragEnd}
         >
           {(listsData || []) && (
-            <div className={`relative z-20 mt-[64px] w-[100%]`}>
+            <div className={`relative mt-[64px] w-[100%]`}>
               <Suspense fallback={<LoadingComponent />}>
                 <LazyListsComponent lists={listsData || []} setOpenCardSetting={setOpenCardSetting} />
               </Suspense>
