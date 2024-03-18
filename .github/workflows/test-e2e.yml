@@ -14,12 +14,9 @@ jobs:
           node-version: "20.x"
       - name: Unit test backend
         working-directory: ./Backend
-        run: npm ci
-        run: npm run test cardlist 
+        run: npm run test cardlist
       - name: E2e test front end
         working-directory: ./Frontend
         uses: cypress-io/github-action@v2
         with:
           dev: npm run dev
-
-
