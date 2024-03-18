@@ -4,7 +4,7 @@ on:
   push:
     branches: ["dev/*", "release/*", "main"]
 jobs:
-  test:
+  test-e2e:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -14,6 +14,6 @@ jobs:
           node-version: "20.x"
       - uses: cypress-io/github-action@v2
         with:
-          dev: npm run dev -w @trello-v2/user
+          start: npm run dev -w @trello-v2/user
       - name: Unit test backend cardlist
         run: npm run test cardlist -w @trello-v2/backend
