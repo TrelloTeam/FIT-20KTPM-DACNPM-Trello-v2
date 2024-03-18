@@ -1,10 +1,11 @@
 import { faListUl } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Avatar, Box, TextareaAutosize } from '@mui/material'
+import { Avatar, Box, TextareaAutosize, Tooltip } from '@mui/material'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { colors, colorsButton } from '~/styles'
 import { _Card, _Feature_Activity } from '.'
 import moment from 'moment'
+import dayjs from 'dayjs'
 
 function ShowDetailsButton() {
   return (
@@ -264,7 +265,26 @@ function CardActivityTile({ activity }: CardActivityTileProps) {
       <Box sx={{ width: '100%', height: 'fit-content' }}>
         <p className='text-sm font-medium'>{activity.content}</p>
       </Box>
-      <p className='text-xs'>{formattedTime}</p>
+      <Tooltip
+        title={formatActivityTimeToolTip(activity.time)}
+        placement='bottom-start'
+        slotProps={{
+          popper: {
+            modifiers: [
+              {
+                name: 'offset',
+                options: {
+                  offset: [-4, -10]
+                }
+              }
+            ]
+          }
+        }}
+      >
+        <Box sx={{ width: 'fit-content', height: 20 }} className='cursor-pointer text-xs hover:underline'>
+          <p className='text-xs'>{formattedTime}</p>
+        </Box>
+      </Tooltip>
     </Box>
   )
 }
@@ -293,4 +313,9 @@ function formatActivityTime(activityTime: string) {
   } else {
     return activityMoment.format('MMM D [at] HH:mm A')
   }
+}
+
+function formatActivityTimeToolTip(activityTime: string) {
+  const formattedTime = dayjs(activityTime).format('MMMM D, YYYY h:mm A')
+  return formattedTime
 }

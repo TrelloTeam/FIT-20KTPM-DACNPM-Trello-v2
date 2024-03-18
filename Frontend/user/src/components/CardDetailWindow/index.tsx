@@ -231,153 +231,160 @@ export default function CardDetailWindow() {
   }
 
   return (
-    <Box
-      sx={{
-        width: 768,
-        height: 'fit-content',
-        marginBottom: '80px',
-        paddingBottom: '40px',
-        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.5)',
-        backgroundColor: windowBg
-      }}
-      className='m-auto rounded-2xl'
-    >
-      {/* START: Header */}
-      <Box sx={{ width: '100%', height: 89, padding: '8px 0' }} className='flex flex-row'>
-        <Box sx={{ width: 46 }}>
-          <Box sx={{ padding: '14px 0 0 20px' }}>
-            <FontAwesomeIcon icon={faCreditCard} style={{ color: colors.primary, width: 20, height: 20 }} />
-          </Box>
-        </Box>
-        <Box sx={{ width: 660, padding: '6px 0' }}>
-          <input
-            type='text'
-            style={{
-              width: '100%',
-              height: '37px',
-              padding: '6px 10px',
-              color: colors.primary
-            }}
-            onFocus={(e) => {
-              e.currentTarget.style.borderColor = focusInputColor
-            }}
-            onBlur={handleCardNameFieldBlur}
-            value={cardNameFieldValue}
-            onChange={(e) => handleCardNameChange(e)}
-            className='text-xl font-semibold'
-          />
-          <Box
-            sx={{ height: '20px', padding: '0 0 0 10px', color: colors.secondary }}
-            className='flex flex-row items-center text-sm'
-          >
-            <p style={{ marginRight: '4px' }}>in list</p>
-            <p style={{ marginRight: '16px' }} className='cursor-pointer font-medium underline'>
-              Doing
-            </p>
-            {isWatching && <FontAwesomeIcon icon={faEye} />}
-          </Box>
-        </Box>
-        <Box sx={{ width: 52, padding: '14px 20px 0 0' }} className='flex justify-end'>
-          <FontAwesomeIcon icon={faTimes} style={{ color: colors.primary, width: 20, height: 20 }} />
-        </Box>
-      </Box>
-      {/* END: Header */}
-      {/* START: Body */}
-      <Grid container>
-        <Grid item xs={9} sx={{ padding: '0 8px 8px 16px' }}>
-          {/* START: Hero */}
-          <div style={{ padding: '0 0 0 40px' }} className='flex flex-row flex-wrap gap-1'>
-            <CardMemberList
-              currentCard={currentCardState}
-              setCurrentCard={setCurrentCardState}
-              boardMembers={boardMembers}
-            />
-            <CardLabelList
-              currentCard={currentCardState}
-              setCurrentCard={setCurrentCardState}
-              boardLabelState={boardLabelState}
-              setBoardLabelState={setBoardLabelState}
-            />
-            <CardNotification isWatching={isWatching} setIsWatching={handleNotification} />
-            <CardDate currentCard={currentCardState} setCurrentCard={setCurrentCardState} />
-          </div>
-          {/* END: Hero */}
-          {/* START: Description */}
-          <CardDescription currentCard={currentCardState} setCurrentCard={setCurrentCardState} />
-          {/* END: Description */}
-          {/* START: Attachment */}
-          <CardAttachment currentCard={currentCardState} setCurrentCard={setCurrentCardState} />
-          {/* END: Attachment */}
-          {/* START: Checklist */}
-          {currentCardState.checklists.map((checklist) => (
-            <CardChecklist
-              key={checklist._id}
-              currentChecklist={checklist}
-              currentCard={currentCardState}
-              setCurrentCard={setCurrentCardState}
-            />
-          ))}
-          {/* END: Checklist */}
-          <CardActivity currentCard={currentCardState} setCurrentCard={setCurrentCardState} />
-        </Grid>
-        <Grid item xs={3} sx={{ padding: '0 16px 8px 8px' }}>
-          <Stack sx={{ padding: '10px 0 0 0' }}>
-            <h2 style={{ color: colors.primary }} className='mb-2 text-xs font-bold'>
-              Add to card
-            </h2>
-            <SidebarButtonMembers
-              type={ButtonType.Members}
-              currentCard={currentCardState}
-              setCurrentCard={setCurrentCardState}
-              boardMembers={boardMembers}
-            />
-            <SidebarButtonLabels
-              type={ButtonType.Labels}
-              currentCard={currentCardState}
-              setCurrentCard={setCurrentCardState}
-              boardLabelState={boardLabelState}
-              setBoardLabelState={setBoardLabelState}
-            />
-            <SidebarButtonChecklist
-              type={ButtonType.Checklists}
-              currentCard={currentCardState}
-              setCurrentCard={setCurrentCardState}
-            />
-            <SidebarButtonDates
-              type={ButtonType.Dates}
-              currentCard={currentCardState}
-              setCurrentCard={setCurrentCardState}
-            />
-            <SidebarButtonAttachments
-              type={ButtonType.Attachments}
-              currentCard={currentCardState}
-              setCurrentCard={setCurrentCardState}
-            />
-            <h2 style={{ color: colors.primary }} className='mb-2 mt-6 text-xs font-bold'>
-              Actions
-            </h2>
-            <SidebarButtonMove
-              type={ButtonType.Move}
-              currentCard={currentCardState}
-              setCurrentCard={setCurrentCardState}
-            />
-            <SidebarButtonCopy
-              type={ButtonType.Copy}
-              currentCard={currentCardState}
-              setCurrentCard={setCurrentCardState}
-            />
-            <Box sx={{ width: '100%', height: 2, padding: '0 0 10px 0' }}>
-              <Box sx={{ width: '100%', height: 2, bgcolor: colorsButton.secondary }}></Box>
+    <Box sx={{ width: '100%', bgcolor: 'rgba(0, 0, 0, 0.64)' }} className='flex justify-center'>
+      <Box
+        sx={{
+          width: 768,
+          height: 'fit-content',
+          marginBottom: '80px',
+          paddingBottom: '40px',
+          boxShadow: '0 2px 4px rgba(0, 0, 0, 0.5)',
+          backgroundColor: windowBg
+        }}
+        className='m-auto rounded-2xl'
+      >
+        {/* START: Header */}
+        <Box sx={{ width: '100%', height: 89, padding: '8px 0' }} className='flex flex-row'>
+          <Box sx={{ width: 46 }}>
+            <Box sx={{ padding: '14px 0 0 20px' }}>
+              <FontAwesomeIcon icon={faCreditCard} style={{ color: colors.primary, width: 20, height: 20 }} />
             </Box>
-            <SidebarButtonArchive
-              type={ButtonType.Archive}
-              currentCard={currentCardState}
-              setCurrentCard={setCurrentCardState}
+          </Box>
+          <Box sx={{ width: 660, padding: '6px 0' }}>
+            <input
+              type='text'
+              style={{
+                width: '100%',
+                height: '37px',
+                padding: '6px 10px',
+                color: colors.primary
+              }}
+              onFocus={(e) => {
+                e.currentTarget.style.borderColor = focusInputColor
+              }}
+              onBlur={handleCardNameFieldBlur}
+              value={cardNameFieldValue}
+              onChange={(e) => handleCardNameChange(e)}
+              className='text-xl font-semibold'
             />
-          </Stack>
+            <Box
+              sx={{ height: '20px', padding: '0 0 0 10px', color: colors.secondary }}
+              className='flex flex-row items-center text-sm'
+            >
+              <p style={{ marginRight: '4px' }}>in list</p>
+              <p style={{ marginRight: '16px' }} className='cursor-pointer font-medium underline'>
+                Doing
+              </p>
+              {isWatching && <FontAwesomeIcon icon={faEye} />}
+            </Box>
+          </Box>
+          <Box sx={{ width: 52, padding: '7px 6px 0 0' }} className='flex items-start justify-end'>
+            <Box
+              sx={{ width: 40, height: 40, '&:hover': { bgcolor: colorsButton.secondary } }}
+              className='flex cursor-pointer items-center justify-center rounded-full'
+            >
+              <FontAwesomeIcon icon={faTimes} style={{ color: colors.primary, width: 20, height: 20 }} />
+            </Box>
+          </Box>
+        </Box>
+        {/* END: Header */}
+        {/* START: Body */}
+        <Grid container>
+          <Grid item xs={9} sx={{ padding: '0 8px 8px 16px' }}>
+            {/* START: Hero */}
+            <div style={{ padding: '0 0 0 40px' }} className='flex flex-row flex-wrap gap-1'>
+              <CardMemberList
+                currentCard={currentCardState}
+                setCurrentCard={setCurrentCardState}
+                boardMembers={boardMembers}
+              />
+              <CardLabelList
+                currentCard={currentCardState}
+                setCurrentCard={setCurrentCardState}
+                boardLabelState={boardLabelState}
+                setBoardLabelState={setBoardLabelState}
+              />
+              <CardNotification isWatching={isWatching} setIsWatching={handleNotification} />
+              <CardDate currentCard={currentCardState} setCurrentCard={setCurrentCardState} />
+            </div>
+            {/* END: Hero */}
+            {/* START: Description */}
+            <CardDescription currentCard={currentCardState} setCurrentCard={setCurrentCardState} />
+            {/* END: Description */}
+            {/* START: Attachment */}
+            <CardAttachment currentCard={currentCardState} setCurrentCard={setCurrentCardState} />
+            {/* END: Attachment */}
+            {/* START: Checklist */}
+            {currentCardState.checklists.map((checklist) => (
+              <CardChecklist
+                key={checklist._id}
+                currentChecklist={checklist}
+                currentCard={currentCardState}
+                setCurrentCard={setCurrentCardState}
+              />
+            ))}
+            {/* END: Checklist */}
+            <CardActivity currentCard={currentCardState} setCurrentCard={setCurrentCardState} />
+          </Grid>
+          <Grid item xs={3} sx={{ padding: '0 16px 8px 8px' }}>
+            <Stack sx={{ padding: '10px 0 0 0' }}>
+              <h2 style={{ color: colors.primary }} className='mb-2 text-xs font-bold'>
+                Add to card
+              </h2>
+              <SidebarButtonMembers
+                type={ButtonType.Members}
+                currentCard={currentCardState}
+                setCurrentCard={setCurrentCardState}
+                boardMembers={boardMembers}
+              />
+              <SidebarButtonLabels
+                type={ButtonType.Labels}
+                currentCard={currentCardState}
+                setCurrentCard={setCurrentCardState}
+                boardLabelState={boardLabelState}
+                setBoardLabelState={setBoardLabelState}
+              />
+              <SidebarButtonChecklist
+                type={ButtonType.Checklists}
+                currentCard={currentCardState}
+                setCurrentCard={setCurrentCardState}
+              />
+              <SidebarButtonDates
+                type={ButtonType.Dates}
+                currentCard={currentCardState}
+                setCurrentCard={setCurrentCardState}
+              />
+              <SidebarButtonAttachments
+                type={ButtonType.Attachments}
+                currentCard={currentCardState}
+                setCurrentCard={setCurrentCardState}
+              />
+              <h2 style={{ color: colors.primary }} className='mb-2 mt-6 text-xs font-bold'>
+                Actions
+              </h2>
+              <SidebarButtonMove
+                type={ButtonType.Move}
+                currentCard={currentCardState}
+                setCurrentCard={setCurrentCardState}
+              />
+              <SidebarButtonCopy
+                type={ButtonType.Copy}
+                currentCard={currentCardState}
+                setCurrentCard={setCurrentCardState}
+              />
+              <Box sx={{ width: '100%', height: 2, padding: '0 0 10px 0' }}>
+                <Box sx={{ width: '100%', height: 2, bgcolor: colorsButton.secondary }}></Box>
+              </Box>
+              <SidebarButtonArchive
+                type={ButtonType.Archive}
+                currentCard={currentCardState}
+                setCurrentCard={setCurrentCardState}
+              />
+            </Stack>
+          </Grid>
         </Grid>
-      </Grid>
-      {/* END: Body */}
+        {/* END: Body */}
+      </Box>
     </Box>
   )
 }

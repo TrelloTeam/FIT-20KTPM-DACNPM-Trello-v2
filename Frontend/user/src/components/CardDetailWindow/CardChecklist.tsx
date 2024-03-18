@@ -290,7 +290,7 @@ function ChecklistNameField({
         onChange={handleTextAreaChange}
         onBlur={handleClose}
         onFocus={handleOpen}
-        className='flex font-semibold'
+        className='flex cursor-pointer font-semibold'
       />
       {/* Title textarea control */}
       {isInputFocused && <TextAreaControl handleSave={handleSave} handleClose={handleClose} />}

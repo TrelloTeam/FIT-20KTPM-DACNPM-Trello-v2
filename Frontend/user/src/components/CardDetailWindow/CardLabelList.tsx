@@ -1,6 +1,6 @@
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Box } from '@mui/material'
+import { Box, Tooltip } from '@mui/material'
 import { colors, colorsButton } from '~/styles'
 import { _Card, _Feature_CardLabel } from '.'
 import { useRef, useState } from 'react'
@@ -38,6 +38,40 @@ export const labelColors: string[] = [
   '#5B7F24', // 27 - bold lime
   '#AE4787', // 28 - bold pink
   '#626F86' //  29 - bold black
+]
+
+// eslint-disable-next-line react-refresh/only-export-components
+export const labelColorsTitle: string[] = [
+  'subtle green',
+  'subtle yellow',
+  'subtle orange',
+  'subtle red',
+  'subtle purple',
+  'green',
+  'yellow',
+  'orange',
+  'red',
+  'purple',
+  'bold green',
+  'bold yellow',
+  'bold orange',
+  'bold red',
+  'bold purple',
+  'subtle blue',
+  'subtle sky',
+  'subtle lime',
+  'subtle pink',
+  'subtle black',
+  'blue',
+  'sky',
+  'lime',
+  'pink',
+  'black',
+  'bold blue',
+  'bold sky',
+  'bold lime',
+  'bold pink',
+  'bold black'
 ]
 
 const getContrastColor = (hexColor: string) => {
@@ -151,8 +185,29 @@ export default function CardLabelList({
         Labels
       </h2>
       <div className='flex flex-row flex-wrap'>
-        {currentCard.labels.map((label) => (
-          <CardLabelItem key={label._id} title={label.name} bgColor={labelColors[parseInt(label._id, 10)]} />
+        {currentCard.labels.map((label, index) => (
+          <Tooltip
+            arrow
+            key={index}
+            title={`Color: ${labelColorsTitle[parseInt(label._id, 10)]}, title: "${label.name}"`}
+            placement='bottom'
+            slotProps={{
+              popper: {
+                modifiers: [
+                  {
+                    name: 'offset',
+                    options: {
+                      offset: [0, -12]
+                    }
+                  }
+                ]
+              }
+            }}
+          >
+            <div style={{ display: 'inline-block' }}>
+              <CardLabelItem title={label.name} bgColor={labelColors[parseInt(label._id, 10)]} />
+            </div>
+          </Tooltip>
         ))}
         <Box
           sx={{

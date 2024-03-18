@@ -119,7 +119,24 @@ export default function CardMemberList({ currentCard, setCurrentCard, boardMembe
       </h2>
       <div className='flex flex-row space-x-1'>
         {currentCard.watcher_email.map((email, index) => (
-          <Tooltip key={index} title={email} arrow>
+          <Tooltip
+            arrow
+            key={index}
+            title={email}
+            placement='bottom'
+            slotProps={{
+              popper: {
+                modifiers: [
+                  {
+                    name: 'offset',
+                    options: {
+                      offset: [0, -8]
+                    }
+                  }
+                ]
+              }
+            }}
+          >
             <div style={{ display: 'inline-block' }}>
               <MemberAvatar memberName={email.slice(0, 2).toUpperCase()} bgColor={bgColors[index]} />
             </div>
