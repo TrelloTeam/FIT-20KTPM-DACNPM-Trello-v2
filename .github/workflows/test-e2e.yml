@@ -13,7 +13,7 @@ jobs:
         with:
           node-version: "20.x"
       - name: Build shared packages
-        working-directory: ./shared/packages
+        working-directory: packages/shared
         run: npm run build
       - uses: cypress-io/github-action@v2
         with:
