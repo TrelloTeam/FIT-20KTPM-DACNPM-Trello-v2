@@ -33,7 +33,6 @@ jobs:
           install: false
           working-directory: Frontend/user
           start: npm run dev -w @trello-v2/user
-          wait-on: http://localhost:3000/
 
       - name: Unit test backend cardlist
         run: npm run test cardlist -w @trello-v2/backend
