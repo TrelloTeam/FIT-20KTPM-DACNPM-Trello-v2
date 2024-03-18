@@ -22,9 +22,14 @@ jobs:
             ~/.npm
           key: node_modules_cache
 
+      - name: Install all depend
+        run: npm install
+
       - name: Build shared packages
         working-directory: packages/shared
-        run: npm run build
+        run: |
+          npm install
+          npm run build
 
       - name: Install fontend depend
         working-directory: Frontend/user
