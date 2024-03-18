@@ -17,7 +17,7 @@ import {
 
 function CardTemplate() {
   return (
-    <div className='detail-card-container mx-4 mt-10 w-full min-w-min max-w-screen-lg md:mx-auto'>
+    <div className='detail-card-container mx-4 w-full min-w-min max-w-screen-lg md:mx-auto'>
       <div className='features'>
         <div className='title-container mr-6 flex items-center justify-between'>
           <div className='title flex items-center'>
