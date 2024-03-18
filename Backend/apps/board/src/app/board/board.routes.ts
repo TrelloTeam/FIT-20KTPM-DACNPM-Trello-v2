@@ -3,6 +3,10 @@ import { RequestMethod } from '@nestjs/common'
 
 export default {
   index: '/api/board',
+  file: {
+    path: '/file',
+    method: RequestMethod.POST,
+  } as IRouteParams,
   getAllBoard: {
     path: '/',
     method: RequestMethod.GET,

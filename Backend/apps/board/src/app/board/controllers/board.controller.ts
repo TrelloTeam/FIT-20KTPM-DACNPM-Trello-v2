@@ -3,18 +3,58 @@ import * as _ from 'lodash'
 import { InjectController, InjectRoute } from '@app/common/decorators'
 import { SwaggerApi } from '@app/common/decorators/'
 import { IdParamValidationPipe, ZodValidationPipe } from '@app/common/pipes'
-import { Body, HttpStatus, Param } from '@nestjs/common'
+import {
+  Body,
+  FileTypeValidator,
+  HttpStatus,
+  MaxFileSizeValidator,
+  Param,
+  ParseFilePipe,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common'
 import { getSchemaPath } from '@nestjs/swagger'
 import { TrelloApi } from '@trello-v2/shared'
 
 import BoardRoutes from '../board.routes'
 import { BoardService } from '../services/board.service'
+import { FileInterceptor } from '@nestjs/platform-express/multer'
+import { storage } from 'apps/board/src/firebase'
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 
 @InjectController({
   name: BoardRoutes.index,
 })
 export class BoardController {
   constructor(private boardService: BoardService) {}
+
+  @InjectRoute(BoardRoutes.file)
+  @UseInterceptors(FileInterceptor('file'))
+  async file(
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [new MaxFileSizeValidator({ maxSize: 10000000 }), new FileTypeValidator({ fileType: '.(png|jpeg|jpg)' })],
+      }),
+    )
+    file: Express.Multer.File,
+  ) {
+    const imageRef = ref(storage, `images/${file.originalname}`)
+
+    try {
+      await uploadBytes(imageRef, file.buffer)
+      const imageUrl = await getDownloadURL(imageRef)
+
+      return {
+        data: imageUrl,
+      }
+    } catch (error) {
+      console.error('Error uploading image:', error)
+    }
+
+    return {
+      data: file.mimetype.split('/')[1],
+    }
+  }
 
   @InjectRoute(BoardRoutes.getAllBoard)
   @SwaggerApi({

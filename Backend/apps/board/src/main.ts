@@ -20,6 +20,6 @@ async function bootstrap() {
   initSwagger(app, 'api/board/swagger', [TrelloApi.BoardApi])
   initProtos(app, grpcHost, grpcPaths, ['trello.board_service'])
   await app.startAllMicroservices()
-  await app.listen(PORT, () => console.log(`Cardlist server http://localhost:${PORT}`))
+  await app.listen(PORT, () => console.log(`board server http://localhost:${PORT}`))
 }
 bootstrap()
