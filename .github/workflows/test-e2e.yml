@@ -33,7 +33,7 @@ jobs:
         with:
           install: false
           working-directory: Frontend/user
-          start: npm run dev
+          start: npx vite --host
 
       - name: Unit test backend cardlist
         run: npm run test cardlist -w @trello-v2/backend
