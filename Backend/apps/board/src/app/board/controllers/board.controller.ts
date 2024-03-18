@@ -26,26 +26,6 @@ import { FileInterceptor } from '@nestjs/platform-express/multer'
 export class BoardController {
   constructor(private boardService: BoardService) {}
 
-  @InjectRoute(BoardRoutes.updateBackground)
-  @UseInterceptors(FileInterceptor('background'))
-  async updateBackground(
-    @Param('board_id', IdParamValidationPipe)
-    board_id: TrelloApi.BoardApi.BoardIdRequest,
-    @UploadedFile(
-      new ParseFilePipe({
-        validators: [new MaxFileSizeValidator({ maxSize: 10000000 }), new FileTypeValidator({ fileType: '.(png|jpeg|jpg)' })],
-      }),
-    )
-    background: Express.Multer.File,
-  ) {
-    const imageUrl = await this.boardService.uploadImage(board_id, background)
-    const board = await this.boardService.updateBoard({ _id: board_id, background: imageUrl })
-
-    return {
-      data: board,
-    }
-  }
-
   @InjectRoute(BoardRoutes.getAllBoard)
   @SwaggerApi({
     responses: [
@@ -271,6 +251,53 @@ export class BoardController {
     const data = await this.boardService.updateBoard(update)
     return {
       data: data,
+    }
+  }
+
+  @InjectRoute(BoardRoutes.updateBackground)
+  @UseInterceptors(FileInterceptor('background'))
+  async updateBackground(
+    @Param('board_id', IdParamValidationPipe)
+    board_id: TrelloApi.BoardApi.BoardIdRequest,
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [new MaxFileSizeValidator({ maxSize: 10000000 }), new FileTypeValidator({ fileType: '.(png|jpeg|jpg)' })],
+      }),
+    )
+    background: Express.Multer.File,
+  ): Promise<TrelloApi.BoardApi.UpdateBoardResponse> {
+    const imageUrl = await this.boardService.uploadFirebaseImage(board_id, background)
+    const board = await this.boardService.updateBoard({ _id: board_id, background: imageUrl })
+
+    return {
+      data: board,
+    }
+  }
+
+  @InjectRoute(BoardRoutes.removeBackground)
+  @SwaggerApi({
+    params: {
+      name: 'board_id',
+      type: 'string',
+      example: 'string',
+    },
+    responses: [
+      {
+        status: HttpStatus.OK,
+        schema: { $ref: getSchemaPath('UpdateBoardResponseSchema') },
+      },
+    ],
+  })
+  async removeBackground(
+    @Param('board_id', IdParamValidationPipe)
+    board_id: TrelloApi.BoardApi.BoardIdRequest,
+  ): Promise<TrelloApi.BoardApi.UpdateBoardResponse> {
+    const board = await this.boardService.getBoardInfoByBoardId(board_id)
+    if (board.background) await this.boardService.removeFirebaseImage(board.background)
+    const update = await this.boardService.updateBoard({ _id: board._id, background: '' })
+
+    return {
+      data: update,
     }
   }
 }

@@ -5,6 +5,7 @@ import { InjectModel } from '@nestjs/mongoose'
 import { DbSchemas, TrelloApi } from '@trello-v2/shared'
 import { getDownloadURL, ref, uploadBytes } from '@firebase/storage'
 import { storage } from 'apps/board/src/firebase'
+import { deleteObject } from 'firebase/storage'
 
 export abstract class IBoardService {
   abstract createBoard(data: TrelloApi.BoardApi.CreateBoard): Promise<DbSchemas.BoardSchema.Board>
@@ -13,7 +14,8 @@ export abstract class IBoardService {
   abstract getBoardInfoByBoardId(board_id: string): Promise<DbSchemas.BoardSchema.Board | null>
   abstract updateBoard(data: DbSchemas.BoardSchema.Board): Promise<DbSchemas.BoardSchema.Board | null>
   abstract deleteBoard(board_id: string): Promise<DbSchemas.BoardSchema.Board | null>
-  abstract uploadImage(imageName: string, imageFile: Express.Multer.File): Promise<string | null>
+  abstract uploadFirebaseImage(imageName: string, imageFile: Express.Multer.File): Promise<string | null>
+  abstract removeFirebaseImage(imageUrl: string): Promise<boolean>
 }
 
 export class BoardService implements IBoardService {
@@ -22,7 +24,7 @@ export class BoardService implements IBoardService {
     private BoardMModel: Model<DbSchemas.BoardSchema.Board>,
   ) {}
 
-  async uploadImage(imageName: string, imageFile: Express.Multer.File) {
+  async uploadFirebaseImage(imageName: string, imageFile: Express.Multer.File) {
     const imageRef = ref(storage, `images/${imageName}.${imageFile.mimetype.split('/')[1]}`)
 
     try {
@@ -30,7 +32,20 @@ export class BoardService implements IBoardService {
       const imageUrl = await getDownloadURL(imageRef)
       return imageUrl
     } catch (error) {
-      console.error('Error uploading image:', error)
+      console.error('Error upload image:', error)
+    }
+  }
+
+  async removeFirebaseImage(imageUrl: string) {
+    const path = decodeURIComponent(imageUrl.split('/o/').pop().split('?alt').shift())
+    const imageRef = ref(storage, path)
+
+    try {
+      await deleteObject(imageRef)
+      return true
+    } catch (error) {
+      console.error('Error delete image:', error)
+      return false
     }
   }
 
@@ -152,7 +167,11 @@ export class BoardServiceMock implements IBoardService {
     })
   }
 
-  uploadImage() {
+  uploadFirebaseImage() {
     return Promise.resolve('Mock-url')
+  }
+
+  removeFirebaseImage() {
+    return Promise.resolve(true)
   }
 }

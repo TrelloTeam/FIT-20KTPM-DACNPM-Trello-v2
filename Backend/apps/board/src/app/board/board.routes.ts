@@ -57,4 +57,9 @@ export default {
     path: '/:board_id/background',
     method: RequestMethod.PATCH,
   } as IRouteParams,
+
+  removeBackground: {
+    path: '/:board_id/background',
+    method: RequestMethod.DELETE,
+  } as IRouteParams,
 } as const
