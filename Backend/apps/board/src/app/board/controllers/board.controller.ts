@@ -255,6 +255,19 @@ export class BoardController {
   }
 
   @InjectRoute(BoardRoutes.updateBackground)
+  @SwaggerApi({
+    params: {
+      name: 'board_id',
+      type: 'string',
+      example: 'string',
+    },
+    responses: [
+      {
+        status: HttpStatus.OK,
+        schema: { $ref: getSchemaPath('UpdateBoardResponseSchema') },
+      },
+    ],
+  })
   @UseInterceptors(FileInterceptor('background'))
   async updateBackground(
     @Param('board_id', IdParamValidationPipe)
