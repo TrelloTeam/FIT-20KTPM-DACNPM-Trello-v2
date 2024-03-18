@@ -3,27 +3,23 @@ import { RequestMethod } from '@nestjs/common'
 
 export default {
   index: '/api/board',
-  file: {
-    path: '/file',
-    method: RequestMethod.POST,
-  } as IRouteParams,
   getAllBoard: {
     path: '/',
     method: RequestMethod.GET,
   } as IRouteParams,
 
   getBoardsByWorkspaceId: {
-    path: '/:workspace_id',
+    path: '/workspace/:workspace_id',
     method: RequestMethod.GET,
   } as IRouteParams,
 
   createBoard: {
-    path: '/create',
+    path: '/',
     method: RequestMethod.POST,
   } as IRouteParams,
 
   getBoardInfoByBoardId: {
-    path: '/detail/:board_id',
+    path: '/:board_id',
     method: RequestMethod.GET,
   } as IRouteParams,
 
@@ -33,7 +29,7 @@ export default {
   } as IRouteParams,
 
   updateBoard: {
-    path: '/:board_id',
+    path: '/',
     method: RequestMethod.PATCH,
   } as IRouteParams,
 
@@ -55,5 +51,10 @@ export default {
   removeWatcher: {
     path: '/watchers/remove',
     method: RequestMethod.POST,
+  } as IRouteParams,
+
+  updateBackground: {
+    path: '/:board_id/background',
+    method: RequestMethod.PATCH,
   } as IRouteParams,
 } as const

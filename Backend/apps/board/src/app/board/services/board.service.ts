@@ -3,6 +3,8 @@ import { Model } from 'mongoose'
 
 import { InjectModel } from '@nestjs/mongoose'
 import { DbSchemas, TrelloApi } from '@trello-v2/shared'
+import { getDownloadURL, ref, uploadBytes } from '@firebase/storage'
+import { storage } from 'apps/board/src/firebase'
 
 export abstract class IBoardService {
   abstract createBoard(data: TrelloApi.BoardApi.CreateBoard): Promise<DbSchemas.BoardSchema.Board>
@@ -11,6 +13,7 @@ export abstract class IBoardService {
   abstract getBoardInfoByBoardId(board_id: string): Promise<DbSchemas.BoardSchema.Board | null>
   abstract updateBoard(data: DbSchemas.BoardSchema.Board): Promise<DbSchemas.BoardSchema.Board | null>
   abstract deleteBoard(board_id: string): Promise<DbSchemas.BoardSchema.Board | null>
+  abstract uploadImage(imageName: string, imageFile: Express.Multer.File): Promise<string | null>
 }
 
 export class BoardService implements IBoardService {
@@ -18,6 +21,18 @@ export class BoardService implements IBoardService {
     @InjectModel(DbSchemas.COLLECTION_NAMES[1])
     private BoardMModel: Model<DbSchemas.BoardSchema.Board>,
   ) {}
+
+  async uploadImage(imageName: string, imageFile: Express.Multer.File) {
+    const imageRef = ref(storage, `images/${imageName}.${imageFile.mimetype.split('/')[1]}`)
+
+    try {
+      await uploadBytes(imageRef, imageFile.buffer)
+      const imageUrl = await getDownloadURL(imageRef)
+      return imageUrl
+    } catch (error) {
+      console.error('Error uploading image:', error)
+    }
+  }
 
   async createBoard(data: TrelloApi.BoardApi.CreateBoard) {
     const model = new this.BoardMModel(data)
@@ -135,5 +150,9 @@ export class BoardServiceMock implements IBoardService {
         background: '',
       })
     })
+  }
+
+  uploadImage() {
+    return Promise.resolve('Mock-url')
   }
 }

@@ -19,8 +19,6 @@ import { TrelloApi } from '@trello-v2/shared'
 import BoardRoutes from '../board.routes'
 import { BoardService } from '../services/board.service'
 import { FileInterceptor } from '@nestjs/platform-express/multer'
-import { storage } from 'apps/board/src/firebase'
-import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 
 @InjectController({
   name: BoardRoutes.index,
@@ -28,31 +26,23 @@ import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 export class BoardController {
   constructor(private boardService: BoardService) {}
 
-  @InjectRoute(BoardRoutes.file)
-  @UseInterceptors(FileInterceptor('file'))
-  async file(
+  @InjectRoute(BoardRoutes.updateBackground)
+  @UseInterceptors(FileInterceptor('background'))
+  async updateBackground(
+    @Param('board_id', IdParamValidationPipe)
+    board_id: TrelloApi.BoardApi.BoardIdRequest,
     @UploadedFile(
       new ParseFilePipe({
         validators: [new MaxFileSizeValidator({ maxSize: 10000000 }), new FileTypeValidator({ fileType: '.(png|jpeg|jpg)' })],
       }),
     )
-    file: Express.Multer.File,
+    background: Express.Multer.File,
   ) {
-    const imageRef = ref(storage, `images/${file.originalname}`)
-
-    try {
-      await uploadBytes(imageRef, file.buffer)
-      const imageUrl = await getDownloadURL(imageRef)
-
-      return {
-        data: imageUrl,
-      }
-    } catch (error) {
-      console.error('Error uploading image:', error)
-    }
+    const imageUrl = await this.boardService.uploadImage(board_id, background)
+    const board = await this.boardService.updateBoard({ _id: board_id, background: imageUrl })
 
     return {
-      data: file.mimetype.split('/')[1],
+      data: board,
     }
   }
 
