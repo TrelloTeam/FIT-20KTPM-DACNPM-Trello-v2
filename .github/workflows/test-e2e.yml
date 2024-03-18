@@ -24,8 +24,7 @@ jobs:
       - name: Test cypress
         working-directory: Frontend/user
         run: |
-          npx vite --host
-          npm run cypress:run
+          npm run test
 
       - name: Unit test backend cardlist
         working-directory: Backend
