@@ -313,6 +313,11 @@ export class BoardController {
     board_id: TrelloApi.BoardApi.BoardIdRequest,
   ): Promise<TrelloApi.BoardApi.UpdateBoardResponse> {
     const board = await this.boardService.getBoardInfoByBoardId(board_id)
+    if (!board)
+      return {
+        data: null,
+      }
+
     if (board.background) await this.boardService.removeFirebaseImage(board.background)
     const update = await this.boardService.updateBoard({ _id: board._id, background: '' })
 
