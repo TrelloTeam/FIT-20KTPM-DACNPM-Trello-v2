@@ -10,7 +10,10 @@
     "preview": "vite preview",
     "lint:fix": "eslint --fix src --ext ts,tsx",
     "prettier": "prettier --check \"src/**/(*.tsx|*.ts|*.css|*.scss)\"",
-    "prettier:fix": "prettier --write \"src/**/(*.tsx|*.ts|*.css|*.scss)\""
+    "prettier:fix": "prettier --write \"src/**/(*.tsx|*.ts|*.css|*.scss)\"",
+    "cypress:run": "cypress run",
+    "cypress:open": "cypress open",
+    "cypress:record": "cypress run --record --key"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.1.0",
