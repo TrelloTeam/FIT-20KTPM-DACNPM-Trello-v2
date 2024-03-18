@@ -366,7 +366,7 @@ export class CardlistServiceMock implements ICardlistService {
       res({
         ...data,
         board_id: 'Mock-id',
-        watcher_email: [],
+        watcher_email: [data.email],
         cards: [],
         name: 'Mock-name',
       })

@@ -18,6 +18,12 @@ describe('CardlistController', () => {
     controller = moduleRef.get(CardlistController)
   })
 
+  describe('Is true ture', () => {
+    it('0 is true', () => {
+      expect(false).toBeTruthy()
+    })
+  })
+
   describe('Cardlist:Get all cardlists', () => {
     it('Return all cardlists', async () => {
       const data = await controller.getAll()
