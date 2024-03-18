@@ -12,11 +12,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20.x"
-      - name: Unit test backend
-        working-directory: ./Backend
-        run: npm run test cardlist
-      - name: E2e test front end
-        working-directory: ./Frontend
-        uses: cypress-io/github-action@v2
+      - uses: cypress-io/github-action@v2
         with:
-          dev: npm run dev
+          dev: npm run dev -w @trello-v2/user
+      - name: Unit test backend cardlist
+        run: npm run test cardlist -w @trello-v2/backend
