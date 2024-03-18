@@ -41,7 +41,10 @@ jobs:
         with:
           install: false
           working-directory: Frontend/user
-          start: npm run preview
+          start: npm run preview -- --host
+
+      - name: stop node
+        run: killall node
 
       - name: Unit test backend cardlist
         run: npm run test cardlist -w @trello-v2/backend
