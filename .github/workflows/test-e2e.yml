@@ -26,7 +26,7 @@ jobs:
           install: false
           wait-on: http://localhost:3000
           working-directory: Frontend/user
-          start: npx vite --host
+          start: npm i && npx vite --host
 
       - name: Unit test backend cardlist
         working-directory: Backend
