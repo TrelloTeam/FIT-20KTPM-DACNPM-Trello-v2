@@ -14,22 +14,6 @@ jobs:
         with:
           node-version: "20.x"
 
-      - name: Cache node_modules
-        id: cache-npm
-        uses: actions/cache@v3
-        with:
-          path: |
-            **/node_modules
-            ~/.npm
-          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-npm-
-
-      - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
-        name: List the state of node modules
-        continue-on-error: true
-        run: npm list
-
       - name: Install all depend
         run: npm i
 
