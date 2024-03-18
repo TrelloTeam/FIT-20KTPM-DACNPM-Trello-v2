@@ -131,6 +131,7 @@ export class BoardController {
     board_id: TrelloApi.BoardApi.BoardIdRequest,
   ): Promise<TrelloApi.BoardApi.DeleteBoardResponse> {
     const data = await this.boardService.deleteBoard(board_id)
+    if (data.background) await this.boardService.removeFirebaseImage(data.background)
     return {
       data: data,
     }
