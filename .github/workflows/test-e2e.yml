@@ -14,14 +14,15 @@ jobs:
         with:
           node-version: "20.x"
 
-      - name: Install all depend
-        run: npm i
-
       - name: Cache node_modules
         uses: actions/cache@v3
         with:
           path: |
             **/node_modules
+          key: node_modules_cache
+
+      - name: Install all depend
+        run: npm i
 
       - name: Build shared packages
         working-directory: packages/shared
@@ -29,6 +30,7 @@ jobs:
 
       - uses: cypress-io/github-action@v2
         with:
+          install: false
           working-directory: Frontend/user
           start: npm run dev -w @trello-v2/user
           wait-on: http://localhost:3000/
