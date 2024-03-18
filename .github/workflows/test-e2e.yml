@@ -12,8 +12,13 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20.x"
+      - name: Build shared packages
+        working-directory: ./shared/packages
+        run: npm run build
       - uses: cypress-io/github-action@v2
+        working-directory: ./Frontend/user
         with:
           start: npm run dev -w @trello-v2/user
+          wait-on:
       - name: Unit test backend cardlist
         run: npm run test cardlist -w @trello-v2/backend
