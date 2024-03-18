@@ -28,14 +28,12 @@ export type GetallBoardResponse = z.infer<typeof GetallBoardResponseSchema>;
 export const WorkSpaceIdRequestSchema = BoardSchema.pick({
   workspace_id: true,
 });
-export type WorkspaceIdResquest = z.infer<typeof WorkSpaceIdRequestSchema>;
+export type WorkspaceIdRequest = z.infer<typeof WorkSpaceIdRequestSchema>;
 
 export const getBoardsByWorkspaceIdResponseSchema = z.object({
   data: BoardSchema.array(),
 });
-export type getBoardsByWorkspaceIdResponse = z.infer<
-  typeof GetallBoardResponseSchema
->;
+export type getBoardsByWorkspaceIdResponse = z.infer<typeof GetallBoardResponseSchema>;
 
 ///
 
@@ -56,9 +54,7 @@ export type CreateBoardResponse = z.infer<typeof CreateBoardResponseSchema>;
 export const GetBoardInfoByBoardIdResponseSchema = z.object({
   data: BoardSchema.nullable(),
 });
-export type GetBoardInfoByBoardIdResponse = z.infer<
-  typeof GetBoardInfoByBoardIdResponseSchema
->;
+export type GetBoardInfoByBoardIdResponse = z.infer<typeof GetBoardInfoByBoardIdResponseSchema>;
 
 ///
 
@@ -72,7 +68,6 @@ export type DeleteBoardResponse = z.infer<typeof DeleteBoardResponseSchema>;
 export const UpdateBoardRequestSchema = BoardSchema.pick({
   _id: true,
   name: true,
-  background: true,
   is_star: true,
   visibility: true,
 })
@@ -93,10 +88,7 @@ export const AddMemberRequestSchema = BoardSchema.pick({
   .required({ _id: true })
   .merge(
     z.object({
-      email: z
-        .string()
-        .regex(emailRegex, "Invalid email")
-        .default("example@gmail.com"),
+      email: z.string().regex(emailRegex, "Invalid email").default("example@gmail.com"),
     })
   );
 export type AddMemberRequest = z.infer<typeof AddMemberRequestSchema>;
@@ -114,10 +106,7 @@ export const RemoveMemberRequestSchema = BoardSchema.pick({
   .required({ _id: true })
   .merge(
     z.object({
-      email: z
-        .string()
-        .regex(emailRegex, "Invalid email")
-        .default("example@gmail.com"),
+      email: z.string().regex(emailRegex, "Invalid email").default("example@gmail.com"),
     })
   );
 export type RemoveMemberRequest = z.infer<typeof RemoveMemberRequestSchema>;
@@ -135,10 +124,7 @@ export const AddWatcherRequestSchema = BoardSchema.pick({
   .required({ _id: true })
   .merge(
     z.object({
-      email: z
-        .string()
-        .regex(emailRegex, "Invalid email")
-        .default("example@gmail.com"),
+      email: z.string().regex(emailRegex, "Invalid email").default("example@gmail.com"),
     })
   );
 export type AddWatcherRequest = z.infer<typeof AddWatcherRequestSchema>;
@@ -156,10 +142,7 @@ export const RemoveWatcherRequestSchema = BoardSchema.pick({
   .required({ _id: true })
   .merge(
     z.object({
-      email: z
-        .string()
-        .regex(emailRegex, "Invalid email")
-        .default("example@gmail.com"),
+      email: z.string().regex(emailRegex, "Invalid email").default("example@gmail.com"),
     })
   );
 export type RemoveWatcherRequest = z.infer<typeof RemoveWatcherRequestSchema>;
