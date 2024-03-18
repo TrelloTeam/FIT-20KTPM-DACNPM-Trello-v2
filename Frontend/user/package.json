@@ -11,9 +11,10 @@
     "lint:fix": "eslint --fix src --ext ts,tsx",
     "prettier": "prettier --check \"src/**/(*.tsx|*.ts|*.css|*.scss)\"",
     "prettier:fix": "prettier --write \"src/**/(*.tsx|*.ts|*.css|*.scss)\"",
-    "cypress:run": "cypress run",
+    "cypress:run": "npx wait-on http://localhost:3000 && npx cypress run",
     "cypress:open": "cypress open",
-    "cypress:record": "cypress run --record --key"
+    "cypress:record": "cypress run --record --key",
+    "test": "npx vite --host"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.1.0",
@@ -52,6 +53,7 @@
     "sort-by": "^1.2.0",
     "styled-components": "^6.1.8",
     "uuid": "^9.0.1",
+    "wait-on": "^7.2.0",
     "yup": "^1.3.3"
   },
   "devDependencies": {

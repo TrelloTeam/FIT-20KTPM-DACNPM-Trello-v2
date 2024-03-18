@@ -21,13 +21,10 @@ jobs:
         working-directory: packages/shared
         run: npm run build
 
-      - uses: cypress-io/github-action@v6
-        with:
-          install: false
-          wait-on: http://localhost:3000
-          working-directory: Frontend/user
-          build: npm i
-          start: npx vite --host
+      - name: Test cypress
+        run: |
+          npx vite --host
+          npm run cypress:run
 
       - name: Unit test backend cardlist
         working-directory: Backend
