@@ -24,6 +24,7 @@ jobs:
       - uses: cypress-io/github-action@v6
         with:
           install: false
+          wait-on: http://localhost:3000
           working-directory: Frontend/user
           start: npx vite --host
 
