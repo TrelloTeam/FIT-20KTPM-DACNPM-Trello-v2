@@ -21,6 +21,7 @@ import { CardAttachment } from './CardAttachment'
 import { SidebarButtonMove } from './sidebar/CardMoveSidebar'
 import { SidebarButtonCopy } from './sidebar/CardCopySidebar'
 import { SidebarButtonArchive } from './sidebar/CardArchiveSidebar'
+import { useTheme } from '../Theme/themeContext'
 
 export type _Card = {
   name: string
@@ -192,9 +193,9 @@ const boardLabels: _Feature_CardLabel[] = [
 ]
 
 export default function CardDetailWindow() {
-  const windowBg = '#fff'
   const focusInputColor = '#0ff'
 
+  const { colors } = useTheme()
   const [boardLabelState, setBoardLabelState] = useState(boardLabels)
   const [currentCardState, setCurrentCardState] = useState(card_1)
   const [cardNameFieldValue, setCardNameFieldValue] = useState(card_1.name)
@@ -239,7 +240,8 @@ export default function CardDetailWindow() {
           marginBottom: '80px',
           paddingBottom: '40px',
           boxShadow: '0 2px 4px rgba(0, 0, 0, 0.5)',
-          backgroundColor: windowBg
+          backgroundColor: colors.background_modal,
+          color: colors.text
         }}
         className='m-auto rounded-2xl'
       >
@@ -247,7 +249,7 @@ export default function CardDetailWindow() {
         <Box sx={{ width: '100%', height: 89, padding: '8px 0' }} className='flex flex-row'>
           <Box sx={{ width: 46 }}>
             <Box sx={{ padding: '14px 0 0 20px' }}>
-              <FontAwesomeIcon icon={faCreditCard} style={{ color: colors.primary, width: 20, height: 20 }} />
+              <FontAwesomeIcon icon={faCreditCard} style={{ color: colors.text, width: 20, height: 20 }} />
             </Box>
           </Box>
           <Box sx={{ width: 660, padding: '6px 0' }}>
@@ -257,18 +259,22 @@ export default function CardDetailWindow() {
                 width: '100%',
                 height: '37px',
                 padding: '6px 10px',
-                color: colors.primary
+                backgroundColor: colors.background_modal
               }}
               onFocus={(e) => {
                 e.currentTarget.style.borderColor = focusInputColor
+                e.currentTarget.style.backgroundColor = colors.background_modal_tertiary
               }}
-              onBlur={handleCardNameFieldBlur}
+              onBlur={(e) => {
+                handleCardNameFieldBlur
+                e.currentTarget.style.backgroundColor = colors.background_modal
+              }}
               value={cardNameFieldValue}
               onChange={(e) => handleCardNameChange(e)}
               className='text-xl font-semibold'
             />
             <Box
-              sx={{ height: '20px', padding: '0 0 0 10px', color: colors.secondary }}
+              sx={{ height: '20px', padding: '0 0 0 10px', color: colors.text }}
               className='flex flex-row items-center text-sm'
             >
               <p style={{ marginRight: '4px' }}>in list</p>
@@ -280,10 +286,10 @@ export default function CardDetailWindow() {
           </Box>
           <Box sx={{ width: 52, padding: '7px 6px 0 0' }} className='flex items-start justify-end'>
             <Box
-              sx={{ width: 40, height: 40, '&:hover': { bgcolor: colorsButton.secondary } }}
+              sx={{ width: 40, height: 40, '&:hover': { bgcolor: colors.button_hover } }}
               className='flex cursor-pointer items-center justify-center rounded-full'
             >
-              <FontAwesomeIcon icon={faTimes} style={{ color: colors.primary, width: 20, height: 20 }} />
+              <FontAwesomeIcon icon={faTimes} style={{ color: colors.text, width: 20, height: 20 }} />
             </Box>
           </Box>
         </Box>
@@ -328,7 +334,7 @@ export default function CardDetailWindow() {
           </Grid>
           <Grid item xs={3} sx={{ padding: '0 16px 8px 8px' }}>
             <Stack sx={{ padding: '10px 0 0 0' }}>
-              <h2 style={{ color: colors.primary }} className='mb-2 text-xs font-bold'>
+              <h2 style={{ color: colors.text }} className='mb-2 text-xs font-bold'>
                 Add to card
               </h2>
               <SidebarButtonMembers
@@ -359,7 +365,7 @@ export default function CardDetailWindow() {
                 currentCard={currentCardState}
                 setCurrentCard={setCurrentCardState}
               />
-              <h2 style={{ color: colors.primary }} className='mb-2 mt-6 text-xs font-bold'>
+              <h2 style={{ color: colors.text }} className='mb-2 mt-6 text-xs font-bold'>
                 Actions
               </h2>
               <SidebarButtonMove

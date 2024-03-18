@@ -1,10 +1,10 @@
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Box, Tooltip } from '@mui/material'
-import { colors, colorsButton } from '~/styles'
 import { _Card, _Feature_CardLabel } from '.'
 import { useRef, useState } from 'react'
 import { CardLabelListModal, CreateCardLabelModal, EditCardLabelModal } from './modals/CardLabelModal'
+import { useTheme } from '../Theme/themeContext'
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const labelColors: string[] = [
@@ -127,6 +127,7 @@ export default function CardLabelList({
   boardLabelState,
   setBoardLabelState
 }: CardLabelListProps) {
+  const { colors } = useTheme()
   const boxRef = useRef(null)
   const [anchorEl, setAnchorEl] = useState<null | HTMLDivElement>(null)
   const [modalState, setModalState] = useState([false, false, false])
@@ -181,7 +182,7 @@ export default function CardLabelList({
 
   return (
     <Box ref={boxRef} sx={{ margin: '10px 20px 0 0' }}>
-      <h2 style={{ color: colors.primary }} className='mb-2 text-xs font-bold'>
+      <h2 style={{ color: colors.text }} className='mb-2 text-xs font-bold'>
         Labels
       </h2>
       <div className='flex flex-row flex-wrap'>
@@ -211,14 +212,14 @@ export default function CardLabelList({
         ))}
         <Box
           sx={{
-            bgcolor: colorsButton.secondary,
+            bgcolor: colors.button,
             width: 32,
             height: 32,
-            color: colors.primary,
+            color: colors.text,
             fontSize: 14,
             fontWeight: 500,
             '&:hover': {
-              bgcolor: colorsButton.secondary_hover
+              bgcolor: colors.button_hover
             }
           }}
           className='flex cursor-pointer items-center justify-center rounded'
