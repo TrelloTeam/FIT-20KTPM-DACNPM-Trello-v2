@@ -1,7 +1,7 @@
 import { faCheck, faEye } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Box, Tooltip } from '@mui/material'
-import { colors, colorsButton } from '~/styles'
+import { useTheme } from '../Theme/themeContext'
 
 interface CardNotificationProps {
   isWatching: boolean
@@ -9,6 +9,7 @@ interface CardNotificationProps {
 }
 
 export default function CardNotification({ isWatching, setIsWatching }: CardNotificationProps) {
+  const { colors } = useTheme()
   const tipIsWatching = 'You are receiving notifactions for updates on this card (click to stop watching)'
   const tipNotWatching = 'Watch to get notifactions for updates on this card'
 
@@ -34,18 +35,18 @@ export default function CardNotification({ isWatching, setIsWatching }: CardNoti
       }}
     >
       <Box sx={{ margin: '10px 20px 0 0' }}>
-        <h2 style={{ color: colors.primary }} className='mb-2 text-xs font-bold'>
+        <h2 style={{ color: colors.text }} className='mb-2 text-xs font-bold'>
           Notifications
         </h2>
         <Box
           sx={{
             width: 'fit-content',
             height: 32,
-            bgcolor: colorsButton.secondary,
+            bgcolor: colors.button,
             padding: '0px 4px 0 12px',
-            color: colors.primary,
+            color: colors.text,
             '&:hover': {
-              bgcolor: colorsButton.secondary_hover
+              bgcolor: colors.button_hover
             }
           }}
           className='flex cursor-pointer flex-row flex-wrap items-center gap-2 rounded'

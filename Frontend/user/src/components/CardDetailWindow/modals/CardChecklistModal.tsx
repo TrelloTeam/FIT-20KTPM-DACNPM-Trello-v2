@@ -1,10 +1,10 @@
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Box, Grid, Popover } from '@mui/material'
-import { colors, colorsButton } from '~/styles'
 import { _Card, _Feature_Activity, _Feature_Checklist } from '..'
 import { useState } from 'react'
 import moment from 'moment'
+import { useTheme } from '~/components/Theme/themeContext'
 
 interface CreateCardChecklistModalProps {
   anchorEl: (EventTarget & HTMLDivElement) | null
@@ -19,6 +19,7 @@ export function CreateCardChecklistModal({
   setCurrentCard,
   handleClose
 }: CreateCardChecklistModalProps) {
+  const { colors } = useTheme()
   const [textFieldValue, setTextFieldValue] = useState('')
 
   function handleTextFieldChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -64,22 +65,34 @@ export function CreateCardChecklistModal({
       onClose={handleClose}
     >
       <Box
-        sx={{ width: 300, height: 'fit-content', margin: '0 8px', padding: '8px 0px', color: colors.primary }}
+        sx={{
+          width: 304,
+          height: 'fit-content',
+          padding: '4px 8px',
+          color: colors.text,
+          backgroundColor: colors.background_modal_secondary
+        }}
         className='flex flex-col'
       >
         {/* START: Modal heading */}
-        <Grid container sx={{ width: '100%', margin: '0 0 12px 0' }}>
-          <Grid item xs={1}></Grid>
-          <Grid item xs={10} className='flex items-center justify-center'>
+        <Grid container sx={{ width: '100%', margin: '4px 0 8px 0' }}>
+          <Grid item xs={2}></Grid>
+          <Grid item xs={8} className='flex items-center justify-center'>
             <h2 className='overflow-hidden overflow-ellipsis whitespace-nowrap text-sm font-semibold'>Add checklist</h2>
           </Grid>
-          <Grid item xs={1} className='flex items-center justify-center'>
-            <FontAwesomeIcon icon={faXmark} className='cursor-pointer' onMouseDown={handleClose} />
+          <Grid item xs={2} className='flex items-center justify-end'>
+            <Box
+              sx={{ width: 32, height: 32, '&:hover': { bgcolor: colors.button_hover } }}
+              className='flex cursor-pointer items-center justify-center rounded-lg'
+              onMouseDown={handleClose}
+            >
+              <FontAwesomeIcon icon={faXmark} />
+            </Box>
           </Grid>
         </Grid>
         {/* END: Modal heading */}
         {/* Input checklist title */}
-        <p style={{ margin: '10px 0 4px 0', color: colors.primary }} className='text-xs font-bold'>
+        <p style={{ margin: '10px 0 4px 0', color: colors.text }} className='text-xs font-bold'>
           Title
         </p>
         <input
@@ -89,8 +102,9 @@ export function CreateCardChecklistModal({
             height: 36,
             margin: '0 0 20px 0',
             padding: '4px 6px',
-            color: colors.primary,
-            border: `2px solid ${colorsButton.secondary_hover}`
+            color: colors.text,
+            background: colors.background_modal_tertiary,
+            border: `2px solid ${colors.button_hover}`
           }}
           className='flex items-center rounded-sm text-sm'
           value={textFieldValue}
@@ -100,12 +114,12 @@ export function CreateCardChecklistModal({
         {/* Button */}
         <Box
           sx={{
-            bgcolor: '#0c66e4',
+            bgcolor: colors.button_primary,
             width: 'fit-content',
             height: 32,
             margin: '0 0 10px 0',
             padding: '0 20px',
-            color: '#fff',
+            color: colors.background,
             fontSize: 14,
             fontWeight: 500,
             '&:hover': {
@@ -140,6 +154,7 @@ export function DeleteChecklistModal({
   handleDelete,
   handleClose
 }: DeleteChecklistModalProps) {
+  const { colors } = useTheme()
   function handleDeleteAndClose() {
     handleDelete()
     handleClose()
@@ -161,19 +176,31 @@ export function DeleteChecklistModal({
       sx={{ margin: '6px 0 0 0' }}
     >
       <Box
-        sx={{ width: 300, height: 'fit-content', margin: '0 8px', padding: '8px 0px', color: colors.primary }}
+        sx={{
+          width: 304,
+          height: 'fit-content',
+          padding: '4px 8px 12px 8px',
+          color: colors.text,
+          backgroundColor: colors.background_modal_secondary
+        }}
         className='flex flex-col'
       >
         {/* START: Modal heading */}
-        <Grid container sx={{ width: '100%', margin: '0 0 12px 0' }}>
-          <Grid item xs={1}></Grid>
-          <Grid item xs={10} className='flex items-center justify-center'>
+        <Grid container sx={{ width: '100%', margin: '4px 0 8px 0' }}>
+          <Grid item xs={2}></Grid>
+          <Grid item xs={8} className='flex items-center justify-center'>
             <h2 className='overflow-hidden overflow-ellipsis whitespace-nowrap text-sm font-semibold'>
               Delete {checklistName}
             </h2>
           </Grid>
-          <Grid item xs={1} className='flex items-center justify-center'>
-            <FontAwesomeIcon icon={faXmark} className='cursor-pointer' onMouseDown={handleClose} />
+          <Grid item xs={2} className='flex items-center justify-end'>
+            <Box
+              sx={{ width: 32, height: 32, '&:hover': { bgcolor: colors.button_hover } }}
+              className='flex cursor-pointer items-center justify-center rounded-lg'
+              onMouseDown={handleClose}
+            >
+              <FontAwesomeIcon icon={faXmark} />
+            </Box>
           </Grid>
         </Grid>
         {/* END: Modal heading */}
@@ -207,6 +234,7 @@ interface ChecklistItemModalProps {
 }
 
 export function ChecklistItemModal({ anchorEl, handleDelete, handleClose }: ChecklistItemModalProps) {
+  const { colors } = useTheme()
   function handleDeleteAndClose() {
     handleDelete()
     handleClose()
@@ -226,10 +254,7 @@ export function ChecklistItemModal({ anchorEl, handleDelete, handleClose }: Chec
       }}
       onClose={handleClose}
     >
-      <Box
-        sx={{ width: 300, height: 'fit-content', padding: '8px 0px', color: colors.primary }}
-        className='flex flex-col'
-      >
+      <Box sx={{ width: 300, height: 'fit-content', padding: '8px 0px', color: colors.text }} className='flex flex-col'>
         {/* START: Modal heading */}
         <Grid container sx={{ width: '100%', margin: '0 0 12px 0' }}>
           <Grid item xs={1}></Grid>
@@ -247,7 +272,7 @@ export function ChecklistItemModal({ anchorEl, handleDelete, handleClose }: Chec
             height: 32,
             padding: '0 8px',
             '&:hover': {
-              bgcolor: colorsButton.secondary
+              bgcolor: colors.button
             }
           }}
           className='flex cursor-pointer items-center'

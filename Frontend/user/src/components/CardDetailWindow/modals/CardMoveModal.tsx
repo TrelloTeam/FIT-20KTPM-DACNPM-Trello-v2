@@ -2,9 +2,9 @@ import { Box, FormControl, Grid, MenuItem, Popover, Select, SelectChangeEvent } 
 import { _Card } from '..'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faList, faLocationDot, faXmark } from '@fortawesome/free-solid-svg-icons'
-import { colors } from '~/styles'
 import { useState } from 'react'
 import { faFlipboard } from '@fortawesome/free-brands-svg-icons'
+import { useTheme } from '~/components/Theme/themeContext'
 
 interface MoveCardModalProps {
   anchorEl: (EventTarget & HTMLDivElement) | null
@@ -18,6 +18,7 @@ const listChoices: string[] = ['To do', 'Doing', 'Done', 'Week 1', 'Week 2']
 const positionChoices: string[] = ['1', '2', '3', '4']
 
 export function MoveCardModal({ anchorEl, currentCard, setCurrentCard, handleClose }: MoveCardModalProps) {
+  const { colors } = useTheme()
   const menuItemFontSize = 14
   const [selectedBoard, setSelectedBoard] = useState('Project Trello')
   const [selectedList, setSelectedList] = useState('Doing')
@@ -54,42 +55,63 @@ export function MoveCardModal({ anchorEl, currentCard, setCurrentCard, handleClo
       onClose={handleClose}
     >
       <Box
-        sx={{ width: 300, height: 'fit-content', margin: '0 8px', padding: '8px 0px', color: colors.primary }}
+        sx={{
+          width: 304,
+          height: 'fit-content',
+          padding: '4px 8px',
+          color: colors.text,
+          backgroundColor: colors.background_modal_secondary
+        }}
         className='flex flex-col'
       >
         {/* START: Modal heading */}
-        <Grid container sx={{ width: '100%', margin: '0 0 12px 0' }}>
-          <Grid item xs={1}></Grid>
-          <Grid item xs={10} className='flex items-center justify-center'>
+        <Grid container sx={{ width: '100%', margin: '4px 0 8px 0' }}>
+          <Grid item xs={2}></Grid>
+          <Grid item xs={8} className='flex items-center justify-center'>
             <h2 className='overflow-hidden overflow-ellipsis whitespace-nowrap text-sm font-semibold'>Move card</h2>
           </Grid>
-          <Grid item xs={1} className='flex items-center justify-center'>
-            <FontAwesomeIcon icon={faXmark} className='cursor-pointer' onMouseDown={handleClose} />
+          <Grid item xs={2} className='flex items-center justify-end'>
+            <Box
+              sx={{ width: 32, height: 32, '&:hover': { bgcolor: colors.button_hover } }}
+              className='flex cursor-pointer items-center justify-center rounded-lg'
+              onMouseDown={handleClose}
+            >
+              <FontAwesomeIcon icon={faXmark} />
+            </Box>
           </Grid>
         </Grid>
         {/* END: Modal heading */}
         {/* Select card move destination */}
-        <p style={{ margin: '20px 0 16px 0', color: colors.primary }} className='text-xs font-bold'>
+        <p style={{ margin: '20px 0 16px 0', color: colors.text }} className='text-xs font-bold'>
           Select destination
         </p>
         {/* START: Select board */}
         <Box sx={{ width: 'fit-content', height: 20, marginBottom: '4px' }} className='flex flex-row items-center'>
           <FontAwesomeIcon icon={faFlipboard} style={{ fontSize: 12 }} />
-          <p style={{ marginLeft: '6px', color: colors.primary }} className='text-xs font-semibold'>
+          <p style={{ marginLeft: '6px', color: colors.text }} className='text-xs font-semibold'>
             Board
           </p>
         </Box>
         <FormControl fullWidth className='flex flex-col'>
           <Box sx={{ width: '100%', height: 'fit-content' }}>
             <Select
-              sx={{ width: '100%', height: 36, margin: '0 0 8px 0', fontSize: 14 }}
+              sx={{
+                width: '100%',
+                height: 36,
+                margin: '0 0 8px 0',
+                fontSize: 14,
+                background: colors.background_modal,
+                color: colors.text
+              }}
               value={selectedBoard}
               onChange={handleSelectBoard}
               MenuProps={{
                 PaperProps: {
                   style: {
                     maxHeight: 144,
-                    marginTop: 8
+                    marginTop: 8,
+                    background: colors.background_modal,
+                    color: colors.text
                   }
                 }
               }}
@@ -109,20 +131,29 @@ export function MoveCardModal({ anchorEl, currentCard, setCurrentCard, handleClo
           <Grid item xs={7}>
             <Box sx={{ width: 'fit-content', height: 20, marginBottom: '4px' }} className='flex flex-row items-center'>
               <FontAwesomeIcon icon={faList} style={{ fontSize: 12 }} />
-              <p style={{ marginLeft: '6px', color: colors.primary }} className='text-xs font-semibold'>
+              <p style={{ marginLeft: '6px', color: colors.text }} className='text-xs font-semibold'>
                 List
               </p>
             </Box>
             <FormControl fullWidth className='flex flex-col'>
               <Select
-                sx={{ width: '100%', height: 36, margin: '0 0 8px 0', fontSize: 14 }}
+                sx={{
+                  width: '100%',
+                  height: 36,
+                  margin: '0 0 8px 0',
+                  fontSize: 14,
+                  background: colors.background_modal,
+                  color: colors.text
+                }}
                 value={selectedList}
                 onChange={handleSelectList}
                 MenuProps={{
                   PaperProps: {
                     style: {
                       maxHeight: 144,
-                      marginTop: 8
+                      marginTop: 8,
+                      background: colors.background_modal,
+                      color: colors.text
                     }
                   }
                 }}
@@ -140,20 +171,29 @@ export function MoveCardModal({ anchorEl, currentCard, setCurrentCard, handleClo
           <Grid item xs={5}>
             <Box sx={{ width: 'fit-content', height: 20, marginBottom: '4px' }} className='flex flex-row items-center'>
               <FontAwesomeIcon icon={faLocationDot} style={{ fontSize: 12 }} />
-              <p style={{ marginLeft: '6px', color: colors.primary }} className='text-xs font-semibold'>
+              <p style={{ marginLeft: '6px', color: colors.text }} className='text-xs font-semibold'>
                 Position
               </p>
             </Box>
             <FormControl fullWidth className='flex flex-col'>
               <Select
-                sx={{ height: 36, margin: '0 0 8px 0', fontSize: 14 }}
+                sx={{
+                  width: '100%',
+                  height: 36,
+                  margin: '0 0 8px 0',
+                  fontSize: 14,
+                  background: colors.background_modal,
+                  color: colors.text
+                }}
                 value={selectedPosition}
                 onChange={handleSelectPosition}
                 MenuProps={{
                   PaperProps: {
                     style: {
                       maxHeight: 144,
-                      marginTop: 8
+                      marginTop: 8,
+                      background: colors.background_modal,
+                      color: colors.text
                     }
                   }
                 }}
@@ -172,12 +212,12 @@ export function MoveCardModal({ anchorEl, currentCard, setCurrentCard, handleClo
         {/* Button */}
         <Box
           sx={{
-            bgcolor: '#0c66e4',
+            bgcolor: colors.button_primary,
             width: 'fit-content',
             height: 32,
             margin: '10px 0 10px 0',
             padding: '0 20px',
-            color: '#fff',
+            color: colors.button_primary_text,
             fontSize: 14,
             fontWeight: 500,
             '&:hover': {
