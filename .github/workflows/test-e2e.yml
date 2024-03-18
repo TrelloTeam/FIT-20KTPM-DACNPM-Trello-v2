@@ -15,12 +15,20 @@ jobs:
           node-version: "20.x"
 
       - name: Cache node_modules
+        id: cache-npm
         uses: actions/cache@v3
         with:
           path: |
             **/node_modules
             ~/.npm
-          key: node_modules_cache
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-
+
+      - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
+        name: List the state of node modules
+        continue-on-error: true
+        run: npm list
 
       - name: Install all depend
         run: npm i
@@ -36,4 +44,5 @@ jobs:
           start: npx vite --host
 
       - name: Unit test backend cardlist
-        run: npm run test cardlist -w @trello-v2/backend
+        working-directory: Backend
+        run: npm run test cardlist
