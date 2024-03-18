@@ -22,19 +22,19 @@ jobs:
             ~/.npm
           key: node_modules_cache
 
-      - name: Install all depend
-        run: |
-          npm install
-
       - name: Build shared packages
         working-directory: packages/shared
         run: npm run build
+
+      - name: Install fontend depend
+        working-directory: Frontend/user
+        run: npm install
 
       - uses: cypress-io/github-action@v6
         with:
           install: false
           working-directory: Frontend/user
-          start: npx vite --host
+          start: npm run dev:host
 
       - name: Unit test backend cardlist
         run: npm run test cardlist -w @trello-v2/backend
