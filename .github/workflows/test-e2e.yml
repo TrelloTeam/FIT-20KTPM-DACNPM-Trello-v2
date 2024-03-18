@@ -22,9 +22,7 @@ jobs:
         run: npm run build
 
       - name: Test cypress
-        working-directory: Frontend/user
-        run: |
-          npm run test
+        run: npm run test -w @trello-v2/user
 
       - name: Unit test backend cardlist
         working-directory: Backend
