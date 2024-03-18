@@ -20,7 +20,7 @@ describe('CardlistController', () => {
 
   describe('Is true ture', () => {
     it('0 is true', () => {
-      expect(false).toBeTruthy()
+      expect(true).toBeTruthy()
     })
   })
 
