@@ -2,7 +2,7 @@
 import '@4tw/cypress-drag-drop'
 describe('Move a cardlist', () => {
   it('Go to react page', () => {
-    cy.visit('http://127.0.0.1:3000/')
+    cy.visit('http://127.0.0.1:4173/')
     cy.get('#Board_0').click()
     cy.get('#CardId1').drag('#CardId3', {
       force: true
