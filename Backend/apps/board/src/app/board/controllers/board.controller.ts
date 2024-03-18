@@ -280,11 +280,17 @@ export class BoardController {
     )
     background: Express.Multer.File,
   ): Promise<TrelloApi.BoardApi.UpdateBoardResponse> {
+    const board = await this.boardService.getBoardInfoByBoardId(board_id)
+    if (!board)
+      return {
+        data: null,
+      }
+
     const imageUrl = await this.boardService.uploadFirebaseImage(board_id, background)
-    const board = await this.boardService.updateBoard({ _id: board_id, background: imageUrl })
+    const update = await this.boardService.updateBoard({ _id: board_id, background: imageUrl })
 
     return {
-      data: board,
+      data: update,
     }
   }
 
