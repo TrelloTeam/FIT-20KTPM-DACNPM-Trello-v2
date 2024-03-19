@@ -3,13 +3,14 @@ import { IoMdClose } from 'react-icons/io'
 import { MdOutlineLock, MdPublic } from 'react-icons/md'
 import { useTheme } from '~/components/Theme/themeContext'
 import { FaCheck } from 'react-icons/fa6'
+import { GoDotFill } from 'react-icons/go'
 export const Settings: React.FC = () => {
-  const image = '/src/assets/Profile/profile_img.svg'
+  // const image = '/src/assets/Profile/profile_img.svg'
   const { colors, darkMode } = useTheme()
   const [visibility, setVisibility] = useState<string>('private')
   const [showForm, setShowForm] = useState<boolean>(false)
-  const formRef = useRef<HTMLDivElement>(null)
-
+  const [showDeleteWorkspaceForm, setShowDeleteWorkspaceForm] = useState<boolean>(false)
+  const [deleteWorkspace, setDeleteWorkspace] = useState<string>('')
   // useEffect(() => {
   //   // Check if there's enough space above or below the button to display the form
   //   if (formRef.current) {
@@ -39,7 +40,7 @@ export const Settings: React.FC = () => {
           </h1>
         </div>
         <div className={`flex w-full flex-row justify-between `}>
-          <div className={`mt-1 flex w-full flex-row space-x-1`}>
+          <div className={`mr-2 mt-1 flex w-full flex-row space-x-1`}>
             {visibility === 'public' ? (
               <>
                 <p className='flex flex-row'>
@@ -63,10 +64,10 @@ export const Settings: React.FC = () => {
               </>
             )}
           </div>
-          <div ref={formRef} className={`relative`}>
+          <div className={`relative mt-1`}>
             <button
               className={`flex items-center rounded px-5 py-2 ${
-                darkMode ? 'bg-gray-800 hover:bg-gray-700' : 'bg-gray-100 hover:bg-gray-300'
+                darkMode ? 'bg-[#282e33] hover:bg-[#333c43]' : 'bg-gray-100 hover:bg-[#dcdfe4]'
               } `}
               onClick={() => setShowForm(!showForm)}
             >
@@ -75,22 +76,27 @@ export const Settings: React.FC = () => {
               </p>
             </button>
             {showForm && (
-              <div className='absolute -left-5 z-10 w-80 rounded-lg border border-gray-300 bg-white py-4 text-sm shadow-md'>
+              <div
+                style={{
+                  color: colors.text
+                }}
+                className={`${darkMode ? 'border-gray-700 bg-[#282e33]' : 'border-gray-100 bg-white'} absolute -left-5 z-10 w-80 rounded-lg border  py-2 text-sm shadow-md`}
+              >
                 <div className={`mb-2 flex items-center justify-between`}>
                   <div></div>
                   <div>
                     <p className={`ml-7 font-semibold`}>Select Workspace visibility</p>
                   </div>
                   <div
-                    className=' mr-2 cursor-pointer rounded-lg p-1 hover:bg-gray-100'
+                    className={`mr-2 cursor-pointer rounded-lg p-2 ${darkMode ? 'hover:bg-[#333c43]' : 'hover:bg-[#dcdfe4]'}`}
                     onClick={() => setShowForm(false)}
                   >
-                    <IoMdClose className={``} size={'15px '} />
+                    <IoMdClose className={``} size={'17px '} />
                   </div>
                 </div>
                 <button
                   onClick={() => handleVisibilityChange('private')}
-                  className={`w-full py-2 ${darkMode ? ' hover:bg-gray-700' : ' hover:bg-gray-300'}`}
+                  className={`m-0 w-full py-1 ${darkMode ? ' hover:bg-[#333c43]' : ' hover:bg-[#dcdfe4]'}`}
                 >
                   <p className='flex flex-row items-center text-start'>
                     <span>
@@ -102,7 +108,7 @@ export const Settings: React.FC = () => {
                       <>
                         <span>
                           {' '}
-                          <FaCheck className='ml-1 p-0' />
+                          <FaCheck className='ml-2 p-0' size={`12px`} />
                         </span>{' '}
                       </>
                     )}
@@ -113,7 +119,7 @@ export const Settings: React.FC = () => {
                 </button>
                 <button
                   onClick={() => handleVisibilityChange('public')}
-                  className={`w-full py-2 ${darkMode ? ' hover:bg-gray-700' : ' hover:bg-gray-300'}`}
+                  className={`m-0 w-full py-1  ${darkMode ? ' hover:bg-[#333c43]' : ' hover:bg-[#dcdfe4]'}`}
                 >
                   <p className='flex flex-row items-center text-start'>
                     <span>
@@ -121,6 +127,14 @@ export const Settings: React.FC = () => {
                       <MdPublic className='mr-1 p-0 text-green-500' />
                     </span>{' '}
                     Public
+                    {visibility === 'public' && (
+                      <>
+                        <span>
+                          {' '}
+                          <FaCheck className='ml-2 p-0' size={`12px`} />
+                        </span>{' '}
+                      </>
+                    )}
                   </p>
                   <p className={`text-start text-[12px]`}>
                     Public - This Workspace is public. It's visible to anyone with the link and will show up in search
@@ -131,6 +145,85 @@ export const Settings: React.FC = () => {
             )}
           </div>
         </div>
+      </div>
+      <div className={`relative my-5 ml-1 `}>
+        <h3
+          onClick={() => setShowDeleteWorkspaceForm(true)}
+          className={` cursor-pointer font-semibold ${darkMode?'text-[#f87168]':'text-red-600'}  hover:text-blue-600 hover:underline`}
+        >
+          Delete this Workspace?
+        </h3>
+        {showDeleteWorkspaceForm && (
+          <div
+            style={{
+              color: colors.text
+            }}
+            className={`${darkMode ? 'border-gray-700 bg-[#282e33]' : 'border-gray-100 bg-white'} absolute -left-5 top-full z-10 w-72 rounded-lg border  px-3 py-2 text-sm shadow-md`}
+          >
+            <div className={`mb-2 flex items-center justify-between`}>
+              <div></div>
+              <div>
+                <p className={`ml-7 font-semibold`}>Delete Workspace?</p>
+              </div>
+              <div
+                className={`mr-0 cursor-pointer rounded-lg p-2 ${darkMode ? 'hover:bg-[#333c43]' : 'hover:bg-[#dcdfe4]'}`}
+                onClick={() => setShowDeleteWorkspaceForm(false)}
+              >
+                <IoMdClose className={``} size={'17px '} />
+              </div>
+            </div>
+            <div className={`mt-3`}>
+              <h1 className={`text-base font-bold`}>Enter Workspace name "My Workspace" to delete</h1>
+              <p className={`my-2 text-xs font-semibold`}>Things to know</p>
+              <ul className={`space-y-2`}>
+                <li className='inline-flex items-center space-x-2'>
+                  <GoDotFill />
+                  <p>This is permanent and can't be undone</p>
+                </li>
+                <li className='inline-flex items-center space-x-2'>
+                  <GoDotFill />
+                  <p className='cursor-pointer underline'>All boards in this workspace will be closed</p>
+                </li>
+                <li className='inline-flex items-center space-x-2'>
+                  <GoDotFill />
+                  <p>Board admins can reopen boards.</p>
+                </li>
+                <li className='inline-flex items-center space-x-2'>
+                  <GoDotFill />
+                  <p>Board members will not be able to interact with closed boards</p>
+                </li>
+              </ul>
+              <p className={`mb-1 mt-2 text-xs font-semibold`}>Enter the Workspace name to delete</p>
+              <input
+                value={deleteWorkspace}
+                onChange={(e) => setDeleteWorkspace(e.target.value)}
+                style={{
+                  color: colors.text
+                }}
+                type='text'
+                className={`w-full rounded-sm border-[3px]  ${darkMode ? 'border-[#738496] bg-[#1d2125] hover:bg-opacity-70' : 'border-[#9da6b5] bg-white hover:bg-gray-50'} p-1 px-2 focus:border-[3px] focus:border-blue-400 focus:outline-none`}
+              />
+              <button
+                disabled={deleteWorkspace !== 'My Workspace'}
+                className={`mt-2 flex w-full items-center justify-center rounded px-5 py-2
+                ${
+                  deleteWorkspace !== 'My Workspace'
+                    ? darkMode
+                      ? 'cursor-not-allowed bg-gray-800 opacity-50'
+                      : 'cursor-not-allowed bg-gray-100 opacity-50'
+                    : darkMode
+                      ? 'bg-[#f87168] text-gray-700 hover:bg-red-300'
+                      : 'bg-red-600 text-white hover:bg-red-700'
+                }
+          `}
+              >
+                <p className={`font-semibold`}>
+                  Delete Workspace
+                </p>
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   )
