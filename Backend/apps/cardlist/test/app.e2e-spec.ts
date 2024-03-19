@@ -15,7 +15,11 @@ describe('CardlistController (e2e)', () => {
     await app.init()
   })
 
-  it('/ (GET)', () => {
-    return request(app.getHttpServer()).get('/').expect(200).expect('Hello World!')
+  afterEach((done) => {
+    app.close().then(() => done())
+  })
+
+  it('/api/cardlist (GET)', () => {
+    return request(app.getHttpServer()).get('/api/cardlist').expect(200)
   })
 })

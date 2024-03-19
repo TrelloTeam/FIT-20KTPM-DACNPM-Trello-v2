@@ -34,6 +34,10 @@ jobs:
           install: false
           working-directory: Frontend/user
           start: npm run preview -- --host
+          record: true
+        env:
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          GITHUB_TOKEN: ${{ secrets.LAM_TOKEN }}
 
       - name: stop node
         run: killall node

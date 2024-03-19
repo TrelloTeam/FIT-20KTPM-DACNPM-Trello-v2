@@ -15,6 +15,10 @@ describe('WorkspaceController (e2e)', () => {
     await app.init()
   })
 
+  afterEach((done) => {
+    app.close().then(() => done())
+  })
+
   it('/ (GET)', () => {
     return request(app.getHttpServer()).get('/').expect(200).expect('Hello World!')
   })

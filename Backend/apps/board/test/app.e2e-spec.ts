@@ -15,7 +15,11 @@ describe('BoardController (e2e)', () => {
     await app.init()
   })
 
-  it('/ (GET)', () => {
-    return request(app.getHttpServer()).get('/').expect(200).expect('Hello World!')
+  afterEach((done) => {
+    app.close().then(() => done())
+  })
+
+  it('/api/board (GET)', () => {
+    return request(app.getHttpServer()).get('/api/board').expect(200)
   })
 })
