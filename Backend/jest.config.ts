@@ -26,7 +26,6 @@ const config: JestConfigWithTsJest = {
   transform: {
     '^.+\\.(t|j)s$': 'ts-jest',
   },
-  testRegex: '.*\\.spec\\.ts$',
   collectCoverageFrom: ['**/*.(t|j)s'],
   coverageDirectory: '../coverage',
 }

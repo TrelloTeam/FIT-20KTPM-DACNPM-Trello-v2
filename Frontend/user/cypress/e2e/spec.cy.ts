@@ -9,5 +9,6 @@ describe('Move a cardlist', () => {
     })
     cy.get('#CardId3').trigger('mouseup', { force: true, button: 0 })
     // cy.get('#65effd108b425dd09c0fe3fe').drag('#65effd068b425dd09c0fe3f7')
+    cy.get('#CardlistId2 > #CardId4').should('exist')
   })
 })

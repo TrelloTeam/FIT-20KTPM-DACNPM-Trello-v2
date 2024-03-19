@@ -43,4 +43,4 @@ jobs:
         run: killall node
 
       - name: Unit test backend cardlist
-        run: npm run test cardlist -w @trello-v2/backend
+        run: npm run test service=cardlist -w @trello-v2/backend
