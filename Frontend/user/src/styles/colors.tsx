@@ -7,6 +7,11 @@ export const lightColors = {
   bg_noti: '#e9f2ff',
   bg_button_hover: '#dcdfe4',
   bg_button_active_hover: '#cce0ff',
+  card_border: '#388bff',
+  save_card: '#0c66e4',
+  save_card_hover:'#0e5bc7',
+  add_card_hover: '#0e5bc7',
+  add_card:'#0c66e4',
   black: '#000',
   white: '#fff'
 }
@@ -20,6 +25,11 @@ export const darkColors = {
   bg_noti: '#1c2b41',
   bg_button_hover: '#333c43',
   bg_button_active_hover: '#333c43',
+  card_border: '#85b8ff',
+  save_card_hover: '#7bb0f9',
+  save_card:'#579dff',
+  add_card_hover: '#7bb0f9',
+  add_card:'#579dff',
   black: '#000',
   white: '#fff'
 }
