@@ -23,6 +23,7 @@ import LoadingComponent from '~/components/Loading'
 import { CardComponent, ListComponent } from './components'
 import { useTheme } from '~/components/Theme/themeContext'
 import { getAllListAPI } from '~/api/List'
+import { CardlistApiRTQ } from '~/api'
 
 const ACTIVE_DRAG_ITEM_TYPE = {
   COLUMN: 'ACTIVE_DRAG_ITEM_TYPE_COLUMN',
@@ -32,6 +33,7 @@ const ACTIVE_DRAG_ITEM_TYPE = {
 // const LazyListComponent = lazy(() => import('./components/List'))
 const LazyListsComponent = lazy(() => import('./components/Lists'))
 export function Board() {
+  const [getAllCardlist, { data: cardlistData }] = CardlistApiRTQ.CardListApiSlice.useLazyGetAllCardlistQuery()
   // const { colors, darkMode } = useTheme()
   const [oldListWhenDragging, setOldListWhenDraggingCard] = useState<List>()
   const [listsData, setListsData] = useState<Array<List>>()
@@ -60,6 +62,33 @@ export function Board() {
   //     tolerance: 500
   //   }
   // })
+  useEffect(() => {
+    if (!cardlistData) return
+    const updatedLists_placeHolder = cardlistData.data.map((list) => ({
+      ...list,
+      cards: list.cards.map(
+        (card) =>
+          ({
+            ...card,
+            list_id: list._id || '',
+            placeHolder: false // Set your default value for placeHolder
+          }) as Card
+      )
+    })) as List[]
+    const updatedLists = updatedLists_placeHolder?.map((list) => {
+      // Check if data array is empty
+      if (list.cards.length === 0) {
+        // Add a new item to data array
+        const newItem = generatePlaceHolderCard(list)
+        return {
+          ...list,
+          cards: [newItem]
+        }
+      }
+      return list
+    })
+    setListsData(updatedLists)
+  }, [cardlistData])
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
@@ -68,32 +97,33 @@ export function Board() {
     })
   )
   async function getAllList() {
-    const res = await getAllListAPI()
-    if (res.status === 200) {
-      const updatedLists_placeHolder = res.data.map((list: List) => ({
-        ...list,
-        data: list.cards.map((task) => ({
-          ...task,
-          placeHolder: false // Set your default value for placeHolder
-        }))
-      }))
-      const updatedLists = updatedLists_placeHolder?.map((list: List) => {
-        // Check if data array is empty
-        if (list.cards.length === 0) {
-          // Add a new item to data array
-          const newItem = generatePlaceHolderCard(list)
+    getAllCardlist()
+    // const res = await getAllListAPI()
+    // if (res.status === 200) {
+    //   const updatedLists_placeHolder = res.data.map((list: List) => ({
+    //     ...list,
+    //     data: list.cards.map((task) => ({
+    //       ...task,
+    //       placeHolder: false // Set your default value for placeHolder
+    //     }))
+    //   }))
+    //   const updatedLists = updatedLists_placeHolder?.map((list: List) => {
+    //     // Check if data array is empty
+    //     if (list.cards.length === 0) {
+    //       // Add a new item to data array
+    //       const newItem = generatePlaceHolderCard(list)
 
-          return {
-            ...list,
-            data: [newItem]
-          }
-        }
+    //       return {
+    //         ...list,
+    //         data: [newItem]
+    //       }
+    //     }
 
-        return list // If data array is not empty, keep it unchanged
-      })
+    //     return list // If data array is not empty, keep it unchanged
+    //   })
 
-      setListsData(updatedLists)
-    }
+    //   setListsData(updatedLists)
+    // }
   }
   useEffect(() => {
     console.log('update list')
@@ -135,7 +165,7 @@ export function Board() {
     return listsData?.find((list) => list?.cards?.map((card) => card._id)?.includes(cardId))
   }
   function isCard(obj: any): obj is Card {
-    return 'id' in obj && 'list_id' in obj && 'order' in obj && 'name' in obj && 'list_name' in obj
+    return 'cards' in obj == false
   }
   function handleUpdateAfterDragging() {
     // Gọi API update data ở phía backend
@@ -149,15 +179,15 @@ export function Board() {
     activeDragingCardId: UniqueIdentifier,
     activeDraggingCardData: any
   ) {
+    console.log('handleMoveCardBetweenDifferenceColumn')
     setListsData((prevList) => {
       const overCardIndex = overList?.cards?.findIndex((card) => card._id === overCardId)
-      let newCardIndex
       const isBelowOverItem =
         active.rect.current.translated && active.rect.current.translated.top > over.rect.top + over.rect.height
 
       const modifier = isBelowOverItem ? 1 : 0
 
-      newCardIndex = overCardIndex >= 0 ? overCardIndex + modifier : overList.cards.length + 1
+      const newCardIndex = overCardIndex >= 0 ? overCardIndex + modifier : overList.cards.length + 1
 
       const nextList = cloneDeep(prevList)
       const nextActiveList = nextList?.find((list) => list._id === activeList._id)
@@ -266,7 +296,7 @@ export function Board() {
         const newIndex = overList.cards.findIndex((data) => data._id === overCardId)
         const newList = arrayMove(oldListWhenDragging.cards, oldIndex, newIndex)
         setListsData((prevList) => {
-          const nextList = cloneDeep(prevList)
+          const nextList = !prevList ? [] : [...prevList]
 
           const targetList = nextList?.find((list) => list._id === overList._id)
           if (targetList) {
@@ -324,10 +354,10 @@ export function Board() {
           onDragMove={handleDragOver}
           onDragEnd={handleDragEnd}
         >
-          {listsData && (
-            <div className={`relative z-20 mt-[64px] w-[100%]`}>
+          {(listsData || []) && (
+            <div className={`relative mt-[64px] w-[100%]`}>
               <Suspense fallback={<LoadingComponent />}>
-                <LazyListsComponent lists={listsData} setOpenCardSetting={setOpenCardSetting} />
+                <LazyListsComponent lists={listsData || []} setOpenCardSetting={setOpenCardSetting} />
               </Suspense>
               <DragOverlay dropAnimation={customDropAnimation}>
                 {!activeDragItemId || !activeDragItemType}

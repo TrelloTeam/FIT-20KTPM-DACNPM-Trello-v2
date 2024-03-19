@@ -16,16 +16,9 @@ static_resources:
                     - name: local_service
                       domains: ["*"]
                       routes:
-                        - match: { prefix: "/grpc_cardlist/" }
-                          route:
-                            {
-                              cluster: cardlist_grpc_service,
-                              prefix_rewrite: "/",
-                            }
-                        - match: { prefix: "/grpc_board/" }
-                          route:
-                            { cluster: board_grpc_service, prefix_rewrite: "/" }
                         - match: { prefix: "/api/cardlist" }
+                          route: { cluster: cardlist_service }
+                        - match: { prefix: "/api/card" }
                           route: { cluster: cardlist_service }
                         - match: { prefix: "/api/board" }
                           route: { cluster: board_service }

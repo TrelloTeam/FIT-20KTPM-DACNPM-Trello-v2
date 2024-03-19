@@ -1,5 +1,5 @@
 import { useTheme } from '~/components/Theme/themeContext'
-import { IoMdClose } from "react-icons/io";
+import { IoMdClose } from 'react-icons/io'
 interface ListSettingProps {
   closeListSetting: () => void
 }
@@ -11,19 +11,19 @@ export default function ListSetting({ closeListSetting }: ListSettingProps) {
       style={{
         backgroundColor: colors.background,
         color: colors.text,
-        borderWidth:"1px",
-        borderColor: darkMode ? '#2c3e50':'',
+        borderWidth: '1px',
+        borderColor: darkMode ? '#2c3e50' : ''
       }}
-      className={`absolute shadow-lg  -right-64  z-50 flex w-[300px] flex-row rounded-lg   px-1 py-2 font-semibold`}
+      className={`absolute -right-64  z-10  flex w-[300px] flex-row rounded-lg px-1   py-2 font-semibold shadow-lg`}
     >
       <div className={`relative w-full`}>
-        <div className={`mb-2 flex justify-between items-center p-2`}>
+        <div className={`mb-2 flex items-center justify-between p-2`}>
           <div></div>
           <div>
-            <p className={`font-bold ml-7`}>List actions</p>
+            <p className={`ml-7 font-bold`}>List actions</p>
           </div>
-          <div className='mr-2 cursor-pointer rounded-lg hover:bg-gray-100 p-1' onClick={closeListSetting}>
-            <IoMdClose className={``} size={'20px'}/>
+          <div className='mr-2 cursor-pointer rounded-lg p-1 hover:bg-gray-100' onClick={closeListSetting}>
+            <IoMdClose className={``} size={'20px'} />
           </div>
         </div>
         <div>

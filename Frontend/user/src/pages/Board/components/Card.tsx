@@ -8,11 +8,10 @@ import { MdOutlineRemoveRedEye } from 'react-icons/md'
 import { useTheme } from '~/components/Theme/themeContext'
 import randomColor from 'randomcolor'
 export default function CardComponent({ card, setOpenCardSetting }: CardComponentProps) {
-
   const { colors, darkMode } = useTheme()
   const [bgColorEmailWatcher, setBgColorEmailWatcher] = useState<Array<string>>([])
   useEffect(() => {
-    let bgColorCode = []
+    const bgColorCode = []
     for (let i = 0; i < card.watcher_email.length; i++) {
       const randomBgColor = randomColor({ luminosity: 'dark' })
       bgColorCode.push(randomBgColor)
@@ -20,22 +19,22 @@ export default function CardComponent({ card, setOpenCardSetting }: CardComponen
     setBgColorEmailWatcher(bgColorCode)
   }, [])
 
-
   const { attributes, listeners, setNodeRef, transform, isDragging } = useSortable({
     id: card._id,
     data: { ...card }
   })
   const styleList = {
     transform: CSS.Transform.toString(transform),
-    height: '100%',
+    // height: '100%',
     opacity: isDragging ? 0.5 : undefined
     // border: isDragging ? 0.5 : undefined
   }
   const [isHovered, setIsHovered] = useState(false)
+  const [isHovered_SaveBtn, setIsHovered_SaveBtn] = useState(false)
   const [cardSettingOpen, setCardSettingOpen] = useState<string>('')
   const [isHoveredWatcher, setIsHoveredWatcher] = useState<string>()
-  const [isHoveredTextInput, setIsHoveredTextInput] = useState<boolean>(false)
-  const avtPath = '/src/assets/Profile/avt.png'
+  // const [isHoveredTextInput, setIsHoveredTextInput] = useState<boolean>(false)
+  // const avtPath = '/src/assets/Profile/avt.png'
 
   let hoverTimeout: NodeJS.Timeout | undefined
   const handleMouseOver = (watcher: string) => {
@@ -60,6 +59,7 @@ export default function CardComponent({ card, setOpenCardSetting }: CardComponen
     const handleClickOutside = (event: MouseEvent) => {
       if (componentRef.current && !componentRef.current.contains(event.target as Node)) {
         // Clicked outside of Component A, hide it
+        setIsHovered(false)
         setCardSettingOpen('')
         setOpenCardSetting('')
       }
@@ -71,7 +71,10 @@ export default function CardComponent({ card, setOpenCardSetting }: CardComponen
       document.removeEventListener('mousedown', handleClickOutside)
     }
   }, [])
-
+  function editCardName() {
+    setIsHovered_SaveBtn(false)
+    setCardSettingOpen('')
+  }
   return (
     <>
       {!cardSettingOpen && (
@@ -79,9 +82,11 @@ export default function CardComponent({ card, setOpenCardSetting }: CardComponen
           <div
             style={{
               backgroundColor: colors.background,
-              color: colors.text
+              color: colors.text,
+              border: '1px solid',
+              borderColor: isHovered ? colors.card_border : colors.background
             }}
-            className={`mx-3 mb-3 space-y-2 rounded-lg p-2  ${darkMode ? '' : 'shadow-sm shadow-gray-300'} hover:border-[3px] hover:border-blue-400 ${card.placeHolder ? 'invisible' : 'visible'}`}
+            className={`mx-3  space-y-2 rounded-lg  p-2  ${darkMode ? `` : ' shadow-sm shadow-gray-300'} ${card.placeHolder ? 'invisible -mt-3 max-h-0  border-0 p-0' : 'visible'}`}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
           >
@@ -107,7 +112,7 @@ export default function CardComponent({ card, setOpenCardSetting }: CardComponen
                     <div onMouseEnter={() => handleMouseOver(watcher)} onMouseLeave={handleMouseLeave}>
                       <div
                         style={{ backgroundColor: bgColorEmailWatcher[index] }}
-                        className={`mx-1 rounded-full h-[22px] w-[23px] pt-[3px] text-center  text-[10px]  font-semibold text-white hover:opacity-50`}
+                        className={`mx-1 h-[22px] w-[23px] rounded-full pt-[3px] text-center  text-[10px]  font-semibold text-white hover:opacity-50`}
                       >
                         HM
                       </div>
@@ -125,19 +130,31 @@ export default function CardComponent({ card, setOpenCardSetting }: CardComponen
         </div>
       )}
       {cardSettingOpen && cardSettingOpen === card._id && (
-        <div className={`pointer-events-auto `}>
+        <div className={` pointer-events-auto `}>
+          <div
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              backgroundColor: 'rgba(0, 0, 0, 0.6)', // Semi-transparent black color
+              zIndex: 10 // Ensure it's above other content
+            }}
+          ></div>
           <div
             style={{
               backgroundColor: colors.background,
-              color: colors.text
+              color: colors.text,
+              zIndex: 10
             }}
             ref={componentRef}
-            className={`relative m-3 flex rounded-lg`}
+            className={`relative mx-3  ${darkMode ? `` : ' shadow-sm shadow-gray-300'} flex rounded-lg`}
           >
             <div
-              className={` w-full space-y-2 rounded-lg   p-2  ${card.placeHolder ? 'invisible' : 'visible'}`}
-              onMouseEnter={() => setIsHoveredTextInput(true)}
-              onMouseLeave={() => setIsHoveredTextInput(false)}
+              className={` w-full space-y-2 rounded-lg   p-2  ${card.placeHolder ? 'invisible m-0 h-0 border-0 p-0' : 'visible'}`}
+              // onMouseEnter={() => setIsHoveredTextInput(true)}
+              // onMouseLeave={() => setIsHoveredTextInput(false)}
             >
               <div className={`flex flex-row items-center   justify-between`}>
                 <input
@@ -145,7 +162,7 @@ export default function CardComponent({ card, setOpenCardSetting }: CardComponen
                     backgroundColor: colors.background,
                     color: colors.text
                   }}
-                  className={` w-full border-0 px-2 text-left focus:border-0 focus:outline-none  `}
+                  className={` w-full border-0 px-2 pb-7 text-left focus:border-0 focus:outline-none  `}
                   autoFocus
                 ></input>
               </div>
@@ -157,12 +174,12 @@ export default function CardComponent({ card, setOpenCardSetting }: CardComponen
                   {card.watcher_email.map((watcher, index) => (
                     <div key={index} className={` flex flex-row items-center justify-between`}>
                       <div onMouseOver={() => handleMouseOver(watcher)} onMouseLeave={handleMouseLeave}>
-                      <div
-                        style={{ backgroundColor: bgColorEmailWatcher[index] }}
-                        className={`mx-1 rounded-full h-[22px] w-[23px] pt-[3px] text-center  text-[10px]  font-semibold text-white hover:opacity-50`}
-                      >
-                        HM
-                      </div>
+                        <div
+                          style={{ backgroundColor: bgColorEmailWatcher[index] }}
+                          className={`mx-1 h-[22px] w-[23px] rounded-full pt-[3px] text-center  text-[10px]  font-semibold text-white hover:opacity-50`}
+                        >
+                          HM
+                        </div>
                         {isHoveredWatcher && isHoveredWatcher === watcher && (
                           <div className='absolute -bottom-10 right-0 z-20 ml-6 bg-yellow-100 p-1 hover:bg-gray-100'>
                             {watcher}
@@ -176,7 +193,21 @@ export default function CardComponent({ card, setOpenCardSetting }: CardComponen
             </div>
             <CardSetting />
           </div>
-          <button className={`absolute ml-2 rounded-md bg-blue-500 text-white`}>Save</button>
+          <button
+            style={{
+              backgroundColor: !isHovered_SaveBtn ? colors.save_card : colors.save_card_hover,
+              color: darkMode ? 'black' : 'white',
+              zIndex: 10
+            }}
+            onMouseEnter={() => setIsHovered_SaveBtn(true)}
+            onMouseLeave={() => setIsHovered_SaveBtn(false)}
+            className={`absolute ml-3 mt-2 rounded-md py-2`}
+            onClick={() => {
+              editCardName()
+            }}
+          >
+            Save
+          </button>
         </div>
       )}
     </>
