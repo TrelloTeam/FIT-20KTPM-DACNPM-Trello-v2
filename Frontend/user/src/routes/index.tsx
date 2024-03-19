@@ -3,9 +3,10 @@ import App from '../App'
 import HomePage from '~/pages/Home'
 import { Templates } from './../pages/Templates/index'
 import { AccountManagement, Board, BoardsPage } from '~/pages'
-import { ActivityComponent } from './../pages/Profile/components/Activity'
+import { ActivityComponent } from '../pages/Profile/components/Activity'
 import CardDetailWindow from '~/components/CardDetailWindow'
 import { CategoryWorkspace } from '~/pages/CategoryWorkspace'
+import { WorkspaceSetting } from '~/pages/WorkspaceSetting'
 
 export const router = createBrowserRouter([
   {
@@ -42,6 +43,10 @@ export const router = createBrowserRouter([
       {
         path: '/cardlist',
         element: <Board />
+      },
+      {
+        path: '/workspaceSetting',
+        element: <WorkspaceSetting />
       }
     ]
   }
