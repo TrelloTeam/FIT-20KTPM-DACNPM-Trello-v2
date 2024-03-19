@@ -2,10 +2,12 @@ import * as React from 'react'
 import { Box, Button, ClickAwayListener, Grow, Paper, Popper, MenuItem, MenuList, Stack } from '@mui/material'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
+import { useTheme } from './../../Theme/themeContext'
 
 export default function Templates() {
   const [open, setOpen] = React.useState(false)
   const anchorRef = React.useRef<HTMLButtonElement>(null)
+  const { colors } = useTheme()
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen)
@@ -52,7 +54,7 @@ export default function Templates() {
           sx={{
             fontSize: '13px',
             textTransform: 'none',
-            color: open ? '#579dff' : '#9fadbc',
+            color: open ? '#579dff' : colors.text,
             '&:hover': {
               backgroundColor: 'rgba(255,255,255,0.1)'
             },
