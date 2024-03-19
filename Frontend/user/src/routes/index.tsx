@@ -6,6 +6,7 @@ import { AccountManagement, Board, BoardsPage } from '~/pages'
 import { ActivityComponent } from './../pages/Profile/components/Activity'
 import CardDetailWindow from '~/components/CardDetailWindow'
 import { CategoryWorkspace } from '~/pages/CategoryWorkspace'
+import Login from '~/pages/Login'
 
 export const router = createBrowserRouter([
   {
@@ -42,6 +43,10 @@ export const router = createBrowserRouter([
       {
         path: '/cardlist',
         element: <Board />
+      },
+      {
+        path: '/login',
+        element: <Login />
       }
     ]
   }
