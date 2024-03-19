@@ -338,6 +338,6 @@ export class CardlistController {
 
   @InjectRoute(CardlistRoutes.testRoute)
   test() {
-    return { Hello: 'Demo' }
+    return { Hello: 'The class' }
   }
 }
