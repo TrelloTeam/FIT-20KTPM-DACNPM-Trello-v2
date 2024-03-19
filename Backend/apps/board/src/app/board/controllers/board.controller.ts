@@ -4,7 +4,6 @@ import { InjectController, InjectRoute } from '@app/common/decorators'
 import { SwaggerApi } from '@app/common/decorators/'
 import { IdParamValidationPipe, ZodValidationPipe } from '@app/common/pipes'
 import {
-  BadRequestException,
   Body,
   FileTypeValidator,
   HttpStatus,
@@ -155,11 +154,6 @@ export class BoardController {
     @Body(new ZodValidationPipe(TrelloApi.BoardApi.UpdateBoardRequestSchema))
     body: TrelloApi.BoardApi.UpdateBoardRequest,
   ): Promise<TrelloApi.BoardApi.UpdateBoardResponse> {
-    if (body.background) {
-      const board = await this.boardService.getBoardInfoByBoardId(body._id)
-      if (!board.background_list.includes(body.background))
-        throw new BadRequestException('The specified background does not exist in the board.')
-    }
     const data = await this.boardService.updateBoard(body)
     return {
       data: data,
