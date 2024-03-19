@@ -1,72 +1,51 @@
-import { Box, Card, CardActions, CardActionArea, Popover } from '@mui/material'
-import CreateBoardDialog from './CreateBoardDialog'
-import { useDispatch, useSelector } from 'react-redux'
-import { closeDialog, openDialog, selectCreateBoardDialog } from '~/store/reducers'
+import { Box } from '@mui/material'
 import React from 'react'
+import { useState } from 'react'
+import CreateBoardModal from './CreateBoardModal'
+import { useTheme } from '../Theme/themeContext'
 
-export default function BoardsPageCardAdd() {
-  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null)
-  const dispatch = useDispatch()
+export function BoardsPageCardAdd() {
+  const { colors } = useTheme()
+  const [anchorEl, setAnchorEl] = useState<HTMLDivElement | null>(null)
+  const [openModal, setOpenModal] = useState(false)
 
-  const stateCreateBoardDialog = useSelector(selectCreateBoardDialog)
-
-  function handleOpenDialog(event: React.MouseEvent<HTMLButtonElement>) {
+  function handleOpenDialog(event: React.MouseEvent<HTMLDivElement>) {
     setAnchorEl(event.currentTarget)
-    dispatch(openDialog())
+    setOpenModal(true)
   }
 
   function handleCloseDialog() {
-    dispatch(closeDialog())
     setAnchorEl(null)
+    setOpenModal(false)
   }
 
   return (
     <React.Fragment>
-      <Card sx={{ width: 200, height: 100, backgroundColor: 'rgba(0, 0, 0, 0.05)' }}>
-        <CardActionArea
+      <Box
+        sx={{
+          width: 194,
+          height: 96,
+          padding: '8px',
+          color: colors.text,
+          backgroundColor: colors.button,
+          '&:hover': { backgroundColor: colors.button_hover }
+        }}
+        className='flex cursor-pointer items-center justify-between rounded'
+        onClick={(e) => handleOpenDialog(e)}
+      >
+        <Box
           sx={{
             width: '100%',
             height: '100%',
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'center',
-            '&:hover': {
-              backgroundColor: 'rgba(0, 0, 0, 0.1)'
-            }
-          }}
-          onClick={handleOpenDialog}
-        >
-          <Box
-            sx={{
-              width: '100%',
-              height: '100%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}
-          >
-            <p className='text-sm font-semibold'>Create new board</p>
-          </Box>
-        </CardActionArea>
-        <CardActions></CardActions>
-      </Card>
-      {stateCreateBoardDialog.isOpen && (
-        <Popover
-          open={stateCreateBoardDialog.isOpen}
-          anchorEl={anchorEl}
-          onClose={handleCloseDialog}
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'right'
-          }}
-          transformOrigin={{
-            vertical: 'bottom',
-            horizontal: -10
+            justifyContent: 'center'
           }}
         >
-          <CreateBoardDialog />
-        </Popover>
-      )}
+          <p className='text-sm font-semibold'>Create new board</p>
+        </Box>
+      </Box>
+      {openModal && <CreateBoardModal anchorEl={anchorEl} isOpen={openModal} handleCloseDialog={handleCloseDialog} />}
     </React.Fragment>
   )
 }

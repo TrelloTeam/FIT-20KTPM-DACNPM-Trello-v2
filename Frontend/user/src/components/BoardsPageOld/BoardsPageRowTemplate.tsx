@@ -1,7 +1,7 @@
 import { Grid } from '@mui/material'
 
 import { BoardTemplate } from '~/pages'
-import { BoardsPageCardTemplate } from './BoardsPageCardTemplate'
+import BoardsPageCardTemplate from './BoardsPageCardTemplate'
 
 interface BoardsPageRowTemplateProps {
   boards: BoardTemplate[]

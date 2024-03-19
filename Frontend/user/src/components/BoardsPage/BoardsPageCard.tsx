@@ -1,73 +1,64 @@
-import { useState } from 'react'
+import { Box } from '@mui/material'
 import { BoardSubset } from '~/pages'
 import StarIcon from '@mui/icons-material/Star'
 import StarBorderOutlinedIcon from '@mui/icons-material/StarBorderOutlined'
-
-import { Card, CardActionArea, CardActions, CardContent, Grid, IconButton } from '@mui/material'
-import { useDispatch } from 'react-redux'
-import { addStarredBoard, removeStarredBoard } from '~/store/reducers/starredBoardList'
+import { useState } from 'react'
 
 const cardBg01 =
-  'https://images.pexels.com/photos/1252890/pexels-photo-1252890.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'
+  'https://trello-backgrounds.s3.amazonaws.com/SharedBackground/480x269/46d55f978e5c638b665c3a8a56e787a3/photo-1707588883437-9b3709880e3b.jpg'
 
 interface BoardsPageCardProps {
-  board: BoardSubset
+  currentBoard: BoardSubset
+  boards: BoardSubset[]
+  setBoards: (newState: BoardSubset[]) => void
 }
 
-export default function BoardsPageCard({ board }: BoardsPageCardProps) {
-  const dispatch = useDispatch()
-  const [isStar, setIsStar] = useState(false)
+export function BoardsPageCard({ currentBoard, boards, setBoards }: BoardsPageCardProps) {
+  const [isHovered, setIsHovered] = useState(false)
 
-  const handleToggleStar = () => {
-    setIsStar(!isStar)
-    const updatedBoard = { ...board, is_star: isStar }
-    !isStar ? dispatch(addStarredBoard(updatedBoard)) : dispatch(removeStarredBoard(board._id))
+  function handleToggleStar() {
+    const updatedBoards = boards.map((board) => {
+      if (board._id === currentBoard._id) {
+        return { ...board, is_star: !currentBoard.is_star }
+      }
+      return board
+    })
+    setBoards(updatedBoards)
   }
 
   return (
-    <Card
+    <Box
       sx={{
-        maxWidth: 200,
-        maxHeight: 100,
+        width: 194,
+        height: 96,
+        padding: '8px',
         backgroundImage: `url(${cardBg01})`,
-        backgroundSize: 'cover',
-        color: 'white'
+        '&:hover': { filter: 'brightness(90%)' }
       }}
+      className='flex cursor-pointer flex-col justify-between rounded'
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
-      <CardActionArea>
-        {/* Board Card title */}
-        <CardContent sx={{ paddingTop: 1, paddingLeft: 1 }}>
-          <p className='font-bold'>{board.name}</p>
-        </CardContent>
-        {/* Board Card subtitle */}
-        <CardContent
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            paddingTop: 3,
-            paddingBottom: 0,
-            paddingLeft: 1
-          }}
-        >
-          <Grid container spacing={1}>
-            {/* Display workspace owner */}
-            <Grid item xs={10}>
-              <p className='truncate text-sm'>Âu Hồng Minh's workspace</p>
-            </Grid>
-            <Grid item xs={2} sx={{ paddingTop: 0, padddingRight: 1 }}>
-              {/* Toggle star button */}
-              <IconButton sx={{ paddingTop: 0 }} onClick={handleToggleStar} color={isStar ? 'primary' : 'default'}>
-                {isStar ? (
-                  <StarIcon style={{ color: 'yellow', fontSize: 18 }} />
-                ) : (
-                  <StarBorderOutlinedIcon style={{ color: 'white', fontSize: 18 }} />
-                )}
-              </IconButton>
-            </Grid>
-          </Grid>
-        </CardContent>
-      </CardActionArea>
-      <CardActions></CardActions>
-    </Card>
+      <Box sx={{ width: '100%', height: 20 }} className='flex items-center'>
+        <p style={{ fontSize: 16, fontWeight: 700 }} className='text-white'>
+          {currentBoard.name}
+        </p>
+      </Box>
+      <Box sx={{ width: '100%', height: 20 }} className='flex items-center justify-end'>
+        {(isHovered || currentBoard.is_star) && (
+          <Box
+            sx={{ marginRight: '4px' }}
+            onClick={handleToggleStar}
+            color={currentBoard.is_star ? 'primary' : 'default'}
+          >
+            {currentBoard.is_star ? (
+              <StarIcon style={{ color: '#FFD700', fontSize: 18 }} />
+            ) : (
+              <StarBorderOutlinedIcon style={{ color: 'white', fontSize: 18 }} />
+            )}
+          </Box>
+        )}
+      </Box>
+    </Box>
   )
 }
