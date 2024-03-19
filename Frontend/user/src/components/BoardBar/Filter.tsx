@@ -9,15 +9,11 @@ import {
   FormControl,
   FormControlLabel,
   FormHelperText,
-  Input,
-  InputLabel,
   Stack,
-  TextField,
   Typography
 } from '@mui/material'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import SelectMembers from './SelectMembers'
-
 
 export default function Filter() {
   return (
@@ -114,10 +110,15 @@ export default function Filter() {
               <FormControlLabel value='end' control={<Checkbox />} label='No members' labelPlacement='end' />
               <FormControlLabel value='end' control={<Checkbox />} label='Cards assigned to me' labelPlacement='end' />
               <Stack direction='row' alignItems='center'>
-                <FormControlLabel sx={{marginRight: '0'}} value='end' control={<Checkbox />} label='' labelPlacement='end' />
-                <SelectMembers/>
+                <FormControlLabel
+                  sx={{ marginRight: '0' }}
+                  value='end'
+                  control={<Checkbox />}
+                  label=''
+                  labelPlacement='end'
+                />
+                <SelectMembers />
               </Stack>
-              
             </Box>
           </Box>
 

@@ -2,11 +2,13 @@ import * as React from 'react'
 import { Box, ClickAwayListener, Grow, Paper, Popper, MenuList, Stack, Typography } from '@mui/material'
 import { Link } from 'react-router-dom'
 import { useTheme } from './../../Theme/themeContext'
+import { useAuth0 } from '@auth0/auth0-react'
 
 export default function Account() {
   const [open, setOpen] = React.useState(false)
   const anchorRef = React.useRef<HTMLButtonElement>(null)
   const { darkMode, toggleDarkMode, colors } = useTheme()
+  const { logout } = useAuth0()
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen)
@@ -206,6 +208,7 @@ export default function Account() {
                         </Typography>
 
                         <Typography
+                          onClick={() => logout({ logoutParams: { returnTo: window.location.origin + '/login' } })}
                           variant='body1'
                           sx={{
                             cursor: 'pointer',

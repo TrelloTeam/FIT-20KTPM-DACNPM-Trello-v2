@@ -63,14 +63,10 @@ export default function SelectMembers() {
           MenuProps={MenuProps}
         >
           {names.map((name) => (
-            <MenuItem sx={{height: '36px'}} key={name} value={name}>
+            <MenuItem sx={{ height: '36px' }} key={name} value={name}>
               <Checkbox checked={personName.indexOf(name) > -1} />
-              <Avatar
-                alt={name}
-                src='/static/images/avatar/1.jpg'
-                sx={{ width: 24, height: 24, marginRight: 1 }}
-              />
-              <ListItemText  primary={name} />
+              <Avatar alt={name} src='/static/images/avatar/1.jpg' sx={{ width: 24, height: 24, marginRight: 1 }} />
+              <ListItemText primary={name} />
             </MenuItem>
           ))}
         </Select>
