@@ -12,7 +12,7 @@ export default function Automation() {
       }}
     >
       <Box>
-        <h3 className='flex justify-center'>Change Visibility</h3>
+        <h3 className='flex justify-center text-[#44546F]'>Change Visibility</h3>
       </Box>
       <Box>
         <Card

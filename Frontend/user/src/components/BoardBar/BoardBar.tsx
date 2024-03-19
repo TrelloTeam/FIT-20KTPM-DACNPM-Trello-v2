@@ -13,10 +13,12 @@ import { useState } from 'react'
 import ChangeVisibility from './ChangeVisibility'
 import CustomizeViews from './CustomizeViews'
 import Automation from './Automation'
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
+import Filter from './Filter'
 //pop up
 
 const Menu_Style = {
-  color: '#cccc',
+  color: 'white',
   fontSize: '18px',
   bgcolor: 'rgba(54, 55, 61, 0.1)',
   // paddingX: '5px',
@@ -99,8 +101,8 @@ function BoardBar() {
                 height: '32px',
                 fontSize: '18px',
                 fontWeight: 'bold',
-                color: '#cccc',
-                bgcolor: 'rgba(54, 55, 61, 0.1)',
+                color: 'white',
+                bgcolor: 'rgba(54, 55, 61, 0)',
                 borderRadius: '8px',
                 paddingLeft: '12px',
                 marginRight: '4px',
@@ -267,7 +269,7 @@ function BoardBar() {
                 />
               }
               label='Filters'
-              onClick={(e) => handleClick(e, <div>Filter content</div>)}
+              onClick={(e) => handleClick(e, <Filter />)}
             />
           </Tooltip>
 
@@ -309,7 +311,7 @@ function BoardBar() {
             </Tooltip>
           </AvatarGroup>
 
-          <Tooltip title='Automations'>
+          <Tooltip title='More'>
             <Chip
               sx={{
                 color: '#cccc',
@@ -320,7 +322,6 @@ function BoardBar() {
                 borderRadius: '8px',
                 width: '32px',
                 height: '32px',
-                marginRight: '30px',
                 '& .MuiSvgIcon-root': {
                   color: 'white'
                 },
@@ -329,7 +330,7 @@ function BoardBar() {
                 }
               }}
               icon={
-                <BoltIcon
+                <MoreHorizIcon
                   sx={{
                     fontSize: '18px',
                     '&:hover': {
