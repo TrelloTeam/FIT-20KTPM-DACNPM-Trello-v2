@@ -254,15 +254,30 @@ export function ChecklistItemModal({ anchorEl, handleDelete, handleClose }: Chec
       }}
       onClose={handleClose}
     >
-      <Box sx={{ width: 300, height: 'fit-content', padding: '8px 0px', color: colors.text }} className='flex flex-col'>
+      <Box
+        sx={{
+          width: 304,
+          height: 'fit-content',
+          padding: '4px 0px 8px 0px',
+          color: colors.text,
+          backgroundColor: colors.background_modal_secondary
+        }}
+        className='flex flex-col'
+      >
         {/* START: Modal heading */}
-        <Grid container sx={{ width: '100%', margin: '0 0 12px 0' }}>
-          <Grid item xs={1}></Grid>
-          <Grid item xs={10} className='flex justify-center'>
-            <h2 className='text-sm font-semibold'>Item actions</h2>
+        <Grid container sx={{ width: '100%', margin: '4px 0px 8px 0px', padding: '0 8px' }}>
+          <Grid item xs={2}></Grid>
+          <Grid item xs={8} className='flex items-center justify-center'>
+            <h2 className='overflow-hidden overflow-ellipsis whitespace-nowrap text-sm font-semibold'>Item actions</h2>
           </Grid>
-          <Grid item xs={1}>
-            <FontAwesomeIcon icon={faXmark} className='cursor-pointer' onClick={handleClose} />
+          <Grid item xs={2} className='flex items-center justify-end'>
+            <Box
+              sx={{ width: 32, height: 32, '&:hover': { bgcolor: colors.button_hover } }}
+              className='flex cursor-pointer items-center justify-center rounded-lg'
+              onMouseDown={handleClose}
+            >
+              <FontAwesomeIcon icon={faXmark} />
+            </Box>
           </Grid>
         </Grid>
         {/* END: Modal heading */}
@@ -270,7 +285,7 @@ export function ChecklistItemModal({ anchorEl, handleDelete, handleClose }: Chec
           sx={{
             width: '100%',
             height: 32,
-            padding: '0 8px',
+            padding: '0 12px',
             '&:hover': {
               bgcolor: colors.button
             }

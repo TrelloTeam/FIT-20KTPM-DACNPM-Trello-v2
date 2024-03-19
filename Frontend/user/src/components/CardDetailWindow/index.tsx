@@ -263,7 +263,7 @@ export default function CardDetailWindow() {
               }}
               onFocus={(e) => {
                 e.currentTarget.style.borderColor = focusInputColor
-                e.currentTarget.style.backgroundColor = colors.background_modal_tertiary
+                e.currentTarget.style.backgroundColor = colors.background_modal_secondary
               }}
               onBlur={(e) => {
                 handleCardNameFieldBlur

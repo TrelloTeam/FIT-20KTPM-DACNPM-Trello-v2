@@ -262,9 +262,9 @@ function CardActivityTile({ activity }: CardActivityTileProps) {
         padding: '8px',
         color: colors.text,
         bgcolor: colors.background_modal,
-        boxShadow: '0 1px 2px rgba(0,0,0,0.2)',
+        boxShadow: '0 2px 2px rgba(0,0,0,0.2)',
         '&:hover': {
-          bgcolor: colors.background_modal_secondary
+          bgcolor: colors.button_hover
         }
       }}
       className='flex flex-col justify-between rounded-md'

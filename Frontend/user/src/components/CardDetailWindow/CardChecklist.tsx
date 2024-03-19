@@ -92,7 +92,7 @@ function ChecklistAddTextArea({
           padding: '4px 4px',
           whiteSpace: isInputFocused ? 'normal' : 'wrap',
           resize: 'none',
-          background: colors.background
+          background: colors.background_modal_secondary
         }}
         minRows={2}
         placeholder='Add an item'
@@ -105,7 +105,13 @@ function ChecklistAddTextArea({
       {/* Title textarea control */}
       <Box className='mt-2 flex flex-row items-center gap-2'>
         <Box
-          sx={{ width: 'fit-content', height: 32, bgcolor: '#0c66e4', color: '#fff', padding: '0 12px' }}
+          sx={{
+            width: 'fit-content',
+            height: 32,
+            bgcolor: colors.button_primary,
+            color: colors.button_primary_text,
+            padding: '0 12px'
+          }}
           className='flex cursor-pointer items-center justify-center rounded'
           onClick={handleSave}
         >
@@ -415,7 +421,7 @@ function ChecklistItemNameField({
           padding: '8px 8px',
           whiteSpace: isInputFocused ? 'normal' : 'wrap',
           resize: 'none',
-          background: colors.background
+          background: colors.background_modal_secondary
         }}
         minRows={3}
         value={checklistItemNameState}
@@ -532,7 +538,7 @@ function ChecklistItem({
     <Box sx={{ width: '100%', height: 'fit-content' }} className='flex flex-row'>
       <Box sx={{ width: 36, marginTop: '12px' }} className='flex justify-center'>
         <input
-          style={{ width: 16, height: 16, background: colors.background }}
+          style={{ width: 16, height: 16, background: colors.background_modal_secondary }}
           type='checkbox'
           checked={currentCheckitem.is_check}
           onChange={handleCheckbox}
