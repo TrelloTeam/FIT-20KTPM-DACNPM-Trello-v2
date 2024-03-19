@@ -5,17 +5,19 @@ import { InjectModel } from '@nestjs/mongoose'
 import { DbSchemas, TrelloApi } from '@trello-v2/shared'
 import { getDownloadURL, ref, uploadBytes } from '@firebase/storage'
 import { storage } from 'apps/board/src/firebase'
-import { deleteObject } from 'firebase/storage'
+import { deleteObject, listAll } from 'firebase/storage'
+import { v4 } from 'uuid'
 
 export abstract class IBoardService {
   abstract createBoard(data: TrelloApi.BoardApi.CreateBoard): Promise<DbSchemas.BoardSchema.Board>
   abstract getAllBoard(): Promise<DbSchemas.BoardSchema.Board[]>
-  abstract getBoardsByWorkspaceId(workspace_id: string): Promise<DbSchemas.BoardSchema.Board[]>
-  abstract getBoardInfoByBoardId(board_id: string): Promise<DbSchemas.BoardSchema.Board | null>
+  abstract getBoardsByWorkspaceId(workspace_id: TrelloApi.BoardApi.workSpaceIdRequest): Promise<DbSchemas.BoardSchema.Board[]>
+  abstract getBoardInfoByBoardId(board_id: TrelloApi.BoardApi.BoardIdRequest): Promise<DbSchemas.BoardSchema.Board | null>
   abstract updateBoard(data: DbSchemas.BoardSchema.Board): Promise<DbSchemas.BoardSchema.Board | null>
-  abstract deleteBoard(board_id: string): Promise<DbSchemas.BoardSchema.Board | null>
+  abstract deleteBoard(board_id: TrelloApi.BoardApi.BoardIdRequest): Promise<DbSchemas.BoardSchema.Board | null>
   abstract uploadFirebaseImage(imageName: string, imageFile: Express.Multer.File): Promise<string | null>
   abstract removeFirebaseImage(imageUrl: string): Promise<boolean>
+  abstract removeFirebaseFolder(board_id: TrelloApi.BoardApi.BoardIdRequest): Promise<boolean>
 }
 
 export class BoardService implements IBoardService {
@@ -24,8 +26,8 @@ export class BoardService implements IBoardService {
     private BoardMModel: Model<DbSchemas.BoardSchema.Board>,
   ) {}
 
-  async uploadFirebaseImage(imageName: string, imageFile: Express.Multer.File) {
-    const imageRef = ref(storage, `images/${imageName}.${imageFile.mimetype.split('/')[1]}`)
+  async uploadFirebaseImage(board_id: string, imageFile: Express.Multer.File) {
+    const imageRef = ref(storage, `backgrounds/${board_id}/${v4()}.${imageFile.mimetype.split('/')[1]}`)
 
     try {
       await uploadBytes(imageRef, imageFile.buffer)
@@ -45,6 +47,21 @@ export class BoardService implements IBoardService {
       return true
     } catch (error) {
       console.error('Error delete image:', error)
+      return false
+    }
+  }
+
+  async removeFirebaseFolder(board_id: string) {
+    const path = `backgrounds/${board_id}/`
+    const folderRef = ref(storage, path)
+
+    try {
+      const folderSnapshot = await listAll(folderRef)
+      const filePromises = folderSnapshot.items.map((fileRef) => deleteObject(fileRef))
+      await Promise.all(filePromises)
+      return true
+    } catch (error) {
+      console.error('Error deleting folder:', error)
       return false
     }
   }
@@ -96,6 +113,7 @@ export class BoardServiceMock implements IBoardService {
         labels: [],
         is_star: false,
         background: '',
+        background_list: [],
       })
     })
   }
@@ -120,6 +138,7 @@ export class BoardServiceMock implements IBoardService {
           name: '',
           visibility: 'private',
           background: '',
+          background_list: [],
         },
       ])
     })
@@ -138,6 +157,7 @@ export class BoardServiceMock implements IBoardService {
         name: '',
         visibility: 'private',
         background: '',
+        background_list: [],
       })
     })
   }
@@ -163,6 +183,7 @@ export class BoardServiceMock implements IBoardService {
         name: '',
         visibility: 'private',
         background: '',
+        background_list: [],
       })
     })
   }
@@ -172,6 +193,10 @@ export class BoardServiceMock implements IBoardService {
   }
 
   removeFirebaseImage() {
+    return Promise.resolve(true)
+  }
+
+  removeFirebaseFolder() {
     return Promise.resolve(true)
   }
 }

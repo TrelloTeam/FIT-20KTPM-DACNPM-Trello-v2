@@ -53,13 +53,13 @@ export default {
     method: RequestMethod.POST,
   } as IRouteParams,
 
-  updateBackground: {
-    path: '/:board_id/background',
-    method: RequestMethod.PATCH,
+  addBackground: {
+    path: '/:board_id/background_list/add',
+    method: RequestMethod.POST,
   } as IRouteParams,
 
   removeBackground: {
-    path: '/:board_id/background',
-    method: RequestMethod.DELETE,
+    path: '/:board_id/background_list/remove',
+    method: RequestMethod.POST,
   } as IRouteParams,
 } as const

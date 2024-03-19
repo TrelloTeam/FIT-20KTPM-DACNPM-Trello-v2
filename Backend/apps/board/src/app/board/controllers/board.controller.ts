@@ -4,6 +4,7 @@ import { InjectController, InjectRoute } from '@app/common/decorators'
 import { SwaggerApi } from '@app/common/decorators/'
 import { IdParamValidationPipe, ZodValidationPipe } from '@app/common/pipes'
 import {
+  BadRequestException,
   Body,
   FileTypeValidator,
   HttpStatus,
@@ -131,7 +132,8 @@ export class BoardController {
     board_id: TrelloApi.BoardApi.BoardIdRequest,
   ): Promise<TrelloApi.BoardApi.DeleteBoardResponse> {
     const data = await this.boardService.deleteBoard(board_id)
-    if (data.background) await this.boardService.removeFirebaseImage(data.background)
+    if (data.background_list) await this.boardService.removeFirebaseFolder(board_id)
+
     return {
       data: data,
     }
@@ -153,6 +155,11 @@ export class BoardController {
     @Body(new ZodValidationPipe(TrelloApi.BoardApi.UpdateBoardRequestSchema))
     body: TrelloApi.BoardApi.UpdateBoardRequest,
   ): Promise<TrelloApi.BoardApi.UpdateBoardResponse> {
+    if (body.background) {
+      const board = await this.boardService.getBoardInfoByBoardId(body._id)
+      if (!board.background_list.includes(body.background))
+        throw new BadRequestException('The specified background does not exist in the board.')
+    }
     const data = await this.boardService.updateBoard(body)
     return {
       data: data,
@@ -255,7 +262,7 @@ export class BoardController {
     }
   }
 
-  @InjectRoute(BoardRoutes.updateBackground)
+  @InjectRoute(BoardRoutes.addBackground)
   @SwaggerApi({
     params: {
       name: 'board_id',
@@ -287,7 +294,8 @@ export class BoardController {
       }
 
     const imageUrl = await this.boardService.uploadFirebaseImage(board_id, background)
-    const update = await this.boardService.updateBoard({ _id: board_id, background: imageUrl })
+    this.boardService.updateBoard({ _id: board_id, background: imageUrl })
+    const update = await this.boardService.updateBoard({ _id: board_id, background_list: _.union(board.background_list, [imageUrl]) })
 
     return {
       data: update,
@@ -301,6 +309,9 @@ export class BoardController {
       type: 'string',
       example: 'string',
     },
+    body: {
+      schema: { $ref: getSchemaPath('RemoveBackgroundRequestSchema') },
+    },
     responses: [
       {
         status: HttpStatus.OK,
@@ -311,6 +322,8 @@ export class BoardController {
   async removeBackground(
     @Param('board_id', IdParamValidationPipe)
     board_id: TrelloApi.BoardApi.BoardIdRequest,
+    @Body(new ZodValidationPipe(TrelloApi.BoardApi.RemoveBackgroundRequestSchema))
+    body: TrelloApi.BoardApi.RemoveBackgroundRequest,
   ): Promise<TrelloApi.BoardApi.UpdateBoardResponse> {
     const board = await this.boardService.getBoardInfoByBoardId(board_id)
     if (!board)
@@ -318,8 +331,18 @@ export class BoardController {
         data: null,
       }
 
-    if (board.background) await this.boardService.removeFirebaseImage(board.background)
-    const update = await this.boardService.updateBoard({ _id: board._id, background: '' })
+    const update = await this.boardService.updateBoard({
+      _id: board_id,
+      background_list: board.background_list.filter((item) => item !== body.background),
+    })
+
+    if (board.background === body.background)
+      await this.boardService.updateBoard({
+        _id: board_id,
+        background: '',
+      })
+
+    if (board.background_list.includes(body.background)) await this.boardService.removeFirebaseImage(body.background)
 
     return {
       data: update,

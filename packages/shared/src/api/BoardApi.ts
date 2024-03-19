@@ -68,6 +68,7 @@ export type DeleteBoardResponse = z.infer<typeof DeleteBoardResponseSchema>;
 export const UpdateBoardRequestSchema = BoardSchema.pick({
   _id: true,
   name: true,
+  background: true,
   is_star: true,
   visibility: true,
 })
@@ -151,3 +152,10 @@ export const RemoveWatcherResponseSchema = z.object({
   data: BoardSchema.nullable(),
 });
 export type RemoveWatcherResponse = z.infer<typeof RemoveWatcherResponseSchema>;
+
+///
+
+export const RemoveBackgroundRequestSchema = BoardSchema.pick({
+  background: true,
+}).required({ background: true });
+export type RemoveBackgroundRequest = z.infer<typeof RemoveBackgroundRequestSchema>;
