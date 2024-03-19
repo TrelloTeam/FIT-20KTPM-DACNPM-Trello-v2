@@ -1,5 +1,5 @@
 import { Box, Card, CardActions, CardActionArea, Popover } from '@mui/material'
-import CreateBoardDialog from './BoardsPage/CreateBoardDialog'
+import CreateBoardDialog from './CreateBoardDialog'
 import { useDispatch, useSelector } from 'react-redux'
 import { closeDialog, openDialog, selectCreateBoardDialog } from '~/store/reducers'
 import React from 'react'

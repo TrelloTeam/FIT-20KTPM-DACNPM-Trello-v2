@@ -1,12 +1,12 @@
 import { colors } from '../../styles/index'
-import BoardsPageRow from '~/components/BoardsPageRow'
+import BoardsPageRow from '~/components/BoardsPage/BoardsPageRow'
 import { Box, Container, Grid } from '@mui/material'
 import StarIcon from '@mui/icons-material/Star'
 import AccessTimeIcon from '@mui/icons-material/AccessTime'
-import BoardsPageWorkspaceControl from '~/components/BoardsPageWorkspaceControl'
+import BoardsPageWorkspaceControl from '~/components/BoardsPage/BoardsPageWorkspaceControl'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrello } from '@fortawesome/free-brands-svg-icons'
-import BoardsPageRowTemplate from '~/components/BoardsPageRowTemplate'
+import BoardsPageRowTemplate from '~/components/BoardsPage/BoardsPageRowTemplate'
 import { selectBoardList, selectStarredBoardList } from '~/store/reducers'
 import { useSelector } from 'react-redux'
 import React from 'react'
@@ -58,17 +58,19 @@ export function BoardsPage() {
 
   return (
     <Box display='flex' justifyContent='center' alignItems='center' className='mb-20 mt-10'>
-      <Grid container sx={{ maxWidth: 1244 }}>
+      <Grid container sx={{ maxWidth: 1152 }}>
         {/* (reserved) Left panel */}
-        <Grid item xs={4}>
+        <Grid item xs={3}>
           <Container></Container>
         </Grid>
         {/* Boards Page */}
-        <Grid item xs={8}>
+        <Grid item xs={9} sx={{ padding: '40px 16px' }}>
           {/* START: Recently Viewed Boards section */}
           <Box style={{ color: colors.primary }} sx={{ display: 'flex', alignItems: 'center' }} className='my-4'>
-            <FontAwesomeIcon icon={faTrello} style={{ fontSize: 28 }} />
-            <h1 className='ml-2 p-0 text-xl font-bold'>Most popular templates</h1>
+            <FontAwesomeIcon icon={faTrello} style={{ fontSize: 20 }} />
+            <h2 style={{ fontSize: 20 }} className='ml-2 p-0 font-bold'>
+              Most popular templates
+            </h2>
           </Box>
           <BoardsPageRowTemplate boards={data1} />
           {/* END: Recently Viewed Boards section */}
