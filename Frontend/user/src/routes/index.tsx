@@ -6,8 +6,8 @@ import { AccountManagement, Board, BoardsPage } from '~/pages'
 import CardDetailWindow from '~/components/CardDetailWindow'
 import { CategoryWorkspace } from '~/pages/CategoryWorkspace'
 import PageMembers from '~/pages/Members'
-
 import Login from '~/pages/Login'
+import { WorkspaceSetting } from '~/pages/WorkspaceSetting'
 
 export const router = createBrowserRouter([
   {
@@ -52,6 +52,10 @@ export const router = createBrowserRouter([
       {
         path: '/login',
         element: <Login />
+      },
+      {
+        path: '/workspaceSetting',
+        element: <WorkspaceSetting />
       }
     ]
   }
