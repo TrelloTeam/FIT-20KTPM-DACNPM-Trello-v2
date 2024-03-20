@@ -4,8 +4,8 @@ import { initSwagger } from '@app/common'
 import { TrelloApi } from '@trello-v2/shared'
 
 async function bootstrap() {
-  // const PORT = process.env.PORT || 3000
-  const PORT = 4000
+  const PORT = process.env.PORT || 3000
+  // const PORT = 4000
   console.log(process.env.DB_CONN_STR)
   const app = await NestFactory.create(UserServiceModule)
   initSwagger(app, 'api/user/swagger', [TrelloApi.UserApi])
