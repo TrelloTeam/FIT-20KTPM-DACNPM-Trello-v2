@@ -13,7 +13,8 @@ import {
   PointerSensor,
   useSensor,
   useSensors,
-  DragMoveEvent
+  DragMoveEvent,
+  MouseSensor
 } from '@dnd-kit/core'
 import { arrayMove } from '@dnd-kit/sortable'
 
@@ -25,11 +26,37 @@ import { CardComponent, ListComponent } from './components'
 import { useTheme } from '~/components/Theme/themeContext'
 import { getAllListAPI } from '~/api/List'
 import { CardlistApiRTQ } from '~/api'
+import { TrelloApi } from '@trello-v2/shared'
+const MOCK_CARD_DATA: TrelloApi.CardlistApi.GetallCardlistResponse = {
+  data: [
+    {
+      _id: 'CardlistId1',
+      name: 'Card list 1',
+      watcher_email: [],
+      board_id: 'BoardId1',
+      cards: [
+        { _id: 'CardId1', name: 'Card 1', watcher_email: [], activities: [], features: [] },
+        { _id: 'CardId2', name: 'Card 2', watcher_email: [], activities: [], features: [] }
+      ]
+    },
+    {
+      _id: 'CardlistId2',
+      name: 'Card list 2',
+      watcher_email: [],
+      board_id: 'BoardId2',
+      cards: [
+        { _id: 'CardId3', name: 'Card 3', watcher_email: [], activities: [], features: [] },
+        { _id: 'CardId4', name: 'Card 4', watcher_email: [], activities: [], features: [] }
+      ]
+    }
+  ]
+}
 
 const ACTIVE_DRAG_ITEM_TYPE = {
   COLUMN: 'ACTIVE_DRAG_ITEM_TYPE_COLUMN',
   CARD: 'ACTIVE_DRAG_ITEM_TYPE_CARD'
 }
+
 // const LazyCardComponent = lazy(() => import('./components/Card'))
 // const LazyListComponent = lazy(() => import('./components/List'))
 const LazyListsComponent = lazy(() => import('./components/Lists'))
@@ -64,8 +91,7 @@ export function Board() {
   //   }
   // })
   useEffect(() => {
-    if (!cardlistData) return
-    const updatedLists_placeHolder = cardlistData.data.map((list) => ({
+    const updatedLists_placeHolder = [...(cardlistData?.data || []), ...MOCK_CARD_DATA.data].map((list) => ({
       ...list,
       cards: list.cards.map(
         (card) =>
@@ -91,11 +117,12 @@ export function Board() {
     setListsData(updatedLists)
   }, [cardlistData])
   const sensors = useSensors(
-    useSensor(PointerSensor, {
-      activationConstraint: {
-        distance: 10
-      }
-    })
+    useSensor(MouseSensor)
+    // useSensor(PointerSensor, {
+    //   activationConstraint: {
+    //     distance: 10
+    //   }
+    // })
   )
   async function getAllList() {
     getAllCardlist()
@@ -129,7 +156,6 @@ export function Board() {
   useEffect(() => {
     console.log('update list')
     getAllList()
-
     // You can call your API update function here
   }, [])
   // useEffect(() => {

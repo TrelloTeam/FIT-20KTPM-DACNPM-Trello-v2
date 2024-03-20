@@ -264,4 +264,8 @@ export const CardlistRoutes = {
     },
     // jwtSecure: false,
   } as IRouteParams,
+  testRoute: {
+    path: '/api/cardlist/test',
+    method: RequestMethod.GET,
+  } as IRouteParams,
 } as const

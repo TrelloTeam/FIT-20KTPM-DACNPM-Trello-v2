@@ -9,10 +9,9 @@ import { CardlistModule } from './app/cardlist/cardlist.module'
 import { CardModule } from './app/card/card.module'
 import { APP_GUARD } from '@nestjs/core'
 import { AuthGuard, KeycloakConnectModule, ResourceGuard, RoleGuard } from 'nest-keycloak-connect'
+import { ServeStaticModule } from '@nestjs/serve-static'
 const EnvSchema = {
   PORT: Joi.number(),
-  JWT_SECRET: Joi.string().required(),
-  JWT_REFRESH_SECRET: Joi.string().required(),
   DB_CONN_STR: Joi.string().required(),
 }
 
@@ -25,6 +24,11 @@ const EnvSchema = {
     KeycloakConnectModule.registerAsync({
       useExisting: KeycloakConfigService,
       imports: [AuthModule],
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: './public',
+      serveRoot: '/api/cardlist/swagger',
+      exclude: ['/api/cardlist/swagger/index.html'],
     }),
     MongooseModule.forRoot(process.env.DB_CONN_STR || ''),
     CardlistModule,

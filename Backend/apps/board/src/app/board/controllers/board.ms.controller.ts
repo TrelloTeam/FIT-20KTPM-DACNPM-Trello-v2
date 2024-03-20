@@ -23,7 +23,7 @@ export class BoardMSController {
   @GrpcMethod('BoardService', 'getBoardsByWorkSpaceId')
   async getBoardsByWorkSpaceId(
     @ValidateGrpcInput(TrelloApi.BoardApi.WorkSpaceIdRequestSchema.safeParse)
-    body: TrelloApi.BoardApi.WorkspaceIdResquest,
+    body: TrelloApi.BoardApi.WorkspaceIdRequest,
   ): Promise<TrelloApi.BoardApi.GetallBoardResponse> {
     const data = await this.boardService.getBoardsByWorkspaceId(body.workspace_id)
 
