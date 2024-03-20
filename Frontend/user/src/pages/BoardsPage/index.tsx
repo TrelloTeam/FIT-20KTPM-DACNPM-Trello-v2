@@ -31,13 +31,13 @@ const data1: BoardTemplate[] = [
 ]
 
 const data2: BoardSubset[] = [
-  { _id: '0', name: 'Project Trello', is_star: true },
-  { _id: '1', name: 'Board 2', is_star: false },
-  { _id: '2', name: 'Board 3', is_star: false },
-  { _id: '3', name: 'Board 3', is_star: false },
-  { _id: '4', name: 'Board 3', is_star: true },
-  { _id: '5', name: 'Board 3', is_star: false },
-  { _id: '6 ', name: 'Board 3', is_star: false }
+  { _id: 'Board_0', name: 'Project Trello', is_star: true },
+  { _id: 'Board_1', name: 'Board 2', is_star: false },
+  { _id: 'Board_2', name: 'Board 3', is_star: false },
+  { _id: 'Board_3', name: 'Board 3', is_star: false },
+  { _id: 'Board_4', name: 'Board 3', is_star: true },
+  { _id: 'Board_5', name: 'Board 3', is_star: false },
+  { _id: 'Board_6 ', name: 'Board 3', is_star: false }
 ]
 
 interface BoardsPageLabelProps {

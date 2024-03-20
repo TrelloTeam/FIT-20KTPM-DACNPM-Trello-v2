@@ -10,11 +10,10 @@ import { APP_GUARD } from '@nestjs/core'
 import { MongooseModule } from '@nestjs/mongoose'
 
 import { WorkspaceModule } from './app/workspace/workspace.module'
+import { ServeStaticModule } from '@nestjs/serve-static'
 
 const EnvSchema = {
   PORT: Joi.number(),
-  JWT_SECRET: Joi.string().required(),
-  JWT_REFRESH_SECRET: Joi.string().required(),
   DB_CONN_STR: Joi.string().required(),
   KEYCLOAK_AUTH_SERVER_URL: Joi.string().required(),
   KEYCLOAK_CLIENT_ID: Joi.string().required(),
@@ -30,7 +29,12 @@ const EnvSchema = {
     }),
     KeycloakConnectModule.registerAsync({
       useExisting: KeycloakConfigService,
-      imports: [AuthModule],
+      imports: [AuthModule]
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: './public',
+      serveRoot: '/api/workspace/swagger',
+      exclude: ['/api/workspace/swagger/index.html'],
     }),
     MongooseModule.forRoot(process.env.DB_CONN_STR || ''),
     WorkspaceModule,

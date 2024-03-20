@@ -8,11 +8,10 @@ import { AuthGuard, KeycloakConnectModule, ResourceGuard, RoleGuard } from 'nest
 import { APP_GUARD } from '@nestjs/core'
 import { AuthModule } from '@app/common/auth/auth.module'
 import { KeycloakConfigService } from '@app/common/auth/auth.service'
+import { ServeStaticModule } from '@nestjs/serve-static'
 
 const EnvSchema = {
   PORT: Joi.number(),
-  JWT_SECRET: Joi.string().required(),
-  JWT_REFRESH_SECRET: Joi.string().required(),
   DB_CONN_STR: Joi.string().required(),
   KEYCLOAK_AUTH_SERVER_URL: Joi.string().required(),
   KEYCLOAK_CLIENT_ID: Joi.string().required(),
@@ -28,7 +27,12 @@ const EnvSchema = {
     }),
     KeycloakConnectModule.registerAsync({
       useExisting: KeycloakConfigService,
-      imports: [AuthModule],
+      imports: [AuthModule]
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: './public',
+      serveRoot: '/api/board/swagger',
+      exclude: ['/api/board/swagger/index.html'],
     }),
     MongooseModule.forRoot(process.env.DB_CONN_STR || ''),
     BoardModule,
