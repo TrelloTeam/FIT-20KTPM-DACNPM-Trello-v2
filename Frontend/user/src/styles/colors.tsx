@@ -18,7 +18,7 @@ export const darkColors = {
   secondary: '#bdbdbd',
   text: '#9fadbc',
   background: '#1d2125',
-  backgroundSecond: '#23262A',
+  backgroundSecond: '#282E33',
   backgroundWarning: '#332E1B',
   background_menu_header: '#282e33',
   bg_noti: '#1c2b41',

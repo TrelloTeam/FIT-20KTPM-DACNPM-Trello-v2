@@ -1,4 +1,4 @@
-import { Avatar, AvatarGroup, Box, Chip } from '@mui/material'
+import { Avatar, AvatarGroup, Box, Chip, Drawer } from '@mui/material'
 import DashboardIcon from '@mui/icons-material/Dashboard'
 import StarBorderIcon from '@mui/icons-material/StarBorder'
 import { MdOutlineLock } from 'react-icons/md'
@@ -15,6 +15,8 @@ import CustomizeViews from './CustomizeViews'
 import Automation from './Automation'
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
 import Filter from './Filter'
+import { useTheme } from '../Theme/themeContext'
+import More from './MoreMenu'
 //pop up
 
 const Menu_Style = {
@@ -71,8 +73,13 @@ function stringAvatar(name: string) {
 }
 
 function BoardBar() {
+  const { darkMode, colors } = useTheme()
   const [anchor, setAnchor] = React.useState<null | HTMLElement>(null)
   const [popupContent, setPopupContent] = useState(<div>Hello kien</div>)
+  const [openMenu, setOpenMenu] = React.useState(false)
+  const toggleDrawer = (newOpen) => () => {
+    setOpenMenu(newOpen)
+  }
 
   const handleClick = (event: React.MouseEvent<HTMLElement>, customPopupContent: JSX.Element) => {
     setPopupContent(customPopupContent)
@@ -341,7 +348,7 @@ function BoardBar() {
                   }}
                 />
               }
-              onClick={(e) => handleClick(e, <Automation />)}
+              onClick={() => {setOpenMenu(true)}}
             />
           </Tooltip>
         </Box>
@@ -352,10 +359,13 @@ function BoardBar() {
         anchor={anchor}
         placement={'bottom-start'}
         disablePortal
-        className='z-50 mt-2 rounded-lg border border-solid border-slate-200 bg-white p-3 font-sans text-sm font-medium shadow-md'
+        className={`z-50 mt-2 rounded-lg border border-solid border-slate-200 bg-white p-3 font-sans text-sm font-medium shadow-md ${darkMode ? 'dark:bg-[#282E33]' : ''}`}
       >
         {popupContent}
       </BasePopup>
+      <Drawer open={false} sx={{ position: 'relative', bgcolor:colors.backgroundSecond, color: colors.text }} anchor='right' onClose={toggleDrawer(false)}>
+        {<More />}
+      </Drawer>
     </>
   )
 }

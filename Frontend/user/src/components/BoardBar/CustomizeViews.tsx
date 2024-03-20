@@ -3,34 +3,36 @@ import GroupTrelloIcon from '~/assets/GroupTrelloIcon.svg'
 import { CiViewTable } from 'react-icons/ci'
 import { SlCalender } from 'react-icons/sl'
 import { MdOutlineViewTimeline } from 'react-icons/md'
+import { useTheme } from '../Theme/themeContext'
 
 export default function CustomizeViews() {
+  const { darkMode, colors } = useTheme()
   return (
     <Box
       sx={{
         width: '304px',
-        bgcolor: 'background.paper'
+        bgcolor: colors.backgroundSecond
       }}
     >
-      <Box className='mb-1'>
-        <h3 className='flex justify-center text-[#44546F]'>Upgrade for veiws</h3>
+      <Box className='mb-1' sx={{color: colors.text}}>
+        <h3 className='flex justify-center'>Upgrade for veiws</h3>
       </Box>
       <Box>
         <FormGroup>
           <Box
             sx={{
-              color: '#44546F',
+              color: colors.text,
               cursor: 'pointer',
               display: 'flex',
-              alignItems: 'center',
+              alignItems: 'center',              
               '&:hover': {
-                bgcolor: 'rgba(54, 55, 61, 0.2)'
+                bgcolor: 'rgba(72, 72, 78, 0.3)'
               }
             }}
           >
-            <Checkbox />
-            <img src={GroupTrelloIcon} alt='NavBarIcon' className='mr-2 h-4 w-4 rounded-md' />
-            <p className='font-normal text-gray-700 '>Board</p>
+            <Checkbox sx={{color: colors.text}}  />
+            <img src={GroupTrelloIcon} alt='NavBarIcon' color={colors.text} className='mr-2 h-4 w-4 rounded-md' style={{color: colors.text, backgroundColor: colors.text}} />
+            <p className='font-normal  '>Board</p>
           </Box>
           <Box
             sx={{
@@ -38,28 +40,13 @@ export default function CustomizeViews() {
               display: 'flex',
               alignItems: 'center',
               '&:hover': {
-                bgcolor: 'rgba(54, 55, 61, 0.2)'
+                bgcolor: 'rgba(72, 72, 78, 0.3)'
               }
             }}
           >
-            <Checkbox />
-            <CiViewTable className='mr-2 text-lg font-semibold text-black' />
-            <p className='font-normal text-gray-700'>Table</p>
-          </Box>
-
-          <Box
-            sx={{
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              '&:hover': {
-                bgcolor: 'rgba(54, 55, 61, 0.2)'
-              }
-            }}
-          >
-            <Checkbox />
-            <SlCalender className='mr-2 text-lg font-semibold text-black' />
-            <p className='font-normal text-gray-700'>Calender</p>
+            <Checkbox sx={{color: colors.text}} />
+            <CiViewTable color={colors.text} className='mr-2 text-lg font-semibold text-black' />
+            <p className='font-normal' style={{color: colors.text}}>Table</p>
           </Box>
 
           <Box
@@ -68,13 +55,28 @@ export default function CustomizeViews() {
               display: 'flex',
               alignItems: 'center',
               '&:hover': {
-                bgcolor: 'rgba(54, 55, 61, 0.2)'
+                bgcolor: 'rgba(72, 72, 78, 0.3)'
               }
             }}
           >
-            <Checkbox />
-            <MdOutlineViewTimeline className='mr-2 text-lg font-black text-black' />
-            <p className='font-normal text-gray-700'>TimeLine</p>
+            <Checkbox sx={{color: colors.text}} />
+            <SlCalender color={colors.text} className='mr-2 text-lg font-semibold text-black' />
+            <p className='font-normal' style={{color: colors.text}}>Calender</p>
+          </Box>
+
+          <Box
+            sx={{
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              '&:hover': {
+                bgcolor: 'rgba(72, 72, 78, 0.3)'
+              }
+            }}
+          >
+            <Checkbox sx={{color: colors.text}} />
+            <MdOutlineViewTimeline color={colors.text} className='mr-2 text-lg font-black text-black' />
+            <p className='font-normal' style={{color: colors.text}}>TimeLine</p>
           </Box>
         </FormGroup>
       </Box>
