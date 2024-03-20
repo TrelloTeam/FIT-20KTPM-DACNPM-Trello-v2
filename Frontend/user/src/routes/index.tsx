@@ -1,5 +1,5 @@
 import { createBrowserRouter } from 'react-router-dom'
-import App from '../App'
+import App from '../App.js'
 import HomePage from '~/pages/Home'
 import { Templates } from './../pages/Templates/index'
 import { AccountManagement, Board, BoardsPage } from '~/pages'

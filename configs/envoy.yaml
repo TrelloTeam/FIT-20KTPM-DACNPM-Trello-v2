@@ -16,6 +16,10 @@ static_resources:
                     - name: local_service
                       domains: ["*"]
                       routes:
+                        - match: { prefix: "/api/mongo/" }
+                          route: { cluster: mongo_express, prefix_rewrite: "/" }
+                        - match: { prefix: "/api/workspace" }
+                          route: { cluster: workspace_service }
                         - match: { prefix: "/api/cardlist" }
                           route: { cluster: cardlist_service }
                         - match: { prefix: "/api/card" }
@@ -45,42 +49,6 @@ static_resources:
                       "@type": type.googleapis.com/envoy.extensions.filters.http.router.v3.Router
 
   clusters:
-    - name: cardlist_grpc_service
-      connect_timeout: 1s
-      type: LOGICAL_DNS
-      typed_extension_protocol_options:
-        envoy.extensions.upstreams.http.v3.HttpProtocolOptions:
-          "@type": type.googleapis.com/envoy.extensions.upstreams.http.v3.HttpProtocolOptions
-          explicit_http_config:
-            http2_protocol_options: {}
-      lb_policy: ROUND_ROBIN
-      load_assignment:
-        cluster_name: cardlist_grpc_service
-        endpoints:
-          - lb_endpoints:
-              - endpoint:
-                  address:
-                    socket_address:
-                      address: backend-cardlist
-                      port_value: 3001
-    - name: board_grpc_service
-      connect_timeout: 1s
-      type: LOGICAL_DNS
-      typed_extension_protocol_options:
-        envoy.extensions.upstreams.http.v3.HttpProtocolOptions:
-          "@type": type.googleapis.com/envoy.extensions.upstreams.http.v3.HttpProtocolOptions
-          explicit_http_config:
-            http2_protocol_options: {}
-      lb_policy: ROUND_ROBIN
-      load_assignment:
-        cluster_name: board_grpc_service
-        endpoints:
-          - lb_endpoints:
-              - endpoint:
-                  address:
-                    socket_address:
-                      address: backend-board
-                      port_value: 3001
     - name: cardlist_service
       connect_timeout: 10s
       type: LOGICAL_DNS
@@ -107,3 +75,29 @@ static_resources:
                     socket_address:
                       address: backend-board
                       port_value: 3000
+    - name: workspace_service
+      connect_timeout: 10s
+      type: LOGICAL_DNS
+      lb_policy: ROUND_ROBIN
+      load_assignment:
+        cluster_name: board_service
+        endpoints:
+          - lb_endpoints:
+              - endpoint:
+                  address:
+                    socket_address:
+                      address: backend-workspace
+                      port_value: 3000
+    - name: mongo_express
+      connect_timeout: 10s
+      type: LOGICAL_DNS
+      lb_policy: ROUND_ROBIN
+      load_assignment:
+        cluster_name: board_service
+        endpoints:
+          - lb_endpoints:
+              - endpoint:
+                  address:
+                    socket_address:
+                      address: mongo-express
+                      port_value: 8081

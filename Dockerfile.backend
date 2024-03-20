@@ -1,21 +1,28 @@
 
-FROM node:iron-alpine3.19
+FROM node:iron-alpine3.19 AS build
  
 WORKDIR /app
-
+ARG SERVICE_NAME
 EXPOSE 3000
 EXPOSE 3001
 
 COPY . .
-WORKDIR /app/packages/shared
+RUN npm i -g @vercel/ncc
 RUN npm install
-RUN npm run build
+RUN npm run build -w @trello-v2/shared
+
 WORKDIR /app/Backend
-RUN npm install
+RUN npx ncc build apps/$SERVICE_NAME/src/main.ts --out build
+RUN node build.js $SERVICE_NAME
 
-ENV SERVICE_NAME=none
+WORKDIR /app
+RUN rm -r node_modules
+RUN npm uninstall -g @vercel/ncc
 
-CMD ["sh", "-c", "npm run start:dev ${SERVICE_NAME}"]
-# RUN cd /Backend && npm run start:dev cardlist
-# # Development
-# CMD ["npm", "run", "start:dev"]
+FROM node:iron-alpine3.19
+WORKDIR /app
+COPY --from=build /app .
+WORKDIR /app/Backend
+
+CMD ["sh", "-c", "node build/index.js"]
+

@@ -23,6 +23,7 @@ export default function CardComponent({ card, setOpenCardSetting }: CardComponen
     id: card._id,
     data: { ...card }
   })
+
   const styleList = {
     transform: CSS.Transform.toString(transform),
     height: '100%',
@@ -34,7 +35,6 @@ export default function CardComponent({ card, setOpenCardSetting }: CardComponen
   const [isHoveredWatcher, setIsHoveredWatcher] = useState<string>()
   const [isHoveredTextInput, setIsHoveredTextInput] = useState<boolean>(false)
   const avtPath = '/src/assets/Profile/avt.png'
-
   let hoverTimeout: NodeJS.Timeout | undefined
   const handleMouseOver = (watcher: string) => {
     hoverTimeout = setTimeout(() => {
@@ -73,7 +73,7 @@ export default function CardComponent({ card, setOpenCardSetting }: CardComponen
   return (
     <>
       {!cardSettingOpen && (
-        <div ref={setNodeRef} style={styleList} {...attributes} {...listeners} className='transition-all'>
+        <div id={card._id} ref={setNodeRef} style={styleList} {...attributes} {...listeners} className='transition-all'>
           <div
             style={{
               backgroundColor: colors.background,
@@ -123,7 +123,7 @@ export default function CardComponent({ card, setOpenCardSetting }: CardComponen
         </div>
       )}
       {cardSettingOpen && cardSettingOpen === card._id && (
-        <div className={`pointer-events-auto `}>
+        <div className={`pointer-events-auto `} id={card._id}>
           <div
             style={{
               backgroundColor: colors.background,

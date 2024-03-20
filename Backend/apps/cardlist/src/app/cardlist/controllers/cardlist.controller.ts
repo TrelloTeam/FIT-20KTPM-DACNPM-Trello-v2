@@ -1,28 +1,23 @@
 import { InjectController, InjectRoute } from '@app/common/decorators'
-import { SwaggerApi } from '@app/common/decorators/swagger.decorator'
-import { ZodValidationPipe } from '@app/common/pipes'
+// import { SwaggerApi } from '@app/common/decorators/swagger.decorator'
+// import { getSchemaPath } from '@nestjs/swagger'
+import { IdParamValidationPipe, ZodValidationPipe } from '@app/common/pipes'
 import { Body, Param } from '@nestjs/common'
-import { getSchemaPath } from '@nestjs/swagger'
 import { TrelloApi } from '@trello-v2/shared'
 
 import { CardlistRoutes } from '../cardlist.routes'
 import { CardlistService } from '../services/cardlist.service'
+import { AuthenticatedUser, Public } from 'nest-keycloak-connect'
+import { UserInfoDto } from '@app/common/auth/user-info.dto'
 
 @InjectController({
-  name: 'cardlist',
+  name: CardlistRoutes.index,
 })
 export class CardlistController {
   constructor(private cardlistService: CardlistService) {}
 
   @InjectRoute(CardlistRoutes.getAllCardlistApi)
-  @SwaggerApi({
-    responses: [
-      {
-        status: 200,
-        schema: { $ref: getSchemaPath('GetallCardlistResponseSchema') },
-      },
-    ],
-  })
+  @Public(false)
   async getAll(): Promise<TrelloApi.CardlistApi.GetallCardlistResponse> {
     const data = await this.cardlistService.getAllCardlist()
     return {
@@ -31,19 +26,12 @@ export class CardlistController {
   }
 
   @InjectRoute(CardlistRoutes.createCardlistApi)
-  @SwaggerApi({
-    body: { schema: { $ref: getSchemaPath('CreateCardlistRequestSchema') } },
-    responses: [
-      {
-        status: 200,
-        schema: { $ref: getSchemaPath('CreateCardlistResponseSchema') },
-      },
-    ],
-  })
   async create(
     @Body(new ZodValidationPipe(TrelloApi.CardlistApi.CreateCardlistRequestSchema))
     body: TrelloApi.CardlistApi.CreateCardlistRequest,
+    @AuthenticatedUser() user: UserInfoDto,
   ): Promise<TrelloApi.CardlistApi.CreateCardlistResponse> {
+    body.watcher_email = [user.email]
     const data = await this.cardlistService.createCardlist(body)
     return {
       data: data,
@@ -51,19 +39,13 @@ export class CardlistController {
   }
 
   @InjectRoute(CardlistRoutes.copyCardlistApi)
-  @SwaggerApi({
-    body: { schema: { $ref: getSchemaPath('CopyCardlistRequestSchema') } },
-    responses: [
-      {
-        status: 200,
-        schema: { $ref: getSchemaPath('CopyCardlistResponseSchema') },
-      },
-    ],
-  })
+  @Public(false)
   async copy(
     @Body(new ZodValidationPipe(TrelloApi.CardlistApi.CopyCardlistRequestSchema))
     body: TrelloApi.CardlistApi.CopyCardlistRequest,
+    @AuthenticatedUser() user: UserInfoDto,
   ): Promise<TrelloApi.CardlistApi.CopyCardlistResponse> {
+    body.created_by = user.email
     const data = await this.cardlistService.copyCardlist(body)
     return {
       data: data,
@@ -71,42 +53,20 @@ export class CardlistController {
   }
 
   @InjectRoute(CardlistRoutes.getCardlistsByBoardId)
-  @SwaggerApi({
-    params: {
-      name: 'boardId',
-      schema: {
-        type: 'string',
-      },
-    },
-    responses: [
-      {
-        status: 200,
-        schema: { $ref: getSchemaPath('GetallCardlistByBoardIdResponseSchema') },
-      },
-    ],
-  })
-  async getAllByBoardId(@Param('boardId') boardId: string): Promise<TrelloApi.CardlistApi.GetallCardlistByBoardIdResponse> {
+  @Public(false)
+  async getAllByBoardId(
+    @Param('boardId', IdParamValidationPipe) boardId: string,
+  ): Promise<TrelloApi.CardlistApi.GetallCardlistByBoardIdResponse> {
     const data = await this.cardlistService.getAllCardlistByBoardId(boardId)
     return {
       data: data,
     }
   }
   @InjectRoute(CardlistRoutes.getCardlistsArchivedByBoardId)
-  @SwaggerApi({
-    params: {
-      name: 'boardId',
-      schema: {
-        type: 'string',
-      },
-    },
-    responses: [
-      {
-        status: 200,
-        schema: { $ref: getSchemaPath('GetallCardlistArchivedByBoardIdResponseSchema') },
-      },
-    ],
-  })
-  async getAllArchivedByBoardId(@Param('boardId') boardId: string): Promise<TrelloApi.CardlistApi.GetallCardlistArchivedByBoardIdResponse> {
+  @Public(false)
+  async getAllArchivedByBoardId(
+    @Param('boardId', IdParamValidationPipe) boardId: string,
+  ): Promise<TrelloApi.CardlistApi.GetallCardlistArchivedByBoardIdResponse> {
     const data = await this.cardlistService.getAllCardlistArchivedByBoardId(boardId)
     return {
       data: data,
@@ -114,22 +74,9 @@ export class CardlistController {
   }
 
   @InjectRoute(CardlistRoutes.getCardlistsNonArchivedByBoardId)
-  @SwaggerApi({
-    params: {
-      name: 'boardId',
-      schema: {
-        type: 'string',
-      },
-    },
-    responses: [
-      {
-        status: 200,
-        schema: { $ref: getSchemaPath('GetallCardlistNonArchivedByBoardIdResponseSchema') },
-      },
-    ],
-  })
+  @Public(false)
   async getAllNonArchivedByBoardId(
-    @Param('boardId') boardId: string,
+    @Param('boardId', IdParamValidationPipe) boardId: string,
   ): Promise<TrelloApi.CardlistApi.GetallCardlistNonArchivedByBoardIdResponse> {
     const data = await this.cardlistService.getAllCardlistNonArchivedByBoardId(boardId)
     return {
@@ -138,23 +85,10 @@ export class CardlistController {
   }
 
   @InjectRoute(CardlistRoutes.sortCardlistsByOldestDate)
-  @SwaggerApi({
-    params: {
-      name: 'boardId',
-      schema: {
-        type: 'string',
-      },
-    },
-    responses: [
-      {
-        status: 200,
-        schema: {
-          $ref: getSchemaPath('SortCardlistByOldestDateResponseSchema'),
-        },
-      },
-    ],
-  })
-  async sortByOldestDate(@Param('boardId') boardId: string): Promise<TrelloApi.CardlistApi.SortCardlistByOldestDateResponse> {
+  @Public(false)
+  async sortByOldestDate(
+    @Param('boardId', IdParamValidationPipe) boardId: string,
+  ): Promise<TrelloApi.CardlistApi.SortCardlistByOldestDateResponse> {
     const data = await this.cardlistService.sortCardlistByOldestDate(boardId)
     return {
       data: data,
@@ -162,23 +96,10 @@ export class CardlistController {
   }
 
   @InjectRoute(CardlistRoutes.sortCardlistsByNewestDate)
-  @SwaggerApi({
-    params: {
-      name: 'boardId',
-      schema: {
-        type: 'string',
-      },
-    },
-    responses: [
-      {
-        status: 200,
-        schema: {
-          $ref: getSchemaPath('SortCardlistByNewestDateResponseSchema'),
-        },
-      },
-    ],
-  })
-  async sortByNewestDate(@Param('boardId') boardId: string): Promise<TrelloApi.CardlistApi.SortCardlistByNewestDateResponse> {
+  @Public(false)
+  async sortByNewestDate(
+    @Param('boardId', IdParamValidationPipe) boardId: string,
+  ): Promise<TrelloApi.CardlistApi.SortCardlistByNewestDateResponse> {
     const data = await this.cardlistService.sortCardlistByNewestDate(boardId)
     return {
       data: data,
@@ -186,23 +107,8 @@ export class CardlistController {
   }
 
   @InjectRoute(CardlistRoutes.sortCardlistsByName)
-  @SwaggerApi({
-    params: {
-      name: 'boardId',
-      schema: {
-        type: 'string',
-      },
-    },
-    responses: [
-      {
-        status: 200,
-        schema: {
-          $ref: getSchemaPath('SortCardlistByNameResponseSchema'),
-        },
-      },
-    ],
-  })
-  async sortByName(@Param('boardId') boardId: string): Promise<TrelloApi.CardlistApi.SortCardlistByNameResponse> {
+  @Public(false)
+  async sortByName(@Param('boardId', IdParamValidationPipe) boardId: string): Promise<TrelloApi.CardlistApi.SortCardlistByNameResponse> {
     const data = await this.cardlistService.sortCardlistByName(boardId)
     return {
       data: data,
@@ -210,15 +116,7 @@ export class CardlistController {
   }
 
   @InjectRoute(CardlistRoutes.updateCardlists)
-  @SwaggerApi({
-    body: { schema: { $ref: getSchemaPath('UpdateCardlistRequestSchema') } },
-    responses: [
-      {
-        status: 200,
-        schema: { $ref: getSchemaPath('UpdateCardlistResponseSchema') },
-      },
-    ],
-  })
+  @Public(false)
   async update(
     @Body(new ZodValidationPipe(TrelloApi.CardlistApi.UpdateCardlistRequestSchema))
     body: TrelloApi.CardlistApi.UpdateCardlistRequest,
@@ -230,15 +128,7 @@ export class CardlistController {
   }
 
   @InjectRoute(CardlistRoutes.moveCardlists)
-  @SwaggerApi({
-    body: { schema: { $ref: getSchemaPath('MoveCardlistRequestSchema') } },
-    responses: [
-      {
-        status: 200,
-        schema: { $ref: getSchemaPath('MoveCardlistResponseSchema') },
-      },
-    ],
-  })
+  @Public(false)
   async move(
     @Body(new ZodValidationPipe(TrelloApi.CardlistApi.MoveCardlistRequestSchema))
     body: TrelloApi.CardlistApi.MoveCardlistRequest,
@@ -250,23 +140,10 @@ export class CardlistController {
   }
 
   @InjectRoute(CardlistRoutes.archiveCardsInList)
-  @SwaggerApi({
-    params: {
-      name: 'cardlistId',
-      schema: {
-        type: 'string',
-      },
-    },
-    responses: [
-      {
-        status: 200,
-        schema: {
-          $ref: getSchemaPath('ArchiveAllCardsInListResponseSchema'),
-        },
-      },
-    ],
-  })
-  async archiveCardsInList(@Param('cardlistId') cardlistId: string): Promise<TrelloApi.CardlistApi.ArchiveAllCardsInListResponse> {
+  @Public(false)
+  async archiveCardsInList(
+    @Param('cardlistId', IdParamValidationPipe) cardlistId: string,
+  ): Promise<TrelloApi.CardlistApi.ArchiveAllCardsInListResponse> {
     const data = await this.cardlistService.archiveCardsInlist(cardlistId)
     return {
       data: data,
@@ -274,23 +151,10 @@ export class CardlistController {
   }
 
   @InjectRoute(CardlistRoutes.archiveCardList)
-  @SwaggerApi({
-    params: {
-      name: 'cardlistId',
-      schema: {
-        type: 'string',
-      },
-    },
-    responses: [
-      {
-        status: 200,
-        schema: {
-          $ref: getSchemaPath('ArchiveCardlistResponseSchema'),
-        },
-      },
-    ],
-  })
-  async archiveCardList(@Param('cardlistId') cardlistId: string): Promise<TrelloApi.CardlistApi.ArchiveCardlistResponse> {
+  @Public(false)
+  async archiveCardList(
+    @Param('cardlistId', IdParamValidationPipe) cardlistId: string,
+  ): Promise<TrelloApi.CardlistApi.ArchiveCardlistResponse> {
     const data = await this.cardlistService.archiveCardlist(cardlistId)
     return {
       data: data,
@@ -298,15 +162,7 @@ export class CardlistController {
   }
 
   @InjectRoute(CardlistRoutes.addWatcher)
-  @SwaggerApi({
-    body: { schema: { $ref: getSchemaPath('AddWatcherRequestSchema') } },
-    responses: [
-      {
-        status: 200,
-        schema: { $ref: getSchemaPath('AddWatcherResponseSchema') },
-      },
-    ],
-  })
+  @Public(false)
   async addWatcher(
     @Body(new ZodValidationPipe(TrelloApi.CardlistApi.AddWatcherRequestSchema))
     body: TrelloApi.CardlistApi.AddWatcherRequest,
@@ -317,15 +173,7 @@ export class CardlistController {
     }
   }
   @InjectRoute(CardlistRoutes.addCardTolist)
-  @SwaggerApi({
-    body: { schema: { $ref: getSchemaPath('AddCardToListRequestSchema') } },
-    responses: [
-      {
-        status: 200,
-        schema: { $ref: getSchemaPath('AddCardToListResponseSchema') },
-      },
-    ],
-  })
+  @Public(false)
   async addCardToList(
     @Body(new ZodValidationPipe(TrelloApi.CardlistApi.AddCardToListRequestSchema))
     body: TrelloApi.CardlistApi.AddCardToListRequest,
@@ -334,5 +182,10 @@ export class CardlistController {
     return {
       data: data,
     }
+  }
+
+  @InjectRoute(CardlistRoutes.testRoute)
+  test() {
+    return { Hello: 'Demo' }
   }
 }

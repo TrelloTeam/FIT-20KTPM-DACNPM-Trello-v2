@@ -5,7 +5,7 @@ services:
     image: mongo
     restart: always
     ports:
-      - 7000:27017
+      - 7001:27017
     environment:
       MONGO_INITDB_ROOT_USERNAME: MONGO_USER
       MONGO_INITDB_ROOT_PASSWORD: MONGO_123
@@ -30,12 +30,12 @@ services:
     command: ["start-dev"]
 
   envoy:
-    image: envoyproxy/envoy:dev-eb51ea0ff70a40cd4bbafc6f03333e38c62a2ca3
+    image: lamlance/trello-envoy:latest
     ports:
       - "10000:10000"
 
   backend-cardlist:
-    image: trello-v2/backend:1.1
+    image: lamlance/trello-backend:cardlist-latest
     environment:
       - GRPC_HOST=0.0.0.0
       - PORT=3000
@@ -46,7 +46,7 @@ services:
       - 3011:3001
 
   backend-board:
-    image: trello-v2/backend:1.1
+    image: lamlance/trello-backend:board-latest
     environment:
       - GRPC_HOST=0.0.0.0
       - PORT=3000
@@ -57,7 +57,7 @@ services:
       - 3021:3001
 
   backend-workspace:
-    image: trello-v2/backend:1.1
+    image: lamlance/trello-backend:workspace-latest
     environment:
       - GRPC_HOST=0.0.0.0
       - PORT=3000
