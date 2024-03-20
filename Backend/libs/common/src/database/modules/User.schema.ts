@@ -4,6 +4,7 @@ import { ActivityMSchema } from './Activity.schema'
 
 export const UserMSchema = new mongoose.Schema<DbSchemas.UserSchema.User>({
   username: String,
+  email: String,
   bio: String,
   avatar: String,
   activities: [ActivityMSchema],

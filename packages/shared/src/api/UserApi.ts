@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { UserSchema } from "../schemas/User";
+import { ActivitySchema } from "../schemas/Activity";
 
 // create user
 export const CreateUserRequestSchema = UserSchema.omit({
@@ -42,3 +43,39 @@ export const UpdateUserRequestSchemaProto = UserSchema;
 export type UpdateUserRequestProto = z.infer<
   typeof UpdateUserRequestSchemaProto
 >;
+
+// delete user
+export const DeleteUserResponseSchema = z.object({
+  data: UserSchema,
+});
+export type DeleteUserResponse = z.infer<typeof DeleteUserResponseSchema>;
+
+// create activity
+export const CreateActivityRequestSchema = ActivitySchema.omit({
+  _id: true,
+});
+
+export type CreateActivityRequest = z.infer<typeof CreateActivityRequestSchema>;
+
+export const CreateActivityResponseSchema = z.object({
+  data: ActivitySchema,
+});
+export type CreateActivityResponse = z.infer<typeof CreateActivityResponseSchema>;
+
+// get all activities
+export const GetallActivitiesResponseSchema = z.object({
+  data: ActivitySchema.array().nullable(),
+});
+export type GetallActivitiesResponse = z.infer<typeof GetallActivitiesResponseSchema>;
+
+// delete activity
+export const DeleteActivityResponseSchema = z.object({
+  data: ActivitySchema,
+});
+export type DeleteActivityResponse = z.infer<typeof DeleteActivityResponseSchema>;
+
+// delete activities
+export const DeleteActivitiesResponseSchema = z.object({
+  data: UserSchema,
+});
+export type DeleteActivitiesResponse = z.infer<typeof DeleteActivitiesResponseSchema>;
