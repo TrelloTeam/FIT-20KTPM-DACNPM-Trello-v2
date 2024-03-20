@@ -11,11 +11,19 @@ export const lightColors = {
   bg_button_active_hover: '#cce0ff',
   card_border: '#388bff',
   save_card: '#0c66e4',
-  save_card_hover:'#0e5bc7',
+  save_card_hover: '#0e5bc7',
   add_card_hover: '#0e5bc7',
-  add_card:'#0c66e4',
+  add_card: '#0c66e4',
   black: '#000',
-  white: '#fff'
+  white: '#fff',
+  background_modal: '#ffffff',
+  background_modal_secondary: '#ffffff',
+  background_modal_tertiary: '#ffffff',
+  button_primary: 'rgb(12, 102, 228)',
+  button_primary_text: '#ffffff',
+  button: 'rgba(9, 30, 66, 0.08)',
+  button_hover: 'rgba(9, 30, 66, 0.15)',
+  button_hover_hover: 'rgba(9, 30, 66, 0.25)'
 }
 
 export const darkColors = {
@@ -31,9 +39,17 @@ export const darkColors = {
   bg_button_active_hover: '#333c43',
   card_border: '#85b8ff',
   save_card_hover: '#7bb0f9',
-  save_card:'#579dff',
+  save_card: '#579dff',
   add_card_hover: '#7bb0f9',
-  add_card:'#579dff',
+  add_card: '#579dff',
   black: '#000',
-  white: '#fff'
+  white: '#fff',
+  background_modal: 'rgb(56,60,68)',
+  background_modal_secondary: '#282E33',
+  background_modal_tertiary: '#22272B',
+  button_primary: 'rgb(87, 157, 255)',
+  button_primary_text: 'rgb(29, 33, 37)',
+  button: 'rgba(161, 189, 217, 0.08)',
+  button_hover: 'rgba(161, 189, 217, 0.15)',
+  button_hover_hover: 'rgba(161, 189, 217, 0.25)'
 }

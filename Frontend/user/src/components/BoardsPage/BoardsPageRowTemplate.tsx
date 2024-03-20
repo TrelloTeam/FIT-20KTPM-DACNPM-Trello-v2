@@ -1,8 +1,7 @@
 import { Grid } from '@mui/material'
 
 import { BoardTemplate } from '~/pages'
-import BoardsPageCardTemplate from './BoardsPageCardTemplate'
-import { Link } from 'react-router-dom'
+import { BoardsPageCardTemplate } from './BoardsPageCardTemplate'
 
 interface BoardsPageRowTemplateProps {
   boards: BoardTemplate[]
@@ -13,9 +12,7 @@ export default function BoardsPageRowTemplate({ boards }: BoardsPageRowTemplateP
     <Grid container spacing={2}>
       {boards.map((board: BoardTemplate, index: number) => (
         <Grid item xs={3} key={index}>
-          <Link to={`/workspace/${board._id}`}>
-            <BoardsPageCardTemplate board={board} />
-          </Link>
+          <BoardsPageCardTemplate board={board} />
         </Grid>
       ))}
     </Grid>

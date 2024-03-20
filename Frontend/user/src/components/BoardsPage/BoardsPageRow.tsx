@@ -1,23 +1,21 @@
 import { Grid } from '@mui/material'
 
 import { BoardSubset } from '~/pages'
-import BoardsPageCard from './BoardsPageCard'
-import BoardsPageCardAdd from './BoardsPageCardAdd'
-import { Link } from 'react-router-dom'
+import { BoardsPageCard } from './BoardsPageCard'
+import { BoardsPageCardAdd } from './BoardsPageCardAdd'
 
 interface BoardsPageRowProps {
   boards: BoardSubset[]
+  setBoards: (newState: BoardSubset[]) => void
   enableAddBoard: boolean
 }
 
-export default function BoardsPageRow({ boards, enableAddBoard }: BoardsPageRowProps) {
+export default function BoardsPageRow({ boards, setBoards, enableAddBoard }: BoardsPageRowProps) {
   return (
     <Grid container spacing={2}>
       {boards.map((board: BoardSubset, index: number) => (
         <Grid item xs={3} key={index}>
-          <Link to={`/workspace/123`}>
-            <BoardsPageCard board={board} />
-          </Link>
+          <BoardsPageCard currentBoard={board} boards={boards} setBoards={setBoards} />
         </Grid>
       ))}
       {enableAddBoard ? (
