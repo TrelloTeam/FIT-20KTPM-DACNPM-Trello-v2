@@ -66,3 +66,14 @@ services:
     ports:
       - 3030:3000
       - 3031:3001
+
+  backend-user:
+    image: lamlance/trello-backend:user-latest
+    environment:
+      - GRPC_HOST=0.0.0.0
+      - PORT=3000
+      - SERVICE_NAME=workspace
+      - DB_CONN_STR=mongodb://MONGO_USER:MONGO_123@mongo:27017/trello?authSource=admin
+    ports:
+      - 3040:3000
+      - 3041:3001

@@ -26,6 +26,8 @@ static_resources:
                           route: { cluster: cardlist_service }
                         - match: { prefix: "/api/board" }
                           route: { cluster: board_service }
+                        - match: { prefix: "/api/user" }
+                          route: { cluster: user_service }
                       cors:
                         allow_origin_string_match:
                           - prefix: "*"
@@ -80,13 +82,26 @@ static_resources:
       type: LOGICAL_DNS
       lb_policy: ROUND_ROBIN
       load_assignment:
-        cluster_name: board_service
+        cluster_name: workspace_service
         endpoints:
           - lb_endpoints:
               - endpoint:
                   address:
                     socket_address:
                       address: backend-workspace
+                      port_value: 3000
+    - name: user_service
+      connect_timeout: 10s
+      type: LOGICAL_DNS
+      lb_policy: ROUND_ROBIN
+      load_assignment:
+        cluster_name: user_service
+        endpoints:
+          - lb_endpoints:
+              - endpoint:
+                  address:
+                    socket_address:
+                      address: backend-user
                       port_value: 3000
     - name: mongo_express
       connect_timeout: 10s

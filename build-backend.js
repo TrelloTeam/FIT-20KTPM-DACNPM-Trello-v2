@@ -1,6 +1,6 @@
 import { exec } from "child_process";
 const services = process.argv.slice(2);
-
+console.log(services);
 function buildPush(v) {
   console.log("Start build: ", v);
   exec(

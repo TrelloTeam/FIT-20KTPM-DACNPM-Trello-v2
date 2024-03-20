@@ -11,6 +11,6 @@ export const COLLECTION_NAMES = [
   "workspaces",
   "users",
   "members",
-  "activities"
+  "activities",
   "cards",
 ] as const;
