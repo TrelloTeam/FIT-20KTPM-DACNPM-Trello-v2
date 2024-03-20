@@ -7,8 +7,6 @@ export abstract class ICardlistService {
 
   abstract copyCardlist(data: TrelloApi.CardlistApi.CopyCardlistRequest): Promise<DbSchemas.CardlistSchema.CardList>
 
-  abstract copyCardlist(data: TrelloApi.CardlistApi.CopyCardlistRequest): Promise<DbSchemas.CardlistSchema.CardList>
-
   abstract updateCardlist(data: TrelloApi.CardlistApi.UpdateCardlistRequest): Promise<DbSchemas.CardlistSchema.CardList>
   abstract moveCardlist(data: TrelloApi.CardlistApi.MoveCardlistRequest): Promise<DbSchemas.CardlistSchema.CardList>
   abstract getAllCardlist(): Promise<DbSchemas.CardlistSchema.CardList[]>
@@ -58,13 +56,18 @@ export class CardlistService implements ICardlistService {
     if (!existingCardList) {
       return { status: 'Not Found', msg: "Can't find any cardlist" } as any
     }
+    const watcher_list = existingCardList.watcher_email
+    if (!watcher_list.includes(data.created_by)) {
+      watcher_list.push(data.created_by)
+    }
     const newCardList = new this.CardlistMModel({
       name: existingCardList.name,
       board_id: existingCardList.board_id,
       cards: existingCardList.cards,
-      watcher_email: existingCardList.watcher_email,
+      watcher_email: watcher_list,
       index: existingCardList.index,
       archive_at: null,
+      created_at: new Date(),
     })
     await newCardList.save()
     return await newCardList.toJSON()

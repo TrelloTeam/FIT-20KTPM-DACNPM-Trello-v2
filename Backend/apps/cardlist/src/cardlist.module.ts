@@ -1,10 +1,14 @@
 import { Module } from '@nestjs/common'
 import * as Joi from 'joi'
+import { AuthModule } from '@app/common/auth/auth.module'
+import { KeycloakConfigService } from '@app/common/auth/auth.service'
 import { MongooseModule } from '@nestjs/mongoose'
 import { ConfigModule } from '@nestjs/config'
 import { configuration } from '@app/common/config'
 import { CardlistModule } from './app/cardlist/cardlist.module'
 import { CardModule } from './app/card/card.module'
+import { APP_GUARD } from '@nestjs/core'
+import { AuthGuard, KeycloakConnectModule, ResourceGuard, RoleGuard } from 'nest-keycloak-connect'
 import { ServeStaticModule } from '@nestjs/serve-static'
 const EnvSchema = {
   PORT: Joi.number(),
@@ -17,6 +21,10 @@ const EnvSchema = {
       validationSchema: Joi.object().keys(EnvSchema),
       load: [configuration],
     }),
+    KeycloakConnectModule.registerAsync({
+      useExisting: KeycloakConfigService,
+      imports: [AuthModule],
+    }),
     ServeStaticModule.forRoot({
       rootPath: './public',
       serveRoot: '/api/cardlist/swagger',
@@ -27,6 +35,19 @@ const EnvSchema = {
     CardModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: ResourceGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: RoleGuard,
+    },
+  ],
 })
 export class CardlistServiceModule {}
