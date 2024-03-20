@@ -1,18 +1,31 @@
 import { InjectController, InjectRoute } from '@app/common/decorators'
 import { UserService } from '../services/user.service'
 import { UserRoutes } from '../user.routes'
-import { Body, InternalServerErrorException, NotFoundException, Param } from '@nestjs/common'
+import { Body, Inject, InternalServerErrorException, NotFoundException, OnModuleInit, Param, RequestMethod } from '@nestjs/common'
 import { ZodValidationPipe } from '@app/common/pipes'
 import { TrelloApi } from '@trello-v2/shared'
 import { SwaggerApi } from '@app/common/decorators'
 import { getSchemaPath } from '@nestjs/swagger'
+import { ClientGrpc } from '@nestjs/microservices'
+
+interface EchoInterface {
+  Echo: (args: { name: string }) => { hello: string }
+}
 
 @InjectController({
   name: 'user',
   isCore: true,
 })
-export class UserController {
-  constructor(private userService: UserService) { }
+export class UserController implements OnModuleInit {
+  constructor(
+    private userService: UserService,
+    @Inject('ECHO_SERVICE') private client: ClientGrpc,
+  ) {}
+  private echoSerice: EchoInterface
+
+  onModuleInit() {
+    this.echoSerice = this.client.getService<EchoInterface>('EchoService')
+  }
 
   @InjectRoute(UserRoutes.createUser)
   @SwaggerApi({
@@ -81,7 +94,7 @@ export class UserController {
     if (!user) throw new NotFoundException("Can't find user")
 
     return {
-      data: user
+      data: user,
     }
   }
 
@@ -100,14 +113,12 @@ export class UserController {
       },
     ],
   })
-  async getUser(
-    @Param('email') email: string
-  ): Promise<TrelloApi.UserApi.GetUserResponse> {
+  async getUser(@Param('email') email: string): Promise<TrelloApi.UserApi.GetUserResponse> {
     const user = await this.userService.getUser(email)
     if (!user) throw new NotFoundException("Can't find user")
 
     return {
-      data: user
+      data: user,
     }
   }
 
@@ -126,14 +137,12 @@ export class UserController {
       },
     ],
   })
-  async deleteUser(
-    @Param('email') email: string
-  ): Promise<TrelloApi.UserApi.DeleteUserResponse> {
+  async deleteUser(@Param('email') email: string): Promise<TrelloApi.UserApi.DeleteUserResponse> {
     const user = await this.userService.deleteUser(email)
     if (!user) throw new NotFoundException("Can't find user")
 
     return {
-      data: user
+      data: user,
     }
   }
 
@@ -183,12 +192,10 @@ export class UserController {
       },
     ],
   })
-  async getAllActivities(
-    @Param('email') email: string,
-  ): Promise<TrelloApi.UserApi.GetallActivitiesResponse> {
-    const data = await this.userService.getAllActivities(email);
+  async getAllActivities(@Param('email') email: string): Promise<TrelloApi.UserApi.GetallActivitiesResponse> {
+    const data = await this.userService.getAllActivities(email)
     return {
-      data: data? data.activities : [],
+      data: data ? data.activities : [],
     }
   }
 
@@ -207,15 +214,12 @@ export class UserController {
       },
     ],
   })
-  async deleteActivity(
-    @Param('email') email: string,
-    @Param('id') id: string
-  ): Promise<TrelloApi.UserApi.DeleteActivityResponse> {
+  async deleteActivity(@Param('email') email: string, @Param('id') id: string): Promise<TrelloApi.UserApi.DeleteActivityResponse> {
     const activity = await this.userService.deleteActivity(email, id)
     if (!activity) throw new NotFoundException("Can't find activity")
 
     return {
-      data: activity
+      data: activity,
     }
   }
 
@@ -234,14 +238,17 @@ export class UserController {
       },
     ],
   })
-  async deleteActivities(
-    @Param('email') email: string
-  ): Promise<TrelloApi.UserApi.DeleteActivitiesResponse> {
+  async deleteActivities(@Param('email') email: string): Promise<TrelloApi.UserApi.DeleteActivitiesResponse> {
     const user = await this.userService.deleteActivities(email)
     if (!user) throw new NotFoundException("Can't find activity")
 
     return {
-      data: user
+      data: user,
     }
+  }
+
+  @InjectRoute({ path: '/api/grpc/test', method: RequestMethod.GET })
+  test() {
+    return this.echoSerice.Echo({ name: 'User service' })
   }
 }
