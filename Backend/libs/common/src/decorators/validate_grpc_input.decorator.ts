@@ -1,6 +1,7 @@
-import { BadRequestException, ExecutionContext, NotFoundException, createParamDecorator } from '@nestjs/common'
+import { ZodSchema } from 'zod'
+
+import { BadRequestException, createParamDecorator, ExecutionContext } from '@nestjs/common'
 import { RpcException } from '@nestjs/microservices'
-import { ZodObject, ZodSchema } from 'zod'
 
 export const ValidateGrpcInput = createParamDecorator<ZodSchema['safeParse']>((safeParse, ctx: ExecutionContext) => {
   const data = ctx.switchToRpc().getData()

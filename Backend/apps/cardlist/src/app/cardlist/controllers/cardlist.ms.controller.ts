@@ -1,11 +1,11 @@
 import { InjectController, ValidateGrpcInput } from '@app/common/decorators'
-import { CardlistService } from '../services/cardlist.service'
-import { TrelloApi } from '@trello-v2/shared'
 import { GrpcMethod } from '@nestjs/microservices'
+import { TrelloApi } from '@trello-v2/shared'
+
+import { CardlistService } from '../services/cardlist.service'
 
 @InjectController({
   name: 'cardlist',
-  isCore: true,
 })
 export class CardlistMSController {
   constructor(private cardlistService: CardlistService) {}

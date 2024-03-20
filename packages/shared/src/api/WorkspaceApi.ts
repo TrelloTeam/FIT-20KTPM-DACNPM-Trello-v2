@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { WorkspaceSchema } from "../schemas/Workspace";
+import { MemberSchema, WorkspaceSchema } from "../schemas/Workspace";
 
 export const EmailIdSchema = z.object({
   email: z.string().nullish(),
@@ -69,5 +69,9 @@ export type ChangeWorkspaceVisibilityRequest = z.infer<
 >;
 
 //
-export const InviteWorkspaceSchema = z.object({ email: z.string() });
-export type InviteWorkspace = z.infer<typeof InviteWorkspaceSchema>;
+export const InviteMembers2WorkspaceRequestSchema = z.object({
+  members: MemberSchema.omit({ _id: true }).array(),
+});
+export type InviteMembers2WorkspaceRequest = z.infer<
+  typeof InviteMembers2WorkspaceRequestSchema
+>;

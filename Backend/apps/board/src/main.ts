@@ -13,6 +13,6 @@ async function bootstrap() {
   const app = await NestFactory.create(BoardServiceModule)
   initSwagger(app, 'api/board/swagger', [TrelloApi.BoardApi])
   await app.startAllMicroservices()
-  await app.listen(PORT, () => console.log(`Cardlist server http://localhost:${PORT}`))
+  await app.listen(PORT, () => console.log(`board server http://localhost:${PORT}`))
 }
 bootstrap()

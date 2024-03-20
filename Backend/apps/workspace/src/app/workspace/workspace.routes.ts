@@ -3,65 +3,65 @@ import { HttpStatus, RequestMethod } from '@nestjs/common'
 import { getSchemaPath } from '@nestjs/swagger'
 
 export default {
-  index: 'workspace',
+  index: '/api/workspace',
   getAll: <IRouteParams>{
-    path: '/api/workspace',
+    path: '',
     method: RequestMethod.GET,
     swaggerInfo: {
       responses: [{ status: HttpStatus.OK, schema: { $ref: getSchemaPath('WorkspaceListResponse') }, isArray: true }],
     },
   },
   getWorkspaceById: <IRouteParams>{
-    path: '/api/workspace/:id',
+    path: '/:id',
     method: RequestMethod.GET,
     swaggerInfo: {
       responses: [{ status: HttpStatus.OK, schema: { $ref: getSchemaPath('') }, isArray: true }],
     },
   },
   getAllWorkspacesByEmail: <IRouteParams>{
-    path: '/api/workspace/all/:email',
+    path: '/all',
     method: RequestMethod.GET,
     swaggerInfo: {
       responses: [{ status: HttpStatus.OK, schema: { $ref: getSchemaPath('WorkspaceListResponse') }, isArray: true }],
     },
   },
   getOwnerWorkspacesByEmail: <IRouteParams>{
-    path: '/api/workspace/owner/:email',
+    path: '/role/owner',
     method: RequestMethod.GET,
     swaggerInfo: {
       responses: [{ status: HttpStatus.OK, schema: { $ref: getSchemaPath('WorkspaceListResponse') }, isArray: true }],
     },
   },
   getAdminWorkspacesByEmail: <IRouteParams>{
-    path: '/api/workspace/admin/:email',
+    path: '/role/admin',
     method: RequestMethod.GET,
     swaggerInfo: {
       responses: [{ status: HttpStatus.OK, schema: { $ref: getSchemaPath('WorkspaceListResponse') }, isArray: true }],
     },
   },
   getMemberWorkspacesByEmail: <IRouteParams>{
-    path: '/api/workspace/member/:email',
+    path: '/role/member',
     method: RequestMethod.GET,
     swaggerInfo: {
       responses: [{ status: HttpStatus.OK, schema: { $ref: getSchemaPath('WorkspaceListResponse') }, isArray: true }],
     },
   },
   getGuestWorkspacesByEmail: <IRouteParams>{
-    path: '/api/workspace/guest/:email',
+    path: '/role/guest',
     method: RequestMethod.GET,
     swaggerInfo: {
       responses: [{ status: HttpStatus.OK, schema: { $ref: getSchemaPath('WorkspaceListResponse') }, isArray: true }],
     },
   },
   getPendingWorkspacesByEmail: <IRouteParams>{
-    path: '/api/workspace/pending/:email',
+    path: '/role/pending',
     method: RequestMethod.GET,
     swaggerInfo: {
       responses: [{ status: HttpStatus.OK, schema: { $ref: getSchemaPath('WorkspaceListResponse') }, isArray: true }],
     },
   },
   createWorkspace: <IRouteParams>{
-    path: '/api/worspace',
+    path: '',
     method: RequestMethod.POST,
     swaggerInfo: {
       body: {
@@ -71,7 +71,7 @@ export default {
     },
   },
   updateWorkspaceInfo: <IRouteParams>{
-    path: '/api/worspace',
+    path: '',
     method: RequestMethod.PUT,
     swaggerInfo: {
       body: {
@@ -81,10 +81,24 @@ export default {
     },
   },
   changeWorkspaceVisibility: <IRouteParams>{
-    path: '/api/worspace/visibility',
+    path: '/visibility',
     method: RequestMethod.PUT,
     swaggerInfo: {
       responses: [{ status: HttpStatus.OK, schema: { $ref: getSchemaPath('UpdateWorkspaceInfoResponseSchema') } }],
+    },
+  },
+  deleteWorspaceById: <IRouteParams>{
+    path: '/:id',
+    method: RequestMethod.DELETE,
+    swaggerInfo: {
+      responses: [{ status: HttpStatus.OK, type: String }],
+    },
+  },
+  inviteMembers2Workspace: <IRouteParams>{
+    path: '/invite/:id',
+    method: RequestMethod.POST,
+    swaggerInfo: {
+      responses: [{ status: HttpStatus.OK, type: String }],
     },
   },
 }
