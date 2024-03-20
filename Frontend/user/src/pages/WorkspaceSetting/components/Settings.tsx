@@ -4,6 +4,7 @@ import { MdOutlineLock, MdPublic } from 'react-icons/md'
 import { useTheme } from '~/components/Theme/themeContext'
 import { FaCheck } from 'react-icons/fa6'
 import { GoDotFill } from 'react-icons/go'
+import { WorkspaceHeader } from '../../../components/WorkspaceHeader/WorkspaceHeader'
 export const Settings: React.FC = () => {
   // const image = '/src/assets/Profile/profile_img.svg'
   const { colors, darkMode } = useTheme()
@@ -28,6 +29,8 @@ export const Settings: React.FC = () => {
   }
 
   return (
+    <>
+    <WorkspaceHeader visibility={visibility}/>
     <div className='mx-14 mt-10 rounded px-[10%]'>
       <div>
         <h2 className={`mb-2 text-xl font-semibold`}>Workspace settings</h2>
@@ -158,7 +161,7 @@ export const Settings: React.FC = () => {
             style={{
               color: colors.text
             }}
-            className={`${darkMode ? 'border-gray-700 bg-[#282e33]' : 'border-gray-100 bg-white'} absolute -left-5 top-full z-10 w-72 rounded-lg border  px-3 py-2 text-sm shadow-md`}
+            className={` ${darkMode ? 'border-gray-700 bg-[#282e33]' : 'border-gray-100 bg-white'} absolute left-48 top-0 z-10 w-72 rounded-lg border  px-3 py-2 text-sm shadow-md`}
           >
             <div className={`mb-2 flex items-center justify-between`}>
               <div></div>
@@ -175,21 +178,21 @@ export const Settings: React.FC = () => {
             <div className={`mt-3`}>
               <h1 className={`text-base font-bold`}>Enter Workspace name "My Workspace" to delete</h1>
               <p className={`my-2 text-xs font-semibold`}>Things to know</p>
-              <ul className={`space-y-2`}>
-                <li className='inline-flex items-center space-x-2'>
-                  <GoDotFill />
+              <ul className={`space-y-2 list-disc ml-5`}>
+                <li className=''>
+                  {/* <GoDotFill className={`mt-1`}/> */}
                   <p>This is permanent and can't be undone</p>
                 </li>
-                <li className='inline-flex items-center space-x-2'>
-                  <GoDotFill />
+                <li className=''>
+                {/* <GoDotFill className={`mt-1`}/> */}
                   <p className='cursor-pointer underline'>All boards in this workspace will be closed</p>
                 </li>
-                <li className='inline-flex items-center space-x-2'>
-                  <GoDotFill />
+                <li className=''>
+                {/* <GoDotFill className={`mt-1`}/> */}
                   <p>Board admins can reopen boards.</p>
                 </li>
-                <li className='inline-flex items-center space-x-2'>
-                  <GoDotFill />
+                <li className=''>
+                {/* <GoDotFill className={`mt-1`} /> */}
                   <p>Board members will not be able to interact with closed boards</p>
                 </li>
               </ul>
@@ -226,5 +229,6 @@ export const Settings: React.FC = () => {
         )}
       </div>
     </div>
+    </>
   )
 }

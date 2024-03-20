@@ -1,4 +1,4 @@
 export * from './Settings'
-export * from './Header'
-export * from './AddWorkspaceMembersForm'
+export * from '../../../components/WorkspaceHeader/WorkspaceHeader'
+export * from '../../../components/WorkspaceHeader/AddWorkspaceMembersForm'
 
