@@ -23,8 +23,9 @@
     "baseUrl": ".",
     "paths": {
       "~/*": ["src/*"]
-    }
+    },
+    "types": ["cypress", "@4tw/cypress-drag-drop"]
   },
-  "include": ["src"],
+  "include": ["src", "src/assets/declaration.d.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

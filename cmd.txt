@@ -1,2 +1,3 @@
-docker build -f Dockerfile.backend -t trello-v2/backend:1.1 .
+docker build -f Dockerfile.backend -t lamlance/backend:latest .
+docker build -f Dockerfile.envoy -t lamlance/trello-envoy:latest .
 docker compose -f docker-compose.backend.yml up

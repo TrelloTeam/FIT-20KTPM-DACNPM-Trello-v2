@@ -121,11 +121,10 @@ export class WorkspaceController {
 
   @InjectRoute(workspaceRoutes.updateWorkspaceInfo)
   async updateWorkspaceInfo(
-    @Param('id') id: string,
     @Body(new ZodValidationPipe(TrelloApi.WorkspaceApi.UpdateWorkspaceInfoRequestSchema))
     body: TrelloApi.WorkspaceApi.UpdateWorkspaceInfoRequest,
   ): Promise<TrelloApi.WorkspaceApi.WorspaceResponse> {
-    const workspaceUpdated = await this.workspaceService.updateWorkspaceInfo(body, id)
+    const workspaceUpdated = await this.workspaceService.updateWorkspaceInfo(body)
 
     if (!workspaceUpdated) throw new InternalServerErrorException("Can't update workspace infomation")
 
@@ -134,11 +133,10 @@ export class WorkspaceController {
 
   @InjectRoute(workspaceRoutes.changeWorkspaceVisibility)
   async changeWorkspaceVisibility(
-    @Param('id') id: string,
     @Body(new ZodValidationPipe(TrelloApi.WorkspaceApi.ChangeWorkspaceVisibilityRequestSchema))
     body: TrelloApi.WorkspaceApi.ChangeWorkspaceVisibilityRequest,
   ): Promise<TrelloApi.WorkspaceApi.WorspaceResponse> {
-    const workspaceUpdated = await this.workspaceService.changeWorkspaceVisibility(body, id)
+    const workspaceUpdated = await this.workspaceService.changeWorkspaceVisibility(body)
 
     if (!workspaceUpdated) throw new InternalServerErrorException("Can't update workspace's visibility")
 

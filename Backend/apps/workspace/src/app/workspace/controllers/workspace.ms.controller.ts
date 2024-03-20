@@ -1,6 +1,5 @@
 import { InjectController, ValidateGrpcInput } from '@app/common/decorators'
-import { ZodValidationPipe } from '@app/common/pipes'
-import { Body, InternalServerErrorException, NotFoundException, Param } from '@nestjs/common'
+import { InternalServerErrorException, NotFoundException } from '@nestjs/common'
 import { GrpcMethod } from '@nestjs/microservices'
 import { TrelloApi } from '@trello-v2/shared'
 
@@ -43,8 +42,10 @@ export class WorkspaceMSController {
   }
 
   @GrpcMethod('WorkspaceService', 'getWorkspaceById')
-  async getWorkspaceById(@Param('id') id: string): Promise<TrelloApi.WorkspaceApi.WorspaceResponse> {
-    const workspace = await this.workspaceService.getWorkspaceById(id)
+  async getWorkspaceById(
+    @ValidateGrpcInput(TrelloApi.WorkspaceApi.WorkspaceIdRequestSchema.safeParse) body: TrelloApi.WorkspaceApi.WorkspaceIdRequest,
+  ): Promise<TrelloApi.WorkspaceApi.WorspaceResponse> {
+    const workspace = await this.workspaceService.getWorkspaceById(body._id)
 
     if (!workspace) throw new NotFoundException("Can't find of workspace")
 
@@ -121,11 +122,10 @@ export class WorkspaceMSController {
 
   @GrpcMethod('WorkspaceService', 'updateWorkspaceInfo')
   async updateWorkspaceInfo(
-    @Param('id') id: string,
-    @Body(new ZodValidationPipe(TrelloApi.WorkspaceApi.UpdateWorkspaceInfoRequestSchema))
+    @ValidateGrpcInput(TrelloApi.WorkspaceApi.UpdateWorkspaceInfoRequestSchema.safeParse)
     body: TrelloApi.WorkspaceApi.UpdateWorkspaceInfoRequest,
   ): Promise<TrelloApi.WorkspaceApi.WorspaceResponse> {
-    const workspaceUpdated = await this.workspaceService.updateWorkspaceInfo(body, id)
+    const workspaceUpdated = await this.workspaceService.updateWorkspaceInfo(body)
 
     if (!workspaceUpdated) throw new InternalServerErrorException("Can't update workspace infomation")
 
@@ -134,11 +134,10 @@ export class WorkspaceMSController {
 
   @GrpcMethod('WorkspaceService', 'changeWorkspaceVisibility')
   async changeWorkspaceVisibility(
-    @Param('id') id: string,
-    @Body(new ZodValidationPipe(TrelloApi.WorkspaceApi.ChangeWorkspaceVisibilityRequestSchema))
+    @ValidateGrpcInput(TrelloApi.WorkspaceApi.ChangeWorkspaceVisibilityRequestSchema.safeParse)
     body: TrelloApi.WorkspaceApi.ChangeWorkspaceVisibilityRequest,
   ): Promise<TrelloApi.WorkspaceApi.WorspaceResponse> {
-    const workspaceUpdated = await this.workspaceService.changeWorkspaceVisibility(body, id)
+    const workspaceUpdated = await this.workspaceService.changeWorkspaceVisibility(body)
 
     if (!workspaceUpdated) throw new InternalServerErrorException("Can't update workspace's visibility")
 

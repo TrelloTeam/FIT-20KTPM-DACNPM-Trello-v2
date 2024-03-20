@@ -1,21 +1,21 @@
 import * as Joi from 'joi'
+import { ZodType } from 'zod'
 
 import { configuration } from '@app/common/config'
 import { Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
+import { Transport } from '@nestjs/microservices'
 import { MongooseModule } from '@nestjs/mongoose'
+import { TrelloApi } from '@trello-v2/shared'
 
 import { AppController } from './app.controller'
+import { AuthModule } from './auth/auth.module'
 import { BoardModule } from './board/board.module'
+import { CardModule } from './card/card.module'
 import { CardlistModule } from './cardlist/cardlist.module'
 import { TestController } from './test/test.controller'
 import { UserModule } from './user/user.module'
 import { WorkspaceModule } from './workspace/workspace.module'
-import { CardModule } from './card/card.module'
-import { AuthModule } from './auth/auth.module'
-import { Transport } from '@nestjs/microservices'
-import { ZodType } from 'zod'
-import { TrelloApi } from '@trello-v2/shared'
 
 const EnvSchema = {
   PORT: Joi.number(),
@@ -55,7 +55,7 @@ function GenerateMSModule(...modules: any[]) {
         validationSchema: Joi.object().keys(EnvSchema),
         load: [configuration],
       }),
-      MongooseModule.forRoot('mongodb://MONGO_USER:MONGO_123@localhost:7000/trello?authSource=admin'),
+      MongooseModule.forRoot('mongodb://MONGO_USER:MONGO_123@localhost:7001/trello?authSource=admin'),
       ...modules,
     ],
   })
