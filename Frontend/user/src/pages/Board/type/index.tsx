@@ -1,6 +1,6 @@
 import { UniqueIdentifier } from '@dnd-kit/core'
 import { DbSchemas } from '@trello-v2/shared'
-import faker from 'faker'
+// import faker from 'faker'
 const generateRandomDateOrNull = (): Date | null => {
   const randomBoolean = Math.random() < 0.5
   return randomBoolean ? new Date() : null

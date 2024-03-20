@@ -3,8 +3,6 @@ import React, { useEffect, useState } from 'react'
 import { Header, Settings } from './components'
 import { useTheme } from '../../components/Theme/themeContext'
 
-
-
 export const WorkspaceSetting: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState<string>('')
 
@@ -21,12 +19,12 @@ export const WorkspaceSetting: React.FC = () => {
     backgroundColor: colors.background,
     color: colors.text
   }
-  
-  return (
-    <div style={darkLightMode}>
 
-          <Header />
-          <Settings />
+  return (
+    <div style={darkLightMode}
+    className={`min-h-screen`}>
+      <Header />
+      <Settings />
     </div>
   )
 }
