@@ -2,9 +2,9 @@ import { Box } from '@mui/material'
 import { _Card, _Feature_Attachment } from '.'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPaperclip, faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons'
-import { colors, colorsButton } from '~/styles'
 import { useRef, useState } from 'react'
 import { CardAttachmentModal } from './modals/CardAttachmentModal'
+import { useTheme } from '../Theme/themeContext'
 
 type AttachmentType = 'file' | 'link'
 
@@ -14,6 +14,7 @@ interface CardAttachmentProps {
 }
 
 export function CardAttachment({ currentCard, setCurrentCard }: CardAttachmentProps) {
+  const { colors } = useTheme()
   const boxRef = useRef(null)
   const [anchorEl, setAnchorEl] = useState<null | HTMLDivElement>(null)
   const [isOpenModal, setIsOpenModal] = useState(false)
@@ -31,7 +32,7 @@ export function CardAttachment({ currentCard, setCurrentCard }: CardAttachmentPr
       {currentCard.attachments.length !== 0 && (
         <>
           <Box
-            sx={{ width: '100%', height: 32, marginBottom: '16px', color: colors.primary }}
+            sx={{ width: '100%', height: 32, marginBottom: '16px', color: colors.text }}
             className='flex flex-row items-center justify-between'
           >
             {/* Title */}
@@ -43,15 +44,15 @@ export function CardAttachment({ currentCard, setCurrentCard }: CardAttachmentPr
             <Box
               ref={boxRef}
               sx={{
-                bgcolor: colorsButton.secondary,
+                bgcolor: colors.button,
                 width: 'fit-content',
                 height: 32,
                 padding: '0 12px',
-                color: colors.primary,
+                color: colors.text,
                 fontSize: 14,
                 fontWeight: 500,
                 '&:hover': {
-                  bgcolor: colorsButton.secondary_hover
+                  bgcolor: colors.button_hover
                 }
               }}
               className='flex cursor-pointer items-center justify-center rounded'
@@ -88,6 +89,7 @@ interface CardAttachmentTileProps {
 }
 
 function CardAttachmentTile({ type, attachment }: CardAttachmentTileProps) {
+  const { colors } = useTheme()
   return (
     <Box
       sx={{
@@ -95,9 +97,9 @@ function CardAttachmentTile({ type, attachment }: CardAttachmentTileProps) {
         height: 'fit-content',
         padding: '2px 0',
         marginBottom: '6px',
-        bgcolor: '#fafafa',
-        color: colors.primary,
-        '&:hover': { bgcolor: colorsButton.secondary }
+        bgcolor: colors.background_modal,
+        color: colors.text,
+        '&:hover': { bgcolor: colors.button }
       }}
       className='flex cursor-pointer flex-row items-center'
       onClick={() => {
@@ -105,10 +107,7 @@ function CardAttachmentTile({ type, attachment }: CardAttachmentTileProps) {
       }}
     >
       {/* Left box */}
-      <Box
-        sx={{ width: 112, height: 80, bgcolor: colorsButton.secondary }}
-        className='flex items-center justify-center rounded'
-      >
+      <Box sx={{ width: 112, height: 80, bgcolor: colors.button }} className='flex items-center justify-center rounded'>
         {type === 'file' ? (
           <h1 className='text-lg font-bold'>exe</h1>
         ) : (

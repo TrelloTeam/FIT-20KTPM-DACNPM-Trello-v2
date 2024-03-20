@@ -1,13 +1,14 @@
 import { useState } from 'react'
 import { _Card } from '..'
-import { Box, FormControl, Grid, MenuItem, Popover, Select, SelectChangeEvent } from '@mui/material'
+import { Box, FormControl, Grid, MenuItem, Popover, Select, SelectChangeEvent, styled } from '@mui/material'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
-import { colors, colorsButton } from '~/styles'
+
 import dayjs, { Dayjs } from 'dayjs'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo'
 import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers'
+import { useTheme } from '~/components/Theme/themeContext'
 
 const reminderDateChoices: string[] = [
   'None',
@@ -20,6 +21,12 @@ const reminderDateChoices: string[] = [
   '1 Day before',
   '2 Days before'
 ]
+
+const CustomizedDateTimePicker = styled(DateTimePicker)`
+  & .MuiInputBase-input {
+    color: '#fff';
+  }
+`
 
 interface SelectCardDatesModalProps {
   anchorEl: (EventTarget & HTMLDivElement) | null
@@ -34,6 +41,7 @@ export function SelectCardDatesModal({
   setCurrentCard,
   handleClose
 }: SelectCardDatesModalProps) {
+  const { colors } = useTheme()
   const menuItemFontSize = 14
   const [startDateEnabled, setStartDateEnabled] = useState(true)
   const [dueDateEnabled, setDueDateEnabled] = useState(true)
@@ -87,23 +95,35 @@ export function SelectCardDatesModal({
       sx={{ margin: '8px 0 0 0' }}
     >
       <Box
-        sx={{ width: 300, height: 'fit-content', margin: '0 8px', padding: '8px 0px', color: colors.primary }}
+        sx={{
+          width: 304,
+          height: 'fit-content',
+          padding: '4px 8px',
+          color: colors.text,
+          backgroundColor: colors.background_modal_secondary
+        }}
         className='flex flex-col'
       >
         {/* START: Modal heading */}
-        <Grid container sx={{ width: '100%', margin: '0 0 8px 0' }}>
-          <Grid item xs={1}></Grid>
-          <Grid item xs={10} className='flex items-center justify-center'>
+        <Grid container sx={{ width: '100%', margin: '4px 0 8px 0' }}>
+          <Grid item xs={2}></Grid>
+          <Grid item xs={8} className='flex items-center justify-center'>
             <h2 className='overflow-hidden overflow-ellipsis whitespace-nowrap text-sm font-semibold'>Dates</h2>
           </Grid>
-          <Grid item xs={1} className='flex items-center justify-center'>
-            <FontAwesomeIcon icon={faXmark} className='cursor-pointer' onMouseDown={handleClose} />
+          <Grid item xs={2} className='flex items-center justify-end'>
+            <Box
+              sx={{ width: 32, height: 32, '&:hover': { bgcolor: colors.button_hover } }}
+              className='flex cursor-pointer items-center justify-center rounded-lg'
+              onMouseDown={handleClose}
+            >
+              <FontAwesomeIcon icon={faXmark} />
+            </Box>
           </Grid>
         </Grid>
         {/* END: Modal heading */}
         <Box sx={{ width: '100%', height: 20 }}></Box>
         {/* START: Select card dates */}
-        <p style={{ margin: '0 0 12px 0', color: colors.primary }} className='text-xs font-bold'>
+        <p style={{ margin: '0 0 12px 0', color: colors.text }} className='text-xs font-bold'>
           Select dates
         </p>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -121,7 +141,14 @@ export function SelectCardDatesModal({
                 label='Start date'
                 value={startDateValue}
                 onChange={(newValue) => handleSelectStartDate(newValue!)}
-                sx={{ width: '100%' }}
+                sx={{
+                  width: '100%',
+                  background: colors.background_modal,
+                  '& .MuiOutlinedInput-input': { color: colors.text },
+                  '& .MuiInputLabel-root': { color: colors.text, fontWeight: 500 },
+                  '& .MuiSvgIcon-root': startDateEnabled ? { color: colors.text } : null,
+                  '& .MuiDateCalendar-root': { bgcolor: colors.background }
+                }}
               />
             </Box>
             {/* Select due date */}
@@ -137,7 +164,14 @@ export function SelectCardDatesModal({
                 label='Due date'
                 value={dueDateValue}
                 onChange={(newValue) => handleSelectDueDate(newValue!)}
-                sx={{ width: '100%' }}
+                sx={{
+                  width: '100%',
+                  background: colors.background_modal,
+                  '& .MuiOutlinedInput-input': { color: colors.text },
+                  '& .MuiInputLabel-root': { color: colors.text, fontWeight: 500 },
+                  '& .MuiSvgIcon-root': dueDateEnabled ? { color: colors.text } : null,
+                  '& .MuiDateCalendar-root': { bgcolor: colors.background }
+                }}
               />
             </Box>
           </DemoContainer>
@@ -145,19 +179,27 @@ export function SelectCardDatesModal({
         {/* END: Select card dates */}
         <Box sx={{ width: '100%', height: 20 }}></Box>
         {/* Due date reminder */}
-        <p style={{ margin: '12px 0 8px 0', color: colors.primary }} className='text-xs font-bold'>
+        <p style={{ margin: '12px 0 8px 0', color: colors.text }} className='text-xs font-bold'>
           Set due date reminder
         </p>
         <FormControl fullWidth>
           <Select
-            sx={{ height: 36, margin: '0 0 8px 0', fontSize: 14 }}
+            sx={{
+              height: 36,
+              margin: '0 0 8px 0',
+              fontSize: 14,
+              background: colors.background_modal,
+              color: colors.text
+            }}
             value={reminderDateValue}
             onChange={handleSelectReminderDate}
             MenuProps={{
               PaperProps: {
                 style: {
                   maxHeight: 144,
-                  marginTop: 8
+                  marginTop: 8,
+                  background: colors.background_modal,
+                  color: colors.text
                 }
               }
             }}
@@ -169,7 +211,7 @@ export function SelectCardDatesModal({
             ))}
           </Select>
         </FormControl>
-        <p style={{ margin: '0 0 20px 0', color: colors.primary }} className='text-xs font-semibold'>
+        <p style={{ margin: '0 0 20px 0', color: colors.text }} className='text-xs font-semibold'>
           Reminders will be sent to all members and watchers of this card.
         </p>
         {/* Button save */}
@@ -179,7 +221,8 @@ export function SelectCardDatesModal({
             height: 32,
             margin: '0 0 8px 0',
             padding: '0 8px',
-            bgcolor: '#0c66e4',
+            color: colors.button_primary_text,
+            bgcolor: colors.button_primary,
             '&:hover': {
               filter: 'brightness(90%)'
             }
@@ -199,10 +242,10 @@ export function SelectCardDatesModal({
             height: 32,
             margin: '0 0 8px 0',
             padding: '0 8px',
-            color: colors.primary,
-            bgcolor: colorsButton.secondary,
+            color: colors.text,
+            bgcolor: colors.button,
             '&:hover': {
-              bgcolor: colorsButton.secondary_hover
+              bgcolor: colors.button_hover
             }
           }}
           className='flex cursor-pointer items-center justify-center rounded'

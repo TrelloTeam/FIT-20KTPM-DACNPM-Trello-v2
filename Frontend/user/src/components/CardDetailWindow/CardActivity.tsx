@@ -1,24 +1,26 @@
 import { faListUl } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Avatar, Box, TextareaAutosize } from '@mui/material'
+import { Avatar, Box, TextareaAutosize, Tooltip } from '@mui/material'
 import { ChangeEvent, useEffect, useState } from 'react'
-import { colors, colorsButton } from '~/styles'
 import { _Card, _Feature_Activity } from '.'
 import moment from 'moment'
+import dayjs from 'dayjs'
+import { useTheme } from '../Theme/themeContext'
 
 function ShowDetailsButton() {
+  const { colors } = useTheme()
   return (
     <Box
       sx={{
-        bgcolor: colorsButton.secondary,
+        bgcolor: colors.button,
         width: 'fit-content',
         height: 32,
         padding: '0 12px',
-        color: colors.primary,
+        color: colors.text,
         fontSize: 14,
         fontWeight: 500,
         '&:hover': {
-          bgcolor: colorsButton.secondary_hover
+          bgcolor: colors.button
         }
       }}
       className='flex cursor-pointer items-center justify-center rounded'
@@ -45,6 +47,7 @@ function TextAreaControl({
   setButtonEnabled,
   handleCreateComment
 }: TextAreaControlProps) {
+  const { colors } = useTheme()
   const [isChecked, setIsChecked] = useState(false)
 
   function handleSave() {
@@ -64,18 +67,19 @@ function TextAreaControl({
         style={{
           width: 'fit-content',
           height: 32,
-          backgroundColor: buttonEnabled ? '#0c66e4' : colorsButton.secondary,
-          color: buttonEnabled ? '#fff' : colors.primary,
-          padding: '0 12px'
+          backgroundColor: buttonEnabled ? colors.button_primary : colors.button,
+          color: buttonEnabled ? colors.button_primary_text : colors.text,
+          padding: '0 12px',
+          cursor: buttonEnabled ? 'pointer' : 'no-drop'
         }}
-        className='mt-2 flex cursor-pointer items-center justify-center rounded pb-2'
+        className='mt-2 flex items-center justify-center rounded pb-2'
         onClick={handleSave}
         disabled={!buttonEnabled}
       >
         <p className='text-sm font-semibold'>Save</p>
       </button>
       <Box
-        sx={{ width: 'fit-content', height: 32, color: colors.primary, padding: '0 6px' }}
+        sx={{ width: 'fit-content', height: 32, color: colors.text, padding: '0 6px' }}
         className='flex cursor-pointer items-center justify-center rounded'
       >
         <input style={{ width: 16, height: 16 }} type='checkbox' checked={isChecked} onChange={handleCheckboxChange} />
@@ -85,17 +89,17 @@ function TextAreaControl({
         style={{
           width: 'fit-content',
           height: 32,
-          backgroundColor: colorsButton.secondary,
-          color: colors.primary,
+          backgroundColor: colors.button,
+          color: colors.text,
           padding: '0 12px'
         }}
         className='mt-2 flex cursor-pointer items-center justify-center rounded pb-2'
         onClick={() => setTextAreaFocus(false)}
         onMouseOver={(e) => {
-          e.currentTarget.style.backgroundColor = colorsButton.secondary_hover
+          e.currentTarget.style.backgroundColor = colors.button_hover
         }}
         onMouseOut={(e) => {
-          e.currentTarget.style.backgroundColor = colorsButton.secondary
+          e.currentTarget.style.backgroundColor = colors.button
         }}
       >
         <p className='text-sm font-semibold'>Cancel</p>
@@ -110,6 +114,7 @@ interface CardActivityProps {
 }
 
 export default function CardActivity({ currentCard, setCurrentCard }: CardActivityProps) {
+  const { colors } = useTheme()
   const sortedActivities = currentCard.activities.sort((a, b) => moment(a.time).diff(moment(b.time))).reverse()
   const [textAreaMinRows, setTextAreaMinRows] = useState<number>(1)
   const [textAreaValue, setTextAreaValue] = useState('')
@@ -155,7 +160,7 @@ export default function CardActivity({ currentCard, setCurrentCard }: CardActivi
   }
 
   return (
-    <div style={{ margin: '40px 0 0 0px', color: colors.primary }} className='flex flex-col gap-1'>
+    <div style={{ margin: '40px 0 0 0px', color: colors.text }} className='flex flex-col gap-1'>
       {/* START: Header */}
       <div style={{ margin: '0px 0 10px 40px' }} className='flex flex-row items-center justify-between'>
         {/* Title */}
@@ -192,8 +197,9 @@ export default function CardActivity({ currentCard, setCurrentCard }: CardActivi
             style={{
               width: '100%',
               resize: 'none',
-              border: '2px solid',
-              borderColor: colorsButton.secondary
+              border: `2px solid`,
+              borderColor: textAreaFocus ? colors.primary : colors.button,
+              backgroundColor: textAreaFocus ? colors.background_modal_secondary : colors.background_modal_secondary
             }}
             className='rounded-lg px-3 py-2 text-sm'
             minRows={textAreaMinRows}
@@ -232,6 +238,7 @@ interface CardActivityTileProps {
 }
 
 function CardActivityTile({ activity }: CardActivityTileProps) {
+  const { colors } = useTheme()
   const [formattedTime, setFormattedTime] = useState('')
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -253,10 +260,11 @@ function CardActivityTile({ activity }: CardActivityTileProps) {
         height: 'fit-content',
         margin: '0 0 12px 0',
         padding: '8px',
-        bgcolor: '#fcfcfc',
-        boxShadow: '0 1px 2px rgba(0,0,0,0.2)',
+        color: colors.text,
+        bgcolor: colors.background_modal,
+        boxShadow: '0 2px 2px rgba(0,0,0,0.2)',
         '&:hover': {
-          filter: 'brightness(95%)'
+          bgcolor: colors.button_hover
         }
       }}
       className='flex flex-col justify-between rounded-md'
@@ -264,7 +272,26 @@ function CardActivityTile({ activity }: CardActivityTileProps) {
       <Box sx={{ width: '100%', height: 'fit-content' }}>
         <p className='text-sm font-medium'>{activity.content}</p>
       </Box>
-      <p className='text-xs'>{formattedTime}</p>
+      <Tooltip
+        title={formatActivityTimeToolTip(activity.time)}
+        placement='bottom-start'
+        slotProps={{
+          popper: {
+            modifiers: [
+              {
+                name: 'offset',
+                options: {
+                  offset: [-4, -10]
+                }
+              }
+            ]
+          }
+        }}
+      >
+        <Box sx={{ width: 'fit-content', height: 20 }} className='cursor-pointer text-xs hover:underline'>
+          <p className='text-xs'>{formattedTime}</p>
+        </Box>
+      </Tooltip>
     </Box>
   )
 }
@@ -293,4 +320,9 @@ function formatActivityTime(activityTime: string) {
   } else {
     return activityMoment.format('MMM D [at] HH:mm A')
   }
+}
+
+function formatActivityTimeToolTip(activityTime: string) {
+  const formattedTime = dayjs(activityTime).format('MMMM D, YYYY h:mm A')
+  return formattedTime
 }
