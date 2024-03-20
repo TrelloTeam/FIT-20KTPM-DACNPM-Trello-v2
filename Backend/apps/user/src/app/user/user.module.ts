@@ -6,6 +6,7 @@ import { UserService } from './services/user.service'
 import { ClientsModule, Transport } from '@nestjs/microservices'
 import { readdirSync } from 'fs'
 import { join } from 'path'
+import { UserGrpcService } from './services/user.grpc.service'
 
 const grpcPaths = readdirSync('./protos/test')
   .filter((n) => n.includes('.proto'))
@@ -22,13 +23,13 @@ console.log(grpcPaths)
         transport: Transport.GRPC,
         options: {
           url: 'localhost:3334',
-          package: 'trello.test',
+          package: ['trello.test'],
           protoPath: grpcPaths,
         },
       },
     ]),
   ],
   controllers: [UserController],
-  providers: [UserService],
+  providers: [UserService, UserGrpcService],
 })
 export class UserModule {}

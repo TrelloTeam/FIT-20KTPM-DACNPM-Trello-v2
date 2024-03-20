@@ -1,31 +1,22 @@
 import { InjectController, InjectRoute } from '@app/common/decorators'
 import { UserService } from '../services/user.service'
 import { UserRoutes } from '../user.routes'
-import { Body, Inject, InternalServerErrorException, NotFoundException, OnModuleInit, Param, RequestMethod } from '@nestjs/common'
+import { Body, InternalServerErrorException, NotFoundException, Param, RequestMethod } from '@nestjs/common'
 import { ZodValidationPipe } from '@app/common/pipes'
 import { TrelloApi } from '@trello-v2/shared'
 import { SwaggerApi } from '@app/common/decorators'
 import { getSchemaPath } from '@nestjs/swagger'
-import { ClientGrpc } from '@nestjs/microservices'
-
-interface EchoInterface {
-  Echo: (args: { name: string }) => { hello: string }
-}
+import { UserGrpcService } from '../services/user.grpc.service'
 
 @InjectController({
   name: 'user',
   isCore: true,
 })
-export class UserController implements OnModuleInit {
+export class UserController {
   constructor(
     private userService: UserService,
-    @Inject('ECHO_SERVICE') private client: ClientGrpc,
+    private userGrpcService: UserGrpcService,
   ) {}
-  private echoSerice: EchoInterface
-
-  onModuleInit() {
-    this.echoSerice = this.client.getService<EchoInterface>('EchoService')
-  }
 
   @InjectRoute(UserRoutes.createUser)
   @SwaggerApi({
@@ -249,6 +240,6 @@ export class UserController implements OnModuleInit {
 
   @InjectRoute({ path: '/api/grpc/test', method: RequestMethod.GET })
   test() {
-    return this.echoSerice.Echo({ name: 'User service' })
+    return this.userGrpcService.echoService.Echo({ name: 'User service' })
   }
 }
