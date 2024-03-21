@@ -12,7 +12,7 @@ import {
   faBoxArchive
 } from '@fortawesome/free-solid-svg-icons'
 import { Box } from '@mui/material'
-import { colors, colorsButton } from '~/styles'
+import { useTheme } from '~/components/Theme/themeContext'
 
 // eslint-disable-next-line react-refresh/only-export-components
 export enum ButtonType {
@@ -47,16 +47,17 @@ interface SidebarButtonProps {
 }
 
 export function SidebarButton({ icon, title, onClick }: SidebarButtonProps) {
+  const { colors } = useTheme()
   return (
     <Box
       sx={{
         width: '100%',
         height: 32,
         padding: '0px 12px 0 12px',
-        color: colors.primary,
-        bgcolor: colorsButton.secondary,
+        color: colors.text,
+        bgcolor: colors.button,
         '&:hover': {
-          bgcolor: colorsButton.secondary_hover
+          bgcolor: colors.button_hover
         }
       }}
       className='mb-2 flex cursor-pointer flex-row items-center justify-start gap-2 rounded'

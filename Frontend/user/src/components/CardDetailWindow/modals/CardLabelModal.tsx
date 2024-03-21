@@ -1,10 +1,10 @@
 import { Box, Grid, Popover } from '@mui/material'
 import { labelColors } from '../CardLabelList'
-import { colors, colorsButton } from '~/styles'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronLeft, faPen, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { ChangeEvent, useState } from 'react'
 import { _Card, _Feature_CardLabel } from '..'
+import { useTheme } from '~/components/Theme/themeContext'
 
 interface CardLabelListTileProps {
   currentLabel: _Feature_CardLabel
@@ -23,6 +23,7 @@ export function CardLabelListTile({
   handleExcludeLabel,
   openEditLabelModal
 }: CardLabelListTileProps) {
+  const { colors } = useTheme()
   const labelColor = labelColors[parseInt(currentLabel._id, 10)]
   const [isIncluded, setIsIncluded] = useState(isChecked)
 
@@ -63,7 +64,7 @@ export function CardLabelListTile({
         {currentLabel.name}
       </Box>
       <Box
-        sx={{ width: 32, height: 32, '&:hover': { bgcolor: colorsButton.secondary_hover } }}
+        sx={{ width: 32, height: 32, '&:hover': { bgcolor: colors.button_hover } }}
         className='flex items-center justify-center'
         onClick={() => {
           setSelectedLabel(currentLabel)
@@ -95,6 +96,7 @@ export function CardLabelListModal({
   handleIncludeLabel,
   handleExcludeLabel
 }: CardLabelListModalProps) {
+  const { colors } = useTheme()
   const [searchValue, setSearchValue] = useState('')
   const [boardLabelState, setBoardLabelState] = useState(boardLabels)
 
@@ -138,17 +140,29 @@ export function CardLabelListModal({
       sx={{ margin: '10px 0 0 0' }}
     >
       <Box
-        sx={{ width: 300, height: 'fit-content', margin: '0 8px', padding: '8px 0px', color: colors.primary }}
+        sx={{
+          width: 304,
+          height: 'fit-content',
+          padding: '4px 8px',
+          color: colors.text,
+          backgroundColor: colors.background_modal_secondary
+        }}
         className='flex flex-col'
       >
         {/* START: Modal heading */}
-        <Grid container sx={{ width: '100%', margin: '0 0 12px 0' }}>
-          <Grid item xs={1}></Grid>
-          <Grid item xs={10} className='flex items-center justify-center'>
+        <Grid container sx={{ width: '100%', margin: '4px 0 8px 0' }}>
+          <Grid item xs={2}></Grid>
+          <Grid item xs={8} className='flex items-center justify-center'>
             <h2 className='overflow-hidden overflow-ellipsis whitespace-nowrap text-sm font-semibold'>Labels</h2>
           </Grid>
-          <Grid item xs={1} className='flex items-center justify-center'>
-            <FontAwesomeIcon icon={faXmark} className='cursor-pointer' onMouseDown={handleClose} />
+          <Grid item xs={2} className='flex items-center justify-end'>
+            <Box
+              sx={{ width: 32, height: 32, '&:hover': { bgcolor: colors.button_hover } }}
+              className='flex cursor-pointer items-center justify-center rounded-lg'
+              onMouseDown={handleClose}
+            >
+              <FontAwesomeIcon icon={faXmark} />
+            </Box>
           </Grid>
         </Grid>
         {/* END: Modal heading */}
@@ -160,8 +174,9 @@ export function CardLabelListModal({
             height: 36,
             margin: '0 0 10px 0',
             padding: '4px 6px',
-            color: colors.primary,
-            border: `2px solid ${colorsButton.secondary}`
+            color: colors.text,
+            background: colors.background_modal_tertiary,
+            border: `2px solid ${colors.button}`
           }}
           className='flex items-center rounded-sm text-sm'
           value={searchValue}
@@ -169,7 +184,7 @@ export function CardLabelListModal({
           placeholder='Search labels'
         />
         {/* Card member list */}
-        <p style={{ margin: '10px 0', color: colors.primary }} className='text-xs font-semibold'>
+        <p style={{ margin: '10px 0', color: colors.text }} className='text-xs font-semibold'>
           Labels
         </p>
         {boardLabelState.map((label, index) => (
@@ -185,7 +200,7 @@ export function CardLabelListModal({
         ))}
         {/* Line */}
         <Box sx={{ width: '100%', height: 2, margin: '10px 0 4px 0', padding: '0 12px' }}>
-          <Box sx={{ width: '100%', height: 2, bgcolor: colorsButton.secondary }}></Box>
+          <Box sx={{ width: '100%', height: 2, bgcolor: colors.button }}></Box>
         </Box>
         {/* Button */}
         <Box
@@ -194,15 +209,15 @@ export function CardLabelListModal({
             height: 32,
             margin: '10px 0',
             padding: '0 8px',
-            bgcolor: colorsButton.secondary,
+            bgcolor: colors.button,
             '&:hover': {
-              bgcolor: colorsButton.secondary_hover
+              bgcolor: colors.button_hover
             }
           }}
           className='flex cursor-pointer items-center justify-center rounded'
           onClick={openCreateLabelModal}
         >
-          <h2 style={{ color: colors.primary }} className='text-sm font-semibold'>
+          <h2 style={{ color: colors.text }} className='text-sm font-semibold'>
             Create label
           </h2>
         </Box>
@@ -266,6 +281,7 @@ interface CreateCardLabelModalProps {
 }
 
 export function CreateCardLabelModal({ anchorEl, setModalState, addBoardLabel }: CreateCardLabelModalProps) {
+  const { colors } = useTheme()
   const [labelNameFieldValue, setLabelNameFieldValue] = useState('')
   const [selectedColor, setSelectedColor] = useState(labelColors[0])
 
@@ -295,23 +311,50 @@ export function CreateCardLabelModal({ anchorEl, setModalState, addBoardLabel }:
       }}
       onClose={handleClose}
     >
-      <Box sx={{ width: 300, height: 'fit-content', color: colors.primary }} className='flex flex-col'>
+      <Box
+        sx={{
+          width: 304,
+          height: 'fit-content',
+          padding: '4px 8px',
+          color: colors.text,
+          backgroundColor: colors.background_modal_secondary
+        }}
+        className='flex flex-col'
+      >
         {/* START: Modal heading */}
-        <Grid container sx={{ width: '100%', margin: '8px 0 12px 0', padding: '0 8px' }}>
-          <Grid item xs={1} className='flex items-center justify-center'>
-            <FontAwesomeIcon icon={faChevronLeft} className='cursor-pointer' onMouseDown={handleReturn} />
+        <Grid container sx={{ width: '100%', margin: '4px 0 8px 0' }}>
+          <Grid item xs={2} className='flex items-center justify-start'>
+            <Box
+              sx={{ width: 32, height: 32, '&:hover': { bgcolor: colors.button_hover } }}
+              className='flex cursor-pointer items-center justify-center rounded-lg'
+              onMouseDown={handleReturn}
+            >
+              <FontAwesomeIcon icon={faChevronLeft} />
+            </Box>
           </Grid>
-          <Grid item xs={10} className='flex items-center justify-center'>
+          <Grid item xs={8} className='flex items-center justify-center'>
             <h2 className='overflow-hidden overflow-ellipsis whitespace-nowrap text-sm font-semibold'>Create label</h2>
           </Grid>
-          <Grid item xs={1} className='flex items-center justify-center'>
-            <FontAwesomeIcon icon={faXmark} className='cursor-pointer' onMouseDown={handleClose} />
+          <Grid item xs={2} className='flex items-center justify-end'>
+            <Box
+              sx={{ width: 32, height: 32, '&:hover': { bgcolor: colors.button_hover } }}
+              className='flex cursor-pointer items-center justify-center rounded-lg'
+              onMouseDown={handleClose}
+            >
+              <FontAwesomeIcon icon={faXmark} />
+            </Box>
           </Grid>
         </Grid>
         {/* END: Modal heading */}
         {/* Label preview area */}
         <Box
-          sx={{ width: '100%', height: 'fit-content', padding: '30px 20px', margin: '0 0 20px 0', bgcolor: '#f7f8f9' }}
+          sx={{
+            width: '100%',
+            height: 'fit-content',
+            padding: '30px 20px',
+            margin: '0 0 20px 0',
+            bgcolor: colors.background_modal_secondary
+          }}
           className='flex items-center justify-center'
         >
           <Box
@@ -339,9 +382,10 @@ export function CreateCardLabelModal({ anchorEl, setModalState, addBoardLabel }:
               height: 32,
               margin: '0 0 20px 0',
               padding: '4px 6px',
-              color: colors.primary,
+              color: colors.text,
+              background: colors.background_modal_tertiary,
               border: '1px solid',
-              borderColor: colorsButton.secondary_hover
+              borderColor: colors.button_hover
             }}
             className='flex items-center rounded-sm text-sm'
             placeholder='Label name'
@@ -367,17 +411,17 @@ export function CreateCardLabelModal({ anchorEl, setModalState, addBoardLabel }:
         </Box>
         {/* Line */}
         <Box sx={{ width: '100%', height: 2, margin: '10px 0 10px 0', padding: '0 12px' }}>
-          <Box sx={{ width: '100%', height: 2, bgcolor: colorsButton.secondary }}></Box>
+          <Box sx={{ width: '100%', height: 2, bgcolor: colors.button }}></Box>
         </Box>
         {/* Create button */}
         <Box
           sx={{
-            bgcolor: '#0c66e4',
+            bgcolor: colors.button_primary,
             width: 'fit-content',
             height: 32,
             margin: '0 0 10px 12px',
             padding: '0 12px',
-            color: '#fff',
+            color: colors.button_primary_text,
             fontSize: 14,
             fontWeight: 500,
             '&:hover': {
@@ -418,6 +462,7 @@ export function EditCardLabelModal({
   setBoardLabelState,
   removeBoardLabel
 }: EditCardLabelModalProps) {
+  const { colors } = useTheme()
   const [labelNameFieldValue, setLabelNameFieldValue] = useState(currentLabel.name)
   const [selectedColor, setSelectedColor] = useState(labelColors[parseInt(currentLabel._id, 10)])
 
@@ -468,23 +513,50 @@ export function EditCardLabelModal({
       onClose={handleClose}
       sx={{ margin: '0 0 0 0' }}
     >
-      <Box sx={{ width: 300, height: 'fit-content', color: colors.primary }} className='flex flex-col'>
+      <Box
+        sx={{
+          width: 304,
+          height: 'fit-content',
+          padding: '4px 8px',
+          color: colors.text,
+          backgroundColor: colors.background_modal_secondary
+        }}
+        className='flex flex-col'
+      >
         {/* START: Modal heading */}
-        <Grid container sx={{ width: '100%', margin: '8px 0 12px 0', padding: '0 8px' }}>
-          <Grid item xs={1} className='flex items-center justify-center'>
-            <FontAwesomeIcon icon={faChevronLeft} className='cursor-pointer' onMouseDown={handleReturn} />
+        <Grid container sx={{ width: '100%', margin: '4px 0 8px 0' }}>
+          <Grid item xs={2} className='flex items-center justify-start'>
+            <Box
+              sx={{ width: 32, height: 32, '&:hover': { bgcolor: colors.button_hover } }}
+              className='flex cursor-pointer items-center justify-center rounded-lg'
+              onMouseDown={handleReturn}
+            >
+              <FontAwesomeIcon icon={faChevronLeft} />
+            </Box>
           </Grid>
-          <Grid item xs={10} className='flex items-center justify-center'>
+          <Grid item xs={8} className='flex items-center justify-center'>
             <h2 className='overflow-hidden overflow-ellipsis whitespace-nowrap text-sm font-semibold'>Edit label</h2>
           </Grid>
-          <Grid item xs={1} className='flex items-center justify-center'>
-            <FontAwesomeIcon icon={faXmark} className='cursor-pointer' onMouseDown={handleClose} />
+          <Grid item xs={2} className='flex items-center justify-end'>
+            <Box
+              sx={{ width: 32, height: 32, '&:hover': { bgcolor: colors.button_hover } }}
+              className='flex cursor-pointer items-center justify-center rounded-lg'
+              onMouseDown={handleClose}
+            >
+              <FontAwesomeIcon icon={faXmark} />
+            </Box>
           </Grid>
         </Grid>
         {/* END: Modal heading */}
         {/* Label preview area */}
         <Box
-          sx={{ width: '100%', height: 'fit-content', padding: '30px 20px', margin: '0 0 20px 0', bgcolor: '#f7f8f9' }}
+          sx={{
+            width: '100%',
+            height: 'fit-content',
+            padding: '30px 20px',
+            margin: '0 0 20px 0',
+            bgcolor: colors.background_modal_secondary
+          }}
           className='flex items-center justify-center'
         >
           <Box
@@ -512,9 +584,10 @@ export function EditCardLabelModal({
               height: 32,
               margin: '0 0 20px 0',
               padding: '4px 6px',
-              color: colors.primary,
+              color: colors.text,
+              background: colors.background_modal_tertiary,
               border: '1px solid',
-              borderColor: colorsButton.secondary_hover
+              borderColor: colors.button_hover
             }}
             className='flex items-center rounded-sm text-sm'
             placeholder='Label name'
@@ -540,18 +613,18 @@ export function EditCardLabelModal({
         </Box>
         {/* Line */}
         <Box sx={{ width: '100%', height: 2, margin: '10px 0 10px 0', padding: '0 12px' }}>
-          <Box sx={{ width: '100%', height: 2, bgcolor: colorsButton.secondary }}></Box>
+          <Box sx={{ width: '100%', height: 2, bgcolor: colors.button }}></Box>
         </Box>
         {/* Buttons */}
         <Box sx={{ width: '100%', height: 'fit-content' }} className='flex flex-row justify-between'>
           <Box
             sx={{
-              bgcolor: '#0c66e4',
+              bgcolor: colors.button_primary,
               width: 'fit-content',
               height: 32,
               margin: '0 0 10px 12px',
               padding: '0 12px',
-              color: '#fff',
+              color: colors.button_primary_text,
               fontSize: 14,
               fontWeight: 500,
               '&:hover': {

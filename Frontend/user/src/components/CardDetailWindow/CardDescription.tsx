@@ -2,27 +2,28 @@ import { faAlignJustify } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Box, TextareaAutosize } from '@mui/material'
 import { useRef, useState } from 'react'
-import { colors, colorsButton } from '~/styles'
 import { TextAreaControl } from './CardChecklist'
 import { _Card } from '.'
+import { useTheme } from '../Theme/themeContext'
 
 interface EditButtonProps {
   onClick: () => void
 }
 
 function EditButton({ onClick }: EditButtonProps) {
+  const { colors } = useTheme()
   return (
     <Box
       sx={{
-        bgcolor: colorsButton.secondary,
+        bgcolor: colors.button,
         width: 'fit-content',
         height: 32,
         padding: '0 12px',
-        color: colors.primary,
+        color: colors.text,
         fontSize: 14,
         fontWeight: 500,
         '&:hover': {
-          bgcolor: colorsButton.secondary_hover
+          bgcolor: colors.button_hover
         }
       }}
       className='flex cursor-pointer items-center justify-center rounded'
@@ -39,6 +40,7 @@ interface CardDescriptionProps {
 }
 
 export default function CardDescription({ currentCard, setCurrentCard }: CardDescriptionProps) {
+  const { colors } = useTheme()
   const [textAreaMinRows, setTextAreaMinRows] = useState<number>(6)
   const [isOpenTextArea, setIsOpenTextArea] = useState(false)
   const [initialValue, setInitialValue] = useState(currentCard.description)
@@ -79,7 +81,7 @@ export default function CardDescription({ currentCard, setCurrentCard }: CardDes
   }
 
   return (
-    <div style={{ margin: '30px 0 0 40px', color: colors.primary }} className='flex flex-col gap-1'>
+    <div style={{ margin: '30px 0 0 40px', color: colors.text }} className='flex flex-col gap-1'>
       {/* START: Header */}
       <div className='flex flex-row items-center justify-between'>
         {/* Title */}
@@ -93,7 +95,11 @@ export default function CardDescription({ currentCard, setCurrentCard }: CardDes
       {/* END: Header */}
       <TextareaAutosize
         ref={textAreaRef}
-        style={{ width: '100%', resize: 'none' }}
+        style={{
+          width: '100%',
+          resize: 'none',
+          background: isOpenTextArea ? colors.background_modal_tertiary : colors.background_modal
+        }}
         className='mt-1 px-3 py-2 text-sm'
         minRows={textAreaMinRows}
         value={textAreaValue}
