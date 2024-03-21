@@ -5,7 +5,6 @@ import { Refine_MongoId } from "../utils/RefineMongoId";
 export const CreateCardlistRequestSchema = CardlistSchema.omit({
   _id: true,
   cards: true,
-  watcher_email: true,
 }).merge(
   z.object({
     index: z.number().default(0),
@@ -17,10 +16,17 @@ export type CopyCardlistRequest = z.infer<typeof CopyCardlistRequestSchema>;
 
 export const CopyCardlistRequestSchema = CardlistSchema.required({
   _id: true,
-}).pick({
-  _id: true,
-  created_at: true,
-});
+  created_by: true,
+})
+  .pick({
+    _id: true,
+    created_at: true,
+  })
+  .merge(
+    z.object({
+      created_by: z.string().default(""),
+    })
+  );
 
 //name, archive date, index
 export const UpdateCardlistRequestSchema = CardlistSchema.omit({

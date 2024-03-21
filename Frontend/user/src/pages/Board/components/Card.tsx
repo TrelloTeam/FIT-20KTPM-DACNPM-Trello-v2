@@ -1,12 +1,15 @@
-import { useSortable } from '@dnd-kit/sortable'
-import { CardComponentProps } from '../type'
-import { CSS } from '@dnd-kit/utilities'
+import randomColor from 'randomcolor'
 import { useEffect, useRef, useState } from 'react'
 import { BsPencil } from 'react-icons/bs'
-import CardSetting from './CardSetting'
 import { MdOutlineRemoveRedEye } from 'react-icons/md'
 import { useTheme } from '~/components/Theme/themeContext'
-import randomColor from 'randomcolor'
+
+import { useSortable } from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
+
+import { CardComponentProps } from '../type'
+import CardSetting from './CardSetting'
+
 export default function CardComponent({ card, setOpenCardSetting }: CardComponentProps) {
   const { colors, darkMode } = useTheme()
   const [bgColorEmailWatcher, setBgColorEmailWatcher] = useState<Array<string>>([])
@@ -23,6 +26,7 @@ export default function CardComponent({ card, setOpenCardSetting }: CardComponen
     id: card._id,
     data: { ...card }
   })
+
   const styleList = {
     transform: CSS.Transform.toString(transform),
     // height: '100%',
@@ -36,7 +40,7 @@ export default function CardComponent({ card, setOpenCardSetting }: CardComponen
   // const [isHoveredTextInput, setIsHoveredTextInput] = useState<boolean>(false)
   // const avtPath = '/src/assets/Profile/avt.png'
 
-  let hoverTimeout: NodeJS.Timeout | undefined
+  let hoverTimeout: number | undefined
   const handleMouseOver = (watcher: string) => {
     hoverTimeout = setTimeout(() => {
       setIsHoveredWatcher(watcher)
@@ -78,7 +82,7 @@ export default function CardComponent({ card, setOpenCardSetting }: CardComponen
   return (
     <>
       {!cardSettingOpen && (
-        <div ref={setNodeRef} style={styleList} {...attributes} {...listeners} className='transition-all'>
+        <div id={card._id} ref={setNodeRef} style={styleList} {...attributes} {...listeners} className='transition-all'>
           <div
             style={{
               backgroundColor: colors.background,

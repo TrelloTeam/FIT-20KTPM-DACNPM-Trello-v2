@@ -1,6 +1,7 @@
+import { BoardSubset } from '~/pages'
+
 import { Grid } from '@mui/material'
 
-import { BoardSubset } from '~/pages'
 import { BoardsPageCard } from './BoardsPageCard'
 import { BoardsPageCardAdd } from './BoardsPageCardAdd'
 

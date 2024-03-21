@@ -63,23 +63,6 @@ async function bootstrap_2() {
 async function bootstrap() {
   const app = await initApplication()
   app.enableCors()
-
-  const protoFolder = resolve('./../protos')
-
-  const grpcPaths = readdirSync('./../protos')
-    .filter((n) => n.includes('.proto'))
-    .map((n) => join(protoFolder, n))
-  console.log('GRPC path', grpcPaths)
-  app.connectMicroservice<MicroserviceOptions>({
-    transport: Transport.GRPC,
-    options: {
-      url: 'localhost:3334',
-      package: ['trello.card_service', 'trello.cardlist', 'trello.user_service', 'trello.workspace_service'],
-      protoPath: grpcPaths,
-      loader: { keepCase: true, arrays: true },
-    },
-  })
-
   const config = new DocumentBuilder().build()
   const document = SwaggerModule.createDocument(app, config)
   document.components.schemas = {
@@ -87,9 +70,6 @@ async function bootstrap() {
     ...GenerateSwaggerSchema(),
   }
   SwaggerModule.setup('swagger', app, document)
-
-  writeFileSync('./swagger-spec.json', JSON.stringify(document))
-
   const PORT = process.env.PORT || 3000
   app.startAllMicroservices()
   return app.listen(PORT, () => {

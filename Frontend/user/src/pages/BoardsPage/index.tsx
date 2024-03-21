@@ -1,15 +1,15 @@
-import BoardsPageRow from '~/components/BoardsPage/BoardsPageRow'
-import { Box, Container, FormControl, Grid, MenuItem, Select, SelectChangeEvent } from '@mui/material'
-import StarIcon from '@mui/icons-material/Star'
-import AccessTimeIcon from '@mui/icons-material/AccessTime'
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTrello } from '@fortawesome/free-brands-svg-icons'
 import React, { useState } from 'react'
-import { useTheme } from '~/components/Theme/themeContext'
 import { BoardsPageCard } from '~/components/BoardsPage/BoardsPageCard'
+import BoardsPageRow from '~/components/BoardsPage/BoardsPageRow'
 import BoardsPageRowTemplate from '~/components/BoardsPage/BoardsPageRowTemplate'
 import BoardsPageWorkspaceControl from '~/components/BoardsPage/BoardsPageWorkspaceControl'
+import { useTheme } from '~/components/Theme/themeContext'
+
+import { faTrello } from '@fortawesome/free-brands-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import AccessTimeIcon from '@mui/icons-material/AccessTime'
+import StarIcon from '@mui/icons-material/Star'
+import { Box, Container, FormControl, Grid, MenuItem, Select, SelectChangeEvent } from '@mui/material'
 
 export type BoardTemplate = {
   [x: string]: unknown
