@@ -2,10 +2,12 @@ import { NestFactory } from '@nestjs/core'
 import { CardlistServiceModule } from './cardlist.module'
 import { join, resolve } from 'path'
 import { readdirSync } from 'fs'
-import { TrelloApi } from '@trello-v2/shared'
+import { TrelloApi, DbSchemas } from '@trello-v2/shared'
 
 import 'dotenv/config'
 import { initProtos, initSwagger } from '@app/common'
+
+import { z } from 'zod'
 
 export default async function bootstrap() {
   const GRPC_HOST = process.env.GRPC_HOST || 'localhost'
