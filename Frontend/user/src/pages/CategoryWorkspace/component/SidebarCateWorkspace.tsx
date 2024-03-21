@@ -3,22 +3,15 @@ import { styled, useTheme } from '@mui/material/styles'
 import IconButton from '@mui/material/IconButton'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
-import TableViewIcon from '@mui/icons-material/TableView'
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
-import WorkspacesIcon from '@mui/icons-material/Workspaces'
-import SpaceDashboardOutlinedIcon from '@mui/icons-material/SpaceDashboardOutlined'
-import SettingsIcon from '@mui/icons-material/Settings'
-import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined'
-import AddOutlinedIcon from '@mui/icons-material/AddOutlined'
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
-import StarBorderIcon from '@mui/icons-material/StarBorder'
-import StarIcon from '@mui/icons-material/Star'
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
+import { Box, Button, Typography } from '@mui/material'
+import {faTrello } from '@fortawesome/free-brands-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {faGear, faUserGroup, faTableCellsLarge, faTableColumns } from '@fortawesome/free-solid-svg-icons'
 import { Sidebar, Menu, MenuItem } from 'react-pro-sidebar'
-import { Button } from '@mui/base'
 import { Divider, Drawer } from '@mui/material'
+import { faCalendarDays } from '@fortawesome/free-regular-svg-icons'
+import FileUploadIcon from '@mui/icons-material/FileUpload';
 
-import SubMenuSetting from './subMenuSetting'
 const drawerWidth = 250
 
 const DrawerHeader = styled('div')(({ theme }) => ({
@@ -35,41 +28,17 @@ interface Props {
   handleDrawerClose: () => void
 }
 
-type SetterFunction = (value: boolean) => void
-
-const handleMouseEnter = (setter: SetterFunction) => () => {
-  setter(true)
-}
-
-const handleMouseLeave = (setter: SetterFunction) => () => {
-  setter(false)
-}
-
 const SidebarCateWorkSpace: React.FC<Props> = ({ open, handleDrawerClose }) => {
   const theme = useTheme()
 
-  const [isTableHovered, setIsTableHovered] = useState(false)
-  const [isCalendarHovered, setIsCalendarHovered] = useState(false)
-  const [isYourBoardHovered, setIsYourBoarHovered] = useState(false)
-  const [isBoardHovered, setIsBoarHovered] = useState(false)
-  const [isStarred, setIsStarred] = useState(false)
+  const [activeItem, setActiveItem] = useState<string | null>(null);
 
-  const [isSubMenuSetting, setSubMenuSetting] = useState(false)
-
-  const [menuPosition, setMenuPosition] = useState({ x: 0, y: 0 })
-
-  const handleStarClick = () => {
-    setIsStarred(!isStarred)
-  }
-
-  const handleToggleMenu = (event: React.MouseEvent<HTMLAnchorElement>) => {
-    setSubMenuSetting(!isSubMenuSetting)
-    const rect = event.currentTarget.getBoundingClientRect()
-    setMenuPosition({ x: rect.right, y: rect.top })
-  }
+  const handleItemClick = (item: string) => {
+    setActiveItem(item);
+  };
 
   return (
-    <div className='sidebar-cate-workspace'>
+    <div className='sidebar-cate-workspace' style={{ position: 'relative', height: 'calc(100vh - 64px)' }}>
       <Drawer
         sx={{
           width: drawerWidth,
@@ -88,8 +57,29 @@ const SidebarCateWorkSpace: React.FC<Props> = ({ open, handleDrawerClose }) => {
           <div className='flex items-center'>
             <span className='rounded-md bg-white font-bold'>
               <div className='flex items-center text-sm'>
-                <WorkspacesIcon fontSize='small' className='mr-5' />
-                <div>
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  padding: '8px',
+                  cursor: 'pointer',
+                }}
+              >
+                <Typography
+                  variant='h4'
+                  sx={{
+                    display: 'inline-block',
+                    fontSize: '20px',
+                    fontWeight: 700,
+                    padding: '8px 14px',
+                    borderRadius: '6px',
+                    backgroundImage: 'linear-gradient(to bottom, #E774BB, #943D73)'
+                  }}
+                >
+                  Â
+                </Typography>
+              </Box>
+                <div className='cursor-pointer'>
                   Âu Hồng Minh's workspace
                   <div className='text-xs font-normal'>Free</div>
                 </div>
@@ -103,60 +93,63 @@ const SidebarCateWorkSpace: React.FC<Props> = ({ open, handleDrawerClose }) => {
         <Divider />
         <Sidebar className='text-sm'>
           <Menu>
-            <MenuItem className='menu-item rounded-md'>
-              <div className='flex items-center'>
-                <SpaceDashboardOutlinedIcon fontSize='small' className='mr-2' />
-                Boards
-              </div>
-            </MenuItem>
-            <MenuItem>
-              <div className='flex w-full items-center justify-between'>
+            <MenuItem className='menu-item rounded-md' 
+              style={{ height: '40px', backgroundColor: activeItem === 'boards' ? '#d3d3d3' : '' }}
+              onClick={() => handleItemClick('boards')}>
                 <div className='flex items-center'>
-                  <PeopleAltOutlinedIcon fontSize='small' className='mr-2' />
-                  Members
+                  <FontAwesomeIcon icon={faTrello} fontSize='small' className='mr-2'/>
+                  Boards
                 </div>
-                <div>
-                  <Button className='w-9'>
-                    <AddOutlinedIcon className='ml-auto rounded-md hover:bg-gray-300' fontSize='small' />
-                  </Button>
-                </div>
+            </MenuItem>
+            <MenuItem 
+              style={{ height: '40px', backgroundColor: activeItem === 'members' ? '#d3d3d3' : '' }}
+              onClick={() => handleItemClick('members')}
+            >
+              <div className='flex w-full items-center justify-between'>
+                  <div className='flex items-center'>
+                    <FontAwesomeIcon icon={faUserGroup} fontSize='small' className='mr-2'/>
+                    Members
+                  </div>
               </div>
             </MenuItem>
-            <MenuItem onClick={handleToggleMenu}>
-              <div className='flex items-center'>
-                <SettingsIcon fontSize='small' className='mr-2' />
-                <div className='font-bold'>Workspace settings</div>
-                <KeyboardArrowDownIcon fontSize='small' className='ml-auto' />
-              </div>
+            <MenuItem 
+               style={{ height: '40px', backgroundColor: activeItem === 'settings' ? '#d3d3d3' : '' }}
+               onClick={() => handleItemClick('settings')}
+            >
+                <div className='flex items-center'>
+                  <FontAwesomeIcon icon={faGear} fontSize='small' className='mr-2'/>
+                  <div>Workspace settings</div>
+                </div>
             </MenuItem>
           </Menu>
         </Sidebar>
 
-        <h1 className='mb-2 pl-5 pt-2 font-bold text-gray-700'>Workspaces</h1>
+        <h2 className='my-2 pl-5 text-sm font-medium leading-6 text-ds-text overflow-hidden whitespace-nowrap'>
+          Workspaces
+        </h2>
+
         <Sidebar className='workspaces text-sm'>
           <div>
             <Menu>
               <MenuItem
                 className='menu-item'
-                onMouseEnter={handleMouseEnter(setIsTableHovered)}
-                onMouseLeave={handleMouseLeave(setIsTableHovered)}
+                style={{ height: '40px', backgroundColor: activeItem === 'table' ? '#d3d3d3' : '' }}
+                onClick={() => handleItemClick('table')}
               >
                 <div className='flex items-center'>
-                  <TableViewIcon fontSize='small' className='mr-2' />
+                  <FontAwesomeIcon icon={faTableCellsLarge} fontSize='small' className='mr-2'/>
                   Table
-                  {isTableHovered && <MoreHorizIcon fontSize='small' className='ml-auto hover:bg-gray-300' />}
                 </div>
               </MenuItem>
 
               <MenuItem
                 className='menu-item'
-                onMouseEnter={handleMouseEnter(setIsCalendarHovered)}
-                onMouseLeave={handleMouseLeave(setIsCalendarHovered)}
+                style={{ height: '40px', backgroundColor: activeItem === 'calendar' ? '#d3d3d3' : '' }}
+                onClick={() => handleItemClick('calendar')}
               >
                 <div className='flex items-center'>
-                  <CalendarMonthIcon fontSize='small' className='mr-2' />
+                  <FontAwesomeIcon icon={faCalendarDays} fontSize='small' className='mr-2'/>
                   Calendar
-                  {isCalendarHovered && <MoreHorizIcon fontSize='small' className='ml-auto hover:bg-gray-300' />}
                 </div>
               </MenuItem>
             </Menu>
@@ -165,16 +158,10 @@ const SidebarCateWorkSpace: React.FC<Props> = ({ open, handleDrawerClose }) => {
 
         <div
           className='flex w-full items-center justify-between'
-          onMouseEnter={handleMouseEnter(setIsYourBoarHovered)}
-          onMouseLeave={handleMouseLeave(setIsYourBoarHovered)}
         >
-          <h1 className='mb-2 flex items-center pl-5 font-bold text-gray-700'>Your boards</h1>
-          {isYourBoardHovered && <MoreHorizIcon fontSize='small' className='ml-auto hover:bg-gray-300' />}
-          <div>
-            <Button>
-              <AddOutlinedIcon className='rounded-md hover:bg-gray-300' fontSize='small' />
-            </Button>
-          </div>
+          <h2 className='my-2 pl-5 text-sm font-medium leading-6 text-ds-text overflow-hidden whitespace-nowrap'>
+            Your boards
+          </h2>
         </div>
 
         <Sidebar className='workspaces mb-10 text-sm'>
@@ -182,34 +169,35 @@ const SidebarCateWorkSpace: React.FC<Props> = ({ open, handleDrawerClose }) => {
             <Menu>
               <MenuItem
                 className='menu-item'
-                onMouseEnter={handleMouseEnter(setIsBoarHovered)}
-                onMouseLeave={handleMouseLeave(setIsBoarHovered)}
+                style={{ height: '40px', backgroundColor: activeItem === 'board' ? '#d3d3d3' : '' }}
+                onClick={() => handleItemClick('board')}
               >
                 <div className='flex items-center'>
-                  <WorkspacesIcon fontSize='small' className='mr-2' />
+                <FontAwesomeIcon icon={faTableColumns} fontSize='small' className='mr-2'/>
                   Project
-                  {isBoardHovered && (
-                    <>
-                      <MoreHorizIcon fontSize='small' className='ml-auto hover:bg-gray-300' />
-                      {isStarred ? (
-                        <StarIcon fontSize='small' className='ml-2 hover:bg-gray-300' onClick={handleStarClick} />
-                      ) : (
-                        <StarBorderIcon fontSize='small' className='ml-2 hover:bg-gray-300' onClick={handleStarClick} />
-                      )}
-                    </>
-                  )}
                 </div>
               </MenuItem>
             </Menu>
           </div>
         </Sidebar>
-      </Drawer>
 
-      {isSubMenuSetting && (
-        <div style={{ position: 'absolute', top: menuPosition.y, left: menuPosition.x }}>
-          <SubMenuSetting />
+        <div 
+          className='p-3 flex justify-center items-end border-t border-dynamic-text-transparent'
+          style={{ zIndex: 100, position: 'absolute', bottom: 40, left: 0, right: 0 }}
+        >
+          <Button 
+            className='flex items-start bg-gradient-to-b from-purple-600 via-purple-400 to-pink-400 rounded-xl transition duration-300 hover:from-blue-800 hover:to-purple-300'
+            style={{ transition: 'background-color 0.3s' }}
+          >
+          <FileUploadIcon className='mr-2' style={{ fill: 'white' }}/>
+          <div className='font-sans text-white text-sm leading-5'>
+            <span className="capitalize">upgrade </span> 
+            <span className="lowercase">to</span>
+            <span className="capitalize"> premium</span>
+          </div>
+          </Button>
         </div>
-      )}
+      </Drawer>
     </div>
   )
 }
