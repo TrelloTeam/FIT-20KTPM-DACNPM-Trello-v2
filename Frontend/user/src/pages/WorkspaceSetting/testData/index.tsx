@@ -75,7 +75,8 @@ export const activityData = [
     cardlist_id: 'list1',
     card_id: 'Task1',
     content: 'Add comment'
-  }
+  },
+
 ]
 export const workspaceData = [
   {

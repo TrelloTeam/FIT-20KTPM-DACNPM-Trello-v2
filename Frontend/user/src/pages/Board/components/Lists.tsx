@@ -6,8 +6,11 @@ import AddListForm from './AddNewList'
 import { SortableContext, horizontalListSortingStrategy } from '@dnd-kit/sortable'
 import { useEffect, useRef, useState } from 'react'
 import { UniqueIdentifier } from '@dnd-kit/core'
+import { CardlistApiRTQ } from '~/api'
 
 export default function ListsComponent({ lists, setOpenCardSetting }: ListsComponentProps) {
+  const [getAllCardlist, { data: cardlistData }] = CardlistApiRTQ.CardListApiSlice.useLazyGetAllCardlistQuery()
+  const [createCardlist] = CardlistApiRTQ.CardListApiSlice.useCreateCardlistMutation()
   const { colors, darkMode } = useTheme()
   const [showAddListForm, setShowAddListForm] = useState(false)
   const [newListName, setNewListName] = useState<string>('')
@@ -24,6 +27,7 @@ export default function ListsComponent({ lists, setOpenCardSetting }: ListsCompo
   }
 
   useEffect(() => {
+    if (!cardlistData) getAllCardlist()
     document.addEventListener('mousedown', handleClickOutside)
     return () => {
       document.removeEventListener('mousedown', handleClickOutside)
@@ -36,12 +40,11 @@ export default function ListsComponent({ lists, setOpenCardSetting }: ListsCompo
     setNewListName('')
   }
   async function createList() {
-    const data = {
-      board_id: '65ef085bfe5fa8ccefce5ea3',
-      index: 1,
+    createCardlist({
       name: newListName,
-      archive_at: undefined
-    }
+      board_id: 'demo_board',
+      index: cardlistData?.data.length || 0
+    }).then(() => getAllCardlist())
     // const res = await createListAPI(data)
     // console.log(res)
   }
@@ -50,10 +53,8 @@ export default function ListsComponent({ lists, setOpenCardSetting }: ListsCompo
       items={lists?.map((l) => l._id) as (UniqueIdentifier | { id: UniqueIdentifier })[]}
       strategy={horizontalListSortingStrategy}
     >
-      <div className='relative z-30 flex flex-row items-start p-4'>
-        {lists?.map((list) => (
-          <ListComponent list={list} setOpenCardSetting={setOpenCardSetting} key={list._id} />
-        ))}
+      <div className='relative flex flex-row items-start p-4'>
+        {lists?.map((list) => <ListComponent list={list} setOpenCardSetting={setOpenCardSetting} key={list._id} />)}
         {showAddListForm ? (
           <div ref={listFormRef} className={`h-[120px]`}>
             <AddListForm

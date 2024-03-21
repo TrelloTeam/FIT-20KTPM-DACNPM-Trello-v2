@@ -7,6 +7,7 @@ export default function ChangeVisibility() {
   return (
     <Box
       sx={{
+        color: '#44546F',
         width: '384px',
         bgcolor: 'background.paper'
       }}

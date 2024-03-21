@@ -1,21 +1,16 @@
 import React, { useEffect, useState } from 'react'
 
 import { Sidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar'
-import SpaceDashboardOutlinedIcon from '@mui/icons-material/SpaceDashboardOutlined'
-import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined'
-import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined'
 import WorkspacesIcon from '@mui/icons-material/Workspaces'
-import SettingsIcon from '@mui/icons-material/Settings'
-import GridViewOutlinedIcon from '@mui/icons-material/GridViewOutlined'
-import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined'
-import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined'
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined'
-import { workspaceData } from '../pages/Templates/testData'
-import { Workspace } from '../pages/Templates/type'
+import {faTrello } from '@fortawesome/free-brands-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button } from '@mui/base'
 import { Link, useParams } from 'react-router-dom'
 import axios from 'axios'
 import { WorkspaceApiRTQ } from '~/api'
+import {faChessBoard, faGear, faTableCells, faUserGroup, faHome } from '@fortawesome/free-solid-svg-icons'
+import { faHeart } from '@fortawesome/free-regular-svg-icons'
 
 interface WorkspaceData {
   _id: string
@@ -37,55 +32,56 @@ function SidebarTemplate() {
   }, [])
 
   return (
-    <div className='detail-sidebar-container fixed ml-20 mt-2 max-h-90vh max-h-screen w-64 overflow-y-auto'>
+    <div className='detail-sidebar-container fixed ml-20 mt-2 max-h-90vh max-h-screen overflow-y-auto w-100px text-sm'>
       <Sidebar>
         <Menu>
           <MenuItem
-            className='menu-item rounded-md bg-white font-bold hover:border-0 hover:bg-blue-500 hover:text-blue-500'
-            style={{ marginBottom: '4px' }}
+            className='menu-item rounded-md bg-white font-bold hover:border-0 hover:text-blue-500'
+            style={{ marginBottom: '4px', padding: '8px', height: '32px', width: '200px' }}
           >
             <Link to={'/workspace/1'}>
               <div className='flex items-center'>
-                <SpaceDashboardOutlinedIcon fontSize='small' className='mr-2' />
+                <FontAwesomeIcon icon={faTrello} fontSize='small' className='mr-2'/>
                 Boards
               </div>
             </Link>
           </MenuItem>
           <SubMenu
             label={
-              <span className='menu-item rounded-md bg-white font-bold hover:border-0 hover:bg-blue-500 hover:text-blue-500'>
+              <span className='menu-item rounded-md bg-white font-bold hover:border-0 hover:text-blue-500'>
                 <Link to={'/template'}>
                   <div className='flex items-center'>
-                    <DashboardOutlinedIcon className='mr-2' fontSize='small' />
+                    <FontAwesomeIcon icon={faChessBoard} fontSize='small' className='mr-2'/>
                     Templates
                   </div>
                 </Link>
               </span>
             }
             defaultOpen={true}
+            style={{ marginBottom: '4px', padding: '8px', height: '32px', width: '200px' }}
           >
-            <MenuItem>Business</MenuItem>
-            <MenuItem>Design</MenuItem>
-            <MenuItem>Education</MenuItem>
-            <MenuItem>Engineering</MenuItem>
-            <MenuItem>Marketing</MenuItem>
-            <MenuItem>HR & Operations</MenuItem>
-            <MenuItem>Personal</MenuItem>
-            <MenuItem>Productivity</MenuItem>
-            <MenuItem>Product management</MenuItem>
-            <MenuItem>Project management</MenuItem>
-            <MenuItem>Remote work</MenuItem>
-            <MenuItem>Sales</MenuItem>
-            <MenuItem>Support</MenuItem>
-            <MenuItem>Team management</MenuItem>
+            <MenuItem style={{ height: '32px', width: '200px' }}>Business</MenuItem>
+            <MenuItem style={{ height: '32px', width: '200px' }}>Design</MenuItem>
+            <MenuItem style={{ height: '32px', width: '200px' }}>Education</MenuItem>
+            <MenuItem style={{ height: '32px', width: '200px' }}>Engineering</MenuItem>
+            <MenuItem style={{ height: '32px', width: '200px' }}>Marketing</MenuItem>
+            <MenuItem style={{ height: '32px', width: '200px' }}>HR & Operations</MenuItem>
+            <MenuItem style={{ height: '32px', width: '200px' }}>Personal</MenuItem>
+            <MenuItem style={{ height: '32px', width: '200px' }}>Productivity</MenuItem>
+            <MenuItem style={{ height: '32px', width: '200px' }}>Product management</MenuItem>
+            <MenuItem style={{ height: '32px', width: '200px' }}>Project management</MenuItem>
+            <MenuItem style={{ height: '32px', width: '200px' }}>Remote work</MenuItem>
+            <MenuItem style={{ height: '32px', width: '200px' }}>Sales</MenuItem>
+            <MenuItem style={{ height: '32px', width: '200px' }}>Support</MenuItem>
+            <MenuItem style={{ height: '32px', width: '200px' }}>Team management</MenuItem>
           </SubMenu>
           <MenuItem
-            className='menu-item home border-b-3 rounded-md border-blue-500 bg-white font-bold hover:border-0 hover:bg-blue-500 hover:text-blue-500 '
-            style={{ marginBottom: '4px' }}
+            className='menu-item home border-b-3 rounded-md border-blue-500 bg-white font-bold hover:border-0 hover:text-blue-500 '
+            style={{ marginBottom: '4px', padding: '8px', height: '32px', width: '200px' }}
           >
             <Link to={'/'}>
               <div className='flex items-center'>
-                <HomeOutlinedIcon fontSize='small' className='mr-2' />
+              <FontAwesomeIcon icon={faHome} fontSize='small' className='mr-2'/>
                 Home
               </div>
             </Link>
@@ -107,31 +103,32 @@ function SidebarTemplate() {
                       </div>
                     </span>
                   }
+                  style={{ marginBottom: '4px', padding: '8px', height: '32px', width: '200px' }}
                 >
                   <Link to={`/workspace/${w._id}`}>
-                    <MenuItem>
+                    <MenuItem style={{ height: '32px', width: '200px' }}>
                       <div className='flex items-center'>
-                        <SpaceDashboardOutlinedIcon fontSize='small' className='mr-2' />
+                        <FontAwesomeIcon icon={faTrello} fontSize='small' className='mr-2'/>
                         Boards
                       </div>
                     </MenuItem>
                   </Link>
-                  <MenuItem>
+                  <MenuItem style={{ height: '32px', width: '200px' }}>
                     <div className='flex items-center'>
-                      <FavoriteBorderOutlinedIcon fontSize='small' className='mr-2' />
+                      <FontAwesomeIcon icon={faHeart} fontSize='small' className='mr-2'/>
                       Highlights
                     </div>
                   </MenuItem>
-                  <MenuItem>
+                  <MenuItem style={{ height: '32px', width: '200px' }}>
                     <div className='flex items-center'>
-                      <GridViewOutlinedIcon fontSize='small' className='mr-2' />
+                      <FontAwesomeIcon icon={faTableCells} fontSize='small' className='mr-2'/>
                       Views
                     </div>
                   </MenuItem>
-                  <MenuItem>
+                  <MenuItem style={{ height: '32px', width: '200px' }}>
                     <div className='flex w-full items-center justify-between'>
                       <div className='flex items-center'>
-                        <PeopleAltOutlinedIcon fontSize='small' className='mr-2' />
+                        <FontAwesomeIcon icon={faUserGroup} fontSize='small' className='mr-2'/>
                         Members
                       </div>
                       <div>
@@ -141,9 +138,9 @@ function SidebarTemplate() {
                       </div>
                     </div>
                   </MenuItem>
-                  <MenuItem>
+                  <MenuItem style={{ height: '32px', width: '200px' }}>
                     <div className='flex items-center'>
-                      <SettingsIcon fontSize='small' className='mr-2' />
+                      <FontAwesomeIcon icon={faGear} fontSize='small' className='mr-2'/>
                       Setting
                     </div>
                   </MenuItem>

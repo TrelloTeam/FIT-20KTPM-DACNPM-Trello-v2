@@ -3,7 +3,7 @@ import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopyOutlined'
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined'
 import SearchIcon from '@mui/icons-material/Search'
 
-import { 
+import {
   featureData,
   newTemplateData,
   businessData,
@@ -17,7 +17,7 @@ import {
 
 function CardTemplate() {
   return (
-    <div className='detail-card-container mx-4 mt-10 w-full min-w-min max-w-screen-lg md:mx-auto'>
+    <div className='detail-card-container mx-4 w-full min-w-min max-w-screen-lg md:mx-auto'>
       <div className='features'>
         <div className='title-container mr-6 flex items-center justify-between'>
           <div className='title flex items-center'>
@@ -38,9 +38,9 @@ function CardTemplate() {
           {featureData.map((feature, index) => (
             <div key={index} className='item-feature mb-16 mr-3 flex w-32 flex-col items-center text-center'>
               <Card
-              variant='elevation'
-              elevation={0}
-              className='detail-item mx-auto mt-8 block h-full w-full text-sm capitalize leading-6 text-gray-600 hover:cursor-pointer'
+                variant='elevation'
+                elevation={0}
+                className='detail-item mx-auto mt-8 block h-full w-full text-sm capitalize leading-6 text-gray-600 hover:cursor-pointer'
               >
                 <CardMedia
                   className='h-140 relative w-full transform transition duration-300 ease-in-out hover:shadow-xl'
@@ -68,10 +68,10 @@ function CardTemplate() {
         <div className='detail-newTemplate justify-starts mt-5 flex w-full flex-wrap'>
           {newTemplateData.map((card, index) => (
             <Card
-            key={index}
-            variant='elevation'
-            elevation={0}
-            className='item-newTemplate min-h-100 mx-auto w-full hover:cursor-pointer md:w-72'
+              key={index}
+              variant='elevation'
+              elevation={0}
+              className='item-newTemplate min-h-100 mx-auto w-full hover:cursor-pointer md:w-72'
             >
               <div className='cardContainer relative w-72'>
                 <CardMedia
@@ -119,10 +119,10 @@ function CardTemplate() {
         <div className='detail-newTemplate mt-5 flex w-full flex-wrap justify-start'>
           {businessData.map((business, index) => (
             <Card
-            key={index}
-            variant='elevation'
-            elevation={0}
-            className='item-newTemplate min-h-100 mx-auto w-full max-w-sm border-0 hover:cursor-pointer md:w-72'
+              key={index}
+              variant='elevation'
+              elevation={0}
+              className='item-newTemplate min-h-100 mx-auto w-full max-w-sm border-0 hover:cursor-pointer md:w-72'
             >
               <div className='cardContainer relative w-72'>
                 <CardMedia
@@ -152,7 +152,6 @@ function CardTemplate() {
             </Card>
           ))}
         </div>
-
       </div>
 
       <div className='design'>
@@ -315,11 +314,11 @@ function CardTemplate() {
             src='https://trello.com/assets/3695bf4ae87a54c23f88.svg'
             width='24px'
             height='24px'
-          >
-          </img>
+          ></img>
           <label className='text-lg font-bold'>Marketing</label>
           <button className='ml-auto mr-6 inline-flex cursor-pointer items-center justify-center rounded-md bg-gray-200 px-3 py-1 font-sans text-base font-medium text-gray-700 transition-colors duration-200 ease-in-out hover:bg-gray-300'>
-            More templates for Marketing</button>
+            More templates for Marketing
+          </button>
         </div>
         <div className='detail-newTemplate mt-5 flex w-full flex-wrap justify-start'>
           {marketingData.map((marketing, index) => (
@@ -327,7 +326,7 @@ function CardTemplate() {
               key={index}
               variant='elevation'
               elevation={0}
-              className='item-newTemplate min-h-100 mx-auto w-full max-w-sm hover: cursor-pointer md:w-72'
+              className='item-newTemplate min-h-100 hover: mx-auto w-full max-w-sm cursor-pointer md:w-72'
             >
               <div className='cardContainer relative w-72'>
                 <CardMedia
@@ -389,8 +388,7 @@ function CardTemplate() {
                 />
               </div>
               <CardContent>
-                <label className='content-title flex items-center text-base font-bold text-gray-700'>{pm.title}
-                </label>
+                <label className='content-title flex items-center text-base font-bold text-gray-700'>{pm.title}</label>
                 <p className='content text-sm leading-6 text-gray-600'>by {pm.author}</p>
                 <p className='content text-sm leading-6 text-gray-600'>{pm.description}</p>
               </CardContent>
@@ -407,7 +405,6 @@ function CardTemplate() {
             </Card>
           ))}
         </div>
-
       </div>
 
       <div className='workRemotely'>
@@ -440,8 +437,7 @@ function CardTemplate() {
                 />
               </div>
               <CardContent>
-                <label className='content-title flex items-center text-base font-bold text-gray-700'>{wr.title}
-                </label>
+                <label className='content-title flex items-center text-base font-bold text-gray-700'>{wr.title}</label>
                 <p className='content text-sm leading-6 text-gray-600'>by {wr.author}</p>
                 <p className='content text-sm leading-6 text-gray-600'>{wr.description}</p>
               </CardContent>
