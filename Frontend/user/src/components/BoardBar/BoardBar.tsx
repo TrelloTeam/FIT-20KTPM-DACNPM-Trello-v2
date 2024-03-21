@@ -1,4 +1,4 @@
-import { Avatar, AvatarGroup, Box, Chip } from '@mui/material'
+import { Avatar, AvatarGroup, Box, Chip, Drawer } from '@mui/material'
 import DashboardIcon from '@mui/icons-material/Dashboard'
 import StarBorderIcon from '@mui/icons-material/StarBorder'
 import { MdOutlineLock } from 'react-icons/md'
@@ -13,10 +13,14 @@ import { useState } from 'react'
 import ChangeVisibility from './ChangeVisibility'
 import CustomizeViews from './CustomizeViews'
 import Automation from './Automation'
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
+import Filter from './Filter'
+import { useTheme } from '../Theme/themeContext'
+import More from './MoreMenu'
 //pop up
 
 const Menu_Style = {
-  color: '#cccc',
+  color: 'white',
   fontSize: '18px',
   bgcolor: 'rgba(54, 55, 61, 0.1)',
   // paddingX: '5px',
@@ -36,6 +40,7 @@ function stringToColor(string: string) {
   let hash = 0
   let i
 
+  /* eslint-disable no-bitwise */
   for (i = 0; i < string.length; i += 1) {
     hash = string.charCodeAt(i) + ((hash << 5) - hash)
   }
@@ -46,6 +51,7 @@ function stringToColor(string: string) {
     const value = (hash >> (i * 8)) & 0xff
     color += `00${value.toString(16)}`.slice(-2)
   }
+  /* eslint-enable no-bitwise */
 
   return color
 }
@@ -67,8 +73,13 @@ function stringAvatar(name: string) {
 }
 
 function BoardBar() {
+  const { darkMode, colors } = useTheme()
   const [anchor, setAnchor] = React.useState<null | HTMLElement>(null)
   const [popupContent, setPopupContent] = useState(<div>Hello kien</div>)
+  const [openMenu, setOpenMenu] = React.useState(false)
+  const toggleDrawer = (newOpen) => () => {
+    setOpenMenu(newOpen)
+  }
 
   const handleClick = (event: React.MouseEvent<HTMLElement>, customPopupContent: JSX.Element) => {
     setPopupContent(customPopupContent)
@@ -99,8 +110,8 @@ function BoardBar() {
                 height: '32px',
                 fontSize: '18px',
                 fontWeight: 'bold',
-                color: '#cccc',
-                bgcolor: 'rgba(54, 55, 61, 0.1)',
+                color: 'white',
+                bgcolor: 'rgba(54, 55, 61, 0)',
                 borderRadius: '8px',
                 paddingLeft: '12px',
                 marginRight: '4px',
@@ -267,7 +278,7 @@ function BoardBar() {
                 />
               }
               label='Filters'
-              onClick={(e) => handleClick(e, <div>Filter content</div>)}
+              onClick={(e) => handleClick(e, <Filter />)}
             />
           </Tooltip>
 
@@ -309,7 +320,7 @@ function BoardBar() {
             </Tooltip>
           </AvatarGroup>
 
-          <Tooltip title='Automations'>
+          <Tooltip title='More'>
             <Chip
               sx={{
                 color: '#cccc',
@@ -320,7 +331,6 @@ function BoardBar() {
                 borderRadius: '8px',
                 width: '32px',
                 height: '32px',
-                marginRight: '30px',
                 '& .MuiSvgIcon-root': {
                   color: 'white'
                 },
@@ -329,7 +339,7 @@ function BoardBar() {
                 }
               }}
               icon={
-                <BoltIcon
+                <MoreHorizIcon
                   sx={{
                     fontSize: '18px',
                     '&:hover': {
@@ -338,7 +348,7 @@ function BoardBar() {
                   }}
                 />
               }
-              onClick={(e) => handleClick(e, <Automation />)}
+              onClick={() => {setOpenMenu(true)}}
             />
           </Tooltip>
         </Box>
@@ -349,10 +359,13 @@ function BoardBar() {
         anchor={anchor}
         placement={'bottom-start'}
         disablePortal
-        className='z-50 mt-2 rounded-lg border border-solid border-slate-200 bg-white p-3 font-sans text-sm font-medium shadow-md'
+        className={`z-50 mt-2 rounded-lg border border-solid border-slate-200 bg-white p-3 font-sans text-sm font-medium shadow-md ${darkMode ? 'dark:bg-[#282E33]' : ''}`}
       >
         {popupContent}
       </BasePopup>
+      <Drawer open={false} sx={{ position: 'relative', bgcolor:colors.backgroundSecond, color: colors.text }} anchor='right' onClose={toggleDrawer(false)}>
+        {<More />}
+      </Drawer>
     </>
   )
 }

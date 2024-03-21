@@ -3,7 +3,7 @@ import CardTemplate from '../Templates/component/CardTemplate'
 
 export function Templates() {
   return (
-    <div className='ml-20 grid grid-cols-4 gap-4'>
+    <div className='ml-20 mt-5 grid grid-cols-4 gap-4'>
       <div className='sidebar-container'>
         <SidebarTemplate />
       </div>

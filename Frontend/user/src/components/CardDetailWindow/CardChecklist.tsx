@@ -2,25 +2,26 @@ import { faEllipsis, faSquareCheck, faXmark } from '@fortawesome/free-solid-svg-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Box, LinearProgress, LinearProgressProps, TextareaAutosize, Typography } from '@mui/material'
 import { ChangeEvent, useEffect, useRef, useState } from 'react'
-import { colors, colorsButton } from '~/styles'
-import { _Feature_Checklist, _Feature_Checklist_Item } from '.'
-import { ChecklistItemModal, DeleteChecklistModal } from './CardModals'
+import { _Card, _Feature_Checklist, _Feature_Checklist_Item } from '.'
+import { ChecklistItemModal, DeleteChecklistModal } from './modals/CardChecklistModal'
+import { useTheme } from '../Theme/themeContext'
 
 interface ChecklistAddTextAreaProps {
   isInputFocused: boolean
   setIsInputFocused: (newState: boolean) => void
   currentChecklist: _Feature_Checklist
-  allChecklists: _Feature_Checklist[]
-  setAllChecklists: (newState: _Feature_Checklist[]) => void
+  currentCard: _Card
+  setCurrentCard: (newState: _Card) => void
 }
 
 function ChecklistAddTextArea({
   isInputFocused,
   setIsInputFocused,
   currentChecklist,
-  allChecklists,
-  setAllChecklists
+  currentCard,
+  setCurrentCard
 }: ChecklistAddTextAreaProps) {
+  const { colors } = useTheme()
   const [textAreaValue, setTextAreaValue] = useState('')
 
   const handleTextAreaChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
@@ -41,9 +42,11 @@ function ChecklistAddTextArea({
     // Check if new checkitem title is empty
     if (trimmedValue.trim() !== '') {
       // Create id of new checkitem
-      const newCheckitemIndex = (
-        parseInt(currentChecklist.items[currentChecklist.items.length - 1]._id, 10) + 1
-      ).toString()
+      let newCheckitemIndex = '0'
+      // If checklist is not empty
+      if (currentChecklist.items.length !== 0) {
+        newCheckitemIndex = (parseInt(currentChecklist.items[currentChecklist.items.length - 1]._id, 10) + 1).toString()
+      }
       // Create new checkitem
       const newCheckitem: _Feature_Checklist_Item = {
         _id: newCheckitemIndex,
@@ -51,15 +54,18 @@ function ChecklistAddTextArea({
         is_check: false
       }
       // Update checklist table
-      const updatedAllChecklists = allChecklists.map((checklist) =>
-        checklist._id === currentChecklist._id
-          ? {
-              ...checklist,
-              items: [...checklist.items, newCheckitem]
-            }
-          : checklist
-      )
-      setAllChecklists(updatedAllChecklists)
+      const updatedCard = {
+        ...currentCard,
+        checklists: currentCard.checklists.map((checklist) =>
+          checklist._id === currentChecklist._id
+            ? {
+                ...checklist,
+                items: [...checklist.items, newCheckitem]
+              }
+            : checklist
+        )
+      }
+      setCurrentCard(updatedCard)
     }
     // Close textarea
     handleClose()
@@ -85,7 +91,8 @@ function ChecklistAddTextArea({
           width: '100%',
           padding: '4px 4px',
           whiteSpace: isInputFocused ? 'normal' : 'wrap',
-          resize: 'none'
+          resize: 'none',
+          background: colors.background_modal_secondary
         }}
         minRows={2}
         placeholder='Add an item'
@@ -98,7 +105,13 @@ function ChecklistAddTextArea({
       {/* Title textarea control */}
       <Box className='mt-2 flex flex-row items-center gap-2'>
         <Box
-          sx={{ width: 'fit-content', height: 32, bgcolor: '#0c66e4', color: '#fff', padding: '0 12px' }}
+          sx={{
+            width: 'fit-content',
+            height: 32,
+            bgcolor: colors.button_primary,
+            color: colors.button_primary_text,
+            padding: '0 12px'
+          }}
           className='flex cursor-pointer items-center justify-center rounded'
           onClick={handleSave}
         >
@@ -108,10 +121,10 @@ function ChecklistAddTextArea({
           sx={{
             width: 'fit-content',
             height: 32,
-            color: colors.primary,
+            color: colors.text,
             padding: '0 12px',
             '&:hover': {
-              bgcolor: colorsButton.secondary_hover
+              bgcolor: colors.button_hover
             }
           }}
           className='flex cursor-pointer items-center justify-center rounded'
@@ -126,11 +139,12 @@ function ChecklistAddTextArea({
 
 interface ChecklistAddButtonProps {
   currentChecklist: _Feature_Checklist
-  allChecklists: _Feature_Checklist[]
-  setAllChecklists: (newState: _Feature_Checklist[]) => void
+  currentCard: _Card
+  setCurrentCard: (newState: _Card) => void
 }
 
-function ChecklistAddButton({ currentChecklist, allChecklists, setAllChecklists }: ChecklistAddButtonProps) {
+function ChecklistAddButton({ currentChecklist, currentCard, setCurrentCard }: ChecklistAddButtonProps) {
+  const { colors } = useTheme()
   const [isInputFocused, setIsInputFocused] = useState(false)
 
   return (
@@ -139,15 +153,15 @@ function ChecklistAddButton({ currentChecklist, allChecklists, setAllChecklists 
       {!isInputFocused && (
         <Box
           sx={{
-            bgcolor: colorsButton.secondary,
+            bgcolor: colors.button,
             width: 'fit-content',
             height: 32,
             padding: '0 12px',
-            color: colors.primary,
+            color: colors.text,
             fontSize: 14,
             fontWeight: 500,
             '&:hover': {
-              bgcolor: colorsButton.secondary_hover
+              bgcolor: colors.button_hover
             }
           }}
           className='flex cursor-pointer items-center justify-center rounded'
@@ -161,8 +175,8 @@ function ChecklistAddButton({ currentChecklist, allChecklists, setAllChecklists 
           isInputFocused={isInputFocused}
           setIsInputFocused={setIsInputFocused}
           currentChecklist={currentChecklist}
-          allChecklists={allChecklists}
-          setAllChecklists={setAllChecklists}
+          currentCard={currentCard}
+          setCurrentCard={setCurrentCard}
         />
       )}
     </Box>
@@ -175,6 +189,7 @@ interface ChecklistDeleteButtonProps {
 }
 
 function ChecklistDeleteButton({ currentChecklistName, handleDelete }: ChecklistDeleteButtonProps) {
+  const { colors } = useTheme()
   const [anchorEl, setAnchorEl] = useState<null | HTMLDivElement>(null)
   const [isOpenDeleteChecklistModal, setIsOpenDeleteChecklistModal] = useState(false)
 
@@ -195,16 +210,16 @@ function ChecklistDeleteButton({ currentChecklistName, handleDelete }: Checklist
   return (
     <Box
       sx={{
-        bgcolor: colorsButton.secondary,
+        bgcolor: colors.button,
         width: 'fit-content',
         height: 32,
         padding: '0 12px',
         margin: '4px 0 0 10px',
-        color: colors.primary,
+        color: colors.text,
         fontSize: 14,
         fontWeight: 500,
         '&:hover': {
-          bgcolor: colorsButton.secondary_hover
+          bgcolor: colors.button_hover
         }
       }}
       className='flex cursor-pointer items-center justify-center rounded'
@@ -238,6 +253,7 @@ function ChecklistNameField({
   isInputFocused,
   setIsInputFocused
 }: ChecklistNameFieldProps) {
+  const { colors } = useTheme()
   const [initialValue, setInitialValue] = useState(checklistNameState)
 
   function handleTextAreaChange(event: ChangeEvent<HTMLTextAreaElement>) {
@@ -278,14 +294,15 @@ function ChecklistNameField({
           width: '100%',
           padding: '0 4px',
           whiteSpace: isInputFocused ? 'normal' : 'wrap',
-          resize: 'none'
+          resize: 'none',
+          background: isInputFocused ? colors.background_modal_tertiary : colors.background_modal
         }}
         minRows={1}
         value={checklistNameState}
         onChange={handleTextAreaChange}
         onBlur={handleClose}
         onFocus={handleOpen}
-        className='flex font-semibold'
+        className='flex cursor-pointer font-semibold'
       />
       {/* Title textarea control */}
       {isInputFocused && <TextAreaControl handleSave={handleSave} handleClose={handleClose} />}
@@ -299,17 +316,24 @@ interface TextAreaControlProps {
 }
 
 export function TextAreaControl({ handleSave, handleClose }: TextAreaControlProps) {
+  const { colors } = useTheme()
   return (
     <Box className='mt-2 flex flex-row items-center gap-2'>
       <Box
-        sx={{ width: 'fit-content', height: 32, bgcolor: '#0c66e4', color: '#fff', padding: '0 12px' }}
+        sx={{
+          width: 'fit-content',
+          height: 32,
+          bgcolor: colors.button_primary,
+          color: colors.button_primary_text,
+          padding: '0 12px'
+        }}
         className='flex cursor-pointer items-center justify-center rounded'
         onMouseDown={handleSave}
       >
         <p className='text-sm font-semibold'>Save</p>
       </Box>
       <Box
-        sx={{ width: 'fit-content', height: 32, color: colors.primary, padding: '0 6px' }}
+        sx={{ width: 'fit-content', height: 32, color: colors.text, padding: '0 6px' }}
         className='flex cursor-pointer items-center justify-center rounded'
         onMouseDown={handleClose}
       >
@@ -320,14 +344,15 @@ export function TextAreaControl({ handleSave, handleClose }: TextAreaControlProp
 }
 
 function LinearProgressWithLabel(props: LinearProgressProps & { value: number }) {
+  const { colors } = useTheme()
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', margin: '4px 0 10px 0' }}>
-      <Box sx={{ width: 40, color: colors.primary }} className='flex items-center justify-center text-xs'>
-        <Typography variant='body2' color='text.secondary'>{`${Math.round(props.value)}%`}</Typography>
+      <Box sx={{ width: 40, color: colors.text }} className='flex items-center justify-center text-xs'>
+        <Typography variant='body2' color={colors.text}>{`${Math.round(props.value)}%`}</Typography>
       </Box>
       <Box sx={{ width: '100%', margin: '0 0 0 4px' }}>
         <LinearProgress
-          sx={{ height: 8, bgcolor: colorsButton.secondary }}
+          sx={{ height: 8, bgcolor: colors.button }}
           className='rounded'
           variant='determinate'
           {...props}
@@ -352,6 +377,7 @@ function ChecklistItemNameField({
   isInputFocused,
   setIsInputFocused
 }: ChecklistItemNameFieldProps) {
+  const { colors } = useTheme()
   const [initialValue, setInitialValue] = useState(checklistItemNameState)
 
   function handleTextAreaChange(event: ChangeEvent<HTMLTextAreaElement>) {
@@ -394,7 +420,8 @@ function ChecklistItemNameField({
           width: '100%',
           padding: '8px 8px',
           whiteSpace: isInputFocused ? 'normal' : 'wrap',
-          resize: 'none'
+          resize: 'none',
+          background: colors.background_modal_secondary
         }}
         minRows={3}
         value={checklistItemNameState}
@@ -412,32 +439,36 @@ function ChecklistItemNameField({
 interface ChecklistItemProps {
   currentCheckitem: _Feature_Checklist_Item
   currentChecklist: _Feature_Checklist
-  allChecklists: _Feature_Checklist[]
-  setAllChecklists: (newState: _Feature_Checklist[]) => void
+  currentCard: _Card
+  setCurrentCard: (newState: _Card) => void
   setProgress: (newState: number) => void
 }
 
 function ChecklistItem({
   currentCheckitem,
   currentChecklist,
-  allChecklists,
-  setAllChecklists,
+  currentCard,
+  setCurrentCard,
   setProgress
 }: ChecklistItemProps) {
+  const { colors } = useTheme()
   const [onFocus, setOnFocus] = useState(false)
 
   function handleCheckbox() {
-    const updatedAllChecklists = allChecklists.map((checklist) =>
-      checklist._id === currentChecklist._id
-        ? {
-            ...checklist,
-            items: currentChecklist.items.map((checkitem) =>
-              checkitem._id === currentCheckitem._id ? { ...checkitem, is_check: !checkitem.is_check } : checkitem
-            )
-          }
-        : checklist
-    )
-    setAllChecklists(updatedAllChecklists)
+    const updatedCard = {
+      ...currentCard,
+      checklists: currentCard.checklists.map((checklist) =>
+        checklist._id === currentChecklist._id
+          ? {
+              ...checklist,
+              items: currentChecklist.items.map((checkitem) =>
+                checkitem._id === currentCheckitem._id ? { ...checkitem, is_check: !checkitem.is_check } : checkitem
+              )
+            }
+          : checklist
+      )
+    }
+    setCurrentCard(updatedCard)
   }
 
   const [openChecklistItemNameField, setOpenChecklistItemNameField] = useState(false)
@@ -448,17 +479,20 @@ function ChecklistItem({
     const trimmedValue = checklistItemNameState.replace(/\s+/g, ' ').trim()
     // Check if new checkitem name is empty
     if (trimmedValue !== '') {
-      const updatedAllChecklists = allChecklists.map((checklist) =>
-        checklist._id === currentChecklist._id
-          ? {
-              ...checklist,
-              items: currentChecklist.items.map((checkitem) =>
-                checkitem._id === currentCheckitem._id ? { ...checkitem, name: checklistItemNameState } : checkitem
-              )
-            }
-          : checklist
-      )
-      setAllChecklists(updatedAllChecklists)
+      const updatedCard = {
+        ...currentCard,
+        checklists: currentCard.checklists.map((checklist) =>
+          checklist._id === currentChecklist._id
+            ? {
+                ...checklist,
+                items: currentChecklist.items.map((checkitem) =>
+                  checkitem._id === currentCheckitem._id ? { ...checkitem, name: checklistItemNameState } : checkitem
+                )
+              }
+            : checklist
+        )
+      }
+      setCurrentCard(updatedCard)
     }
   }
 
@@ -486,22 +520,25 @@ function ChecklistItem({
   }
 
   function deleteChecklistItem() {
-    const updatedAllChecklists = allChecklists.map((checklist) =>
-      checklist._id === currentChecklist._id
-        ? {
-            ...checklist,
-            items: checklist.items.filter((checkitem) => checkitem._id !== currentCheckitem._id)
-          }
-        : checklist
-    )
-    setAllChecklists(updatedAllChecklists)
+    const updatedCard = {
+      ...currentCard,
+      checklists: currentCard.checklists.map((checklist) =>
+        checklist._id === currentChecklist._id
+          ? {
+              ...checklist,
+              items: checklist.items.filter((checkitem) => checkitem._id !== currentCheckitem._id)
+            }
+          : checklist
+      )
+    }
+    setCurrentCard(updatedCard)
   }
 
   return (
     <Box sx={{ width: '100%', height: 'fit-content' }} className='flex flex-row'>
       <Box sx={{ width: 36, marginTop: '12px' }} className='flex justify-center'>
         <input
-          style={{ width: 16, height: 16 }}
+          style={{ width: 16, height: 16, background: colors.background_modal_secondary }}
           type='checkbox'
           checked={currentCheckitem.is_check}
           onChange={handleCheckbox}
@@ -512,9 +549,9 @@ function ChecklistItem({
           width: '100%',
           height: '100%',
           padding: '4px 0 4px 10px',
-          bgcolor: openChecklistItemNameField ? colorsButton.secondary : 'none',
+          bgcolor: openChecklistItemNameField ? colors.button : 'none',
           '&:hover': {
-            bgcolor: colorsButton.secondary
+            bgcolor: colors.button
           }
         }}
         className='flex cursor-pointer items-center justify-between rounded-xl'
@@ -546,10 +583,10 @@ function ChecklistItem({
               height: 24,
               margin: '0 10px 0 0',
               padding: '0 0 0 2px',
-              bgcolor: colorsButton.secondary_hover,
+              bgcolor: colors.button_hover,
               borderRadius: 200,
               '&:hover': {
-                bgcolor: colorsButton.secondary_hover_hover
+                bgcolor: colors.button_hover_hover
               }
             }}
             className='flex items-center justify-center'
@@ -576,11 +613,12 @@ function ChecklistItem({
 
 interface CardChecklistProps {
   currentChecklist: _Feature_Checklist
-  allChecklists: _Feature_Checklist[]
-  setAllChecklists: (newState: _Feature_Checklist[]) => void
+  currentCard: _Card
+  setCurrentCard: (newState: _Card) => void
 }
 
-export default function CardChecklist({ currentChecklist, allChecklists, setAllChecklists }: CardChecklistProps) {
+export default function CardChecklist({ currentChecklist, currentCard, setCurrentCard }: CardChecklistProps) {
+  const { colors } = useTheme()
   // START: Handle edit Checklist name
   const [checklistNameState, setChecklistNameState] = useState(currentChecklist.name)
   const [isInputFocused, setIsInputFocused] = useState(false)
@@ -592,16 +630,19 @@ export default function CardChecklist({ currentChecklist, allChecklists, setAllC
     // Check if new checklist name is empty
     if (trimmedValue !== '') {
       // Update checklist name
-      const updatedAllChecklists = allChecklists.map((checklist) =>
-        checklist._id === currentChecklist._id
-          ? {
-              ...checklist,
-              name: trimmedValue
-            }
-          : checklist
-      )
+      const updatedCard = {
+        ...currentCard,
+        checklists: currentCard.checklists.map((checklist) =>
+          checklist._id === currentChecklist._id
+            ? {
+                ...checklist,
+                name: trimmedValue
+              }
+            : checklist
+        )
+      }
       setChecklistNameState(trimmedValue)
-      setAllChecklists(updatedAllChecklists)
+      setCurrentCard(updatedCard)
     }
     closeChecklistField()
   }
@@ -612,12 +653,15 @@ export default function CardChecklist({ currentChecklist, allChecklists, setAllC
   // END: Handle edit Checklist name
 
   function deleteChecklist() {
-    const updatedAllChecklists = allChecklists.filter((checklist) => checklist._id !== currentChecklist._id)
-    setAllChecklists(updatedAllChecklists)
+    const updatedCard = {
+      ...currentCard,
+      checklists: currentCard.checklists.filter((checklist) => checklist._id !== currentChecklist._id)
+    }
+    setCurrentCard(updatedCard)
   }
 
   return (
-    <div style={{ margin: '30px 0 0 0', color: colors.primary }} className='flex flex-col flex-wrap gap-1'>
+    <div style={{ margin: '30px 0 0 0', color: colors.text }} className='flex flex-col flex-wrap gap-1'>
       {/* START: Header */}
       <div style={{ height: 'fit-content' }} className='flex flex-row justify-between'>
         {/* Title */}
@@ -647,15 +691,15 @@ export default function CardChecklist({ currentChecklist, allChecklists, setAllC
             key={checkitem._id}
             currentCheckitem={checkitem}
             currentChecklist={currentChecklist}
-            allChecklists={allChecklists}
-            setAllChecklists={setAllChecklists}
+            currentCard={currentCard}
+            setCurrentCard={setCurrentCard}
             setProgress={setProgress}
           />
         ))}
         <ChecklistAddButton
           currentChecklist={currentChecklist}
-          allChecklists={allChecklists}
-          setAllChecklists={setAllChecklists}
+          currentCard={currentCard}
+          setCurrentCard={setCurrentCard}
         />
       </Box>
       {/* END: Body */}

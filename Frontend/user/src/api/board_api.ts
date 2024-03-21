@@ -6,7 +6,7 @@ const BoardApiSlice = createApi({
   endpoints: (builder) => ({
     createBoard: builder.mutation<TrelloApi.BoardApi.CreateBoardResponse, TrelloApi.BoardApi.CreateBoard>({
       query: (data) => ({
-        url: '/api/board/createBoard',
+        url: '/api/board/create',
         body: data,
         method: 'POST'
       })

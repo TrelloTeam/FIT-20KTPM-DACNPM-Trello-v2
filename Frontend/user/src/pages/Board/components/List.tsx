@@ -25,6 +25,7 @@ export default function ListComponent({ list, setOpenCardSetting }: ListComponen
       if (componentRef_AddCard.current && !componentRef_AddCard.current.contains(event.target as Node)) {
         // Clicked outside of Component A, hide it
         setAddCardOpenAt('')
+        setNewCardName('')
       }
     }
     const handleClickOutside_ListSetting = (event: MouseEvent) => {
@@ -50,6 +51,7 @@ export default function ListComponent({ list, setOpenCardSetting }: ListComponen
       index: index
     }).then(() => {
       setAddCardOpenAt('')
+      setNewCardName('')
       getAllCardlist()
     })
     // const data = {
@@ -66,7 +68,7 @@ export default function ListComponent({ list, setOpenCardSetting }: ListComponen
     id: list._id,
     data: { ...list }
   })
-
+  const [isHovered, setIsHovered] = useState(false)
   const styleList = {
     transform: CSS.Transform.toString(transform),
     opacity: isDragging ? 0.5 : undefined,
@@ -80,7 +82,7 @@ export default function ListComponent({ list, setOpenCardSetting }: ListComponen
       style={styleList}
       {...attributes}
       {...listeners}
-      className='mr-2 flex min-h-full w-[300px] flex-col rounded-xl border shadow-sm '
+      className='mr-2 flex min-h-full w-[300px] max-w-[300px] flex-col rounded-xl border pt-1 shadow-sm '
     >
       <div className=' relative mx-6 my-2 flex flex-row items-center justify-between'>
         <h2 className={`font-bold  `}>{list.name}</h2>
@@ -96,28 +98,31 @@ export default function ListComponent({ list, setOpenCardSetting }: ListComponen
             <ListSetting closeListSetting={() => setListSettingOpen('')} />
           </div>
         )}
-        <SortableContext
-          items={list.cards.map((c) => c._id) as (UniqueIdentifier | { id: UniqueIdentifier })[]}
-          strategy={verticalListSortingStrategy}
-        >
-          {list.cards &&
-            list.cards.map((card, index) => (
-              <CardComponent key={index} card={card} setOpenCardSetting={setOpenCardSetting} />
-            ))}
-        </SortableContext>
-
+        <div className={`my-1`}>
+          <SortableContext
+            items={list.cards.map((c) => c._id) as (UniqueIdentifier | { id: UniqueIdentifier })[]}
+            strategy={verticalListSortingStrategy}
+          >
+            <div className={`space-y-[10px]`}>
+              {list.cards &&
+                list.cards.map((card, index) => (
+                  <CardComponent key={index} card={card} setOpenCardSetting={setOpenCardSetting} />
+                ))}
+            </div>
+          </SortableContext>
+        </div>
         {addCardOpenAt &&
           addCardOpenAt === list._id &&
           (list.cards[0].placeHolder === false ? (
             <div ref={componentRef_AddCard} className='mx-3 '>
-              <div className={` mt-2 rounded-xl  `}>
+              <div className={` mt-[10px] rounded-xl  ${darkMode ? `` : ' shadow-sm shadow-gray-300'} `}>
                 <div className={`flex flex-row items-center   justify-between`}>
                   <input
                     style={{
                       backgroundColor: colors.background,
                       color: colors.text
                     }}
-                    className={` h-full w-full rounded-lg px-2 pb-8 text-left focus:border-0 focus:outline-none focus:ring-0 `}
+                    className={` h-full w-full rounded-lg px-2 pt-2 pb-8 text-left focus:border-0 focus:outline-none focus:ring-0 `}
                     placeholder='Enter the title for this card...'
                     value={newCardName}
                     onChange={(e) => setNewCardName(e.target.value)}
@@ -125,15 +130,21 @@ export default function ListComponent({ list, setOpenCardSetting }: ListComponen
                   ></input>
                 </div>
               </div>
-              <div className={`my-2 flex flex-row space-x-2`}>
+              <div className={`mb-1 mt-[10px] flex flex-row space-x-2`}>
                 <button
+                  style={{
+                    backgroundColor: !isHovered ? colors.add_card : colors.add_card_hover,
+                    color: darkMode ? 'black' : 'white'
+                  }}
                   className=' rounded   bg-blue-600 px-3 py-2 hover:bg-blue-700'
                   onClick={() => {
                     if (list._id) setAddCardOpenAt(list._id)
                     addCard()
                   }}
+                  onMouseEnter={() => setIsHovered(true)}
+                  onMouseLeave={() => setIsHovered(false)}
                 >
-                  <p className={`text-left font-semibold text-white`}> Add card</p>
+                  <p className={`text-left ${darkMode ? '' : 'font-semibold'}`}> Add card</p>
                 </button>
                 <button
                   className={` rounded-lg px-3 py-2 ${darkMode ? 'hover:bg-gray-600' : 'hover:bg-gray-300'}`}
@@ -150,15 +161,15 @@ export default function ListComponent({ list, setOpenCardSetting }: ListComponen
               </div>
             </div>
           ) : (
-            <div ref={componentRef_AddCard} className=' top-0 m-3 -mt-12 w-full pr-7'>
-              <div className={` space-y-2 rounded-xl  `}>
+            <div ref={componentRef_AddCard} className=' mx-3 -mt-3 '>
+              <div className={` space-y-2 rounded-xl  ${darkMode ? `` : ' shadow-sm shadow-gray-300'} `}>
                 <div className={`flex flex-row items-center   justify-between`}>
                   <input
                     style={{
                       backgroundColor: colors.background,
                       color: colors.text
                     }}
-                    className={` h-full w-full rounded-lg px-2 pb-8 text-left focus:border-0 focus:outline-none focus:ring-0 `}
+                    className={` h-full w-full rounded-lg px-2 pt-2 pb-8 text-left focus:border-0 focus:outline-none focus:ring-0 `}
                     placeholder='Enter the title for this card...'
                     value={newCardName}
                     onChange={(e) => setNewCardName(e.target.value)}
@@ -166,15 +177,19 @@ export default function ListComponent({ list, setOpenCardSetting }: ListComponen
                   ></input>
                 </div>
               </div>
-              <div className={`my-2 flex flex-row space-x-2`}>
+              <div className={`mb-1 mt-[10px] flex flex-row space-x-2`}>
                 <button
+                  style={{
+                    backgroundColor: !isHovered ? colors.add_card : colors.add_card_hover,
+                    color: darkMode ? 'black' : 'white'
+                  }}
                   className=' rounded   bg-blue-600 px-3 py-2 hover:bg-blue-700'
                   onClick={() => {
                     if (list._id) setAddCardOpenAt(list._id)
                     addCard()
                   }}
                 >
-                  <p className={`text-left font-semibold text-white`}> Add card</p>
+                  <p className={`text-left ${darkMode ? '' : 'font-semibold'}`}> Add card</p>
                 </button>
                 <button
                   className={` rounded-lg px-3 py-2 ${darkMode ? 'hover:bg-gray-600' : 'hover:bg-gray-300'}`}

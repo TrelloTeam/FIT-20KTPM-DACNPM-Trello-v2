@@ -1,6 +1,8 @@
 import StarBorderIcon from '@mui/icons-material/StarBorder'
+import { useTheme } from '~/components/Theme/themeContext'
 
 const ProjectTile = () => {
+  const { darkMode, colors } = useTheme()
   return (
     <div data-testid='home-tile-Project Trello' className='div-card-project-viewed'>
       <a href='/b/nkiHj9Gg/project-trello' className='div-content-card'>
@@ -12,8 +14,8 @@ const ProjectTile = () => {
           }}
         ></div>
         <span className='div-content-reveiwed'>
-          <span className='content-project-reveiwed'>Project Trello</span>
-          <span className='content-workspace-reveiwed'>Âu Hồng Minh's workspace</span>
+          <span className='content-project-reveiwed' style={{color: colors.text }}>Project Trello</span>
+          <span className='content-workspace-reveiwed' style={{color: colors.text }}>Âu Hồng Minh's workspace</span>
         </span>
       </a>
       <button
@@ -21,7 +23,7 @@ const ProjectTile = () => {
         title='Click to star Project Trello. It will show up at the top of your boards list.'
         className='button-to-vote-star'
       >
-        <span className='icon-star icon-sm icon-of-button-star'>
+        <span className='icon-star icon-sm icon-of-button-star' style={{color: colors.text }}>
           <StarBorderIcon fontSize='small' />
         </span>
       </button>

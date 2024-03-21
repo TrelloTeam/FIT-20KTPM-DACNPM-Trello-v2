@@ -24,7 +24,7 @@ export const AccountManagement: React.FC<AccountManagementProps> = ({ page }) =>
     color: colors.text
   }
   return (
-    <div style={darkLightMode}>
+    <div style={darkLightMode} className='font-sans'>
       {selectedTab === 'profile' ? (
         <>
           <Header onSelectTab={handleTabSelect} currentTab={selectedTab} />

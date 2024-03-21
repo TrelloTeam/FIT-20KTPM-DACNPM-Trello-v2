@@ -12,7 +12,7 @@ export default function Create() {
   const [openWorkspace, setOpenWorkspace] = React.useState(false)
   const [openItem, setOpenItem] = React.useState({ show: false, type: 'Create' })
   const anchorRef = React.useRef<HTMLButtonElement>(null)
-  const { colors } = useTheme()
+  const { darkMode, colors } = useTheme()
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen)
@@ -60,7 +60,7 @@ export default function Create() {
             fontSize: '13px',
             fontWeight: 600,
             textTransform: 'none',
-            color: open ? '#579dff' : '#1d2125',
+            color: open ? '#579dff' : darkMode ? '#1d2125' : '#fff',
             backgroundColor: open ? 'rgba(86,157,255,0.1)' : '#579dff',
             '&:hover': {
               backgroundColor: open ? 'rgba(86,157,255,0.3)' : '#85B8FF'

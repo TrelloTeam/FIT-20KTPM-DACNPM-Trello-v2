@@ -14,7 +14,7 @@ export default function ListSetting({ closeListSetting }: ListSettingProps) {
         borderWidth: '1px',
         borderColor: darkMode ? '#2c3e50' : ''
       }}
-      className={`absolute -right-64  z-50  flex w-[300px] flex-row rounded-lg px-1   py-2 font-semibold shadow-lg`}
+      className={`absolute -right-64  z-10  flex w-[300px] flex-row rounded-lg px-1   py-2 font-semibold shadow-lg`}
     >
       <div className={`relative w-full`}>
         <div className={`mb-2 flex items-center justify-between p-2`}>

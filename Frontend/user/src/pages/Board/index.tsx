@@ -1,5 +1,4 @@
 import { useState, useEffect, lazy, Suspense } from 'react'
-import { lists } from './testData/test_data'
 import { List, Card } from './type/index'
 
 import {
@@ -382,7 +381,7 @@ export function Board() {
           onDragEnd={handleDragEnd}
         >
           {(listsData || []) && (
-            <div className={`relative z-20 mt-[64px] w-[100%]`}>
+            <div className={`relative mt-[64px] w-[100%]`}>
               <Suspense fallback={<LoadingComponent />}>
                 <LazyListsComponent lists={listsData || []} setOpenCardSetting={setOpenCardSetting} />
               </Suspense>
