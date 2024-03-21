@@ -1,43 +1,82 @@
 import React, { useEffect, useState } from 'react'
 
 import { Sidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar'
-import WorkspacesIcon from '@mui/icons-material/Workspaces'
-import AddOutlinedIcon from '@mui/icons-material/AddOutlined'
+import { Box, Typography } from '@mui/material'
 import {faTrello } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Button } from '@mui/base'
-import { Link, useParams } from 'react-router-dom'
-import axios from 'axios'
+import { Link } from 'react-router-dom'
 import { WorkspaceApiRTQ } from '~/api'
 import {faChessBoard, faGear, faTableCells, faUserGroup, faHome } from '@fortawesome/free-solid-svg-icons'
 import { faHeart } from '@fortawesome/free-regular-svg-icons'
 
-interface WorkspaceData {
-  _id: string
-  name: string
-  short_name: string
-  description: string
-  website: string
-  logo: string
-  type_id: string
-  visibility: string
-  members: []
-}
+const menuItems = [
+  'Business',
+  'Design',
+  'Education',
+  'Engineering',
+  'Marketing',
+  'HR & Operations',
+  'Personal',
+  'Productivity',
+  'Product management',
+  'Project management',
+  'Remote work',
+  'Sales',
+  'Support',
+  'Team management'
+];
+
+const menuItemsData = [
+  { text: 'Highlights', icon: faHeart, itemKey: 'highlights' },
+  { text: 'Views', icon: faTableCells, itemKey: 'views' },
+  { text: 'Members', icon: faUserGroup, itemKey: 'members' },
+  { text: 'Setting', icon: faGear, itemKey: 'setting' }
+];
 
 function SidebarTemplate() {
   const [getALlWorkspace, { data: workspaceData }] = WorkspaceApiRTQ.WorkspaceApiSlice.useLazyGetAllWorkspaceQuery()
+
+  const [activeItem, setActiveItem] = useState<string | null>(null);
+
+  const handleItemClick = (item: string) => {
+    setActiveItem(item);
+  };
+  
+  const menuItemsJSX = menuItems.map((item, index) => (
+    <MenuItem
+      key={index}
+      style={{ height: '35px', backgroundColor: activeItem === item ? '#d3d3d3' : '' }}
+      onClick={() => handleItemClick(item)}
+    >
+      {item}
+    </MenuItem>
+  ));
+
+  const menuItemsWorkspaceJSX = menuItemsData.map((item, index) => (
+    <MenuItem 
+      key={index}
+      style={{ height: '35px', backgroundColor: activeItem === item.itemKey ? '#d3d3d3' : '' }}
+      onClick={() => handleItemClick(item.itemKey)}
+    >
+      <div className='flex items-center'>
+        <FontAwesomeIcon icon={item.icon} fontSize='small' className='mr-2'/>
+        {item.text}
+      </div>
+    </MenuItem>
+  ));
 
   React.useEffect(() => {
     getALlWorkspace().then((v) => console.log(v))
   }, [])
 
   return (
-    <div className='detail-sidebar-container fixed ml-20 mt-2 max-h-90vh max-h-screen overflow-y-auto w-100px text-sm'>
+    <div className='detail-sidebar-container fixed ml-20 mt-2 max-h-80vh max-h-screen overflow-y-auto w-100px text-sm'>
       <Sidebar>
         <Menu>
           <MenuItem
             className='menu-item rounded-md bg-white font-bold hover:border-0 hover:text-blue-500'
-            style={{ marginBottom: '4px', padding: '8px', height: '32px', width: '200px' }}
+            style={{ marginBottom: '4px', height: '35px' , backgroundColor: activeItem === 'boards' ? '#d3d3d3' : ''}}
+            onClick={() => handleItemClick('boards')}
           >
             <Link to={'/workspace/1'}>
               <div className='flex items-center'>
@@ -58,26 +97,15 @@ function SidebarTemplate() {
               </span>
             }
             defaultOpen={true}
-            style={{ marginBottom: '4px', padding: '8px', height: '32px', width: '200px' }}
+            style={{ marginBottom: '4px', height: '35px' , backgroundColor: activeItem === 'templates' ? '#d3d3d3' : ''}}
+            onClick={() => handleItemClick('templates')}
           >
-            <MenuItem style={{ height: '32px', width: '200px' }}>Business</MenuItem>
-            <MenuItem style={{ height: '32px', width: '200px' }}>Design</MenuItem>
-            <MenuItem style={{ height: '32px', width: '200px' }}>Education</MenuItem>
-            <MenuItem style={{ height: '32px', width: '200px' }}>Engineering</MenuItem>
-            <MenuItem style={{ height: '32px', width: '200px' }}>Marketing</MenuItem>
-            <MenuItem style={{ height: '32px', width: '200px' }}>HR & Operations</MenuItem>
-            <MenuItem style={{ height: '32px', width: '200px' }}>Personal</MenuItem>
-            <MenuItem style={{ height: '32px', width: '200px' }}>Productivity</MenuItem>
-            <MenuItem style={{ height: '32px', width: '200px' }}>Product management</MenuItem>
-            <MenuItem style={{ height: '32px', width: '200px' }}>Project management</MenuItem>
-            <MenuItem style={{ height: '32px', width: '200px' }}>Remote work</MenuItem>
-            <MenuItem style={{ height: '32px', width: '200px' }}>Sales</MenuItem>
-            <MenuItem style={{ height: '32px', width: '200px' }}>Support</MenuItem>
-            <MenuItem style={{ height: '32px', width: '200px' }}>Team management</MenuItem>
+            {menuItemsJSX}
           </SubMenu>
           <MenuItem
             className='menu-item home border-b-3 rounded-md border-blue-500 bg-white font-bold hover:border-0 hover:text-blue-500 '
-            style={{ marginBottom: '4px', padding: '8px', height: '32px', width: '200px' }}
+            style={{ marginBottom: '4px', height: '35px' , backgroundColor: activeItem === 'home' ? '#d3d3d3' : ''}}
+            onClick={() => handleItemClick('home')}
           >
             <Link to={'/'}>
               <div className='flex items-center'>
@@ -88,7 +116,9 @@ function SidebarTemplate() {
           </MenuItem>
         </Menu>
       </Sidebar>
-      <h1 className='mb-2 pl-5 pt-2 text-gray-700'>Workspaces</h1>
+      <h2 className='my-2 pl-5 text-sm font-medium leading-6 text-ds-text overflow-hidden whitespace-nowrap'>
+          Workspaces
+      </h2>
       <Sidebar className='workspaces mb-10'>
         <div>
           {workspaceData?.data?.owner.map((w, index) => (
@@ -98,52 +128,47 @@ function SidebarTemplate() {
                   label={
                     <span className='rounded-md font-bold hover:border-0 hover:bg-blue-500 hover:text-blue-500'>
                       <div className='flex items-center'>
-                        <WorkspacesIcon fontSize='small' className='mr-2' />
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          padding: '8px',
+                          cursor: 'pointer',
+                        }}
+                      >
+                        <Typography
+                          variant='h4'
+                          sx={{
+                            display: 'inline-block',
+                            fontSize: '20px',
+                            fontWeight: 700,
+                            padding: '8px 14px',
+                            borderRadius: '6px',
+                            backgroundImage: 'linear-gradient(to bottom, #E774BB, #943D73)'
+                          }}
+                        >
+                          Â
+                        </Typography>
+                      </Box>
                         {w.name}
                       </div>
                     </span>
                   }
-                  style={{ marginBottom: '4px', padding: '8px', height: '32px', width: '200px' }}
+                  style={{ marginBottom: '4px', height: '35px' , backgroundColor: activeItem === 'workspace' ? '#d3d3d3' : ''}}
+                  onClick={() => handleItemClick('workspace')}
                 >
                   <Link to={`/workspace/${w._id}`}>
-                    <MenuItem style={{ height: '32px', width: '200px' }}>
+                    <MenuItem 
+                      style={{ height: '35px', backgroundColor: activeItem === 'board' ? '#d3d3d3' : '' }}
+                      onClick={() => handleItemClick('board')}
+                    >
                       <div className='flex items-center'>
                         <FontAwesomeIcon icon={faTrello} fontSize='small' className='mr-2'/>
                         Boards
                       </div>
                     </MenuItem>
                   </Link>
-                  <MenuItem style={{ height: '32px', width: '200px' }}>
-                    <div className='flex items-center'>
-                      <FontAwesomeIcon icon={faHeart} fontSize='small' className='mr-2'/>
-                      Highlights
-                    </div>
-                  </MenuItem>
-                  <MenuItem style={{ height: '32px', width: '200px' }}>
-                    <div className='flex items-center'>
-                      <FontAwesomeIcon icon={faTableCells} fontSize='small' className='mr-2'/>
-                      Views
-                    </div>
-                  </MenuItem>
-                  <MenuItem style={{ height: '32px', width: '200px' }}>
-                    <div className='flex w-full items-center justify-between'>
-                      <div className='flex items-center'>
-                        <FontAwesomeIcon icon={faUserGroup} fontSize='small' className='mr-2'/>
-                        Members
-                      </div>
-                      <div>
-                        <Button>
-                          <AddOutlinedIcon fontSize='small' />
-                        </Button>
-                      </div>
-                    </div>
-                  </MenuItem>
-                  <MenuItem style={{ height: '32px', width: '200px' }}>
-                    <div className='flex items-center'>
-                      <FontAwesomeIcon icon={faGear} fontSize='small' className='mr-2'/>
-                      Setting
-                    </div>
-                  </MenuItem>
+                  {menuItemsWorkspaceJSX}
                 </SubMenu>
               </Menu>
             </div>
