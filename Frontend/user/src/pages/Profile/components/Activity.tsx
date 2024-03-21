@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import { Activity, Workspace } from '../type'
 import { activityData, workspaceData } from '../testData'
-import { MdOutlineLock, MdOutlineLockOpen } from 'react-icons/md'
+import { MdOutlineLock } from 'react-icons/md'
 import { MdPublic } from "react-icons/md";
 import { RxActivityLog, RxAvatar } from 'react-icons/rx'
 import { SlPeople } from 'react-icons/sl'
