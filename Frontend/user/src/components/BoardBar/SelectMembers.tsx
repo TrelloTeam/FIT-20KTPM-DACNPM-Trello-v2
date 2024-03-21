@@ -7,6 +7,7 @@ import ListItemText from '@mui/material/ListItemText'
 import Select from '@mui/material/Select'
 import Checkbox from '@mui/material/Checkbox'
 import Avatar from '@mui/material/Avatar'
+import { useTheme } from '../Theme/themeContext'
 
 const ITEM_HEIGHT = 48
 const ITEM_PADDING_TOP = 8
@@ -34,6 +35,7 @@ const names = [
 
 export default function SelectMembers() {
   const [personName, setPersonName] = React.useState([])
+  const { darkMode, colors } = useTheme()
 
   const handleChange = (event) => {
     const {
@@ -47,8 +49,8 @@ export default function SelectMembers() {
 
   return (
     <div>
-      <FormControl sx={{ m: 1, width: '320px', bgcolor: '' }}>
-        <InputLabel id='demo-multiple-checkbox-label' sx={{ fontSize: '14px', top: '-5px' }}>
+      <FormControl sx={{ m: 1, width: '320px', bgcolor: colors.background }}>
+        <InputLabel id='demo-multiple-checkbox-label' sx={{ fontSize: '14px', top: '-5px', color:colors.text }}>
           Select members
         </InputLabel>
         <Select
@@ -61,12 +63,17 @@ export default function SelectMembers() {
           input={<OutlinedInput sx={{}} label='Select members' />}
           renderValue={(selected) => selected.join(', ')}
           MenuProps={MenuProps}
+          style={{backgroundColor: colors.backgroundSecond, color: colors.text}}
         >
           {names.map((name) => (
-            <MenuItem sx={{ height: '36px' }} key={name} value={name}>
-              <Checkbox checked={personName.indexOf(name) > -1} />
-              <Avatar alt={name} src='/static/images/avatar/1.jpg' sx={{ width: 24, height: 24, marginRight: 1 }} />
-              <ListItemText primary={name} />
+            <MenuItem sx={{height: '36px', backgroundColor: colors.backgroundSecond, color: colors.text}} key={name} value={name}>
+              <Checkbox sx={{color: colors.text}} checked={personName.indexOf(name) > -1} />
+              <Avatar
+                alt={name}
+                src='/static/images/avatar/1.jpg'
+                sx={{ width: 24, height: 24, marginRight: 1, }}
+              />
+              <ListItemText  primary={name} />
             </MenuItem>
           ))}
         </Select>
