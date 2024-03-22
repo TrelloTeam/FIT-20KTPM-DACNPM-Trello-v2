@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { styled, useTheme } from '@mui/material/styles'
+import { styled, useTheme as useMuiTheme} from '@mui/material/styles'
 import IconButton from '@mui/material/IconButton'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
@@ -11,6 +11,7 @@ import { Sidebar, Menu, MenuItem } from 'react-pro-sidebar'
 import { Divider, Drawer } from '@mui/material'
 import { faCalendarDays } from '@fortawesome/free-regular-svg-icons'
 import FileUploadIcon from '@mui/icons-material/FileUpload';
+import { useTheme as useCustomTheme } from '~/components/Theme/themeContext'
 
 const drawerWidth = 250
 
@@ -29,7 +30,8 @@ interface Props {
 }
 
 const SidebarCateWorkSpace: React.FC<Props> = ({ open, handleDrawerClose }) => {
-  const theme = useTheme()
+  const theme = useMuiTheme()
+  const { darkMode, colors } = useCustomTheme()
 
   const [activeItem, setActiveItem] = useState<string | null>(null);
 
@@ -38,7 +40,7 @@ const SidebarCateWorkSpace: React.FC<Props> = ({ open, handleDrawerClose }) => {
   };
 
   return (
-    <div className='sidebar-cate-workspace' style={{ position: 'relative', height: 'calc(100vh - 64px)' }}>
+    <div className='sidebar-cate-workspace' style={{ position: 'relative', height: 'calc(100vh - 64px)'}}>
       <Drawer
         sx={{
           width: drawerWidth,
@@ -46,7 +48,9 @@ const SidebarCateWorkSpace: React.FC<Props> = ({ open, handleDrawerClose }) => {
           '& .MuiDrawer-paper': {
             width: drawerWidth,
             boxSizing: 'border-box',
-            marginTop: '53px'
+            marginTop: '51px',
+            backgroundColor: colors.background,
+            color: colors.text
           }
         }}
         variant='persistent'
@@ -55,7 +59,7 @@ const SidebarCateWorkSpace: React.FC<Props> = ({ open, handleDrawerClose }) => {
       >
         <DrawerHeader>
           <div className='flex items-center'>
-            <span className='rounded-md bg-white font-bold'>
+            <span className='rounded-md font-bold'>
               <div className='flex items-center text-sm'>
               <Box
                 sx={{
@@ -86,7 +90,10 @@ const SidebarCateWorkSpace: React.FC<Props> = ({ open, handleDrawerClose }) => {
               </div>
             </span>
           </div>
-          <IconButton onClick={handleDrawerClose}>
+          <IconButton 
+            onClick={handleDrawerClose}
+            sx={{color: colors.text}}
+          >
             {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
           </IconButton>
         </DrawerHeader>
@@ -94,7 +101,7 @@ const SidebarCateWorkSpace: React.FC<Props> = ({ open, handleDrawerClose }) => {
         <Sidebar className='text-sm'>
           <Menu>
             <MenuItem className='menu-item rounded-md' 
-              style={{ height: '40px', backgroundColor: activeItem === 'boards' ? '#d3d3d3' : '' }}
+              style={{ height: '40px', backgroundColor: activeItem === 'boards' ? colors.bg_button_active_hover : colors.background }}
               onClick={() => handleItemClick('boards')}>
                 <div className='flex items-center'>
                   <FontAwesomeIcon icon={faTrello} fontSize='small' className='mr-2'/>
@@ -102,7 +109,7 @@ const SidebarCateWorkSpace: React.FC<Props> = ({ open, handleDrawerClose }) => {
                 </div>
             </MenuItem>
             <MenuItem 
-              style={{ height: '40px', backgroundColor: activeItem === 'members' ? '#d3d3d3' : '' }}
+              style={{ height: '40px', backgroundColor: activeItem === 'members' ? colors.bg_button_active_hover : colors.background }}
               onClick={() => handleItemClick('members')}
             >
               <div className='flex w-full items-center justify-between'>
@@ -113,7 +120,7 @@ const SidebarCateWorkSpace: React.FC<Props> = ({ open, handleDrawerClose }) => {
               </div>
             </MenuItem>
             <MenuItem 
-               style={{ height: '40px', backgroundColor: activeItem === 'settings' ? '#d3d3d3' : '' }}
+               style={{ height: '40px', backgroundColor: activeItem === 'settings' ? colors.bg_button_active_hover : colors.background }}
                onClick={() => handleItemClick('settings')}
             >
                 <div className='flex items-center'>
@@ -133,7 +140,7 @@ const SidebarCateWorkSpace: React.FC<Props> = ({ open, handleDrawerClose }) => {
             <Menu>
               <MenuItem
                 className='menu-item'
-                style={{ height: '40px', backgroundColor: activeItem === 'table' ? '#d3d3d3' : '' }}
+                style={{ height: '40px', fontStyle: 'italic', backgroundColor: activeItem === 'table' ? colors.bg_button_active_hover : colors.background }}
                 onClick={() => handleItemClick('table')}
               >
                 <div className='flex items-center'>
@@ -144,7 +151,7 @@ const SidebarCateWorkSpace: React.FC<Props> = ({ open, handleDrawerClose }) => {
 
               <MenuItem
                 className='menu-item'
-                style={{ height: '40px', backgroundColor: activeItem === 'calendar' ? '#d3d3d3' : '' }}
+                style={{ height: '40px', fontStyle: 'italic', backgroundColor: activeItem === 'calendar' ? colors.bg_button_active_hover : colors.background }}
                 onClick={() => handleItemClick('calendar')}
               >
                 <div className='flex items-center'>
@@ -169,7 +176,7 @@ const SidebarCateWorkSpace: React.FC<Props> = ({ open, handleDrawerClose }) => {
             <Menu>
               <MenuItem
                 className='menu-item'
-                style={{ height: '40px', backgroundColor: activeItem === 'board' ? '#d3d3d3' : '' }}
+                style={{ height: '40px', backgroundColor: activeItem === 'board' ? colors.bg_button_active_hover : colors.background }}
                 onClick={() => handleItemClick('board')}
               >
                 <div className='flex items-center'>
@@ -182,15 +189,25 @@ const SidebarCateWorkSpace: React.FC<Props> = ({ open, handleDrawerClose }) => {
         </Sidebar>
 
         <div 
-          className='p-3 flex justify-center items-end border-t border-dynamic-text-transparent'
+          className='p-3 flex justify-center items-end border-t border-grey-50'
           style={{ zIndex: 100, position: 'absolute', bottom: 40, left: 0, right: 0 }}
         >
           <Button 
-            className='flex items-start bg-gradient-to-b from-purple-600 via-purple-400 to-pink-400 rounded-xl transition duration-300 hover:from-blue-800 hover:to-purple-300'
-            style={{ transition: 'background-color 0.3s' }}
+            className='flex w-full'
+            sx={{
+              backgroundImage: 'linear-gradient(97.78deg, var(--ds-background-accent-purple-bolder, #5a3aad) 10.5%, var(--ds-background-accent-magenta-subtle, #c36dd1) 113.39%)',
+              transition: 'background-color 0.3s',
+              color: colors.white,
+              fontSize: '0.8rem',
+              alignItems: 'left',
+              justifyContent: 'flex-start',
+              '&:hover': {
+                backgroundImage: 'linear-gradient(97.78deg, #1e3a8a 10.5%, #8e24aa 113.39%)',
+              }
+            }}
           >
-          <FileUploadIcon className='mr-2' style={{ fill: 'white' }}/>
-          <div className='font-sans text-white text-sm leading-5'>
+          <FileUploadIcon className='mr-2' fontSize='small'/>
+          <div className='font-sans leading-5'>
             <span className="capitalize">upgrade </span> 
             <span className="lowercase">to</span>
             <span className="capitalize"> premium</span>
