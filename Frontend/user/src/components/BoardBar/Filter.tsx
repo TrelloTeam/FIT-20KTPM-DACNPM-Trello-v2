@@ -9,19 +9,25 @@ import {
   FormControl,
   FormControlLabel,
   FormHelperText,
+  Input,
+  InputLabel,
   Stack,
+  TextField,
   Typography
 } from '@mui/material'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import SelectMembers from './SelectMembers'
+import { useTheme } from '../Theme/themeContext'
 
 export default function Filter() {
+  const { darkMode, colors } = useTheme()
   return (
     <Box
       sx={{
         color: '#44546F',
         width: '384px',
-        bgcolor: 'background.paper',
+        bgcolor: colors.backgroundSecond,
+        color: colors.text,
         padding: '0'
       }}
     >
@@ -32,6 +38,8 @@ export default function Filter() {
         <Card
           sx={{
             width: '100%',
+            bgcolor: colors.backgroundSecond,
+            color: colors.text,
             border: 'none',
             boxShadow: 'none',
             marginTop: '10px',
@@ -41,7 +49,7 @@ export default function Filter() {
         >
           <Box>
             <Stack direction='row' alignItems='center'>
-              <Typography component='div' sx={{ fontWeight: '400', fontSize: '14px', color: 'black' }}>
+              <Typography component='div' sx={{ fontWeight: '400', fontSize: '14px', color: colors.text }}>
                 Keyword
               </Typography>
             </Stack>
@@ -50,14 +58,17 @@ export default function Filter() {
                 type='text'
                 className={` rounded-[3px] border-[3px] border-[#8590A2] p-2 transition-all duration-100 active:scale-[0.98]`}
                 placeholder='Enter key word...'
+                style={{ backgroundColor: colors.backgroundSecond }}
               />
-              <FormHelperText id='my-helper-text'>Search cards, members, labels, and more.</FormHelperText>
+              <FormHelperText id='my-helper-text' sx={{ color: colors.text }}>
+                Search cards, members, labels, and more.
+              </FormHelperText>
             </FormControl>
           </Box>
 
           <Box className='mt-3'>
             <Stack direction='row' alignItems='center'>
-              <Typography component='div' sx={{ fontWeight: '400', fontSize: '14px', color: 'black' }}>
+              <Typography component='div' sx={{ fontWeight: '400', fontSize: '14px', color: colors.text }}>
                 Due date
               </Typography>
             </Stack>
@@ -69,34 +80,49 @@ export default function Filter() {
               }}
             >
               <Stack direction='row' alignItems='center'>
-                <FormControlLabel value='end' control={<Checkbox />} label='' labelPlacement='end' />
+                <FormControlLabel
+                  value='end'
+                  control={<Checkbox sx={{ color: colors.text }} />}
+                  label=''
+                  labelPlacement='end'
+                />
                 <Avatar
                   alt='Remy Sharp'
                   src='/static/images/avatar/1.jpg'
                   sx={{ width: 24, height: 24, marginRight: 1 }}
                 />
-                <Typography component='div' sx={{ fontWeight: '400', fontSize: '14px', color: 'black' }}>
+                <Typography component='div' sx={{ fontWeight: '400', fontSize: '14px', color: colors.text }}>
                   No members
                 </Typography>
               </Stack>
               <Stack direction='row' alignItems='center'>
-                <FormControlLabel value='end' control={<Checkbox />} label='' labelPlacement='end' />
+                <FormControlLabel
+                  value='end'
+                  control={<Checkbox sx={{ color: colors.text }} />}
+                  label=''
+                  labelPlacement='end'
+                />
                 <Avatar
                   alt='Remy Sharp'
                   src='/static/images/avatar/1.jpg'
                   sx={{ width: 24, height: 24, marginRight: 1 }}
                 />
-                <Typography component='div' sx={{ fontWeight: '400', fontSize: '14px', color: 'black' }}>
+                <Typography component='div' sx={{ fontWeight: '400', fontSize: '14px', color: colors.text }}>
                   Card assigned to me
                 </Typography>
               </Stack>
-              <FormControlLabel value='end' control={<Checkbox />} label='Select members' labelPlacement='end' />
+              <FormControlLabel
+                value='end'
+                control={<Checkbox sx={{ color: colors.text }} />}
+                label='Select members'
+                labelPlacement='end'
+              />
             </Box>
           </Box>
 
           <Box className='mt-3'>
             <Stack direction='row' alignItems='center'>
-              <Typography component='div' sx={{ fontWeight: '400', fontSize: '14px', color: 'black' }}>
+              <Typography component='div' sx={{ fontWeight: '400', fontSize: '14px', color: colors.text }}>
                 Due date
               </Typography>
             </Stack>
@@ -107,13 +133,23 @@ export default function Filter() {
                 flexDirection: 'column'
               }}
             >
-              <FormControlLabel value='end' control={<Checkbox />} label='No members' labelPlacement='end' />
-              <FormControlLabel value='end' control={<Checkbox />} label='Cards assigned to me' labelPlacement='end' />
+              <FormControlLabel
+                value='end'
+                control={<Checkbox sx={{ color: colors.text }} />}
+                label='No members'
+                labelPlacement='end'
+              />
+              <FormControlLabel
+                value='end'
+                control={<Checkbox sx={{ color: colors.text }} />}
+                label='Cards assigned to me'
+                labelPlacement='end'
+              />
               <Stack direction='row' alignItems='center'>
                 <FormControlLabel
                   sx={{ marginRight: '0' }}
                   value='end'
-                  control={<Checkbox />}
+                  control={<Checkbox sx={{ color: colors.text }} />}
                   label=''
                   labelPlacement='end'
                 />
@@ -124,7 +160,7 @@ export default function Filter() {
 
           <Box className='mt-3'>
             <Stack direction='row' alignItems='center'>
-              <Typography component='div' sx={{ fontWeight: '400', fontSize: '14px', color: 'black' }}>
+              <Typography component='div' sx={{ fontWeight: '400', fontSize: '14px', color: colors.text }}>
                 Due date
               </Typography>
             </Stack>
@@ -135,15 +171,31 @@ export default function Filter() {
                 flexDirection: 'column'
               }}
             >
-              <FormControlLabel value='end' control={<Checkbox />} label='No members' labelPlacement='end' />
-              <FormControlLabel value='end' control={<Checkbox />} label='Cards assigned to me' labelPlacement='end' />
-              <FormControlLabel value='end' control={<Checkbox />} label='Select members' labelPlacement='end' />
+              <FormControlLabel
+                value='end'
+                control={<Checkbox sx={{ color: colors.text }} />}
+                label='No members'
+                labelPlacement='end'
+              />
+              <FormControlLabel
+                value='end'
+                control={<Checkbox sx={{ color: colors.text }} />}
+                label='Cards assigned to me'
+                labelPlacement='end'
+              />
+              <FormControlLabel
+                value='end'
+                sx={{ bgcolor: colors.backgroundSecond, color: colors.text }}
+                control={<Checkbox sx={{ color: colors.text }} />}
+                label='Select members'
+                labelPlacement='end'
+              />
             </Box>
           </Box>
 
           <Box className='mt-3'>
             <Stack direction='row' alignItems='center'>
-              <Typography component='div' sx={{ fontWeight: '400', fontSize: '14px', color: 'black' }}>
+              <Typography component='div' sx={{ fontWeight: '400', fontSize: '14px', color: colors.text }}>
                 Due date
               </Typography>
             </Stack>
@@ -154,9 +206,24 @@ export default function Filter() {
                 flexDirection: 'column'
               }}
             >
-              <FormControlLabel value='end' control={<Checkbox />} label='End' labelPlacement='end' />
-              <FormControlLabel value='end' control={<Checkbox />} label='End' labelPlacement='end' />
-              <FormControlLabel value='end' control={<Checkbox />} label='End' labelPlacement='end' />
+              <FormControlLabel
+                value='end'
+                control={<Checkbox sx={{ color: colors.text }} />}
+                label='End'
+                labelPlacement='end'
+              />
+              <FormControlLabel
+                value='end'
+                control={<Checkbox sx={{ color: colors.text }} />}
+                label='End'
+                labelPlacement='end'
+              />
+              <FormControlLabel
+                value='end'
+                control={<Checkbox sx={{ color: colors.text }} />}
+                label='End'
+                labelPlacement='end'
+              />
               <Accordion>
                 <AccordionSummary
                   expandIcon={<ExpandMoreIcon sx={{ marginRight: '230px' }} />}

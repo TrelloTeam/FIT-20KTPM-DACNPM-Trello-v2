@@ -1,5 +1,8 @@
+import { AuthenticatedUser, Public } from 'nest-keycloak-connect'
+
+import { UserInfoDto } from '@app/common/auth/user-info.dto'
 import { InjectController, InjectRoute } from '@app/common/decorators'
-import { ZodValidationPipe } from '@app/common/pipes'
+import { IdParamValidationPipe, ZodValidationPipe } from '@app/common/pipes'
 import { Body, InternalServerErrorException, NotFoundException, Param } from '@nestjs/common'
 import { TrelloApi } from '@trello-v2/shared'
 
@@ -8,12 +11,12 @@ import { WorkspaceService } from '../workspace.service'
 
 @InjectController({
   name: workspaceRoutes.index,
-  isCore: true,
 })
 export class WorkspaceController {
   constructor(private workspaceService: WorkspaceService) {}
 
   @InjectRoute(workspaceRoutes.getAll)
+  @Public(false)
   async getAll(): Promise<TrelloApi.WorkspaceApi.WorkspaceListResponse> {
     const data = await this.workspaceService.getAllWorkspaces()
 
@@ -23,8 +26,8 @@ export class WorkspaceController {
   }
 
   @InjectRoute(workspaceRoutes.getAllWorkspacesByEmail)
-  async getAllWorkspacesByEmail(): Promise<TrelloApi.WorkspaceApi.WorspaceListByEmailResponse> {
-    const email = 'long@gmail.com'
+  async getAllWorkspacesByEmail(@AuthenticatedUser() user: UserInfoDto): Promise<TrelloApi.WorkspaceApi.WorspaceListByEmailResponse> {
+    const email = user.email
 
     const owner = (await this.workspaceService.getOwnerWorkspacesByEmail(email)) ?? []
     const admin = (await this.workspaceService.getAdminWorkspacesByEmail(email)) ?? []
@@ -42,17 +45,18 @@ export class WorkspaceController {
   }
 
   @InjectRoute(workspaceRoutes.getWorkspaceById)
-  async getWorkspaceById(@Param('id') id: string): Promise<TrelloApi.WorkspaceApi.WorspaceResponse> {
+  async getWorkspaceById(
+    @Param('id', IdParamValidationPipe)
+    id: string,
+  ): Promise<TrelloApi.WorkspaceApi.WorspaceResponse> {
     const workspace = await this.workspaceService.getWorkspaceById(id)
-
-    if (!workspace) throw new NotFoundException("Can't find of workspace")
 
     return { data: workspace }
   }
 
   @InjectRoute(workspaceRoutes.getAdminWorkspacesByEmail)
-  async getAdminWorkspacesByEmail(): Promise<TrelloApi.WorkspaceApi.WorkspaceListResponse> {
-    const email = 'long@gmail.com'
+  async getAdminWorkspacesByEmail(@AuthenticatedUser() user: UserInfoDto): Promise<TrelloApi.WorkspaceApi.WorkspaceListResponse> {
+    const email = user.email
 
     const workspace = await this.workspaceService.getAdminWorkspacesByEmail(email)
 
@@ -62,8 +66,8 @@ export class WorkspaceController {
   }
 
   @InjectRoute(workspaceRoutes.getGuestWorkspacesByEmail)
-  async getGuestWorkspacesByEmail(): Promise<TrelloApi.WorkspaceApi.WorkspaceListResponse> {
-    const email = 'long@gmail.com'
+  async getGuestWorkspacesByEmail(@AuthenticatedUser() user: UserInfoDto): Promise<TrelloApi.WorkspaceApi.WorkspaceListResponse> {
+    const email = user.email
 
     const workspace = await this.workspaceService.getGuestWorkspacesByEmail(email)
 
@@ -73,8 +77,8 @@ export class WorkspaceController {
   }
 
   @InjectRoute(workspaceRoutes.getMemberWorkspacesByEmail)
-  async getMemberWorkspacesByEmail(): Promise<TrelloApi.WorkspaceApi.WorkspaceListResponse> {
-    const email = 'long@gmail.com'
+  async getMemberWorkspacesByEmail(@AuthenticatedUser() user: UserInfoDto): Promise<TrelloApi.WorkspaceApi.WorkspaceListResponse> {
+    const email = user.email
 
     const workspace = await this.workspaceService.getMemberWorkspacesByEmail(email)
 
@@ -84,8 +88,8 @@ export class WorkspaceController {
   }
 
   @InjectRoute(workspaceRoutes.getOwnerWorkspacesByEmail)
-  async getOwnerWorkspacesByEmail(): Promise<TrelloApi.WorkspaceApi.WorkspaceListResponse> {
-    const email = 'long@gmail.com'
+  async getOwnerWorkspacesByEmail(@AuthenticatedUser() user: UserInfoDto): Promise<TrelloApi.WorkspaceApi.WorkspaceListResponse> {
+    const email = user.email
 
     const workspace = await this.workspaceService.getOwnerWorkspacesByEmail(email)
 
@@ -95,8 +99,8 @@ export class WorkspaceController {
   }
 
   @InjectRoute(workspaceRoutes.getPendingWorkspacesByEmail)
-  async getPendingWorkspacesByEmail(): Promise<TrelloApi.WorkspaceApi.WorkspaceListResponse> {
-    const email = 'long@gmail.com'
+  async getPendingWorkspacesByEmail(@AuthenticatedUser() user: UserInfoDto): Promise<TrelloApi.WorkspaceApi.WorkspaceListResponse> {
+    const email = user.email
 
     const workspace = await this.workspaceService.getPendingWorkspacesByEmail(email)
 
@@ -107,10 +111,11 @@ export class WorkspaceController {
 
   @InjectRoute(workspaceRoutes.createWorkspace)
   async createWorkspace(
+    @AuthenticatedUser() user: UserInfoDto,
     @Body(new ZodValidationPipe(TrelloApi.WorkspaceApi.CreateWorkspaceRequestSchema))
     body: TrelloApi.WorkspaceApi.CreateWorspaceRequest,
   ): Promise<TrelloApi.WorkspaceApi.WorspaceResponse> {
-    const workspaceData = await this.workspaceService.createWorkspace(body, 'long@gmail.com')
+    const workspaceData = await this.workspaceService.createWorkspace(body, user.email)
 
     if (!workspaceData._id) throw new InternalServerErrorException("Can't create workspace")
 
@@ -121,10 +126,11 @@ export class WorkspaceController {
 
   @InjectRoute(workspaceRoutes.updateWorkspaceInfo)
   async updateWorkspaceInfo(
+    @AuthenticatedUser() user: UserInfoDto,
     @Body(new ZodValidationPipe(TrelloApi.WorkspaceApi.UpdateWorkspaceInfoRequestSchema))
     body: TrelloApi.WorkspaceApi.UpdateWorkspaceInfoRequest,
   ): Promise<TrelloApi.WorkspaceApi.WorspaceResponse> {
-    const workspaceUpdated = await this.workspaceService.updateWorkspaceInfo(body)
+    const workspaceUpdated = await this.workspaceService.updateWorkspaceInfo(body, user)
 
     if (!workspaceUpdated) throw new InternalServerErrorException("Can't update workspace infomation")
 
@@ -133,13 +139,42 @@ export class WorkspaceController {
 
   @InjectRoute(workspaceRoutes.changeWorkspaceVisibility)
   async changeWorkspaceVisibility(
+    @AuthenticatedUser() user: UserInfoDto,
     @Body(new ZodValidationPipe(TrelloApi.WorkspaceApi.ChangeWorkspaceVisibilityRequestSchema))
     body: TrelloApi.WorkspaceApi.ChangeWorkspaceVisibilityRequest,
   ): Promise<TrelloApi.WorkspaceApi.WorspaceResponse> {
-    const workspaceUpdated = await this.workspaceService.changeWorkspaceVisibility(body)
+    const workspaceUpdated = await this.workspaceService.changeWorkspaceVisibility(body, user)
 
     if (!workspaceUpdated) throw new InternalServerErrorException("Can't update workspace's visibility")
 
     return { data: workspaceUpdated }
+  }
+
+  @InjectRoute(workspaceRoutes.deleteWorspaceById)
+  async deleteWorspaceById(
+    @AuthenticatedUser() user: UserInfoDto,
+    @Param('id', IdParamValidationPipe)
+    id: string,
+  ) {
+    const res = await this.workspaceService.deleteWorkspaceById(id, user)
+
+    return {
+      data: { workspace_id: res },
+    }
+  }
+
+  @InjectRoute(workspaceRoutes.inviteMembers2Workspace)
+  async inviteMembers2Workspace(
+    @AuthenticatedUser() user: UserInfoDto,
+    @Body(new ZodValidationPipe(TrelloApi.WorkspaceApi.InviteMembers2WorkspaceRequestSchema))
+    body: TrelloApi.WorkspaceApi.InviteMembers2WorkspaceRequest,
+    @Param('id', IdParamValidationPipe)
+    id: string,
+  ): Promise<TrelloApi.WorkspaceApi.WorspaceResponse> {
+    const res = await this.workspaceService.inviteMembers2Workspace(body, user, id)
+
+    return {
+      data: res,
+    }
   }
 }

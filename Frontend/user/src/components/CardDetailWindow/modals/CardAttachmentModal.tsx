@@ -2,9 +2,9 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Box, Grid, Popover, styled } from '@mui/material'
 import { useState } from 'react'
-import { colors, colorsButton } from '~/styles'
 import { _Card, _Feature_Activity, _Feature_Attachment } from '..'
 import moment from 'moment'
+import { useTheme } from '~/components/Theme/themeContext'
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -26,6 +26,7 @@ interface CardAttachmentModalProps {
 }
 
 export function CardAttachmentModal({ anchorEl, currentCard, setCurrentCard, handleClose }: CardAttachmentModalProps) {
+  const { colors } = useTheme()
   const [attachmentLinkValue, setAttachmentLinkValue] = useState('')
   const [attachmentTitleValue, setAttachmentTitleValue] = useState('')
 
@@ -81,22 +82,34 @@ export function CardAttachmentModal({ anchorEl, currentCard, setCurrentCard, han
       onClose={handleClose}
     >
       <Box
-        sx={{ width: 300, height: 'fit-content', margin: '0 8px', padding: '8px 0px', color: colors.primary }}
+        sx={{
+          width: 304,
+          height: 'fit-content',
+          padding: '4px 8px',
+          color: colors.text,
+          backgroundColor: colors.background_modal_secondary
+        }}
         className='flex flex-col'
       >
         {/* START: Modal heading */}
-        <Grid container sx={{ width: '100%', margin: '0 0 12px 0' }}>
-          <Grid item xs={1}></Grid>
-          <Grid item xs={10} className='flex items-center justify-center'>
+        <Grid container sx={{ width: '100%', margin: '4px 0 8px 0' }}>
+          <Grid item xs={2}></Grid>
+          <Grid item xs={8} className='flex items-center justify-center'>
             <h2 className='overflow-hidden overflow-ellipsis whitespace-nowrap text-sm font-semibold'>Attach</h2>
           </Grid>
-          <Grid item xs={1} className='flex items-center justify-center'>
-            <FontAwesomeIcon icon={faXmark} className='cursor-pointer' onMouseDown={handleClose} />
+          <Grid item xs={2} className='flex items-center justify-end'>
+            <Box
+              sx={{ width: 32, height: 32, '&:hover': { bgcolor: colors.button_hover } }}
+              className='flex cursor-pointer items-center justify-center rounded-lg'
+              onMouseDown={handleClose}
+            >
+              <FontAwesomeIcon icon={faXmark} />
+            </Box>
           </Grid>
         </Grid>
         {/* END: Modal heading */}
         {/* Attach file from computer */}
-        <p style={{ margin: '12px 0 12px 0', color: colors.primary }} className='text-sm font-semibold'>
+        <p style={{ margin: '12px 0 12px 0', color: colors.text }} className='text-sm font-semibold'>
           Attach a file from your computer
         </p>
         <Box
@@ -106,10 +119,10 @@ export function CardAttachmentModal({ anchorEl, currentCard, setCurrentCard, han
             height: 32,
             margin: '0 0 8px 0',
             padding: '0 8px',
-            color: colors.primary,
-            bgcolor: colorsButton.secondary,
+            color: colors.text,
+            bgcolor: colors.button,
             '&:hover': {
-              bgcolor: colorsButton.secondary_hover
+              bgcolor: colors.button_hover
             }
           }}
           className='flex cursor-pointer items-center justify-center rounded'
@@ -120,10 +133,10 @@ export function CardAttachmentModal({ anchorEl, currentCard, setCurrentCard, han
         </Box>
         {/* Line */}
         <Box sx={{ width: '100%', height: 2, margin: '12px 0 12px 0' }}>
-          <Box sx={{ width: '100%', height: 2, bgcolor: colorsButton.secondary }}></Box>
+          <Box sx={{ width: '100%', height: 2, bgcolor: colors.button }}></Box>
         </Box>
         {/* Attach link */}
-        <p style={{ margin: '0 0 8px 0', color: colors.primary }} className='text-sm font-semibold'>
+        <p style={{ margin: '0 0 8px 0', color: colors.text }} className='text-sm font-semibold'>
           Search or paste a link
         </p>
         <input
@@ -133,8 +146,9 @@ export function CardAttachmentModal({ anchorEl, currentCard, setCurrentCard, han
             height: 36,
             margin: '0 0 20px 0',
             padding: '4px 6px',
-            color: colors.primary,
-            border: `2px solid ${colorsButton.secondary_hover}`
+            color: colors.text,
+            border: `2px solid ${colors.button_hover}`,
+            background: colors.background
           }}
           className='flex items-center rounded-sm text-sm'
           value={attachmentLinkValue}
@@ -142,7 +156,7 @@ export function CardAttachmentModal({ anchorEl, currentCard, setCurrentCard, han
           placeholder='Find recent links or paste a new link'
         />
         {/* Display text */}
-        <p style={{ margin: '0 0 8px 0', color: colors.primary }} className='text-sm font-semibold'>
+        <p style={{ margin: '0 0 8px 0', color: colors.text }} className='text-sm font-semibold'>
           Display text (optional)
         </p>
         <input
@@ -152,8 +166,9 @@ export function CardAttachmentModal({ anchorEl, currentCard, setCurrentCard, han
             height: 36,
             margin: '0 0 20px 0',
             padding: '4px 6px',
-            color: colors.primary,
-            border: `2px solid ${colorsButton.secondary_hover}`
+            color: colors.text,
+            border: `2px solid ${colors.button_hover}`,
+            background: colors.background
           }}
           className='flex items-center rounded-sm text-sm'
           value={attachmentTitleValue}
@@ -164,16 +179,16 @@ export function CardAttachmentModal({ anchorEl, currentCard, setCurrentCard, han
         <Box sx={{ width: '100%', height: 'fit-content' }} className='flex flex-row justify-end'>
           <Box
             sx={{
-              bgcolor: '#fff',
+              bgcolor: colors.button,
               width: 'fit-content',
               height: 32,
               margin: '0 8px 10px 0',
               padding: '0 12px',
-              color: colors.primary,
+              color: colors.text,
               fontSize: 14,
               fontWeight: 500,
               '&:hover': {
-                filter: 'brightness(90%)'
+                backgroundColor: colors.button_hover
               }
             }}
             className='flex cursor-pointer items-center justify-center rounded'
@@ -185,12 +200,12 @@ export function CardAttachmentModal({ anchorEl, currentCard, setCurrentCard, han
           </Box>
           <Box
             sx={{
-              bgcolor: '#0c66e4',
+              bgcolor: colors.button_primary,
               width: 'fit-content',
               height: 32,
               margin: '0 0 10px 0',
               padding: '0 12px',
-              color: '#fff',
+              color: colors.button_primary_text,
               fontSize: 14,
               fontWeight: 500,
               '&:hover': {

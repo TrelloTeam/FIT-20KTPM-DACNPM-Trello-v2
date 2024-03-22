@@ -1,5 +1,5 @@
 import { createBrowserRouter } from 'react-router-dom'
-import App from '../App'
+import App from '../App.js'
 import HomePage from '~/pages/Home'
 import { Templates } from './../pages/Templates/index'
 import { AccountManagement, Board, BoardsPage } from '~/pages'
@@ -8,6 +8,7 @@ import { CategoryWorkspace } from '~/pages/CategoryWorkspace'
 import PageMembers from '~/pages/Members'
 import Login from '~/pages/Login'
 import { WorkspaceSetting } from '~/pages/WorkspaceSetting'
+import { WorkspaceBoardsPage } from '~/pages/WorkspaceBoardsPage'
 
 export const router = createBrowserRouter([
   {
@@ -56,6 +57,10 @@ export const router = createBrowserRouter([
       {
         path: '/workspaceSetting',
         element: <WorkspaceSetting />
+      },
+      {
+        path: '/workspaceboard',
+        element: <WorkspaceBoardsPage />
       }
     ]
   }

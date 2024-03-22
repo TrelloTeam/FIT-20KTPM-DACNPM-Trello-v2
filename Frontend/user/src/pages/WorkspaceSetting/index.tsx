@@ -1,6 +1,6 @@
 // pages/account-management.tsx
 import React, { useEffect, useState } from 'react'
-import { Header, Settings } from './components'
+import { Settings } from './components'
 import { useTheme } from '../../components/Theme/themeContext'
 
 export const WorkspaceSetting: React.FC = () => {
@@ -17,13 +17,12 @@ export const WorkspaceSetting: React.FC = () => {
   }
   const darkLightMode = {
     backgroundColor: colors.background,
-    color: colors.text
+    color: colors.text,
+    minHeight:  'calc(100vh - 51px)'
   }
 
   return (
-    <div style={darkLightMode}
-    className={`min-h-screen`}>
-      <Header />
+    <div style={darkLightMode} className={``}>
       <Settings />
     </div>
   )

@@ -1,9 +1,0 @@
-syntax = "proto3";
-package trello.member;
-
-message MemberSchema {
-    string _id=1;
-    string status=2;
-    string role=3;
-    string email=4;
-}

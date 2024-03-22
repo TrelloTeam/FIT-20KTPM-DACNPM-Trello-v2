@@ -3,16 +3,25 @@ import * as _ from 'lodash'
 import { InjectController, InjectRoute } from '@app/common/decorators'
 import { SwaggerApi } from '@app/common/decorators/'
 import { IdParamValidationPipe, ZodValidationPipe } from '@app/common/pipes'
-import { Body, Param } from '@nestjs/common'
+import {
+  Body,
+  FileTypeValidator,
+  HttpStatus,
+  MaxFileSizeValidator,
+  Param,
+  ParseFilePipe,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common'
 import { getSchemaPath } from '@nestjs/swagger'
 import { TrelloApi } from '@trello-v2/shared'
 
-import { BoardRoutes } from '../board.routes'
+import BoardRoutes from '../board.routes'
 import { BoardService } from '../services/board.service'
+import { FileInterceptor } from '@nestjs/platform-express/multer'
 
 @InjectController({
-  name: 'board',
-  isCore: true,
+  name: BoardRoutes.index,
 })
 export class BoardController {
   constructor(private boardService: BoardService) {}
@@ -21,7 +30,7 @@ export class BoardController {
   @SwaggerApi({
     responses: [
       {
-        status: 200,
+        status: HttpStatus.OK,
         schema: { $ref: getSchemaPath('GetallBoardResponseSchema') },
       },
     ],
@@ -42,7 +51,7 @@ export class BoardController {
     },
     responses: [
       {
-        status: 200,
+        status: HttpStatus.OK,
         schema: { $ref: getSchemaPath('GetallBoardResponseSchema') },
       },
     ],
@@ -63,7 +72,7 @@ export class BoardController {
     body: { schema: { $ref: getSchemaPath('CreateBoardRequestSchema') } },
     responses: [
       {
-        status: 200,
+        status: HttpStatus.OK,
         schema: { $ref: getSchemaPath('CreateBoardResponseSchema') },
       },
     ],
@@ -87,7 +96,7 @@ export class BoardController {
     },
     responses: [
       {
-        status: 200,
+        status: HttpStatus.OK,
         schema: { $ref: getSchemaPath('GetBoardInfoByBoardIdResponseSchema') },
       },
     ],
@@ -112,7 +121,7 @@ export class BoardController {
     },
     responses: [
       {
-        status: 200,
+        status: HttpStatus.OK,
         schema: { $ref: getSchemaPath('DeleteBoardResponseSchema') },
       },
     ],
@@ -122,6 +131,8 @@ export class BoardController {
     board_id: TrelloApi.BoardApi.BoardIdRequest,
   ): Promise<TrelloApi.BoardApi.DeleteBoardResponse> {
     const data = await this.boardService.deleteBoard(board_id)
+    if (data.background_list) await this.boardService.removeFirebaseFolder(board_id)
+
     return {
       data: data,
     }
@@ -134,7 +145,7 @@ export class BoardController {
     },
     responses: [
       {
-        status: 200,
+        status: HttpStatus.OK,
         schema: { $ref: getSchemaPath('UpdateBoardResponseSchema') },
       },
     ],
@@ -156,7 +167,7 @@ export class BoardController {
     },
     responses: [
       {
-        status: 200,
+        status: HttpStatus.OK,
         schema: { $ref: getSchemaPath('AddMemberResponseSchema') },
       },
     ],
@@ -180,7 +191,7 @@ export class BoardController {
     },
     responses: [
       {
-        status: 200,
+        status: HttpStatus.OK,
         schema: { $ref: getSchemaPath('RemoveMemberResponseSchema') },
       },
     ],
@@ -204,7 +215,7 @@ export class BoardController {
     },
     responses: [
       {
-        status: 200,
+        status: HttpStatus.OK,
         schema: { $ref: getSchemaPath('AddWatcherResponseSchema') },
       },
     ],
@@ -228,7 +239,7 @@ export class BoardController {
     },
     responses: [
       {
-        status: 200,
+        status: HttpStatus.OK,
         schema: { $ref: getSchemaPath('RemoveWatcherResponseSchema') },
       },
     ],
@@ -242,6 +253,93 @@ export class BoardController {
     const data = await this.boardService.updateBoard(update)
     return {
       data: data,
+    }
+  }
+
+  @InjectRoute(BoardRoutes.addBackground)
+  @SwaggerApi({
+    params: {
+      name: 'board_id',
+      type: 'string',
+      example: 'string',
+    },
+    responses: [
+      {
+        status: HttpStatus.OK,
+        schema: { $ref: getSchemaPath('UpdateBoardResponseSchema') },
+      },
+    ],
+  })
+  @UseInterceptors(FileInterceptor('background'))
+  async updateBackground(
+    @Param('board_id', IdParamValidationPipe)
+    board_id: TrelloApi.BoardApi.BoardIdRequest,
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [new MaxFileSizeValidator({ maxSize: 10000000 }), new FileTypeValidator({ fileType: '.(png|jpeg|jpg)' })],
+      }),
+    )
+    background: Express.Multer.File,
+  ): Promise<TrelloApi.BoardApi.UpdateBoardResponse> {
+    const board = await this.boardService.getBoardInfoByBoardId(board_id)
+    if (!board)
+      return {
+        data: null,
+      }
+
+    const imageUrl = await this.boardService.uploadFirebaseImage(board_id, background)
+    this.boardService.updateBoard({ _id: board_id, background: imageUrl })
+    const update = await this.boardService.updateBoard({ _id: board_id, background_list: _.union(board.background_list, [imageUrl]) })
+
+    return {
+      data: update,
+    }
+  }
+
+  @InjectRoute(BoardRoutes.removeBackground)
+  @SwaggerApi({
+    params: {
+      name: 'board_id',
+      type: 'string',
+      example: 'string',
+    },
+    body: {
+      schema: { $ref: getSchemaPath('RemoveBackgroundRequestSchema') },
+    },
+    responses: [
+      {
+        status: HttpStatus.OK,
+        schema: { $ref: getSchemaPath('UpdateBoardResponseSchema') },
+      },
+    ],
+  })
+  async removeBackground(
+    @Param('board_id', IdParamValidationPipe)
+    board_id: TrelloApi.BoardApi.BoardIdRequest,
+    @Body(new ZodValidationPipe(TrelloApi.BoardApi.RemoveBackgroundRequestSchema))
+    body: TrelloApi.BoardApi.RemoveBackgroundRequest,
+  ): Promise<TrelloApi.BoardApi.UpdateBoardResponse> {
+    const board = await this.boardService.getBoardInfoByBoardId(board_id)
+    if (!board)
+      return {
+        data: null,
+      }
+
+    const update = await this.boardService.updateBoard({
+      _id: board_id,
+      background_list: board.background_list.filter((item) => item !== body.background),
+    })
+
+    if (board.background === body.background)
+      await this.boardService.updateBoard({
+        _id: board_id,
+        background: '',
+      })
+
+    if (board.background_list.includes(body.background)) await this.boardService.removeFirebaseImage(body.background)
+
+    return {
+      data: update,
     }
   }
 }
