@@ -1,64 +1,65 @@
 import { IRouteParams } from '@app/common/decorators'
 import { RequestMethod } from '@nestjs/common'
 
-export const BoardRoutes = {
+export default {
+  index: '/api/board',
   getAllBoard: {
-    path: '/api/board',
+    path: '/',
     method: RequestMethod.GET,
-    jwtSecure: false,
   } as IRouteParams,
 
   getBoardsByWorkspaceId: {
-    path: '/api/board/:workspace_id',
+    path: '/workspace/:workspace_id',
     method: RequestMethod.GET,
-    jwtSecure: false,
   } as IRouteParams,
 
   createBoard: {
-    path: '/api/board/create',
+    path: '/',
     method: RequestMethod.POST,
-    jwtSecure: false,
   } as IRouteParams,
 
   getBoardInfoByBoardId: {
-    path: '/api/board/detail/:board_id',
+    path: '/:board_id',
     method: RequestMethod.GET,
-    jwtSecure: false,
   } as IRouteParams,
 
   deleteBoard: {
-    path: '/api/board/:board_id',
+    path: '/:board_id',
     method: RequestMethod.DELETE,
-    jwtSecure: false,
   } as IRouteParams,
 
   updateBoard: {
-    path: '/api/board/:board_id',
+    path: '/',
     method: RequestMethod.PATCH,
-    jwtSecure: false,
   } as IRouteParams,
 
   addMember: {
-    path: '/api/board/members/add',
+    path: '/members/add',
     method: RequestMethod.POST,
-    jwtSecure: false,
   } as IRouteParams,
 
   removeMember: {
-    path: '/api/board/members/remove',
+    path: '/members/remove',
     method: RequestMethod.POST,
-    jwtSecure: false,
   } as IRouteParams,
 
   addWatcher: {
-    path: '/api/board/watchers/add',
+    path: '/watchers/add',
     method: RequestMethod.POST,
-    jwtSecure: false,
   } as IRouteParams,
 
   removeWatcher: {
-    path: '/api/board/watchers/remove',
+    path: '/watchers/remove',
     method: RequestMethod.POST,
-    jwtSecure: false,
+  } as IRouteParams,
+
+  addBackground: {
+    path: '/:board_id/background_list/add',
+    method: RequestMethod.POST,
+  } as IRouteParams,
+
+  removeBackground: {
+    path: '/:board_id/background_list/remove',
+    method: RequestMethod.POST,
   } as IRouteParams,
 } as const

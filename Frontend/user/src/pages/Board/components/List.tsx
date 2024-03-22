@@ -92,7 +92,7 @@ export default function ListComponent({ list, setOpenCardSetting }: ListComponen
           onClick={() => setListSettingOpen(list._id)}
         />
       </div>
-      <div className={` relative`}>
+      <div className={` relative`} id={list._id}>
         {listSettingOpen && listSettingOpen === list._id && (
           <div ref={componentRef_ListSetting}>
             <ListSetting closeListSetting={() => setListSettingOpen('')} />

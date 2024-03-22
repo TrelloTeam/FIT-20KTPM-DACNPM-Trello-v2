@@ -1,15 +1,14 @@
-import { InjectController, InjectRoute } from '@app/common/decorators'
-import { CardService } from '../services/card.service'
-import { CardRoutes } from '../card.routes'
-import { Body, InternalServerErrorException, NotFoundException, Query } from '@nestjs/common'
+import { InjectController, InjectRoute, SwaggerApi } from '@app/common/decorators'
 import { ZodValidationPipe } from '@app/common/pipes'
-import { TrelloApi } from '@trello-v2/shared'
-import { SwaggerApi } from '@app/common/decorators'
+import { Body, InternalServerErrorException, NotFoundException, Query } from '@nestjs/common'
 import { getSchemaPath } from '@nestjs/swagger'
+import { TrelloApi } from '@trello-v2/shared'
+
+import { CardRoutes } from '../card.routes'
+import { CardService } from '../services/card.service'
 
 @InjectController({
   name: 'card',
-  isCore: true,
 })
 export class CardController {
   constructor(private cardService: CardService) {}

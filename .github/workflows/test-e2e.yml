@@ -1,0 +1,46 @@
+name: Test e2e CI
+
+on:
+  push:
+    branches: ["dev/*", "release/*", "main"]
+jobs:
+  test-e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.x"
+
+      - name: Install all depend
+        run: npm install
+
+      - name: Build shared packages
+        working-directory: packages/shared
+        run: |
+          npm install
+          npm run build
+
+      - name: Install fontend depend
+        working-directory: Frontend/user
+        run: |
+          npm install
+          npm run build:notsc
+
+      - uses: cypress-io/github-action@v6
+        with:
+          install: false
+          working-directory: Frontend/user
+          start: npm run preview -- --host
+          record: true
+        env:
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          GITHUB_TOKEN: ${{ secrets.LAM_TOKEN }}
+
+      - name: stop node
+        run: killall node
+
+      - name: Unit test backend cardlist
+        run: npm run test -w @trello-v2/backend -- service=cardlist
