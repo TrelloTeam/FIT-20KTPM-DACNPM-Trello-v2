@@ -12,6 +12,7 @@ import { Divider, Drawer } from '@mui/material'
 import { faCalendarDays } from '@fortawesome/free-regular-svg-icons'
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import { useTheme as useCustomTheme } from '~/components/Theme/themeContext'
+import { Link } from 'react-router-dom'
 
 const drawerWidth = 250
 
@@ -100,34 +101,40 @@ const SidebarCateWorkSpace: React.FC<Props> = ({ open, handleDrawerClose }) => {
         <Divider />
         <Sidebar className='text-sm'>
           <Menu>
-            <MenuItem className='menu-item rounded-md' 
-              style={{ height: '40px', backgroundColor: activeItem === 'boards' ? colors.bg_button_active_hover : colors.background }}
-              onClick={() => handleItemClick('boards')}>
-                <div className='flex items-center'>
-                  <FontAwesomeIcon icon={faTrello} fontSize='small' className='mr-2'/>
-                  Boards
-                </div>
-            </MenuItem>
-            <MenuItem 
-              style={{ height: '40px', backgroundColor: activeItem === 'members' ? colors.bg_button_active_hover : colors.background }}
-              onClick={() => handleItemClick('members')}
-            >
-              <div className='flex w-full items-center justify-between'>
+            <Link to={'/workspaceboard'}>
+              <MenuItem className='menu-item rounded-md' 
+                style={{ height: '40px', backgroundColor: activeItem === 'boards' ? colors.bg_button_active_hover : colors.background }}
+                onClick={() => handleItemClick('boards')}>
                   <div className='flex items-center'>
-                    <FontAwesomeIcon icon={faUserGroup} fontSize='small' className='mr-2'/>
-                    Members
+                    <FontAwesomeIcon icon={faTrello} fontSize='small' className='mr-2'/>
+                    Boards
                   </div>
-              </div>
-            </MenuItem>
-            <MenuItem 
-               style={{ height: '40px', backgroundColor: activeItem === 'settings' ? colors.bg_button_active_hover : colors.background }}
-               onClick={() => handleItemClick('settings')}
-            >
-                <div className='flex items-center'>
-                  <FontAwesomeIcon icon={faGear} fontSize='small' className='mr-2'/>
-                  <div>Workspace settings</div>
+              </MenuItem>
+            </Link>
+            <Link to={'/workspace/1/members'}>
+              <MenuItem 
+                style={{ height: '40px', backgroundColor: activeItem === 'members' ? colors.bg_button_active_hover : colors.background }}
+                onClick={() => handleItemClick('members')}
+              >
+                <div className='flex w-full items-center justify-between'>
+                    <div className='flex items-center'>
+                      <FontAwesomeIcon icon={faUserGroup} fontSize='small' className='mr-2'/>
+                      Members
+                    </div>
                 </div>
-            </MenuItem>
+              </MenuItem>
+            </Link>
+            <Link to={'/workspaceSetting'}>
+              <MenuItem 
+                style={{ height: '40px', backgroundColor: activeItem === 'settings' ? colors.bg_button_active_hover : colors.background }}
+                onClick={() => handleItemClick('settings')}
+              >
+                  <div className='flex items-center'>
+                    <FontAwesomeIcon icon={faGear} fontSize='small' className='mr-2'/>
+                    <div>Workspace settings</div>
+                  </div>
+              </MenuItem>
+            </Link>
           </Menu>
         </Sidebar>
 
