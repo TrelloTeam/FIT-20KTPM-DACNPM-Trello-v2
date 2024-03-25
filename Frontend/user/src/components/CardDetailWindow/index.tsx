@@ -1,11 +1,10 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCreditCard, faEye, faTimes } from '@fortawesome/free-solid-svg-icons'
 import { Box, Grid, Stack } from '@mui/material'
-import { colors, colorsButton } from '~/styles'
 import CardMemberList from './CardMemberList'
 import CardLabelList from './CardLabelList'
 import CardNotification from './CardNotification'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import CardDate from './CardDate'
 import CardDescription from './CardDescription'
 import CardChecklist from './CardChecklist'
@@ -22,6 +21,9 @@ import { SidebarButtonMove } from './sidebar/CardMoveSidebar'
 import { SidebarButtonCopy } from './sidebar/CardCopySidebar'
 import { SidebarButtonArchive } from './sidebar/CardArchiveSidebar'
 import { useTheme } from '../Theme/themeContext'
+import { CardApiRTQ } from '~/api'
+import { Card } from '@trello-v2/shared/src/schemas/CardList'
+import { Feature_CardLabel } from '@trello-v2/shared/src/schemas/Feature'
 
 export type _Card = {
   name: string
@@ -182,23 +184,65 @@ const boardMembers: string[] = [
   'mongodb@gmail.com'
 ]
 
-const boardLabels: _Feature_CardLabel[] = [
-  { _id: '5', name: 'Đã hoàn thành' },
-  { _id: '6', name: 'Sắp hoàn thành' },
-  { _id: '7', name: 'Gấp' },
-  { _id: '13', name: 'Không kịp tiến độ' },
-  { _id: '9', name: '' },
-  { _id: '20', name: '' },
-  { _id: '14', name: '' }
+// const _boardLabels: _Feature_CardLabel[] = [
+//   { _id: '5', name: 'Đã hoàn thành' },
+//   { _id: '6', name: 'Sắp hoàn thành' },
+//   { _id: '7', name: 'Gấp' },
+//   { _id: '13', name: 'Không kịp tiến độ' },
+//   { _id: '9', name: '' },
+//   { _id: '20', name: '' },
+//   { _id: '14', name: '' }
+// ]
+
+const boardLabels: Feature_CardLabel[] = [
+  { type: 'label', label_id: '5' },
+  { type: 'label', label_id: '6' },
+  { type: 'label', label_id: '7' },
+  { type: 'label', label_id: '13' },
+  { type: 'label', label_id: '9' },
+  { type: 'label', label_id: '20' },
+  { type: 'label', label_id: '14' }
 ]
 
-export default function CardDetailWindow() {
-  const focusInputColor = '#0ff'
+interface CardDetailWindowProps {
+  cardlistId: string
+  cardId: string
+}
 
+export default function CardDetailWindow({ cardId }: CardDetailWindowProps) {
+  const focusInputColor = '#0ff'
   const { colors } = useTheme()
-  const [boardLabelState, setBoardLabelState] = useState(boardLabels)
-  const [currentCardState, setCurrentCardState] = useState(card_1)
-  const [cardNameFieldValue, setCardNameFieldValue] = useState(card_1.name)
+
+  // Card data (MOCK UP)
+  const [_currentCardState, _setCurrentCardState] = useState<_Card>(card_1)
+
+  // Card data
+  const [getCard, { data: cardData }] = CardApiRTQ.CardApiSlice.useLazyGetCardQuery()
+  const [currentCardState, setCurrentCardState] = useState<Card | null>(null)
+  const fetchCardData = async () => {
+    try {
+      await getCard({ cardlist_id: 'demo_cardlist', card_id: cardId })
+    } catch (err) {
+      console.error('Error fetching card data:', err)
+    }
+  }
+
+  useEffect(() => {
+    fetchCardData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  // Update currentCardState when cardData changes
+  useEffect(() => {
+    if (cardData) {
+      setCurrentCardState(cardData.data)
+    }
+  }, [cardData])
+
+  // Board labels
+  const [boardLabelState, setBoardLabelState] = useState<Feature_CardLabel[]>(boardLabels)
+
+  const [cardNameFieldValue, setCardNameFieldValue] = useState<string>(currentCardState?.name || '')
   const [initialCardNameFieldValue, setInitialCardNameFieldValue] = useState(card_1.name)
   const [isWatching, setIsWatching] = useState(false)
 
@@ -207,7 +251,7 @@ export default function CardDetailWindow() {
     const trimmedValue = cardNameFieldValue.replace(/\s+/g, ' ').trim()
     if (trimmedValue !== initialCardNameFieldValue.trim()) {
       setCurrentCardState({
-        ...currentCardState,
+        ...currentCardState!,
         name: trimmedValue
       })
       setInitialCardNameFieldValue(trimmedValue)
@@ -218,7 +262,7 @@ export default function CardDetailWindow() {
     const trimmedValue = cardNameFieldValue.replace(/\s+/g, ' ').trim()
     if (trimmedValue !== initialCardNameFieldValue.trim()) {
       setCurrentCardState({
-        ...currentCardState,
+        ...currentCardState!,
         name: trimmedValue
       })
       setInitialCardNameFieldValue(trimmedValue)
@@ -300,37 +344,37 @@ export default function CardDetailWindow() {
             {/* START: Hero */}
             <div style={{ padding: '0 0 0 40px' }} className='flex flex-row flex-wrap gap-1'>
               <CardMemberList
-                currentCard={currentCardState}
-                setCurrentCard={setCurrentCardState}
+                currentCard={_currentCardState}
+                setCurrentCard={_setCurrentCardState}
                 boardMembers={boardMembers}
               />
               <CardLabelList
-                currentCard={currentCardState}
+                currentCard={currentCardState!}
                 setCurrentCard={setCurrentCardState}
                 boardLabelState={boardLabelState}
                 setBoardLabelState={setBoardLabelState}
               />
               <CardNotification isWatching={isWatching} setIsWatching={handleNotification} />
-              <CardDate currentCard={currentCardState} setCurrentCard={setCurrentCardState} />
+              <CardDate currentCard={_currentCardState} setCurrentCard={_setCurrentCardState} />
             </div>
             {/* END: Hero */}
             {/* START: Description */}
-            <CardDescription currentCard={currentCardState} setCurrentCard={setCurrentCardState} />
+            <CardDescription currentCard={_currentCardState} setCurrentCard={_setCurrentCardState} />
             {/* END: Description */}
             {/* START: Attachment */}
-            <CardAttachment currentCard={currentCardState} setCurrentCard={setCurrentCardState} />
+            <CardAttachment currentCard={_currentCardState} setCurrentCard={_setCurrentCardState} />
             {/* END: Attachment */}
             {/* START: Checklist */}
-            {currentCardState.checklists.map((checklist) => (
+            {_currentCardState.checklists.map((checklist) => (
               <CardChecklist
                 key={checklist._id}
                 currentChecklist={checklist}
-                currentCard={currentCardState}
-                setCurrentCard={setCurrentCardState}
+                currentCard={_currentCardState}
+                setCurrentCard={_setCurrentCardState}
               />
             ))}
             {/* END: Checklist */}
-            <CardActivity currentCard={currentCardState} setCurrentCard={setCurrentCardState} />
+            <CardActivity currentCard={_currentCardState} setCurrentCard={_setCurrentCardState} />
           </Grid>
           <Grid item xs={3} sx={{ padding: '0 16px 8px 8px' }}>
             <Stack sx={{ padding: '10px 0 0 0' }}>
@@ -339,52 +383,52 @@ export default function CardDetailWindow() {
               </h2>
               <SidebarButtonMembers
                 type={ButtonType.Members}
-                currentCard={currentCardState}
-                setCurrentCard={setCurrentCardState}
+                currentCard={_currentCardState}
+                setCurrentCard={_setCurrentCardState}
                 boardMembers={boardMembers}
               />
               <SidebarButtonLabels
                 type={ButtonType.Labels}
-                currentCard={currentCardState}
+                currentCard={currentCardState!}
                 setCurrentCard={setCurrentCardState}
                 boardLabelState={boardLabelState}
                 setBoardLabelState={setBoardLabelState}
               />
               <SidebarButtonChecklist
                 type={ButtonType.Checklists}
-                currentCard={currentCardState}
-                setCurrentCard={setCurrentCardState}
+                currentCard={_currentCardState}
+                setCurrentCard={_setCurrentCardState}
               />
               <SidebarButtonDates
                 type={ButtonType.Dates}
-                currentCard={currentCardState}
-                setCurrentCard={setCurrentCardState}
+                currentCard={_currentCardState}
+                setCurrentCard={_setCurrentCardState}
               />
               <SidebarButtonAttachments
                 type={ButtonType.Attachments}
-                currentCard={currentCardState}
-                setCurrentCard={setCurrentCardState}
+                currentCard={_currentCardState}
+                setCurrentCard={_setCurrentCardState}
               />
               <h2 style={{ color: colors.text }} className='mb-2 mt-6 text-xs font-bold'>
                 Actions
               </h2>
               <SidebarButtonMove
                 type={ButtonType.Move}
-                currentCard={currentCardState}
-                setCurrentCard={setCurrentCardState}
+                currentCard={_currentCardState}
+                setCurrentCard={_setCurrentCardState}
               />
               <SidebarButtonCopy
                 type={ButtonType.Copy}
-                currentCard={currentCardState}
-                setCurrentCard={setCurrentCardState}
+                currentCard={_currentCardState}
+                setCurrentCard={_setCurrentCardState}
               />
               <Box sx={{ width: '100%', height: 2, padding: '0 0 10px 0' }}>
-                <Box sx={{ width: '100%', height: 2, bgcolor: colorsButton.secondary }}></Box>
+                <Box sx={{ width: '100%', height: 2, bgcolor: colors.button }}></Box>
               </Box>
               <SidebarButtonArchive
                 type={ButtonType.Archive}
-                currentCard={currentCardState}
-                setCurrentCard={setCurrentCardState}
+                currentCard={_currentCardState}
+                setCurrentCard={_setCurrentCardState}
               />
             </Stack>
           </Grid>

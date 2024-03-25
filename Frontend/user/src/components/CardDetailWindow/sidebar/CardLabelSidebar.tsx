@@ -1,15 +1,16 @@
 import { useRef, useState } from 'react'
-import { _Card, _Feature_CardLabel } from '..'
 import { CardLabelListModal, CreateCardLabelModal, EditCardLabelModal } from '../modals/CardLabelModal'
 import { ButtonType, SidebarButton, buttonTypeIconMap } from './CardSidebarButton'
 import { Box } from '@mui/material'
+import { Card } from '@trello-v2/shared/src/schemas/CardList'
+import { Feature_CardLabel } from '@trello-v2/shared/src/schemas/Feature'
 
 interface SidebarButtonLabelsProps {
   type: ButtonType
-  currentCard: _Card
-  setCurrentCard: (newState: _Card) => void
-  boardLabelState: _Feature_CardLabel[]
-  setBoardLabelState: (newState: _Feature_CardLabel[]) => void
+  currentCard: Card
+  setCurrentCard: (newState: Card) => void
+  boardLabelState: Feature_CardLabel[]
+  setBoardLabelState: (newState: Feature_CardLabel[]) => void
 }
 
 export function SidebarButtonLabels({
@@ -21,24 +22,30 @@ export function SidebarButtonLabels({
 }: SidebarButtonLabelsProps) {
   const boxRef = useRef(null)
   const [anchorEl, setAnchorEl] = useState<null | HTMLDivElement>(null)
-  const [modalState, setModalState] = useState([false, false, false])
-  const [selectedLabel, setSelectedLabel] = useState(boardLabelState[0])
+  const [modalState, setModalState] = useState<boolean[]>([false, false, false])
+  const [selectedLabel, setSelectedLabel] = useState<Feature_CardLabel>(boardLabelState[0])
 
   function openModal(modalIndex: number) {
     const updatedOpenModal = modalState.map((state, index) => (index === modalIndex ? true : state))
     setModalState(updatedOpenModal)
   }
 
-  function addBoardLabel(_id: string, name: string) {
-    const newBoardLabel: _Feature_CardLabel = {
-      _id: _id,
-      name: name
+  function addBoardLabel(_id: string) {
+    const newBoardLabel: Feature_CardLabel = {
+      type: 'label',
+      label_id: _id
+      // name: name
     }
     setBoardLabelState([...boardLabelState, newBoardLabel])
   }
 
-  function isLabelIncluded(label: _Feature_CardLabel): boolean {
-    return currentCard.labels.some((_label) => _label._id === label._id && _label.name === label.name)
+  function isLabelIncluded(label: Feature_CardLabel): boolean {
+    return currentCard.features.some((feature) => {
+      if (feature.type === 'label' && feature.label_id === label._id) {
+        return true
+      }
+      return false
+    })
   }
 
   function removeBoardLabel() {
@@ -49,24 +56,24 @@ export function SidebarButtonLabels({
     if (isLabelIncluded(selectedLabel)) {
       const updatedCard = {
         ...currentCard,
-        labels: currentCard.labels.filter((label) => label._id !== selectedLabel._id)
+        labels: currentCard.features.filter((feature) => feature.type === 'label' && feature._id !== selectedLabel._id)
       }
       setCurrentCard(updatedCard)
     }
   }
 
-  function handleIncludeLabel(label: _Feature_CardLabel) {
-    const updatedCard = {
+  function handleIncludeLabel(label: Feature_CardLabel) {
+    const updatedCard: Card = {
       ...currentCard,
-      labels: [...currentCard.labels, label]
+      features: [...currentCard.features, label]
     }
     setCurrentCard(updatedCard)
   }
 
-  function handleExcludeLabel(label: _Feature_CardLabel) {
-    const updatedCard = {
+  function handleExcludeLabel(label: Feature_CardLabel) {
+    const updatedCard: Card = {
       ...currentCard,
-      labels: currentCard.labels.filter((_label) => _label._id !== label._id)
+      features: currentCard.features.filter((feature) => feature.type === 'label' && feature._id !== label._id)
     }
     setCurrentCard(updatedCard)
   }

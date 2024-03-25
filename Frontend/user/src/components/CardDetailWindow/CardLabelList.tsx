@@ -1,10 +1,11 @@
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Box, Tooltip } from '@mui/material'
-import { _Card, _Feature_CardLabel } from '.'
 import { useRef, useState } from 'react'
 import { CardLabelListModal, CreateCardLabelModal, EditCardLabelModal } from './modals/CardLabelModal'
 import { useTheme } from '../Theme/themeContext'
+import { Card } from '@trello-v2/shared/src/schemas/CardList'
+import { Feature_CardLabel } from '@trello-v2/shared/src/schemas/Feature'
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const labelColors: string[] = [
@@ -115,10 +116,10 @@ export function CardLabelItem({ title, bgColor }: CardLabelItemProps) {
 }
 
 interface CardLabelListProps {
-  currentCard: _Card
-  setCurrentCard: (newState: _Card) => void
-  boardLabelState: _Feature_CardLabel[]
-  setBoardLabelState: (newState: _Feature_CardLabel[]) => void
+  currentCard: Card
+  setCurrentCard: (newState: Card) => void
+  boardLabelState: Feature_CardLabel[]
+  setBoardLabelState: (newState: Feature_CardLabel[]) => void
 }
 
 export default function CardLabelList({
@@ -130,24 +131,30 @@ export default function CardLabelList({
   const { colors } = useTheme()
   const boxRef = useRef(null)
   const [anchorEl, setAnchorEl] = useState<null | HTMLDivElement>(null)
-  const [modalState, setModalState] = useState([false, false, false])
-  const [selectedLabel, setSelectedLabel] = useState(boardLabelState[0])
+  const [modalState, setModalState] = useState<boolean[]>([false, false, false])
+  const [selectedLabel, setSelectedLabel] = useState<Feature_CardLabel>(boardLabelState[0])
 
   function openModal(modalIndex: number) {
     const updatedOpenModal = modalState.map((state, index) => (index === modalIndex ? true : state))
     setModalState(updatedOpenModal)
   }
 
-  function addBoardLabel(_id: string, name: string) {
-    const newBoardLabel: _Feature_CardLabel = {
-      _id: _id,
-      name: name
+  function addBoardLabel(_id: string) {
+    const newBoardLabel: Feature_CardLabel = {
+      type: 'label',
+      label_id: _id
+      // name: name
     }
     setBoardLabelState([...boardLabelState, newBoardLabel])
   }
 
-  function isLabelIncluded(label: _Feature_CardLabel): boolean {
-    return currentCard.labels.some((_label) => _label._id === label._id && _label.name === label.name)
+  function isLabelIncluded(label: Feature_CardLabel): boolean {
+    return currentCard.features.some((feature) => {
+      if (feature.type === 'label' && feature.label_id === label._id) {
+        return true
+      }
+      return false
+    })
   }
 
   function removeBoardLabel() {
@@ -158,24 +165,24 @@ export default function CardLabelList({
     if (isLabelIncluded(selectedLabel)) {
       const updatedCard = {
         ...currentCard,
-        labels: currentCard.labels.filter((label) => label._id !== selectedLabel._id)
+        labels: currentCard.features.filter((feature) => feature.type === 'label' && feature._id !== selectedLabel._id)
       }
       setCurrentCard(updatedCard)
     }
   }
 
-  function handleIncludeLabel(label: _Feature_CardLabel) {
-    const updatedCard = {
+  function handleIncludeLabel(label: Feature_CardLabel) {
+    const updatedCard: Card = {
       ...currentCard,
-      labels: [...currentCard.labels, label]
+      features: [...currentCard.features, label]
     }
     setCurrentCard(updatedCard)
   }
 
-  function handleExcludeLabel(label: _Feature_CardLabel) {
-    const updatedCard = {
+  function handleExcludeLabel(label: Feature_CardLabel) {
+    const updatedCard: Card = {
       ...currentCard,
-      labels: currentCard.labels.filter((_label) => _label._id !== label._id)
+      features: currentCard.features.filter((feature) => feature.type === 'label' && feature._id !== label._id)
     }
     setCurrentCard(updatedCard)
   }
@@ -186,30 +193,35 @@ export default function CardLabelList({
         Labels
       </h2>
       <div className='flex flex-row flex-wrap'>
-        {currentCard.labels.map((label, index) => (
-          <Tooltip
-            arrow
-            key={index}
-            title={`Color: ${labelColorsTitle[parseInt(label._id, 10)]}, title: "${label.name}"`}
-            placement='bottom'
-            slotProps={{
-              popper: {
-                modifiers: [
-                  {
-                    name: 'offset',
-                    options: {
-                      offset: [0, -12]
-                    }
+        {currentCard.features
+          .filter((_feature) => _feature.type === 'label')
+          .map((feature, index) => {
+            const label = feature as Feature_CardLabel
+            return (
+              <Tooltip
+                arrow
+                key={index}
+                title={`Color: ${labelColorsTitle[parseInt(label._id!, 10)]}, title: empty`}
+                placement='bottom'
+                slotProps={{
+                  popper: {
+                    modifiers: [
+                      {
+                        name: 'offset',
+                        options: {
+                          offset: [0, -12]
+                        }
+                      }
+                    ]
                   }
-                ]
-              }
-            }}
-          >
-            <div style={{ display: 'inline-block' }}>
-              <CardLabelItem title={label.name} bgColor={labelColors[parseInt(label._id, 10)]} />
-            </div>
-          </Tooltip>
-        ))}
+                }}
+              >
+                <div style={{ display: 'inline-block' }}>
+                  <CardLabelItem title='empty' bgColor={labelColors[parseInt(label.label_id!, 10)]} />
+                </div>
+              </Tooltip>
+            )
+          })}
         <Box
           sx={{
             bgcolor: colors.button,

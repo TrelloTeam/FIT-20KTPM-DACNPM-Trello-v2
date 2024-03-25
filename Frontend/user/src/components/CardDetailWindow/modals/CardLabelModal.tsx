@@ -3,15 +3,16 @@ import { labelColors } from '../CardLabelList'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronLeft, faPen, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { ChangeEvent, useState } from 'react'
-import { _Card, _Feature_CardLabel } from '..'
 import { useTheme } from '~/components/Theme/themeContext'
+import { Feature_CardLabel } from '@trello-v2/shared/src/schemas/Feature'
+import { Card } from '@trello-v2/shared/src/schemas/CardList'
 
 interface CardLabelListTileProps {
-  currentLabel: _Feature_CardLabel
-  setSelectedLabel: (newState: _Feature_CardLabel) => void
+  currentLabel: Feature_CardLabel
+  setSelectedLabel: (newState: Feature_CardLabel) => void
   isChecked: boolean
-  handleIncludeLabel: (label: _Feature_CardLabel) => void
-  handleExcludeLabel: (label: _Feature_CardLabel) => void
+  handleIncludeLabel: (label: Feature_CardLabel) => void
+  handleExcludeLabel: (label: Feature_CardLabel) => void
   openEditLabelModal: () => void
 }
 
@@ -24,7 +25,7 @@ export function CardLabelListTile({
   openEditLabelModal
 }: CardLabelListTileProps) {
   const { colors } = useTheme()
-  const labelColor = labelColors[parseInt(currentLabel._id, 10)]
+  const labelColor = labelColors[parseInt(currentLabel.label_id, 10)]
   const [isIncluded, setIsIncluded] = useState(isChecked)
 
   function handleToggleLabel() {
@@ -61,7 +62,7 @@ export function CardLabelListTile({
         className='mb-1 mr-1 flex items-center rounded text-sm font-semibold'
         onClick={handleToggleLabel}
       >
-        {currentLabel.name}
+        empty
       </Box>
       <Box
         sx={{ width: 32, height: 32, '&:hover': { bgcolor: colors.button_hover } }}
@@ -80,11 +81,11 @@ export function CardLabelListTile({
 interface CardLabelListModalProps {
   anchorEl: null | HTMLDivElement
   setModalState: (newState: boolean[]) => void
-  currentCard: _Card
-  boardLabels: _Feature_CardLabel[]
-  setSelectedLabel: (newState: _Feature_CardLabel) => void
-  handleIncludeLabel: (card: _Feature_CardLabel) => void
-  handleExcludeLabel: (card: _Feature_CardLabel) => void
+  currentCard: Card
+  boardLabels: Feature_CardLabel[]
+  setSelectedLabel: (newState: Feature_CardLabel) => void
+  handleIncludeLabel: (card: Feature_CardLabel) => void
+  handleExcludeLabel: (card: Feature_CardLabel) => void
 }
 
 export function CardLabelListModal({
@@ -103,9 +104,9 @@ export function CardLabelListModal({
   function filterLabelList(event: React.ChangeEvent<HTMLInputElement>) {
     setSearchValue(event.currentTarget.value)
     // Filter card member list
-    setBoardLabelState(
-      boardLabels.filter((label) => label.name.toLowerCase().includes(event.currentTarget.value.toLowerCase()))
-    )
+    // setBoardLabelState(
+    //   boardLabels.filter((label) => label.name.toLowerCase().includes(event.currentTarget.value.toLowerCase()))
+    // )
   }
 
   function handleClose() {
@@ -120,8 +121,13 @@ export function CardLabelListModal({
     setModalState([false, false, true])
   }
 
-  function isLabelIncluded(label: _Feature_CardLabel): boolean {
-    return currentCard.labels.some((_label) => _label._id === label._id && _label.name === label.name)
+  function isLabelIncluded(label: Feature_CardLabel): boolean {
+    return currentCard.features.some((feature) => {
+      if (feature.type === 'label' && feature.label_id === label._id) {
+        return true
+      }
+      return false
+    })
   }
 
   return (
@@ -444,11 +450,11 @@ export function CreateCardLabelModal({ anchorEl, setModalState, addBoardLabel }:
 interface EditCardLabelModalProps {
   anchorEl: (EventTarget & HTMLDivElement) | null
   setModalState: (newState: boolean[]) => void
-  currentCard: _Card
-  setCurrentCard: (newState: _Card) => void
-  currentLabel: _Feature_CardLabel
-  boardLabelState: _Feature_CardLabel[]
-  setBoardLabelState: (newState: _Feature_CardLabel[]) => void
+  currentCard: Card
+  setCurrentCard: (newState: Card) => void
+  currentLabel: Feature_CardLabel
+  boardLabelState: Feature_CardLabel[]
+  setBoardLabelState: (newState: Feature_CardLabel[]) => void
   removeBoardLabel: () => void
 }
 
@@ -463,8 +469,8 @@ export function EditCardLabelModal({
   removeBoardLabel
 }: EditCardLabelModalProps) {
   const { colors } = useTheme()
-  const [labelNameFieldValue, setLabelNameFieldValue] = useState(currentLabel.name)
-  const [selectedColor, setSelectedColor] = useState(labelColors[parseInt(currentLabel._id, 10)])
+  const [labelNameFieldValue, setLabelNameFieldValue] = useState<string>('')
+  const [selectedColor, setSelectedColor] = useState<string>(labelColors[parseInt(currentLabel.label_id, 10)])
 
   function handleLabelNameFieldChange(event: ChangeEvent<HTMLInputElement>) {
     setLabelNameFieldValue(event.currentTarget.value)
@@ -472,20 +478,22 @@ export function EditCardLabelModal({
 
   function handleEditBoardLabel() {
     // Update Board label list
-    const updatedBoardLabel = boardLabelState.map((label) => {
-      return label._id === currentLabel._id
-        ? { _id: labelColors.indexOf(selectedColor).toString(), name: labelNameFieldValue }
+    const updatedBoardLabel: Feature_CardLabel[] = boardLabelState.map((label) => {
+      return label.label_id === currentLabel.label_id
+        ? { type: 'label', label_id: labelColors.indexOf(selectedColor).toString() }
         : label
     })
     setBoardLabelState(updatedBoardLabel)
     // Update Card
     const updatedCard = {
       ...currentCard,
-      labels: currentCard.labels.map((label) => {
-        return label._id === currentLabel._id
-          ? { _id: labelColors.indexOf(selectedColor).toString(), name: labelNameFieldValue }
-          : label
-      })
+      labels: currentCard.features
+        .filter((feature) => feature.type === 'label')
+        .map((label) => {
+          return label._id === currentLabel._id
+            ? { _id: labelColors.indexOf(selectedColor).toString(), name: labelNameFieldValue }
+            : label
+        })
     }
     setCurrentCard(updatedCard)
   }
