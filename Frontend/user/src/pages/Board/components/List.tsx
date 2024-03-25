@@ -92,7 +92,7 @@ export default function ListComponent({ list, setOpenCardSetting }: ListComponen
           onClick={() => setListSettingOpen(list._id)}
         />
       </div>
-      <div className={` relative`}>
+      <div className={` relative max-h-[450px]`}>
         {listSettingOpen && listSettingOpen === list._id && (
           <div ref={componentRef_ListSetting}>
             <ListSetting closeListSetting={() => setListSettingOpen('')} />
@@ -122,7 +122,7 @@ export default function ListComponent({ list, setOpenCardSetting }: ListComponen
                       backgroundColor: colors.background,
                       color: colors.text
                     }}
-                    className={` h-full w-full rounded-lg px-2 pt-2 pb-8 text-left focus:border-0 focus:outline-none focus:ring-0 `}
+                    className={` h-full w-full rounded-lg px-2 pb-8 pt-2 text-left focus:border-0 focus:outline-none focus:ring-0 `}
                     placeholder='Enter the title for this card...'
                     value={newCardName}
                     onChange={(e) => setNewCardName(e.target.value)}
@@ -169,7 +169,7 @@ export default function ListComponent({ list, setOpenCardSetting }: ListComponen
                       backgroundColor: colors.background,
                       color: colors.text
                     }}
-                    className={` h-full w-full rounded-lg px-2 pt-2 pb-8 text-left focus:border-0 focus:outline-none focus:ring-0 `}
+                    className={` h-full w-full rounded-lg px-2 pb-8 pt-2 text-left focus:border-0 focus:outline-none focus:ring-0 `}
                     placeholder='Enter the title for this card...'
                     value={newCardName}
                     onChange={(e) => setNewCardName(e.target.value)}

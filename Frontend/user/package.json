@@ -31,6 +31,7 @@
     "@mui/material": "^5.15.5",
     "@mui/styled-engine-sc": "^6.0.0-alpha.12",
     "@mui/x-date-pickers": "^6.19.0",
+    "@popperjs/core": "^2.11.8",
     "@reduxjs/toolkit": "^2.0.1",
     "@trello-v2/shared": "*",
     "axios": "^1.6.7",

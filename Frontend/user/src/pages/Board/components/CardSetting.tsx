@@ -13,9 +13,9 @@ export default function CardSetting() {
   const { colors, darkMode } = useTheme()
   return (
     <div
-      className={`absolute left-[102%] z-10 flex w-max cursor-default flex-col items-start justify-center space-y-1 font-semibold`}
+      className={`absolute left-[102%] top-0 z-10 flex w-max cursor-default flex-col items-start justify-center space-y-1 font-semibold`}
     >
-      <button
+      <div
         onClick={() => alert('click')}
         className={`m-0 flex flex-row items-center  rounded px-3   py-2 shadow-md   hover:opacity-50`}
         style={{
@@ -25,7 +25,7 @@ export default function CardSetting() {
       >
         <FaCreditCard className={`mr-2`} />
         Open card
-      </button>
+      </div>
       <button
         className={`flex flex-row items-center rounded px-3   py-2 shadow-md   hover:opacity-50`}
         style={{ backgroundColor: darkMode ? '#1d2125' : '#f5f6fa', color: colors.text }}
