@@ -77,7 +77,7 @@ export class BoardController {
       },
     ],
   })
-  async create(
+  async createBoard(
     @Body(new ZodValidationPipe(TrelloApi.BoardApi.CreateBoardRequestSchema))
     body: TrelloApi.BoardApi.CreateBoard,
   ): Promise<TrelloApi.BoardApi.CreateBoardResponse> {
@@ -338,6 +338,35 @@ export class BoardController {
 
     if (board.background_list.includes(body.background)) await this.boardService.removeFirebaseImage(body.background)
 
+    return {
+      data: update,
+    }
+  }
+
+  @InjectRoute(BoardRoutes.createLabel)
+  @SwaggerApi({
+    params: {
+      name: 'board_id',
+      type: 'string',
+      example: 'string',
+    },
+    body: { schema: { $ref: getSchemaPath('CreateLabelRequestSchema') } },
+    responses: [
+      {
+        status: HttpStatus.OK,
+        schema: { $ref: getSchemaPath('CreateBoardResponseSchema') },
+      },
+    ],
+  })
+  async createLabel(
+    @Param('board_id', IdParamValidationPipe)
+    board_id: TrelloApi.BoardApi.BoardIdRequest,
+    @Body(new ZodValidationPipe(TrelloApi.BoardApi.CreateLabelRequestSchema))
+    body: TrelloApi.BoardApi.CreateLabel,
+  ): Promise<TrelloApi.BoardApi.CreateBoardResponse> {
+    const label = await this.boardService.createLabel(body)
+    const board = await this.boardService.getBoardInfoByBoardId(board_id)
+    const update = await this.boardService.updateBoard({ _id: board_id, labels: _.union(board.labels, [label]) })
     return {
       data: update,
     }

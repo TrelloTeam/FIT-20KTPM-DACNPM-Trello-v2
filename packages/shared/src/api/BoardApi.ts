@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { BoardSchema } from "../schemas/Board";
+import { BoardLabelSchema, BoardSchema } from "../schemas/Board";
 import { emailRegex } from "../utils/regex";
 
 export const BoardIdRequestSchema = BoardSchema.pick({
@@ -159,3 +159,11 @@ export const RemoveBackgroundRequestSchema = BoardSchema.pick({
   background: true,
 }).required({ background: true });
 export type RemoveBackgroundRequest = z.infer<typeof RemoveBackgroundRequestSchema>;
+
+///
+
+export const CreateLabelRequestSchema = BoardLabelSchema.pick({
+  color: true,
+  name: true,
+});
+export type CreateLabel = z.infer<typeof CreateLabelRequestSchema>;
