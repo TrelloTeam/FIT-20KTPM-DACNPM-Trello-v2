@@ -10,6 +10,7 @@ export type BoardIdRequestGrpc = z.infer<typeof BoardIdRequestSchema>;
 
 export type BoardIdRequest = z.infer<typeof BoardSchema>["_id"];
 export type workSpaceIdRequest = z.infer<typeof BoardSchema>["workspace_id"];
+export type LabelIdRequest = z.infer<typeof BoardLabelSchema>["_id"];
 
 ///
 
@@ -162,8 +163,33 @@ export type RemoveBackgroundRequest = z.infer<typeof RemoveBackgroundRequestSche
 
 ///
 
-export const CreateLabelRequestSchema = BoardLabelSchema.pick({
+export const GetLabelsResponseSchema = z.object({
+  data: BoardLabelSchema.array(),
+});
+export type GetLabelsResponse = z.infer<typeof GetLabelsResponseSchema>;
+
+///
+
+export const AddLabelRequestSchema = BoardLabelSchema.pick({
   color: true,
   name: true,
 });
-export type CreateLabel = z.infer<typeof CreateLabelRequestSchema>;
+export type CreateLabel = z.infer<typeof AddLabelRequestSchema>;
+
+///
+
+export const RemoveLabelRequestSchema = BoardLabelSchema.pick({
+  _id: true,
+}).required({ _id: true });
+export type RemoveLabel = z.infer<typeof RemoveLabelRequestSchema>;
+
+///
+
+export const UpdateLabelRequestSchema = BoardLabelSchema.pick({
+  _id: true,
+  color: true,
+  name: true,
+})
+  .partial()
+  .required({ _id: true });
+export type UpdateLabel = z.infer<typeof UpdateLabelRequestSchema>;

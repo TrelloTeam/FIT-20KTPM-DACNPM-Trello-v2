@@ -25,7 +25,6 @@ export class BoardService implements IBoardService {
   constructor(
     @InjectModel(DbSchemas.COLLECTION_NAMES[1])
     private BoardMModel: Model<DbSchemas.BoardSchema.Board>,
-    // private BoardLabelMModel: Model<DbSchemas.BoardSchema.BoardLabel>,
   ) {}
 
   async createBoard(data: TrelloApi.BoardApi.CreateBoard) {

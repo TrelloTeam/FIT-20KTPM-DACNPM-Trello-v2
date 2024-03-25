@@ -343,6 +343,30 @@ export class BoardController {
     }
   }
 
+  @InjectRoute(BoardRoutes.getLabels)
+  @SwaggerApi({
+    params: {
+      name: 'board_id',
+      type: 'string',
+      example: 'string',
+    },
+    responses: [
+      {
+        status: HttpStatus.OK,
+        schema: { $ref: getSchemaPath('GetLabelsResponseSchema') },
+      },
+    ],
+  })
+  async getLabels(
+    @Param('board_id', IdParamValidationPipe)
+    board_id: TrelloApi.BoardApi.BoardIdRequest,
+  ): Promise<TrelloApi.BoardApi.GetLabelsResponse> {
+    const board = await this.boardService.getBoardInfoByBoardId(board_id)
+    return {
+      data: board?.labels ?? null,
+    }
+  }
+
   @InjectRoute(BoardRoutes.createLabel)
   @SwaggerApi({
     params: {
@@ -354,19 +378,91 @@ export class BoardController {
     responses: [
       {
         status: HttpStatus.OK,
-        schema: { $ref: getSchemaPath('CreateBoardResponseSchema') },
+        schema: { $ref: getSchemaPath('GetBoardInfoByBoardIdResponseSchema') },
       },
     ],
   })
-  async createLabel(
+  async addLabel(
     @Param('board_id', IdParamValidationPipe)
     board_id: TrelloApi.BoardApi.BoardIdRequest,
-    @Body(new ZodValidationPipe(TrelloApi.BoardApi.CreateLabelRequestSchema))
+    @Body(new ZodValidationPipe(TrelloApi.BoardApi.AddLabelRequestSchema))
     body: TrelloApi.BoardApi.CreateLabel,
-  ): Promise<TrelloApi.BoardApi.CreateBoardResponse> {
+  ): Promise<TrelloApi.BoardApi.GetBoardInfoByBoardIdResponse> {
     const label = await this.boardService.createLabel(body)
     const board = await this.boardService.getBoardInfoByBoardId(board_id)
     const update = await this.boardService.updateBoard({ _id: board_id, labels: _.union(board.labels, [label]) })
+    return {
+      data: update,
+    }
+  }
+
+  @InjectRoute(BoardRoutes.deleteLabel)
+  @SwaggerApi({
+    params: {
+      name: 'board_id',
+      type: 'string',
+      example: 'string',
+    },
+    body: { schema: { $ref: getSchemaPath('DeleteLabelRequestSchema') } },
+    responses: [
+      {
+        status: HttpStatus.OK,
+        schema: { $ref: getSchemaPath('GetBoardInfoByBoardIdResponseSchema') },
+      },
+    ],
+  })
+  async deleteLabel(
+    @Param('board_id', IdParamValidationPipe)
+    board_id: TrelloApi.BoardApi.BoardIdRequest,
+    @Body(new ZodValidationPipe(TrelloApi.BoardApi.RemoveLabelRequestSchema))
+    body: TrelloApi.BoardApi.RemoveLabel,
+  ): Promise<TrelloApi.BoardApi.GetBoardInfoByBoardIdResponse> {
+    const board = await this.boardService.getBoardInfoByBoardId(board_id)
+    const update = await this.boardService.updateBoard({
+      _id: board_id,
+      labels: board.labels.filter((item) => item._id.toString() !== body._id),
+    })
+    return {
+      data: update,
+    }
+  }
+
+  @InjectRoute(BoardRoutes.updateLabel)
+  @SwaggerApi({
+    params: {
+      name: 'board_id',
+      type: 'string',
+      example: 'string',
+    },
+    body: { schema: { $ref: getSchemaPath('UpdateLabelRequestSchema') } },
+    responses: [
+      {
+        status: HttpStatus.OK,
+        schema: { $ref: getSchemaPath('GetBoardInfoByBoardIdResponseSchema') },
+      },
+    ],
+  })
+  async updateLabel(
+    @Param('board_id', IdParamValidationPipe)
+    board_id: TrelloApi.BoardApi.BoardIdRequest,
+    @Body(new ZodValidationPipe(TrelloApi.BoardApi.UpdateLabelRequestSchema))
+    body: TrelloApi.BoardApi.UpdateLabel,
+  ): Promise<TrelloApi.BoardApi.GetBoardInfoByBoardIdResponse> {
+    const board = await this.boardService.getBoardInfoByBoardId(board_id)
+    const update = await this.boardService.updateBoard({
+      _id: board_id,
+      labels: board.labels.map((item) => {
+        if (item._id.toString() === body._id) {
+          return {
+            ...Object.assign(
+              item,
+              _.omitBy(body, (value) => _.isUndefined(value)),
+            ),
+          }
+        }
+        return item
+      }),
+    })
     return {
       data: update,
     }

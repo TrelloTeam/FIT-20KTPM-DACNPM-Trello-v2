@@ -63,8 +63,23 @@ export default {
     method: RequestMethod.POST,
   } as IRouteParams,
 
-  createLabel: {
+  getLabels: {
     path: '/:board_id/label',
+    method: RequestMethod.GET,
+  } as IRouteParams,
+
+  createLabel: {
+    path: '/:board_id/label/add',
     method: RequestMethod.POST,
+  } as IRouteParams,
+
+  deleteLabel: {
+    path: '/:board_id/label/remove',
+    method: RequestMethod.POST,
+  } as IRouteParams,
+
+  updateLabel: {
+    path: '/:board_id/label',
+    method: RequestMethod.PATCH,
   } as IRouteParams,
 } as const
