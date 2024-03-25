@@ -263,6 +263,17 @@ export class BoardController {
       type: 'string',
       example: 'string',
     },
+    body: {
+      schema: {
+        type: 'object',
+        properties: {
+          background: {
+            type: 'string',
+            format: 'binary',
+          },
+        },
+      },
+    },
     responses: [
       {
         status: HttpStatus.OK,
