@@ -19,10 +19,7 @@
     "Frontend/user",
     "packages/shared"
   ],
-  "dependencies": {
-    "lodash": "^4.17.21",
-    "rxjs": "^7.8.1"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@rollup/plugin-commonjs": "^25.0.7",
     "rimraf": "^5.0.5"
