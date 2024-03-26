@@ -208,10 +208,13 @@ export class BoardServiceMock implements IBoardService {
 
   createLabel(data: TrelloApi.BoardApi.CreateLabel) {
     return new Promise<DbSchemas.BoardSchema.BoardLabel>((res) => {
-      res({
-        ...data,
-        _id: 'Mock-id',
-      })
+      const label = { _id: 'Mock-id', name: '', color: '' }
+      res(
+        Object.assign(
+          label,
+          _.omitBy(data, (value) => _.isUndefined(value)),
+        ),
+      )
     })
   }
 }
