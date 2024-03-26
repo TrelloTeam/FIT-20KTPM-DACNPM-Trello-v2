@@ -173,7 +173,7 @@ export type GetLabelsResponse = z.infer<typeof GetLabelsResponseSchema>;
 export const AddLabelRequestSchema = BoardLabelSchema.pick({
   color: true,
   name: true,
-});
+}).partial();
 export type CreateLabel = z.infer<typeof AddLabelRequestSchema>;
 
 ///
