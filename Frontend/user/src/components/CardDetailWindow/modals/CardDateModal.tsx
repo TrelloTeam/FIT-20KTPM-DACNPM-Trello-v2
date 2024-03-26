@@ -1,6 +1,5 @@
 import { useState } from 'react'
-import { _Card } from '..'
-import { Box, FormControl, Grid, MenuItem, Popover, Select, SelectChangeEvent, styled } from '@mui/material'
+import { Box, FormControl, Grid, MenuItem, Popover, Select, SelectChangeEvent } from '@mui/material'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 
@@ -9,6 +8,8 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo'
 import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { useTheme } from '~/components/Theme/themeContext'
+import { Card } from '@trello-v2/shared/src/schemas/CardList'
+import { Feature_Date } from '@trello-v2/shared/src/schemas/Feature'
 
 const reminderDateChoices: string[] = [
   'None',
@@ -22,16 +23,10 @@ const reminderDateChoices: string[] = [
   '2 Days before'
 ]
 
-const CustomizedDateTimePicker = styled(DateTimePicker)`
-  & .MuiInputBase-input {
-    color: '#fff';
-  }
-`
-
 interface SelectCardDatesModalProps {
   anchorEl: (EventTarget & HTMLDivElement) | null
-  currentCard: _Card
-  setCurrentCard: (newState: _Card) => void
+  currentCard: Card
+  setCurrentCard: (newState: Card) => void
   handleClose: () => void
 }
 
@@ -68,15 +63,13 @@ export function SelectCardDatesModal({
   }
 
   function updateCardDates() {
-    const updatedCard = {
-      ...currentCard,
-      dates: {
-        ...currentCard.dates,
-        start_date: startDateEnabled ? startDateValue! : null,
-        due_date: dueDateEnabled ? dueDateValue! : null
-      }
+    const featureDateIndex = currentCard.features.findIndex((feature) => feature.type === 'date')
+    if (featureDateIndex !== -1) {
+      const featureDate = currentCard.features[featureDateIndex] as Feature_Date
+      featureDate.start_date = startDateValue?.toDate()
+      featureDate.due_date = dueDateValue!.toDate()
+      setCurrentCard({ ...currentCard })
     }
-    setCurrentCard(updatedCard)
   }
 
   return (

@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react'
-import { _Card, _Feature_Activity } from '..'
+import { _Feature_Activity } from '..'
 import { Box, Grid, Popover } from '@mui/material'
 import { MemberAvatar, bgColors } from '../CardMemberList'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import moment from 'moment'
 import { useTheme } from '~/components/Theme/themeContext'
+import { Card } from '@trello-v2/shared/src/schemas/CardList'
 
 interface MemberAvatarAndNameProps {
   email: string
@@ -34,8 +35,8 @@ function MemberAvatarAndName({ email, bgColor, onClick }: MemberAvatarAndNamePro
 
 interface CardMemberModalProps {
   anchorEl: (EventTarget & HTMLDivElement) | null
-  currentCard: _Card
-  setCurrentCard: (newState: _Card) => void
+  currentCard: Card
+  setCurrentCard: (newState: Card) => void
   boardMembers: string[]
   handleClose: () => void
 }

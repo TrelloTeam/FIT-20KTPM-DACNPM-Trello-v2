@@ -1,15 +1,17 @@
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Box, Grid, Popover } from '@mui/material'
-import { _Card, _Feature_Activity, _Feature_Checklist } from '..'
 import { useState } from 'react'
-import moment from 'moment'
+// import moment from 'moment'
 import { useTheme } from '~/components/Theme/themeContext'
+import { Card } from '@trello-v2/shared/src/schemas/CardList'
+import { Feature_Checklist } from '@trello-v2/shared/src/schemas/Feature'
+import { Activity } from '@trello-v2/shared/src/schemas/Activity'
 
 interface CreateCardChecklistModalProps {
   anchorEl: (EventTarget & HTMLDivElement) | null
-  currentCard: _Card
-  setCurrentCard: (newState: _Card) => void
+  currentCard: Card
+  setCurrentCard: (newState: Card) => void
   handleClose: () => void
 }
 
@@ -28,23 +30,22 @@ export function CreateCardChecklistModal({
 
   function createChecklist() {
     const trimmedValue = textFieldValue.replace(/\s+/g, ' ').trim()
-    const newChecklist: _Feature_Checklist = {
-      _id: currentCard.checklists.length.toString(),
-      name: trimmedValue,
+    const newChecklist: Feature_Checklist = {
+      // name: trimmedValue,
       type: 'checklist',
       items: []
     }
-    const newActivity: _Feature_Activity = {
+    const newActivity: Activity = {
       workspace_id: '0',
       board_id: '0',
       cardlist_id: '0',
       card_id: '0',
-      content: `TrelloUser added ${trimmedValue} to this card`,
-      time: moment().format()
+      content: `TrelloUser added ${trimmedValue} to this card`
+      // time: moment().format()
     }
     const updatedCard = {
       ...currentCard,
-      checklists: [...currentCard.checklists, newChecklist],
+      features: [...currentCard.features, newChecklist],
       activities: [...currentCard.activities, newActivity]
     }
     setCurrentCard(updatedCard)

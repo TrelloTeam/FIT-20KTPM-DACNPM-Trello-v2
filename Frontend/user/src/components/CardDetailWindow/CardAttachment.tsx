@@ -1,23 +1,25 @@
 import { Box } from '@mui/material'
-import { _Card, _Feature_Attachment } from '.'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPaperclip, faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons'
 import { useRef, useState } from 'react'
 import { CardAttachmentModal } from './modals/CardAttachmentModal'
 import { useTheme } from '../Theme/themeContext'
+import { Card } from '@trello-v2/shared/src/schemas/CardList'
+import { Feature_Attachment } from '@trello-v2/shared/src/schemas/Feature'
+import React from 'react'
 
 type AttachmentType = 'file' | 'link'
 
 interface CardAttachmentProps {
-  currentCard: _Card
-  setCurrentCard: (newState: _Card) => void
+  currentCard: Card
+  setCurrentCard: (newState: Card) => void
 }
 
 export function CardAttachment({ currentCard, setCurrentCard }: CardAttachmentProps) {
   const { colors } = useTheme()
   const boxRef = useRef(null)
   const [anchorEl, setAnchorEl] = useState<null | HTMLDivElement>(null)
-  const [isOpenModal, setIsOpenModal] = useState(false)
+  const [isOpenModal, setIsOpenModal] = useState<boolean>(false)
 
   function handleOpenModal() {
     setIsOpenModal(true)
@@ -28,9 +30,9 @@ export function CardAttachment({ currentCard, setCurrentCard }: CardAttachmentPr
   }
 
   return (
-    <Box sx={{ width: '100%', height: 'fit-content', margin: '20px 0' }} className='flex flex-col'>
-      {currentCard.attachments.length !== 0 && (
-        <>
+    <React.Fragment>
+      {currentCard.features.filter((feature) => feature.type === 'attachment').length !== 0 && (
+        <Box sx={{ width: '100%', height: 'fit-content', margin: '30px 0 40px 0' }} className='flex flex-col'>
           <Box
             sx={{ width: '100%', height: 32, marginBottom: '16px', color: colors.text }}
             className='flex flex-row items-center justify-between'
@@ -65,9 +67,12 @@ export function CardAttachment({ currentCard, setCurrentCard }: CardAttachmentPr
             </Box>
           </Box>
           <Box sx={{ width: '100%', height: 'fit-content', paddingLeft: '42px' }} className='flex flex-col'>
-            {currentCard.attachments.map((attachment, index) => (
-              <CardAttachmentTile key={index} type='link' attachment={attachment} />
-            ))}
+            {currentCard.features
+              .filter((_feature) => _feature.type === 'attachment')
+              .map((feature, index) => {
+                const attachment = feature as Feature_Attachment
+                return <CardAttachmentTile key={index} type='link' attachment={attachment} />
+              })}
           </Box>
           {isOpenModal && (
             <CardAttachmentModal
@@ -77,15 +82,15 @@ export function CardAttachment({ currentCard, setCurrentCard }: CardAttachmentPr
               handleClose={handleCloseModal}
             />
           )}
-        </>
+        </Box>
       )}
-    </Box>
+    </React.Fragment>
   )
 }
 
 interface CardAttachmentTileProps {
   type: AttachmentType
-  attachment: _Feature_Attachment
+  attachment: Feature_Attachment
 }
 
 function CardAttachmentTile({ type, attachment }: CardAttachmentTileProps) {
@@ -117,7 +122,7 @@ function CardAttachmentTile({ type, attachment }: CardAttachmentTileProps) {
       {/* Content */}
       <Box sx={{ flex: 1, height: 'fit-content', padding: '8px 20px' }} className='flex flex-col justify-start'>
         <Box className='flex flex-row items-center'>
-          <h2 className='text-sm font-bold'>{attachment.title}</h2>
+          <h2 className='text-sm font-bold'>{attachment.link}</h2>
           <FontAwesomeIcon icon={faUpRightFromSquare} style={{ marginLeft: '12px' }} className='text-xs' />
         </Box>
         <Box sx={{ marginTop: '4px' }} className='flex flex-row items-center'>

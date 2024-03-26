@@ -1,13 +1,13 @@
 import { useRef, useState } from 'react'
-import { _Card } from '..'
 import { ButtonType, SidebarButton, buttonTypeIconMap } from './CardSidebarButton'
 import { Box } from '@mui/material'
 import { SelectCardDatesModal } from '../modals/CardDateModal'
+import { Card } from '@trello-v2/shared/src/schemas/CardList'
 
 interface SidebarButtonDatesProps {
   type: ButtonType
-  currentCard: _Card
-  setCurrentCard: (newState: _Card) => void
+  currentCard: Card
+  setCurrentCard: (newState: Card) => void
 }
 
 export function SidebarButtonDates({ type, currentCard, setCurrentCard }: SidebarButtonDatesProps) {

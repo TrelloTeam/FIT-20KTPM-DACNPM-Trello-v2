@@ -14,7 +14,6 @@ import { SidebarButtonLabels } from './sidebar/CardLabelSidebar'
 import { SidebarButtonMembers } from './sidebar/CardMemberSidebar'
 import { SidebarButtonChecklist } from './sidebar/CardChecklistSidebar'
 import { SidebarButtonDates } from './sidebar/CardDateSidebar'
-import dayjs, { Dayjs } from 'dayjs'
 import { SidebarButtonAttachments } from './sidebar/CardAttachmentSidebar'
 import { CardAttachment } from './CardAttachment'
 import { SidebarButtonMove } from './sidebar/CardMoveSidebar'
@@ -23,186 +22,11 @@ import { SidebarButtonArchive } from './sidebar/CardArchiveSidebar'
 import { useTheme } from '../Theme/themeContext'
 import { CardApiRTQ } from '~/api'
 import { Card } from '@trello-v2/shared/src/schemas/CardList'
-import { Feature_CardLabel } from '@trello-v2/shared/src/schemas/Feature'
+import { Feature_Checklist } from '@trello-v2/shared/src/schemas/Feature'
+import { testBoardLabels, testBoardMembers, testCard } from './test_data'
+import { BoardLabel } from '@trello-v2/shared/src/schemas/Board'
 
-export type _Card = {
-  name: string
-  description: string
-  watcher_email: string[]
-  labels: _Feature_CardLabel[]
-  checklists: _Feature_Checklist[]
-  dates: _Feature_Date
-  attachments: _Feature_Attachment[]
-  activities: _Feature_Activity[]
-}
-
-export type _Feature_CardLabel = {
-  _id: string
-  name: string
-}
-
-export type _Feature_Checklist = {
-  _id: string
-  name: string
-  type: string
-  items: _Feature_Checklist_Item[]
-}
-
-export type _Feature_Checklist_Item = {
-  _id: string
-  name: string
-  is_check: boolean
-}
-
-export type _Feature_Date = {
-  _id: string
-  type: string
-  start_date: Dayjs | null
-  due_date: Dayjs | null
-}
-
-export type _Feature_Attachment = {
-  _id: string
-  type: string
-  link: string
-  title: string
-}
-
-export type _Feature_Activity = {
-  workspace_id: string
-  board_id: string
-  cardlist_id: string
-  card_id: string
-  content: string
-  time: string
-}
-
-const checklist_1: _Feature_Checklist = {
-  _id: '0',
-  name: 'Front-end Boards Page',
-  type: 'checklist',
-  items: [
-    { _id: '0', name: 'Component design', is_check: false },
-    { _id: '1', name: 'State management', is_check: false },
-    { _id: '2', name: 'Data fetching', is_check: false },
-    { _id: '3', name: 'Event handling', is_check: false },
-    { _id: '4', name: 'Testing', is_check: false },
-    { _id: '5', name: 'Code review', is_check: false },
-    { _id: '6', name: 'Pull request approved', is_check: false }
-  ]
-}
-
-const checklist_2: _Feature_Checklist = {
-  _id: '1',
-  name: 'Front-end Card Detail Window',
-  type: 'checklist',
-  items: [
-    { _id: '0', name: 'Component design', is_check: false },
-    { _id: '1', name: 'State management', is_check: false },
-    { _id: '2', name: 'Data fetching', is_check: false },
-    { _id: '3', name: 'Event handling', is_check: false },
-    { _id: '4', name: 'Testing', is_check: false },
-    { _id: '5', name: 'Code review', is_check: false },
-    { _id: '6', name: 'Pull request approved', is_check: false }
-  ]
-}
-
-const card_dates: _Feature_Date = {
-  _id: '2',
-  type: 'date',
-  start_date: dayjs(),
-  due_date: dayjs().add(1, 'day')
-}
-
-const card_attachments: _Feature_Attachment[] = [
-  {
-    _id: '0',
-    type: 'attachment',
-    link: 'https://www.google.com',
-    title: 'Google'
-  }
-]
-
-const card_activities: _Feature_Activity[] = [
-  {
-    workspace_id: '0',
-    board_id: '0',
-    cardlist_id: '0',
-    card_id: '0',
-    content: 'TrelloUser added attachment',
-    time: '2024-03-15 12:30:00'
-  },
-  {
-    workspace_id: '0',
-    board_id: '0',
-    cardlist_id: '0',
-    card_id: '1',
-    content: 'TrelloUser added checklist',
-    time: '2024-03-14 15:30:00'
-  },
-  {
-    workspace_id: '0',
-    board_id: '0',
-    cardlist_id: '0',
-    card_id: '2',
-    content: 'TrelloUser archived this card',
-    time: '2024-03-15 15:00:00'
-  },
-  {
-    workspace_id: '0',
-    board_id: '0',
-    cardlist_id: '0',
-    card_id: '3',
-    content: 'TrelloUser removed AnotherMember from this card',
-    time: '2024-03-12 15:00:00'
-  }
-]
-
-const card_1: _Card = {
-  name: 'Soạn nội dung thuyết trình',
-  description:
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Id diam maecenas ultricies mi eget. Morbi tincidunt augue interdum velit euismod. Quis commodo odio aenean sed adipiscing diam donec adipiscing. Sed vulputate mi sit amet mauris commodo quis. Aliquam eleifend mi in nulla posuere sollicitudin aliquam ultrices sagittis. Eu volutpat odio facilisis mauris.',
-  watcher_email: ['reactjs@gmail.com', 'nodejs@gmail.com', 'tailwindcss@gmail.com', 'materialui@gmail.com'],
-  labels: [
-    { _id: '5', name: 'Đã hoàn thành' },
-    { _id: '6', name: 'Sắp hoàn thành' },
-    { _id: '7', name: 'Gấp' },
-    { _id: '13', name: 'Không kịp tiến độ' }
-  ],
-  checklists: [checklist_1, checklist_2],
-  dates: card_dates,
-  attachments: card_attachments,
-  activities: card_activities
-}
-
-const boardMembers: string[] = [
-  'reactjs@gmail.com',
-  'nodejs@gmail.com',
-  'tailwindcss@gmail.com',
-  'materialui@gmail.com',
-  'restjs@gmail.com',
-  'mongodb@gmail.com'
-]
-
-// const _boardLabels: _Feature_CardLabel[] = [
-//   { _id: '5', name: 'Đã hoàn thành' },
-//   { _id: '6', name: 'Sắp hoàn thành' },
-//   { _id: '7', name: 'Gấp' },
-//   { _id: '13', name: 'Không kịp tiến độ' },
-//   { _id: '9', name: '' },
-//   { _id: '20', name: '' },
-//   { _id: '14', name: '' }
-// ]
-
-const boardLabels: Feature_CardLabel[] = [
-  { type: 'label', label_id: '5' },
-  { type: 'label', label_id: '6' },
-  { type: 'label', label_id: '7' },
-  { type: 'label', label_id: '13' },
-  { type: 'label', label_id: '9' },
-  { type: 'label', label_id: '20' },
-  { type: 'label', label_id: '14' }
-]
+const focusInputColor = '#0ff'
 
 interface CardDetailWindowProps {
   cardlistId: string
@@ -210,11 +34,29 @@ interface CardDetailWindowProps {
 }
 
 export default function CardDetailWindow({ cardId }: CardDetailWindowProps) {
-  const focusInputColor = '#0ff'
   const { colors } = useTheme()
 
+  // Create card data
+  const [createCardAPI] = CardApiRTQ.CardApiSlice.useCreateCardMutation()
+  async function handleCreateCard() {
+    try {
+      createCardAPI({
+        name: 'Experimental Card',
+        cardlist_id: 'demo_cardlist',
+        index: 1
+      })
+    } catch (err) {
+      console.error('Error creating card:', err)
+    }
+  }
+
+  useEffect(() => {
+    handleCreateCard()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   // Card data (MOCK UP)
-  const [_currentCardState, _setCurrentCardState] = useState<_Card>(card_1)
+  const [_currentCardState, _setCurrentCardState] = useState<Card>(testCard)
 
   // Card data
   const [getCard, { data: cardData }] = CardApiRTQ.CardApiSlice.useLazyGetCardQuery()
@@ -240,11 +82,11 @@ export default function CardDetailWindow({ cardId }: CardDetailWindowProps) {
   }, [cardData])
 
   // Board labels
-  const [boardLabelState, setBoardLabelState] = useState<Feature_CardLabel[]>(boardLabels)
+  const [boardLabelState, setBoardLabelState] = useState<BoardLabel[]>(testBoardLabels)
 
-  const [cardNameFieldValue, setCardNameFieldValue] = useState<string>(currentCardState?.name || '')
-  const [initialCardNameFieldValue, setInitialCardNameFieldValue] = useState(card_1.name)
-  const [isWatching, setIsWatching] = useState(false)
+  const [cardNameFieldValue, setCardNameFieldValue] = useState<string>(_currentCardState.name || '')
+  const [initialCardNameFieldValue, setInitialCardNameFieldValue] = useState<string>(_currentCardState.name)
+  const [isWatching, setIsWatching] = useState<boolean>(false)
 
   function handleCardNameChange(event: React.ChangeEvent<HTMLInputElement>) {
     setCardNameFieldValue(event.target.value)
@@ -276,12 +118,13 @@ export default function CardDetailWindow({ cardId }: CardDetailWindowProps) {
   }
 
   return (
-    <Box sx={{ width: '100%', bgcolor: 'rgba(0, 0, 0, 0.64)' }} className='flex justify-center'>
+    <Box sx={{ width: '100%', bgcolor: 'rgba(0, 0, 0, 0.64)', zIndex: 100 }} className='flex justify-center'>
       <Box
         sx={{
           width: 768,
+          minHeight: 'calc(100vh - 52px)',
           height: 'fit-content',
-          marginBottom: '80px',
+          marginBottom: '52px',
           paddingBottom: '40px',
           boxShadow: '0 2px 4px rgba(0, 0, 0, 0.5)',
           backgroundColor: colors.background_modal,
@@ -346,11 +189,11 @@ export default function CardDetailWindow({ cardId }: CardDetailWindowProps) {
               <CardMemberList
                 currentCard={_currentCardState}
                 setCurrentCard={_setCurrentCardState}
-                boardMembers={boardMembers}
+                boardMembers={testBoardMembers}
               />
               <CardLabelList
-                currentCard={currentCardState!}
-                setCurrentCard={setCurrentCardState}
+                currentCard={_currentCardState}
+                setCurrentCard={_setCurrentCardState}
                 boardLabelState={boardLabelState}
                 setBoardLabelState={setBoardLabelState}
               />
@@ -365,14 +208,19 @@ export default function CardDetailWindow({ cardId }: CardDetailWindowProps) {
             <CardAttachment currentCard={_currentCardState} setCurrentCard={_setCurrentCardState} />
             {/* END: Attachment */}
             {/* START: Checklist */}
-            {_currentCardState.checklists.map((checklist) => (
-              <CardChecklist
-                key={checklist._id}
-                currentChecklist={checklist}
-                currentCard={_currentCardState}
-                setCurrentCard={_setCurrentCardState}
-              />
-            ))}
+            {_currentCardState.features
+              .filter((_feature) => _feature.type === 'checklist')
+              .map((feature, index) => {
+                const checklist = feature as Feature_Checklist
+                return (
+                  <CardChecklist
+                    key={index}
+                    currentChecklist={checklist}
+                    currentCard={_currentCardState}
+                    setCurrentCard={_setCurrentCardState}
+                  />
+                )
+              })}
             {/* END: Checklist */}
             <CardActivity currentCard={_currentCardState} setCurrentCard={_setCurrentCardState} />
           </Grid>
@@ -385,12 +233,12 @@ export default function CardDetailWindow({ cardId }: CardDetailWindowProps) {
                 type={ButtonType.Members}
                 currentCard={_currentCardState}
                 setCurrentCard={_setCurrentCardState}
-                boardMembers={boardMembers}
+                boardMembers={testBoardMembers}
               />
               <SidebarButtonLabels
                 type={ButtonType.Labels}
-                currentCard={currentCardState!}
-                setCurrentCard={setCurrentCardState}
+                currentCard={_currentCardState}
+                setCurrentCard={_setCurrentCardState}
                 boardLabelState={boardLabelState}
                 setBoardLabelState={setBoardLabelState}
               />

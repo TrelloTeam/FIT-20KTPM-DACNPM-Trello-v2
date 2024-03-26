@@ -1,13 +1,13 @@
 import { useRef, useState } from 'react'
-import { _Card } from '..'
 import { ButtonType, SidebarButton, buttonTypeIconMap } from './CardSidebarButton'
 import { Box } from '@mui/material'
 import { CreateCardChecklistModal } from '../modals/CardChecklistModal'
+import { Card } from '@trello-v2/shared/src/schemas/CardList'
 
 interface SidebarButtonChecklistProps {
   type: ButtonType
-  currentCard: _Card
-  setCurrentCard: (newState: _Card) => void
+  currentCard: Card
+  setCurrentCard: (newState: Card) => void
 }
 
 export function SidebarButtonChecklist({ type, currentCard, setCurrentCard }: SidebarButtonChecklistProps) {

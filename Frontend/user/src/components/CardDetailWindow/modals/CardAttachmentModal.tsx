@@ -2,9 +2,10 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Box, Grid, Popover, styled } from '@mui/material'
 import { useState } from 'react'
-import { _Card, _Feature_Activity, _Feature_Attachment } from '..'
-import moment from 'moment'
 import { useTheme } from '~/components/Theme/themeContext'
+import { Card } from '@trello-v2/shared/src/schemas/CardList'
+import { Feature_Attachment } from '@trello-v2/shared/src/schemas/Feature'
+import { Activity } from '@trello-v2/shared/src/schemas/Activity'
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -20,15 +21,15 @@ const VisuallyHiddenInput = styled('input')({
 
 interface CardAttachmentModalProps {
   anchorEl: (EventTarget & HTMLDivElement) | null
-  currentCard: _Card
-  setCurrentCard: (newState: _Card) => void
+  currentCard: Card
+  setCurrentCard: (newState: Card) => void
   handleClose: () => void
 }
 
 export function CardAttachmentModal({ anchorEl, currentCard, setCurrentCard, handleClose }: CardAttachmentModalProps) {
   const { colors } = useTheme()
-  const [attachmentLinkValue, setAttachmentLinkValue] = useState('')
-  const [attachmentTitleValue, setAttachmentTitleValue] = useState('')
+  const [attachmentLinkValue, setAttachmentLinkValue] = useState<string>('')
+  const [attachmentTitleValue, setAttachmentTitleValue] = useState<string>('')
 
   function handleLinkValueChange(event: React.ChangeEvent<HTMLInputElement>) {
     setAttachmentLinkValue(event.target.value)
@@ -39,28 +40,21 @@ export function CardAttachmentModal({ anchorEl, currentCard, setCurrentCard, han
   }
 
   function createAttachment() {
-    if (attachmentLinkValue.trim() !== '' && attachmentTitleValue.trim() !== '') {
-      let attachmentId = '0'
-      if (currentCard.attachments.length !== 0) {
-        attachmentId = currentCard.attachments.length.toString()
-      }
-      const newAttachment: _Feature_Attachment = {
-        _id: attachmentId,
+    if (attachmentLinkValue.trim() !== '') {
+      const newAttachment: Feature_Attachment = {
         type: 'attachment',
-        link: attachmentLinkValue,
-        title: attachmentTitleValue
+        link: attachmentLinkValue
       }
-      const newActivity: _Feature_Activity = {
+      const newActivity: Activity = {
         workspace_id: '0',
         board_id: '0',
         cardlist_id: '0',
         card_id: '0',
-        content: `TrelloUser attached ${attachmentLinkValue} to this card`,
-        time: moment().format()
+        content: `TrelloUser attached ${attachmentLinkValue} to this card`
       }
-      const updatedCard = {
+      const updatedCard: Card = {
         ...currentCard,
-        attachments: [...currentCard.attachments, newAttachment],
+        features: [...currentCard.features, newAttachment],
         activities: [...currentCard.activities, newActivity]
       }
       setCurrentCard(updatedCard)

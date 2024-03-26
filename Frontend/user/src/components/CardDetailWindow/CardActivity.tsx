@@ -1,11 +1,12 @@
 import { faListUl } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Avatar, Box, TextareaAutosize, Tooltip } from '@mui/material'
-import { ChangeEvent, useEffect, useState } from 'react'
-import { _Card, _Feature_Activity } from '.'
+import { ChangeEvent, useState } from 'react'
 import moment from 'moment'
-import dayjs from 'dayjs'
+// import dayjs from 'dayjs'
 import { useTheme } from '../Theme/themeContext'
+import { Activity } from '@trello-v2/shared/src/schemas/Activity'
+import { Card } from '@trello-v2/shared/src/schemas/CardList'
 
 function ShowDetailsButton() {
   const { colors } = useTheme()
@@ -40,7 +41,6 @@ interface TextAreaControlProps {
 }
 
 function TextAreaControl({
-  textAreaValue,
   setTextAreaValue,
   setTextAreaFocus,
   buttonEnabled,
@@ -109,13 +109,14 @@ function TextAreaControl({
 }
 
 interface CardActivityProps {
-  currentCard: _Card
-  setCurrentCard: (newState: _Card) => void
+  currentCard: Card
+  setCurrentCard: (newState: Card) => void
 }
 
 export default function CardActivity({ currentCard, setCurrentCard }: CardActivityProps) {
   const { colors } = useTheme()
-  const sortedActivities = currentCard.activities.sort((a, b) => moment(a.time).diff(moment(b.time))).reverse()
+  const sortedActivities = currentCard.activities
+  // const sortedActivities = currentCard.activities.sort((a, b) => moment(a.time).diff(moment(b.time))).reverse()
   const [textAreaMinRows, setTextAreaMinRows] = useState<number>(1)
   const [textAreaValue, setTextAreaValue] = useState('')
   const [textAreaFocus, setTextAreaFocus] = useState(false)
@@ -160,7 +161,7 @@ export default function CardActivity({ currentCard, setCurrentCard }: CardActivi
   }
 
   return (
-    <div style={{ margin: '40px 0 0 0px', color: colors.text }} className='flex flex-col gap-1'>
+    <div style={{ margin: '0 0 0 0px', color: colors.text }} className='flex flex-col gap-1'>
       {/* START: Header */}
       <div style={{ margin: '0px 0 10px 40px' }} className='flex flex-row items-center justify-between'>
         {/* Title */}
@@ -234,24 +235,24 @@ export default function CardActivity({ currentCard, setCurrentCard }: CardActivi
 }
 
 interface CardActivityTileProps {
-  activity: _Feature_Activity
+  activity: Activity
 }
 
 function CardActivityTile({ activity }: CardActivityTileProps) {
   const { colors } = useTheme()
-  const [formattedTime, setFormattedTime] = useState('')
+  // const [formattedTime, setFormattedTime] = useState('')
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  function updateFormattedTime() {
-    const formatted = formatActivityTime(activity.time)
-    setFormattedTime(formatted)
-  }
+  // function updateFormattedTime() {
+  //   const formatted = formatActivityTime(activity.time)
+  //   setFormattedTime(formatted)
+  // }
 
-  useEffect(() => {
-    updateFormattedTime()
-    const intervalId = setInterval(updateFormattedTime, 10000)
-    return () => clearInterval(intervalId)
-  }, [activity.time, updateFormattedTime])
+  // useEffect(() => {
+  //   updateFormattedTime()
+  //   const intervalId = setInterval(updateFormattedTime, 10000)
+  //   return () => clearInterval(intervalId)
+  // }, [activity.time, updateFormattedTime])
 
   return (
     <Box
@@ -273,7 +274,8 @@ function CardActivityTile({ activity }: CardActivityTileProps) {
         <p className='text-sm font-medium'>{activity.content}</p>
       </Box>
       <Tooltip
-        title={formatActivityTimeToolTip(activity.time)}
+        // title={formatActivityTimeToolTip(activity.time)}
+        title='Activity time ?'
         placement='bottom-start'
         slotProps={{
           popper: {
@@ -289,40 +291,40 @@ function CardActivityTile({ activity }: CardActivityTileProps) {
         }}
       >
         <Box sx={{ width: 'fit-content', height: 20 }} className='cursor-pointer text-xs hover:underline'>
-          <p className='text-xs'>{formattedTime}</p>
+          <p className='text-xs'>time?</p>
         </Box>
       </Tooltip>
     </Box>
   )
 }
 
-function formatActivityTime(activityTime: string) {
-  const now = moment()
-  const activityMoment = moment(activityTime)
-  const diffSeconds = now.diff(activityMoment, 'seconds')
-  const diffMinutes = now.diff(activityMoment, 'minutes')
+// function formatActivityTime(activityTime: string) {
+//   const now = moment()
+//   const activityMoment = moment(activityTime)
+//   const diffSeconds = now.diff(activityMoment, 'seconds')
+//   const diffMinutes = now.diff(activityMoment, 'minutes')
 
-  if (diffSeconds < 10) {
-    return 'just now'
-  } else if (diffSeconds < 60) {
-    return 'a few seconds ago'
-  } else if (diffSeconds < 120) {
-    return '1 minute ago'
-  } else if (diffMinutes < 60) {
-    return `${diffMinutes} minutes ago`
-  } else if (diffMinutes < 120) {
-    return `1 hour ago`
-  } else if (activityMoment.isSame(now, 'day')) {
-    const diffHours = now.diff(activityMoment, 'hours')
-    return `${diffHours} hours ago`
-  } else if (activityMoment.isSame(now.clone().subtract(1, 'day'), 'day')) {
-    return 'yesterday at ' + activityMoment.format('HH:mm')
-  } else {
-    return activityMoment.format('MMM D [at] HH:mm A')
-  }
-}
+//   if (diffSeconds < 10) {
+//     return 'just now'
+//   } else if (diffSeconds < 60) {
+//     return 'a few seconds ago'
+//   } else if (diffSeconds < 120) {
+//     return '1 minute ago'
+//   } else if (diffMinutes < 60) {
+//     return `${diffMinutes} minutes ago`
+//   } else if (diffMinutes < 120) {
+//     return `1 hour ago`
+//   } else if (activityMoment.isSame(now, 'day')) {
+//     const diffHours = now.diff(activityMoment, 'hours')
+//     return `${diffHours} hours ago`
+//   } else if (activityMoment.isSame(now.clone().subtract(1, 'day'), 'day')) {
+//     return 'yesterday at ' + activityMoment.format('HH:mm')
+//   } else {
+//     return activityMoment.format('MMM D [at] HH:mm A')
+//   }
+// }
 
-function formatActivityTimeToolTip(activityTime: string) {
-  const formattedTime = dayjs(activityTime).format('MMMM D, YYYY h:mm A')
-  return formattedTime
-}
+// function formatActivityTimeToolTip(activityTime: string) {
+//   const formattedTime = dayjs(activityTime).format('MMMM D, YYYY h:mm A')
+//   return formattedTime
+// }

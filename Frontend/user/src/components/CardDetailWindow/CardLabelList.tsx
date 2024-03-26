@@ -6,6 +6,8 @@ import { CardLabelListModal, CreateCardLabelModal, EditCardLabelModal } from './
 import { useTheme } from '../Theme/themeContext'
 import { Card } from '@trello-v2/shared/src/schemas/CardList'
 import { Feature_CardLabel } from '@trello-v2/shared/src/schemas/Feature'
+import React from 'react'
+import { BoardLabel } from '@trello-v2/shared/src/schemas/Board'
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const labelColors: string[] = [
@@ -118,8 +120,8 @@ export function CardLabelItem({ title, bgColor }: CardLabelItemProps) {
 interface CardLabelListProps {
   currentCard: Card
   setCurrentCard: (newState: Card) => void
-  boardLabelState: Feature_CardLabel[]
-  setBoardLabelState: (newState: Feature_CardLabel[]) => void
+  boardLabelState: BoardLabel[]
+  setBoardLabelState: (newState: BoardLabel[]) => void
 }
 
 export default function CardLabelList({
@@ -132,25 +134,25 @@ export default function CardLabelList({
   const boxRef = useRef(null)
   const [anchorEl, setAnchorEl] = useState<null | HTMLDivElement>(null)
   const [modalState, setModalState] = useState<boolean[]>([false, false, false])
-  const [selectedLabel, setSelectedLabel] = useState<Feature_CardLabel>(boardLabelState[0])
+  const [selectedLabel, setSelectedLabel] = useState<BoardLabel>(boardLabelState[0])
 
   function openModal(modalIndex: number) {
     const updatedOpenModal = modalState.map((state, index) => (index === modalIndex ? true : state))
     setModalState(updatedOpenModal)
   }
 
-  function addBoardLabel(_id: string) {
-    const newBoardLabel: Feature_CardLabel = {
-      type: 'label',
-      label_id: _id
-      // name: name
+  function addBoardLabel(color: string, name: string) {
+    const newBoardLabel: BoardLabel = {
+      _id: (parseInt(boardLabelState.slice(-1)[0]._id || '0', 10) + 1).toString(),
+      color: color,
+      name: name
     }
     setBoardLabelState([...boardLabelState, newBoardLabel])
   }
 
-  function isLabelIncluded(label: Feature_CardLabel): boolean {
+  function isLabelIncluded(boardLabel: BoardLabel): boolean {
     return currentCard.features.some((feature) => {
-      if (feature.type === 'label' && feature.label_id === label._id) {
+      if (feature.type === 'label' && feature.label_id === boardLabel._id) {
         return true
       }
       return false
@@ -165,110 +167,124 @@ export default function CardLabelList({
     if (isLabelIncluded(selectedLabel)) {
       const updatedCard = {
         ...currentCard,
-        labels: currentCard.features.filter((feature) => feature.type === 'label' && feature._id !== selectedLabel._id)
+        labels: currentCard.features.filter(
+          (feature) => feature.type === 'label' && feature.label_id !== selectedLabel._id
+        )
       }
       setCurrentCard(updatedCard)
     }
   }
 
-  function handleIncludeLabel(label: Feature_CardLabel) {
+  function handleIncludeLabel(boardLabel: BoardLabel) {
+    const newCardLabel: Feature_CardLabel = {
+      type: 'label',
+      label_id: boardLabel._id!
+    }
     const updatedCard: Card = {
       ...currentCard,
-      features: [...currentCard.features, label]
+      features: [...currentCard.features, newCardLabel]
     }
     setCurrentCard(updatedCard)
   }
 
-  function handleExcludeLabel(label: Feature_CardLabel) {
+  function handleExcludeLabel(boardLabel: BoardLabel) {
     const updatedCard: Card = {
       ...currentCard,
-      features: currentCard.features.filter((feature) => feature.type === 'label' && feature._id !== label._id)
+      features: currentCard.features.filter(
+        (feature) => feature.type === 'label' && feature.label_id !== boardLabel._id
+      )
     }
     setCurrentCard(updatedCard)
   }
 
   return (
-    <Box ref={boxRef} sx={{ margin: '10px 20px 0 0' }}>
-      <h2 style={{ color: colors.text }} className='mb-2 text-xs font-bold'>
-        Labels
-      </h2>
-      <div className='flex flex-row flex-wrap'>
-        {currentCard.features
-          .filter((_feature) => _feature.type === 'label')
-          .map((feature, index) => {
-            const label = feature as Feature_CardLabel
-            return (
-              <Tooltip
-                arrow
-                key={index}
-                title={`Color: ${labelColorsTitle[parseInt(label._id!, 10)]}, title: empty`}
-                placement='bottom'
-                slotProps={{
-                  popper: {
-                    modifiers: [
-                      {
-                        name: 'offset',
-                        options: {
-                          offset: [0, -12]
-                        }
+    <React.Fragment>
+      {currentCard.features.filter((feature) => feature.type === 'label').length !== 0 && (
+        <Box ref={boxRef} sx={{ margin: '10px 20px 0 0' }}>
+          <h2 style={{ color: colors.text }} className='mb-2 text-xs font-bold'>
+            Labels
+          </h2>
+          <div className='flex flex-row flex-wrap'>
+            {currentCard.features
+              .filter((_feature) => _feature.type === 'label')
+              .map((feature, index) => {
+                const label = feature as Feature_CardLabel
+                const boardLabel = boardLabelState.find((boardLabel) => boardLabel._id === label.label_id)
+                const colorTitle = labelColorsTitle[labelColors.indexOf(boardLabel!.color || labelColors[0])]
+                return (
+                  <Tooltip
+                    arrow
+                    key={index}
+                    title={`Color: ${colorTitle}, title: ${boardLabel!.name}`}
+                    placement='bottom'
+                    slotProps={{
+                      popper: {
+                        modifiers: [
+                          {
+                            name: 'offset',
+                            options: {
+                              offset: [0, -12]
+                            }
+                          }
+                        ]
                       }
-                    ]
-                  }
-                }}
-              >
-                <div style={{ display: 'inline-block' }}>
-                  <CardLabelItem title='empty' bgColor={labelColors[parseInt(label.label_id!, 10)]} />
-                </div>
-              </Tooltip>
-            )
-          })}
-        <Box
-          sx={{
-            bgcolor: colors.button,
-            width: 32,
-            height: 32,
-            color: colors.text,
-            fontSize: 14,
-            fontWeight: 500,
-            '&:hover': {
-              bgcolor: colors.button_hover
-            }
-          }}
-          className='flex cursor-pointer items-center justify-center rounded'
-          onClick={() => {
-            setAnchorEl(boxRef.current)
-            openModal(0)
-          }}
-        >
-          <FontAwesomeIcon icon={faPlus} />
+                    }}
+                  >
+                    <div style={{ display: 'inline-block' }}>
+                      <CardLabelItem title={boardLabel!.name} bgColor={boardLabel!.color} />
+                    </div>
+                  </Tooltip>
+                )
+              })}
+            <Box
+              sx={{
+                bgcolor: colors.button,
+                width: 32,
+                height: 32,
+                color: colors.text,
+                fontSize: 14,
+                fontWeight: 500,
+                '&:hover': {
+                  bgcolor: colors.button_hover
+                }
+              }}
+              className='flex cursor-pointer items-center justify-center rounded'
+              onClick={() => {
+                setAnchorEl(boxRef.current)
+                openModal(0)
+              }}
+            >
+              <FontAwesomeIcon icon={faPlus} />
+            </Box>
+            {modalState[0] && (
+              <CardLabelListModal
+                anchorEl={anchorEl}
+                setModalState={setModalState}
+                currentCard={currentCard}
+                boardLabels={boardLabelState}
+                setSelectedLabel={setSelectedLabel}
+                handleIncludeLabel={handleIncludeLabel}
+                handleExcludeLabel={handleExcludeLabel}
+              />
+            )}
+            {modalState[1] && (
+              <CreateCardLabelModal anchorEl={anchorEl} setModalState={setModalState} addBoardLabel={addBoardLabel} />
+            )}
+            {modalState[2] && (
+              <EditCardLabelModal
+                anchorEl={anchorEl}
+                setModalState={setModalState}
+                currentCard={currentCard}
+                setCurrentCard={setCurrentCard}
+                currentLabel={selectedLabel}
+                boardLabelState={boardLabelState}
+                setBoardLabelState={setBoardLabelState}
+                removeBoardLabel={removeBoardLabel}
+              />
+            )}
+          </div>
         </Box>
-        {modalState[0] && (
-          <CardLabelListModal
-            anchorEl={anchorEl}
-            setModalState={setModalState}
-            currentCard={currentCard}
-            boardLabels={boardLabelState}
-            setSelectedLabel={setSelectedLabel}
-            handleIncludeLabel={handleIncludeLabel}
-            handleExcludeLabel={handleExcludeLabel}
-          />
-        )}
-        {modalState[1] && (
-          <CreateCardLabelModal anchorEl={anchorEl} setModalState={setModalState} addBoardLabel={addBoardLabel} />
-        )}
-        {modalState[2] && (
-          <EditCardLabelModal
-            anchorEl={anchorEl}
-            setModalState={setModalState}
-            currentCard={currentCard}
-            setCurrentCard={setCurrentCard}
-            currentLabel={selectedLabel}
-            boardLabelState={boardLabelState}
-            setBoardLabelState={setBoardLabelState}
-            removeBoardLabel={removeBoardLabel}
-          />
-        )}
-      </div>
-    </Box>
+      )}
+    </React.Fragment>
   )
 }
