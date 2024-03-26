@@ -4,6 +4,7 @@ import { InjectController, InjectRoute } from '@app/common/decorators'
 import { SwaggerApi } from '@app/common/decorators/'
 import { IdParamValidationPipe, ZodValidationPipe } from '@app/common/pipes'
 import {
+  BadRequestException,
   Body,
   FileTypeValidator,
   HttpStatus,
@@ -385,7 +386,7 @@ export class BoardController {
       type: 'string',
       example: 'string',
     },
-    body: { schema: { $ref: getSchemaPath('CreateLabelRequestSchema') } },
+    body: { schema: { $ref: getSchemaPath('AddLabelRequestSchema') } },
     responses: [
       {
         status: HttpStatus.OK,
@@ -399,6 +400,7 @@ export class BoardController {
     @Body(new ZodValidationPipe(TrelloApi.BoardApi.AddLabelRequestSchema))
     body: TrelloApi.BoardApi.CreateLabel,
   ): Promise<TrelloApi.BoardApi.GetBoardInfoByBoardIdResponse> {
+    if (!body.color && !body.name) throw new BadRequestException('Color and name cannot be empty.')
     const label = await this.boardService.createLabel(body)
     const board = await this.boardService.getBoardInfoByBoardId(board_id)
     const update = await this.boardService.updateBoard({ _id: board_id, labels: _.union(board.labels, [label]) })
@@ -414,7 +416,7 @@ export class BoardController {
       type: 'string',
       example: 'string',
     },
-    body: { schema: { $ref: getSchemaPath('DeleteLabelRequestSchema') } },
+    body: { schema: { $ref: getSchemaPath('RemoveLabelRequestSchema') } },
     responses: [
       {
         status: HttpStatus.OK,
@@ -422,7 +424,7 @@ export class BoardController {
       },
     ],
   })
-  async deleteLabel(
+  async removeLabel(
     @Param('board_id', IdParamValidationPipe)
     board_id: TrelloApi.BoardApi.BoardIdRequest,
     @Body(new ZodValidationPipe(TrelloApi.BoardApi.RemoveLabelRequestSchema))
