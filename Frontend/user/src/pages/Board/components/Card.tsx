@@ -57,6 +57,7 @@ export default function CardComponent({ card, setOpenCardSetting }: CardComponen
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
+      console.log(event.target)
       if (componentRef.current && !componentRef.current.contains(event.target as Node)) {
         // Clicked outside of Component A, hide it
         setIsHovered(false)
@@ -130,7 +131,7 @@ export default function CardComponent({ card, setOpenCardSetting }: CardComponen
         </div>
       )}
       {cardSettingOpen && cardSettingOpen === card._id && (
-        <div className={` pointer-events-auto `}>
+        <div className={` pointer-events-auto`}>
           <div
             style={{
               position: 'fixed',
