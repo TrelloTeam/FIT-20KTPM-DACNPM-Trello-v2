@@ -59,7 +59,7 @@ export default function CardComponent({ card, cardSelected, setOpenCardSetting }
     setIsHoveredWatcher('')
   }
   const componentRef = useRef<HTMLDivElement>(null)
-  const cardRef = useRef<HTMLDivElement>(null)
+  // const cardRef = useRef<HTMLDivElement>(null)
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (componentRef.current && !componentRef.current.contains(event.target as Node)) {
@@ -109,7 +109,7 @@ export default function CardComponent({ card, cardSelected, setOpenCardSetting }
               className={`mx-3  space-y-2 rounded-lg  p-2  ${darkMode ? `` : ' shadow-sm shadow-gray-300'} ${card.placeHolder ? 'invisible -mt-3 max-h-0  border-0 p-0' : 'visible'}`}
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
-              onClick={() => alert('click card')}
+              onClick={() => cardSelected(card)}
             >
               <div className={`flex flex-row items-center justify-between`}>
                 <p className={` text-left`}>{card.name}</p>

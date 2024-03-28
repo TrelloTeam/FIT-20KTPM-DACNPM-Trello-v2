@@ -94,7 +94,7 @@ export default function ListsComponent({ lists, cardSelected, setOpenCardSetting
               />
             </div>
           ))}
-          <p>The maximum height of ListComponents is: {biggestHeight}px</p>
+          {/* <p>The maximum height of ListComponents is: {biggestHeight}px</p> */}
           {showAddListForm ? (
             <div ref={listFormRef} className={`h-[120px]`}>
               <AddListForm
