@@ -39,11 +39,11 @@ export class CardlistService implements ICardlistService {
   ) {}
 
   async createCardlist(data: TrelloApi.CardlistApi.CreateCardlistRequest): Promise<DbSchemas.CardlistSchema.CardList> {
-    // const board = await this.BoardMModel.findById(data.board_id)
-    // if (!board) {
-    //   // throw new NotFoundError('Board not found')
-    //   return { status: 'Not Found', msg: "Can't find cardlist" } as any
-    // }
+    const board = await this.BoardMModel.findById(data.board_id)
+    if (!board) {
+      // throw new NotFoundError('Board not found')
+      return { status: 'Not Found', msg: `Can't find any board with id: ${data.board_id}` } as any
+    }
     data.archive_at = null
     data.created_at = new Date()
     const model = new this.CardlistMModel(data)
@@ -252,6 +252,62 @@ export class CardlistService implements ICardlistService {
     await card.save()
     cardlist.cards.push(card)
     return cardlist.save()
+  }
+  async cloneCardlistsToNewBoard(board_id_input: string, board_id_output: string): Promise<DbSchemas.CardlistSchema.CardList[]> {
+    const currentDate = new Date()
+    try {
+      const cardlists = await this.CardlistMModel.find({ board_id: board_id_input }).exec()
+
+      const newCardlists = await Promise.all(
+        cardlists.map(async (cardlist) => {
+          if (cardlist.archive_at == null) {
+            const newCardlist = new this.CardlistMModel({
+              name: cardlist.name,
+              board_id: board_id_output,
+              watcher_email: cardlist.watcher_email,
+              index: cardlist.index,
+              archive_at: null,
+              created_at: currentDate,
+              cards: [],
+            })
+
+            await newCardlist.save()
+
+            await Promise.all(
+              cardlist.cards.map(async (card) => {
+                if (card.archive_at == null) {
+                  const newCard = new this.CardMModel({
+                    name: card.name,
+                    index: card.index,
+                    watcher_email: card.watcher_email,
+                    archive_at: null,
+                    activities: [],
+                    features: [],
+                    cover: card.cover,
+                    description: card.description,
+                    cardlist_id: newCardlist._id,
+                  })
+
+                  await newCard.save()
+
+                  newCardlist.cards.push(newCard)
+
+                  return newCard
+                }
+              }),
+            )
+
+            await newCardlist.save()
+
+            return newCardlist
+          }
+        }),
+      )
+      return newCardlists
+    } catch (error) {
+      console.error('Error while cloning cardlists:', error)
+      throw error
+    }
   }
 }
 

@@ -264,6 +264,20 @@ export const CardlistRoutes = {
     },
     // jwtSecure: false,
   } as IRouteParams,
+  cloneCardlists: {
+    path: '/clone_cardlists',
+    method: RequestMethod.POST,
+    swaggerInfo: {
+      body: { schema: { $ref: getSchemaPath('CloneCardlistsToNewBoardRequestSchema') } },
+      responses: [
+        {
+          status: 200,
+          schema: { $ref: getSchemaPath('CloneCardlistsToNewBoardResponseSchema') },
+        },
+      ],
+    },
+    // jwtSecure: false,
+  } as IRouteParams,
   testRoute: {
     path: '/api/cardlist/test',
     method: RequestMethod.GET,
