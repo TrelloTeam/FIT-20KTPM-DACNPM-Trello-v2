@@ -26,6 +26,8 @@ export abstract class ICardlistService {
   abstract addWatcher(data: TrelloApi.CardlistApi.AddWatcherRequest): Promise<DbSchemas.CardlistSchema.CardList>
 
   abstract addCardToList(data: TrelloApi.CardlistApi.AddCardToListRequest): Promise<DbSchemas.CardlistSchema.CardList>
+
+  abstract deleteCardlistsByBoardId(data: TrelloApi.CardlistApi.DeleteCardlistsByBoardIdRequest): Promise<{ status: string; msg: string }>
 }
 
 export class CardlistService implements ICardlistService {
@@ -309,6 +311,18 @@ export class CardlistService implements ICardlistService {
       throw error
     }
   }
+  async deleteCardlistsByBoardId(data: TrelloApi.CardlistApi.DeleteCardlistsByBoardIdRequest): Promise<{ status: string; msg: string }> {
+    try {
+      await this.CardlistMModel.deleteMany(data).exec()
+      return {
+        status: 'Success',
+        msg: 'Cardlists deleted successfully',
+      }
+    } catch (error) {
+      console.error('Error while deleting cardlists by board id:', error)
+      throw error
+    }
+  }
 }
 
 export class CardlistServiceMock implements ICardlistService {
@@ -444,5 +458,15 @@ export class CardlistServiceMock implements ICardlistService {
         created_at: null,
       })
     })
+  }
+  async deleteCardlistsByBoardId(data: TrelloApi.CardlistApi.DeleteCardlistsByBoardIdRequest): Promise<{ status: string; msg: string }> {
+    try {
+      // Trả về một promise với thông điệp mô phỏng việc xóa thành công
+      return Promise.resolve({ status: 'Success', msg: `Cardlists deleted successfully in board ${data.board_id}` })
+    } catch (error) {
+      // Nếu có lỗi, in ra console và throw error
+      console.error('Error while deleting cardlists by board id:', error)
+      throw error
+    }
   }
 }

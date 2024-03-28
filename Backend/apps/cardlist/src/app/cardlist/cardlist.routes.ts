@@ -278,6 +278,20 @@ export const CardlistRoutes = {
     },
     // jwtSecure: false,
   } as IRouteParams,
+  deleteCardlistsByBoardId: {
+    path: '/delete_cardlists_by_board_id',
+    method: RequestMethod.DELETE,
+    swaggerInfo: {
+      body: { schema: { $ref: getSchemaPath('DeleteCardlistsByBoardIdRequestSchema') } },
+      responses: [
+        {
+          status: 200,
+          // schema: { $ref: getSchemaPath('CloneCardlistsToNewBoardResponseSchema') },
+        },
+      ],
+    },
+    // jwtSecure: false,
+  } as IRouteParams,
   testRoute: {
     path: '/api/cardlist/test',
     method: RequestMethod.GET,

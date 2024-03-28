@@ -94,6 +94,12 @@ export const CloneCardlistsToNewBoardRequestSchema = z.object({
 export type CloneCardlistsToNewBoardRequest = z.infer<
   typeof CloneCardlistsToNewBoardRequestSchema
 >;
+export const DeleteCardlistsByBoardIdRequestSchema = z.object({
+  board_id: z.string().refine(Refine_MongoId, { message: "Invalid id" }),
+});
+export type DeleteCardlistsByBoardIdRequest = z.infer<
+  typeof DeleteCardlistsByBoardIdRequestSchema
+>;
 
 export const CloneCardlistsToNewBoardResponseSchema = z.object({
   data: CardlistSchema.array(),

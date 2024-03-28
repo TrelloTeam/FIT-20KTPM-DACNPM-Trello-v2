@@ -195,6 +195,17 @@ export class CardlistController {
     }
   }
 
+  @InjectRoute(CardlistRoutes.deleteCardlistsByBoardId)
+  async deleteCardlistsByBoardId(
+    @Body(new ZodValidationPipe(TrelloApi.CardlistApi.DeleteCardlistsByBoardIdRequestSchema))
+    body: TrelloApi.CardlistApi.DeleteCardlistsByBoardIdRequest,
+  ) {
+    const result = await this.cardlistService.deleteCardlistsByBoardId(body)
+    return {
+      result: result,
+    }
+  }
+
   @InjectRoute(CardlistRoutes.testRoute)
   test() {
     return { Hello: 'Demo' }
