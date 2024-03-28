@@ -3,34 +3,42 @@ import { IoMdClose } from 'react-icons/io'
 import { MdOutlineLock, MdPublic } from 'react-icons/md'
 import { useTheme } from '~/components/Theme/themeContext'
 import { FaCheck } from 'react-icons/fa6'
-import { GoDotFill } from 'react-icons/go'
 import { WorkspaceHeader } from '../../../components/WorkspaceHeader/WorkspaceHeader'
+import { WorkspaceApiRTQ } from '~/api'
+import { Workspace } from '@trello-v2/shared/src/schemas/Workspace'
 export const Settings: React.FC = () => {
   // const image = '/src/assets/Profile/profile_img.svg'
   const { colors, darkMode } = useTheme()
-  const [visibility, setVisibility] = useState<string>('private')
+  // const [visibility, setVisibility] = useState<string>('private')
+  const [workspaceInfo, setWorkspaceInfo] = useState<Workspace>()
+  const [getWorkspaceInfo, { data: workspaceInfoRes }] =
+    WorkspaceApiRTQ.WorkspaceApiSlice.useLazyGetOwnerWorkspacebyEmailQuery()
+  const [changeVisibility] = WorkspaceApiRTQ.WorkspaceApiSlice.useChangeWorkspaceVisibilityMutation()
+  const [deleteWorkspace] = WorkspaceApiRTQ.WorkspaceApiSlice.useDeleteWorkspaceMutation()
   const [showForm, setShowForm] = useState<boolean>(false)
   const [showDeleteWorkspaceForm, setShowDeleteWorkspaceForm] = useState<boolean>(false)
-  const [deleteWorkspace, setDeleteWorkspace] = useState<string>('')
-  // useEffect(() => {
-  //   // Check if there's enough space above or below the button to display the form
-  //   if (formRef.current) {
-  //     const buttonRect = formRef.current.getBoundingClientRect();
-  //     const windowHeight = window.innerHeight;
-  //     const spaceAboveButton = buttonRect.top;
-  //     const spaceBelowButton = windowHeight - buttonRect.bottom;
-  //     setShowForm(spaceAboveButton > spaceBelowButton);
-  //   }
-  // }, [showForm]);
+  const [deleteWorkspaceName, setDeleteWorkspaceName] = useState<string>('')
+  const [resetUseStateManual, setResetUseStateManual] = useState<boolean>(false)
+  useEffect(() => {
+    getWorkspaceInfo({ email: 'botomtinlon@gmail.com' })
+    setWorkspaceInfo(workspaceInfoRes?.data)
+  }, [resetUseStateManual])
 
   const handleVisibilityChange = (newVisibility: string) => {
-    setVisibility(newVisibility)
+    changeVisibility({
+      visibility: newVisibility,
+      _id: workspaceInfo?._id
+    }).then(() => setResetUseStateManual(!resetUseStateManual))
     setShowForm(false)
   }
-
+  const handleDeleteWorkspace = () => {
+    deleteWorkspace({
+      workspace_id: workspaceInfo?._id || ''
+    })
+  }
   return (
     <>
-      <WorkspaceHeader visibility={visibility} />
+      <WorkspaceHeader visibility={workspaceInfo?.visibility} />
       <div className='mx-14 mt-10 rounded px-[10%]'>
         <div>
           <h2 className={`mb-2 text-xl font-semibold`}>Workspace settings</h2>
@@ -44,7 +52,7 @@ export const Settings: React.FC = () => {
           </div>
           <div className={`flex w-full flex-row justify-between `}>
             <div className={`mr-2 mt-1 flex w-full flex-row space-x-1`}>
-              {visibility === 'public' ? (
+              {workspaceInfo?.visibility === 'public' ? (
                 <>
                   <p className='flex flex-row'>
                     <span>
@@ -107,7 +115,7 @@ export const Settings: React.FC = () => {
                         <MdOutlineLock className='mr-1 p-0 text-red-500' />
                       </span>{' '}
                       Private
-                      {visibility === 'private' && (
+                      {workspaceInfo?.visibility === 'private' && (
                         <>
                           <span>
                             {' '}
@@ -130,7 +138,7 @@ export const Settings: React.FC = () => {
                         <MdPublic className='mr-1 p-0 text-green-500' />
                       </span>{' '}
                       Public
-                      {visibility === 'public' && (
+                      {workspaceInfo?.visibility === 'public' && (
                         <>
                           <span>
                             {' '}
@@ -198,8 +206,8 @@ export const Settings: React.FC = () => {
                 </ul>
                 <p className={`mb-1 mt-2 text-xs font-semibold`}>Enter the Workspace name to delete</p>
                 <input
-                  value={deleteWorkspace}
-                  onChange={(e) => setDeleteWorkspace(e.target.value)}
+                  value={deleteWorkspaceName}
+                  onChange={(e) => setDeleteWorkspaceName(e.target.value)}
                   style={{
                     color: colors.text
                   }}
@@ -207,10 +215,11 @@ export const Settings: React.FC = () => {
                   className={`w-full rounded-sm border-[3px]  ${darkMode ? 'border-[#738496] bg-[#1d2125] hover:bg-opacity-70' : 'border-[#9da6b5] bg-white hover:bg-gray-50'} p-1 px-2 focus:border-[3px] focus:border-blue-400 focus:outline-none`}
                 />
                 <button
-                  disabled={deleteWorkspace !== 'My Workspace'}
+                  onClick={() => handleDeleteWorkspace()}
+                  disabled={deleteWorkspaceName !== 'My Workspace'}
                   className={`mt-2 flex w-full items-center justify-center rounded px-5 py-2
                 ${
-                  deleteWorkspace !== 'My Workspace'
+                  deleteWorkspaceName !== 'My Workspace'
                     ? darkMode
                       ? 'cursor-not-allowed bg-gray-800 opacity-50'
                       : 'cursor-not-allowed bg-gray-100 opacity-50'

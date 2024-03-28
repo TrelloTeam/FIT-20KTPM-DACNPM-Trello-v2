@@ -3,21 +3,24 @@ import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
 import { useTheme } from '~/components/Theme/themeContext'
 
 import InviteForm from './AddWorkspaceMembersForm'
-
+import { Workspace } from '@trello-v2/shared/src/schemas/Workspace'
 import LogoSection from './LogoSection'
 import WorkspaceInfo from './WorkspaceInfo'
 import EditForm from './EditForm'
 import { WorkspaceApiRTQ } from '~/api'
 import { UpdateWorkspaceInfoRequest } from '@trello-v2/shared/dist/src/api/WorkspaceApi'
 interface HeaderWpSetting {
-  visibility: string
+  visibility: string | undefined
 }
 
 export const WorkspaceHeader: React.FC<HeaderWpSetting> = ({ visibility }) => {
   const { colors, darkMode } = useTheme()
+  const [workspaceInfo, setWorkspaceInfo] = useState<Workspace>()
   const [resetUseStateManual, setResetUseStateManual] = useState<boolean>(false)
   const [isEditing, setIsEditing] = useState<boolean>(false)
   const [updateWorkspaceInfo] = WorkspaceApiRTQ.WorkspaceApiSlice.useUpdateWorkspaceMutation()
+  const [getWorkspaceInfo, { data: workspaceInfoRes }] =
+    WorkspaceApiRTQ.WorkspaceApiSlice.useLazyGetOwnerWorkspacebyEmailQuery()
   const [formData, setFormData] = useState<UpdateWorkspaceInfoRequest>({
     _id: 'string',
     name: '123',
@@ -28,7 +31,8 @@ export const WorkspaceHeader: React.FC<HeaderWpSetting> = ({ visibility }) => {
     members: []
   })
   useEffect(() => {
-    //getWorkspace...
+    getWorkspaceInfo({ email: 'botomtinlon@gmail.com' })
+    setWorkspaceInfo(workspaceInfoRes?.data)
   }, [resetUseStateManual])
   const isFormValid = formData.name?.trim() !== '' && formData.short_name?.trim() !== ''
   const handleEditClick = () => {
@@ -65,7 +69,7 @@ export const WorkspaceHeader: React.FC<HeaderWpSetting> = ({ visibility }) => {
           />
         )}
       </div>
-      <InviteForm />
+      <InviteForm workspace={workspaceInfo} />
     </header>
   )
 }

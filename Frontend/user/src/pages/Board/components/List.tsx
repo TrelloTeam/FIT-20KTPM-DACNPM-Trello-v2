@@ -12,7 +12,13 @@ import { useTheme } from '~/components/Theme/themeContext'
 // import { createCardAPI } from '~/api/Card'
 import { CardApiRTQ, CardlistApiRTQ } from '~/api'
 import { TrelloApi } from '@trello-v2/shared'
-export default function ListComponent({ list, index, maxHeight, setOpenCardSetting }: ListComponentProps) {
+export default function ListComponent({
+  list,
+  index,
+  cardSelected,
+  maxHeight,
+  setOpenCardSetting
+}: ListComponentProps) {
   const [createCard] = CardApiRTQ.CardApiSlice.useCreateCardMutation()
   const [updateCardList] = CardlistApiRTQ.CardListApiSlice.useUpdateCardListMutation()
   const [getAllCardlist] = CardlistApiRTQ.CardListApiSlice.useLazyGetAllCardlistQuery()
@@ -99,7 +105,7 @@ export default function ListComponent({ list, index, maxHeight, setOpenCardSetti
     height: '100%',
     backgroundColor: darkMode ? 'black' : '#f1f2f6',
     color: colors.text,
-    minHeight: `${maxHeight}px`,
+    minHeight: `${maxHeight}px`
     // maxHeight: `${maxHeight > 590 ? 590 : maxHeight}px`
   }
 
@@ -154,7 +160,12 @@ export default function ListComponent({ list, index, maxHeight, setOpenCardSetti
             <div className={`space-y-[10px] `}>
               {list.cards &&
                 list.cards.map((card, index) => (
-                  <CardComponent key={index} card={card} setOpenCardSetting={setOpenCardSetting} />
+                  <CardComponent
+                    cardSelected={cardSelected}
+                    key={index}
+                    card={card}
+                    setOpenCardSetting={setOpenCardSetting}
+                  />
                 ))}
             </div>
           </SortableContext>

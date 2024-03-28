@@ -52,6 +52,7 @@ export const defaultCard = {
 
 export interface CardComponentProps {
   card: Card
+  cardSelected: (card: Card) => void | undefined
   setOpenCardSetting: (data: string) => void
 }
 // export interface List {
@@ -65,9 +66,11 @@ export interface ListComponentProps {
   list: List
   index: number
   maxHeight: number
+  cardSelected: (card: Card) => void | undefined
   setOpenCardSetting: (data: string) => void
 }
 export interface ListsComponentProps {
   lists: List[]
+  cardSelected: (card: Card) => void | undefined
   setOpenCardSetting: (data: string) => void
 }

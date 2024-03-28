@@ -8,7 +8,7 @@ import { useEffect, useRef, useState } from 'react'
 import { UniqueIdentifier } from '@dnd-kit/core'
 import { CardlistApiRTQ } from '~/api'
 
-export default function ListsComponent({ lists, setOpenCardSetting }: ListsComponentProps) {
+export default function ListsComponent({ lists, cardSelected, setOpenCardSetting }: ListsComponentProps) {
   const [getAllCardlist, { data: cardlistData }] = CardlistApiRTQ.CardListApiSlice.useLazyGetAllCardlistQuery()
   const [createCardlist] = CardlistApiRTQ.CardListApiSlice.useCreateCardlistMutation()
   const { colors, darkMode } = useTheme()
@@ -86,6 +86,7 @@ export default function ListsComponent({ lists, setOpenCardSetting }: ListsCompo
           {lists?.map((list, index) => (
             <div key={index} id='list-component'>
               <ListComponent
+                cardSelected={cardSelected}
                 maxHeight={biggestHeight}
                 index={index}
                 list={list}

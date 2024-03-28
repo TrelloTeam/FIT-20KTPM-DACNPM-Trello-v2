@@ -8,7 +8,7 @@ import { MdOutlineRemoveRedEye } from 'react-icons/md'
 import { useTheme } from '~/components/Theme/themeContext'
 import randomColor from 'randomcolor'
 import { CardApiRTQ } from '~/api'
-export default function CardComponent({ card, setOpenCardSetting }: CardComponentProps) {
+export default function CardComponent({ card, cardSelected, setOpenCardSetting }: CardComponentProps) {
   const { colors, darkMode } = useTheme()
   const [bgColorEmailWatcher, setBgColorEmailWatcher] = useState<Array<string>>([])
   const [updateCard] = CardApiRTQ.CardApiSlice.useUpdateCardMutation()
@@ -109,13 +109,15 @@ export default function CardComponent({ card, setOpenCardSetting }: CardComponen
               className={`mx-3  space-y-2 rounded-lg  p-2  ${darkMode ? `` : ' shadow-sm shadow-gray-300'} ${card.placeHolder ? 'invisible -mt-3 max-h-0  border-0 p-0' : 'visible'}`}
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
+              onClick={() => alert('click card')}
             >
               <div className={`flex flex-row items-center justify-between`}>
                 <p className={` text-left`}>{card.name}</p>
                 {isHovered && (
                   <BsPencil
                     className=''
-                    onClick={() => {
+                    onClick={(e) => {
+                      e.stopPropagation() // Prevent click event from bubbling up
                       setCardSettingOpen(card._id)
                       setOpenCardSetting(card._id)
                     }}

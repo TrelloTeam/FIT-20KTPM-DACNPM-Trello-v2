@@ -2,6 +2,8 @@
 import React, { useEffect, useState } from 'react'
 import { ActivityComponent, Header, Profile } from './components'
 import { useTheme } from '../../components/Theme/themeContext'
+import { User } from '@trello-v2/shared/src/schemas/User'
+import { mockUser } from './testData'
 
 type AccountManagementProps = {
   page: string
@@ -9,9 +11,12 @@ type AccountManagementProps = {
 
 export const AccountManagement: React.FC<AccountManagementProps> = ({ page }) => {
   const [selectedTab, setSelectedTab] = useState<string>('')
-
+  const [userInfo, setUserInfo] = useState<User>()
+  const [resetManually, setResetManually] = useState<boolean>()
   const { colors } = useTheme()
-
+  useEffect(()=>{
+    setUserInfo(mockUser)
+  },[resetManually])
   useEffect(() => {
     setSelectedTab(page)
     console.log(page)
@@ -27,13 +32,13 @@ export const AccountManagement: React.FC<AccountManagementProps> = ({ page }) =>
     <div style={darkLightMode} className='font-sans'>
       {selectedTab === 'profile' ? (
         <>
-          <Header onSelectTab={handleTabSelect} currentTab={selectedTab} />
-          <Profile />
+          <Header userInfo={userInfo}  onSelectTab={handleTabSelect} currentTab={selectedTab} />
+          <Profile userInfo={userInfo} handleUpdateProfile={()=> {setResetManually(!resetManually)}}/>
         </>
       ) : (
         <>
-          <Header onSelectTab={handleTabSelect} currentTab={selectedTab} />
-          <ActivityComponent />
+          <Header userInfo={userInfo} onSelectTab={handleTabSelect} currentTab={selectedTab} />
+          <ActivityComponent userInfo={userInfo}/>
         </>
       )}
     </div>

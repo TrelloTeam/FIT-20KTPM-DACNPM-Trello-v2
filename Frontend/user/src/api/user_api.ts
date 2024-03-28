@@ -6,22 +6,27 @@ const UserApiSlice = createApi({
   endpoints: (builder) => ({
     updateUser: builder.mutation<TrelloApi.UserApi.UpdateUserResponse, TrelloApi.UserApi.UpdateUserRequest>({
       query: (data) => ({
-        url: '/api/api/user',
+        url: `/api/user/${data.email}`,
         body: data,
-        method: 'POST'
+        method: 'PUT'
       })
     }),
-    getUser: builder.query<TrelloApi.UserApi.GetUserResponse, void>({
-      query: () => ({
-        url: '/api/user',
+    getUserByEmail: builder.query<TrelloApi.UserApi.GetUserResponse, { email: string }>({
+      query: ({ email }) => ({
+        url: `/api/user/${email}`,
         method: 'GET'
       })
     }),
-    getActivity: builder.query<TrelloApi.UserApi.GetallActivitiesResponse, void>({
-      query: (email) => ({
-        url: '/api/user/',
-        method: 'GET',
-        params: { email }
+    getActivities: builder.query<TrelloApi.UserApi.GetallActivitiesResponse, { email: string }>({
+      query: ({ email }) => ({
+        url: `/api/user/${email}`,
+        method: 'GET'
+      })
+    }),
+    getWorkspaceById: builder.query<TrelloApi.UserApi.GetUserResponse, { email: string }>({
+      query: ({ email }) => ({
+        url: `/api/user/workspace/${email}`,
+        method: 'GET'
       })
     })
   })

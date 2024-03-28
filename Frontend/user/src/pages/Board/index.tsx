@@ -1,6 +1,6 @@
 import { useState, useEffect, lazy, Suspense } from 'react'
 import { lists } from './testData/test_data'
-import { List, Card } from './type/index'
+import { List, Card, defaultCard } from './type/index'
 
 import {
   DndContext,
@@ -45,7 +45,7 @@ export function Board() {
   const [activeDragItemData, setActiveDragItemData] = useState<any>()
   // const [overListData, setOverListData] = useState<List>()
   // const [cardsData, setCardsData] = useState<Card[]>(cards)
-
+  const [selectedCard, setSelectedCard] = useState<Card>()
   // const [isDragCardToCard, setIsDragCardToCard] = useState<boolean>(false)
   // const [isMoveList, setIsMoveList] = useState<boolean>(false)
   const [action, setAction] = useState<boolean>(false)
@@ -360,7 +360,11 @@ export function Board() {
           {(listsData || []) && (
             <div className={`relative mt-[64px] w-[100%]`}>
               <Suspense fallback={<LoadingComponent />}>
-                <LazyListsComponent lists={listsData || []} setOpenCardSetting={setOpenCardSetting} />
+                <LazyListsComponent
+                  cardSelected={setSelectedCard}
+                  lists={listsData || []}
+                  setOpenCardSetting={setOpenCardSetting}
+                />
               </Suspense>
               <DragOverlay dropAnimation={customDropAnimation}>
                 {!activeDragItemId || !activeDragItemType}
@@ -369,11 +373,16 @@ export function Board() {
                     index={0}
                     maxHeight={10}
                     list={activeDragItemData}
+                    cardSelected={(defaultCard) => {}}
                     setOpenCardSetting={(data) => setOpenCardSetting(data)}
                   />
                 )}
                 {activeDragItemId && activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.CARD && (
-                  <CardComponent card={activeDragItemData} setOpenCardSetting={(data) => setOpenCardSetting(data)} />
+                  <CardComponent
+                    card={activeDragItemData}
+                    cardSelected={(defaultCard) => {}}
+                    setOpenCardSetting={(data) => setOpenCardSetting(data)}
+                  />
                 )}
               </DragOverlay>
             </div>
